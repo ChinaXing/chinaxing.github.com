@@ -49,11 +49,11 @@ Markdown: <http://daringfireball.net/projects/markdown/>
 
 特色:
 
-*  易写，易读.
+* 易写,易读.
 
-*  流行，被多数站点和工具支持.
+* 流行,被多数站点和工具支持(stackoverflow,github等).
 
-*  适合程序员用.
+* 适合程序员用.
 
 语法:<http://justjavac.com/jekyll/2012/03/31/markdown-syntax.html>
 
