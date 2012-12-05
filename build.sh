@@ -11,7 +11,11 @@ git update-ref refs/heads/master $commitID
 
 git checkout master
 
+rm -rf _site
+
 git push -f origin master
+
+git checkout dev
 
 
 echo "----Job Done"
