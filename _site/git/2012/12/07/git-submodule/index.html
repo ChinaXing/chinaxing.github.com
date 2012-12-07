@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>use github pages to write blog</title>
+    <title>git submodule 学习笔记</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -41,62 +41,59 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  use github pages to write blog
+  git submodule 学习笔记
 </h1>
-<h3>jekyll：从标记语言生成HTML页面</h3>
+<h3>git help 解释:</h3>
 
-<p>Jekyll: <a href="https://github.com/mojombo/jekyll/wiki">https://github.com/mojombo/jekyll/wiki</a></p>
-
-<p>目录结构:</p>
-
-<pre><code>|-- CNAME
-|-- _config.yml
-|-- _layouts
-|   |-- category_index.html
-|   |-- default.html
-|   `-- post.html
-|-- _plugins
-|   `-- category_index_generator.rb
-|-- _posts
-|   |-- default
-|   |   `-- 2012-12-14-test.md
-|   `-- github
-|       `-- 2012-12-04-use-github-blogging.md
-|-- images
-|   |-- arrow-down.png
-|   `-- octocat-small.png
-|-- index.html
-|-- javascripts
-|   `-- scale.fix.js
-|-- params.json
-`-- stylesheets
-    |-- pygment_trac.css
-    `-- styles.css
+<pre><code>git-submodule - Initialize, update or inspect submodules
 </code></pre>
 
+<h3>说明:</h3>
+
+<p>  git 中的submodule是为了解决项目中依赖别的库，submodule即为依赖的库，方便库的更新，管理。</p>
+
+<p>  每个submodule都是一个库，这样可以看到一个大的仓库中包含小的若干仓库，在实际开发中是常见的。</p>
+
+<h3>命令:</h3>
+
+<pre><code>git submodule add 
+git submodule init
+git submodule update
+
+git submodule summary
+...
+</code></pre>
+
+<p>  这些命令完成submodule的添加，初始化(注册到本仓库，然后可以被跟踪到)，更新仓库内容，查看摘要等。纤细的命令可以通过
+<code>git submodule --help</code>获得</p>
+
+<h3>内部机制：</h3>
+
+<p>   git 的主仓库对于submodule的管理是通过如下文件来进行:<code>.gitmodules</code>,<code>.git/config</code>,<code>.git/modules/</code></p>
+
 <ul>
-<li><p>非'<em>'开头的目录jekyll不会进行处理，原样copy进</em>site目录.</p></li>
-<li><p>生成的网站在_site目录.github会自动将请求转至这里.</p></li>
-<li><p>默认的jekyll功能有限，通过开发插件(在_plugins目录).</p></li>
+<li><p>.gitmodules 内容如下:</p>
+
+<p>[submodule "libs/lib2"]</p>
+
+<pre><code>    path = libs/lib2
+    url = ../../repos/lib2.git
+</code></pre></li>
 </ul>
 
 
-<h3>Mardown : 标记语言</h3>
-
-<p>Markdown: <a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/projects/markdown/</a></p>
-
-<p>类似HTML是一种标记语言</p>
-
-<p>特色:</p>
+<p>   这个文件在git submodule add的时候生成</p>
 
 <ul>
-<li><p>易写,易读.</p></li>
-<li><p>流行,被多数站点和工具支持(stackoverflow,github等).</p></li>
-<li><p>适合程序员用.</p></li>
+<li><p>.git/config 在git submodule init 的时候生成</p></li>
+<li><p>.git/modules/ 在git submodule add的时候生成，里面是submodule的内容</p></li>
 </ul>
 
 
-<p>语法:<a href="http://justjavac.com/jekyll/2012/03/31/markdown-syntax.html">http://justjavac.com/jekyll/2012/03/31/markdown-syntax.html</a></p>
+<p>  主仓库根据submodule的commit ID来跟踪submodule。</p>
+
+<p>  当submodule做了commit的或者work tree改动的时候，主仓库能够通过git status查看到。需要在主仓库再commit一下，
+更新主仓库引用的submodule的 commit ID。</p>
 
 
 <div id="disqus_thread" style="padding-top:3em"></div>
