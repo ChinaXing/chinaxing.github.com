@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>github 不支持 jekyll 插件的解决方法</title>
+    <title>快速取得apache/nginx的qps和rt</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -51,54 +51,30 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  github 不支持 jekyll 插件的解决方法
+  快速取得apache/nginx的qps和rt
 </h1>
-<h3>问题描述:</h3>
+<p>在计算QPS和RT的时候，我们一般使用grep 。但是当日志文件很大的时候，grep会很耗时。</p>
 
-<p>为了能够利用jekyll生成blog的文章分类列表.经过网上搜索，得知需要使用插件，使用方法是在jekyll的目录
-下面建立_plugins目录，里面放置插件，jekyll会自动调用.</p>
+<p>监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。</p>
 
-<p>可惜的是github.com并不支持jekyll的插件功能，所以一番折腾白费.</p>
+<p>但是如果我们仅仅希望链接到服务器，执行一条命令就快速的计算出qps和rt。则需要考虑如何快速读取需要的行的问题：</p>
 
-<p>解决方法只有在本地jekyll生成静态页面后再git push到github.com.</p>
+<p>经过我这几天的考虑，总结出了下面一条命令。计算qps和rt算是很快了。如果谁有比这个更秒的方法，不吝赐教：</p>
 
-<p>github.com约定如果master分支的根目录下有.nojekyll这个文件，就对该目录不做jekyll处理，
-直接作为静态页面输出。</p>
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span>         <span class="nv">srm</span><span class="o">=</span><span class="s2">&quot; \[`date -d &#39; -1 second &#39;  +%d\\\/%h\\\/%Y:%H:%M:%S` +0800\] &quot;</span>
+<span class="lineno">2</span>         <span class="nv">QPS_RT</span><span class="o">=</span><span class="k">$(</span>tac <span class="nv">$acc_logs</span>|sed -n -e  <span class="s1">&#39;/&#39;</span><span class="s2">&quot;$srm&quot;</span><span class="s1">&#39;/,${</span>
+<span class="lineno">3</span> <span class="s1">        /&#39;</span><span class="s2">&quot;$srm&quot;</span><span class="s1">&#39;/p</span>
+<span class="lineno">4</span> <span class="s1">        /&#39;</span><span class="s2">&quot;$srm&quot;</span><span class="s1">&#39;/!q}&#39;</span> | awk <span class="s1">&#39;{sum+=$2;count++}END{printf &quot;%d,%.2f&quot;,count,sum/count/1000}&#39;</span>
+<span class="lineno">5</span>         <span class="k">)</span>
+</code></pre>
+</div>
 
-<h3>解决方法:</h3>
 
-<ul>
-<li><p><strong>建立2个分支：dev和master.</strong></p>
+<p><strong>说明</strong>：</p>
 
-<p> dev 放置原始文件，供jekyll转换使用，master分支放置jekyll生成的静态页面.</p></li>
-<li><p><strong>在本地搭建jekyll环境，git clone blog网站的内容到本地</strong>.</p>
+<p>第一行取得日志中的时间字符串，这里取的前一秒的。</p>
 
-<ol>
-<li><p>切换到dev分支写文章:</p>
-
-<pre><code> git checkout dev
-</code></pre></li>
-<li><p>写文章，写好文章后:</p>
-
-<pre><code> jekyll --server --auto 
-</code></pre></li>
-<li><p>在本地浏览器访问看一切正常后.</p>
-
-<p>提交新文章到库</p>
-
-<pre><code> git commit -am '---添加文章---'
-</code></pre></li>
-<li><p>提交静态页面到master分支</p>
-
-<pre><code> commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)
- git update-ref refs/heads/master $commitID
- git checkout master
- git push -f origin master
-</code></pre></li>
-</ol>
-</li>
-</ul>
-
+<p>第二行使用linux下到命令得到qps和rt的平均值。</p>
 
 
 <div id="disqus_thread" style="padding-top:3em"></div>
