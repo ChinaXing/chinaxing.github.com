@@ -2,6 +2,7 @@
 layout: post
 title: 快速取得apache/nginx的qps和rt
 category: linux
+change_frequency: monthly
 ---
 
 在计算QPS和RT的时候，我们一般使用grep 。但是当日志文件很大的时候，grep会很耗时。

@@ -2,6 +2,7 @@
 layout: post
 title: git submodule 学习笔记
 category: git
+change_frequency: monthly
 ---
 
 ### git help 解释:

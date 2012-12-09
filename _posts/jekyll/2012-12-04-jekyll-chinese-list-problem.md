@@ -2,6 +2,7 @@
 layout: post
 title: jekyll markdown中文列表无法解析的问题
 category: jekyll
+change_frequency: monthly
 ---
 
 ### 解决方法

@@ -2,6 +2,7 @@
 layout: post
 title: use github pages to write blog
 category: github
+change_frequency: monthly
 ---
 
 ### jekyll：从标记语言生成HTML页面

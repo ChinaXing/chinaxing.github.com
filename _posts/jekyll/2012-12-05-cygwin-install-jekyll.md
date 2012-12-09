@@ -2,6 +2,7 @@
 layout: post
 title: cygwin 下安装jekyll
 category: jekyll
+change_frequency: monthly
 ---
 
 Windows 下cygwin可以模拟Linux环境.于是打算用cygwin+jekyll 来作写博客的环境.

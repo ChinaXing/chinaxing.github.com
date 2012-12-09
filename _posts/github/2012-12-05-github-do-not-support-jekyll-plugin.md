@@ -2,6 +2,7 @@
 layout: post
 title: github 不支持 jekyll 插件的解决方法
 category: github
+change_frequency: monthly
 ---
 
 ### 问题描述:
