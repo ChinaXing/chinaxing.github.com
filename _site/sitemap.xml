@@ -2,41 +2,46 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://www.chinaxing.org/linux/2012/11/10/quick-calculate-qps_rt/</loc>
-        <lastmod>2012-12-09T17:25:56+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/jekyll/2012/12/04/jekyll-chinese-list-problem/</loc>
-        <lastmod>2012-12-09T17:24:28+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/github/2012/12/04/use-github-blogging/</loc>
-        <lastmod>2012-12-09T17:22:41+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/jekyll/2012/12/05/cygwin-install-jekyll/</loc>
-        <lastmod>2012-12-09T17:24:26+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/github/2012/12/05/github-do-not-support-jekyll-plugin/</loc>
-        <lastmod>2012-12-09T17:22:39+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/git/2012/12/07/git-submodule/</loc>
-        <lastmod>2012-12-09T17:19:47+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/life/2012/12/08/note-now/</loc>
-        <lastmod>2012-12-09T17:25:07+08:00</lastmod>
+        <lastmod>2012-12-12T13:18:52+08:00</lastmod>
         <changefreq>never</changefreq>
     </url>
     <url>
+        <loc>http://www.chinaxing.org/linux/2012/12/12/figlet-a-ascii-art-string-printer/</loc>
+        <lastmod>2012-12-12T13:38:12+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
         <loc>http://www.chinaxing.org/</loc>
-        <lastmod>2012-12-09T17:26:14+08:00</lastmod>
+        <lastmod>2012-12-12T13:38:12+08:00</lastmod>
     </url>
 </urlset>

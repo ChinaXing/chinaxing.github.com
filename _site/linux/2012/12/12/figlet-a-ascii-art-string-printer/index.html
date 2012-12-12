@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>github 不支持 jekyll 插件的解决方法</title>
+    <title>figlet 一个ascii字符字体的字符串打印工具</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -56,53 +56,61 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  github 不支持 jekyll 插件的解决方法
+  figlet 一个ascii字符字体的字符串打印工具
 </h1>
-<h3>问题描述:</h3>
+<h3>figlet 介绍</h3>
 
-<p>为了能够利用jekyll生成blog的文章分类列表.经过网上搜索，得知需要使用插件，使用方法是在jekyll的目录
-下面建立_plugins目录，里面放置插件，jekyll会自动调用.</p>
+<p><strong>figlet</strong> -- print string use Figlet Font</p>
 
-<p>可惜的是github.com并不支持jekyll的插件功能，所以一番折腾白费.</p>
+<p>看个例子就能明白了:</p>
 
-<p>解决方法只有在本地jekyll生成静态页面后再git push到github.com.</p>
+<pre style="line-height:1em">
+     _   _      _ _        __        __         _     _   _ 
+    | | | | ___| | | ___   \ \      / /__  _ __| | __| | | |
+    | |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _` | | |
+    |  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| | |_|
+    |_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_| (_)
+</pre>
 
-<p>github.com约定如果master分支的根目录下有.nojekyll这个文件，就对该目录不做jekyll处理，
-直接作为静态页面输出。</p>
 
-<h3>解决方法:</h3>
+<p><strong>Figlet Font</strong> 就是指用ascii字符拼出来的字体，在figlet的<a href="http://www.figlet.org/">官网</a>
+上我们可以看到字体的示例.</p>
 
-<ul>
-<li><p><strong>建立2个分支：dev和master.</strong></p>
+<p><strong>figlet</strong>有windows(MS-DOS),unix,Macintosh(mac os),等等的版本，都可以在其官网上下载.</p>
 
-<p> dev 放置原始文件，供jekyll转换使用，master分支放置jekyll生成的静态页面.</p></li>
-<li><p><strong>在本地搭建jekyll环境，git clone blog网站的内容到本地</strong>.</p>
+<p>字体也有很多我们也可以从其官网上下载得到.</p>
 
-<ol>
-<li><p>切换到dev分支写文章:</p>
+<h3>实例演示：</h3>
 
-<pre><code> git checkout dev
-</code></pre></li>
-<li><p>写文章，写好文章后:</p>
+<pre><code>$ figlet china xing !
+</code></pre>
 
-<pre><code> jekyll --server --auto 
-</code></pre></li>
-<li><p>在本地浏览器访问看一切正常后.</p>
+<pre style="line-height:1em">
+          _     _                    _               _ 
+      ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
+     / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
+    | (__| | | | | | | | (_| |  >  <| | | | | (_| | |_|
+     \___|_| |_|_|_| |_|\__,_| /_/\_\_|_| |_|\__, | (_)
+                                         |___/     
+</pre>
 
-<p>提交新文章到库</p>
 
-<pre><code> git commit -am '---添加文章---'
-</code></pre></li>
-<li><p>提交静态页面到master分支</p>
+<p><em>-f</em> 指定字体:</p>
 
-<pre><code> commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)
- git update-ref refs/heads/master $commitID
- git checkout master
- git push -f origin master
-</code></pre></li>
-</ol>
-</li>
-</ul>
+<pre><code>$ figlet -w 104 -f script  ChinaXing !
+</code></pre>
+
+<pre style="line-height:1em">
+      ___  _                      _                         
+     / (_)| |    o               (_\  /  o                 |
+    |     | |        _  _    __,    \/       _  _    __,   |
+    |     |/ \   |  / |/ |  /  |    /\   |  / |/ |  /  |   |
+     \___/|   |_/|_/  |  |_/\_/|_/_/  \_/|_/  |  |_/\_/|/  o
+                                                  /|    
+                                                  \|
+</pre>
+
+
 
 
 
