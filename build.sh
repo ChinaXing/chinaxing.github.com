@@ -8,6 +8,8 @@ git commit -m "${1:-'add a new article'}"
 
 git push 
 
+git status
+
 commitID=$(echo ${1:-"no commit message"} | git commit-tree dev^{tree}:_site)
 
 git update-ref refs/heads/master $commitID
