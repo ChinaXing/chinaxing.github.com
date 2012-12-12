@@ -2,9 +2,9 @@
 
 echo "----Job Start"
 
-git add _posts _site 
+git add .
 
-git commit -am "${1:-'add a new article'}"
+git commit -m "${1:-'add a new article'}"
 
 git push 
 
