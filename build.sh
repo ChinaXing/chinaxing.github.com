@@ -2,7 +2,7 @@
 
 echo "----Job Start"
 
-git add _posts _site
+git add _posts _site 
 
 git commit -am "${1:-'add a new article'}"
 
