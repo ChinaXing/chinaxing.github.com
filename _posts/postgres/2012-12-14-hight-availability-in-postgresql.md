@@ -22,19 +22,19 @@ pg_dumpall是对整个数据库进行备份。
 
 #### 使用linux工具对数据库进行整体备份
 
-1. 在数据库上执行命令:
+1. 在数据库上执行命令: 
 
-    select pg_start_backup('备份标签')
+       select pg_start_backup('备份标签')
 
    此步骤让wal的写出变成以记录为单位写，并且执行一次checkpoint，主要是为了wal日志的一致性.
 2. 使用cp或者tar之类的linux命令工具备份整个数据集群的目录.如:
 
-    tar czf pgsql_DB.tar pgsql_DB  
+       tar czf pgsql_DB.tar pgsql_DB  
 
    可以不备份pg_xlog下面的文件,而且这个目录下面的日志可能是和备份的数据库不一致的。
 3. 在数据库上执行命令:
 
-    select pg_stop_backup()
+       select pg_stop_backup()
 
    此步骤生成一个标记文件,格式为:`段名.段内位置.backup`，`段名`表示进行备份时候数据库正写入的wal日志段.通过这个文件可以知道一次备份的位置.
 
@@ -54,24 +54,24 @@ pg_dumpall是对整个数据库进行备份。
 #### pg_dump备份的恢复:
 1. 新建立数据库: 
 
-    pg_ctl init -D pgsql_DB
+       pg_ctl init -D pgsql_DB
 
 2. 从备份文件执行备份的sql: 
 
-    psql pgdql.backup.sql
+       psql pgdql.backup.sql
 
 #### pg_basebackup备份的恢复:
 1. 解压缩备份: 
 
-    tar xzf pgbackup.tar
+       tar xzf pgbackup.tar
 
 2. 在数据集目录新建`recovery.conf`文件,此文件指导postmaster完成恢复:
 
-    cp /usr/local/pgsql/share/recovery.conf.sample pgsql_DB/recovery.conf
+       cp /usr/local/pgsql/share/recovery.conf.sample pgsql_DB/recovery.conf
 
 3. 编辑此文件,指定归档日志的位置(/home/admin/tmp/pg_archive/):
  
-    restore_command = 'cp /home/admin/tmp/pg_archive/%f %p'
+       restore_command = 'cp /home/admin/tmp/pg_archive/%f %p'
 
    postmaster 启动后执行此命令将归档日志copy到pg_xlog目录，然后进行加载回放.
 
@@ -92,14 +92,14 @@ hot-standby 除了做备份外，还可以提供readonly的查询服务。
 
 posgres的热备有2中方式:
 
-* **基于日志归档和加载的叫做log-ship**。  
+* **基于日志归档和加载的叫做log-ship**  
   故名思议就是将master的日志加载到slave中，从而保证一致。  
   实现上可以由多种方式，只要master产生wal日志后，copy到slave的pg_xlog下面，slave就会加载。  
   postgres服务器提供了 archive_command 和 restore_command ，这样我们就只需要配置对这两个命令即可. master 执行archive_command将日志归档到一个地方，slave执行restore_command 目的是拿master的日志到自己手中.
 
    比如: 如果master和slave在同一台服务器,则只要配置master的归档地址和slave的加载源地址一致即可保证slave与master热备.  
    如果master和slave处于2台服务器上，可以配置rsync命令将归档日志移动到slave所在机器等等。实现上非常灵活。
-* **基于stream的热备**。  
+* **基于stream的热备**  
   这种方式是slave和master通过tcp链接slave和master进行replication协议，进行wal记录的同步。  
   由于采用直接链接，同步状态比较好，一致性高。
 

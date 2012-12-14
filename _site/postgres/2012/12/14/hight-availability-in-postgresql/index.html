@@ -80,17 +80,20 @@
 <ol>
 <li><p>在数据库上执行命令:</p>
 
-<p> select pg_start_backup('备份标签')</p>
+<pre><code>select pg_start_backup('备份标签')
+</code></pre>
 
 <p>此步骤让wal的写出变成以记录为单位写，并且执行一次checkpoint，主要是为了wal日志的一致性.</p></li>
 <li><p>使用cp或者tar之类的linux命令工具备份整个数据集群的目录.如:</p>
 
-<p> tar czf pgsql_DB.tar pgsql_DB</p>
+<pre><code>tar czf pgsql_DB.tar pgsql_DB  
+</code></pre>
 
 <p>可以不备份pg_xlog下面的文件,而且这个目录下面的日志可能是和备份的数据库不一致的。</p></li>
 <li><p>在数据库上执行命令:</p>
 
-<p> select pg_stop_backup()</p>
+<pre><code>select pg_stop_backup()
+</code></pre>
 
 <p>此步骤生成一个标记文件,格式为:<code>段名.段内位置.backup</code>，<code>段名</code>表示进行备份时候数据库正写入的wal日志段.通过这个文件可以知道一次备份的位置.</p>
 
@@ -119,10 +122,12 @@
 <ol>
 <li><p>新建立数据库:</p>
 
-<p> pg_ctl init -D pgsql_DB</p></li>
+<pre><code>pg_ctl init -D pgsql_DB
+</code></pre></li>
 <li><p>从备份文件执行备份的sql:</p>
 
-<p> psql pgdql.backup.sql</p></li>
+<pre><code>psql pgdql.backup.sql
+</code></pre></li>
 </ol>
 
 
@@ -131,13 +136,16 @@
 <ol>
 <li><p>解压缩备份:</p>
 
-<p> tar xzf pgbackup.tar</p></li>
+<pre><code>tar xzf pgbackup.tar
+</code></pre></li>
 <li><p>在数据集目录新建<code>recovery.conf</code>文件,此文件指导postmaster完成恢复:</p>
 
-<p> cp /usr/local/pgsql/share/recovery.conf.sample pgsql_DB/recovery.conf</p></li>
+<pre><code>cp /usr/local/pgsql/share/recovery.conf.sample pgsql_DB/recovery.conf
+</code></pre></li>
 <li><p>编辑此文件,指定归档日志的位置(/home/admin/tmp/pg_archive/):</p>
 
-<p> restore_command = 'cp /home/admin/tmp/pg_archive/%f %p'</p>
+<pre><code>restore_command = 'cp /home/admin/tmp/pg_archive/%f %p'
+</code></pre>
 
 <p>postmaster 启动后执行此命令将归档日志copy到pg_xlog目录，然后进行加载回放.</p>
 
@@ -161,14 +169,14 @@
 <p>posgres的热备有2中方式:</p>
 
 <ul>
-<li><p><strong>基于日志归档和加载的叫做log-ship</strong>。<br/>
+<li><p><strong>基于日志归档和加载的叫做log-ship</strong><br/>
 故名思议就是将master的日志加载到slave中，从而保证一致。<br/>
 实现上可以由多种方式，只要master产生wal日志后，copy到slave的pg_xlog下面，slave就会加载。<br/>
 postgres服务器提供了 archive_command 和 restore_command ，这样我们就只需要配置对这两个命令即可. master 执行archive_command将日志归档到一个地方，slave执行restore_command 目的是拿master的日志到自己手中.</p>
 
 <p> 比如: 如果master和slave在同一台服务器,则只要配置master的归档地址和slave的加载源地址一致即可保证slave与master热备.<br/>
  如果master和slave处于2台服务器上，可以配置rsync命令将归档日志移动到slave所在机器等等。实现上非常灵活。</p></li>
-<li><strong>基于stream的热备</strong>。<br/>
+<li><strong>基于stream的热备</strong><br/>
 这种方式是slave和master通过tcp链接slave和master进行replication协议，进行wal记录的同步。<br/>
 由于采用直接链接，同步状态比较好，一致性高。</li>
 </ul>
