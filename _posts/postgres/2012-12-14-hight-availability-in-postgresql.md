@@ -194,3 +194,6 @@ posgres的热备有2中方式:
          \_ postgres: admin pesystem [local] idle 
          \_ postgres: wal receiver process   streaming 0/28D09728
 
+
+### 参考:
+<http://www.postgresql.org/docs/devel/static/high-availability.html>
