@@ -1,4 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic); 
+@import url(http://fonts.googleapis.com/css?family=Molengo); 
 
 /* MeyerWeb Reset */
 
@@ -48,7 +49,7 @@ p, ul, ol, table, dl {
 }
 
 h1, h2, h3 {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Molengo',sans-serif;
     line-height:1.3em;
     font-weight: normal;
 }
@@ -72,7 +73,7 @@ h3 {
 }
 
 h4, h5, h6 {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Molengo', sans-serif;
     font-weight: 700;
 }
 
@@ -152,10 +153,10 @@ img {
 /* Code blocks */
 
 code, pre {
-    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
     font-size:14px;
 }
 code {
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
     font-weight:300;
     padding-left:0.3em;
     padding-right:0.3em;
@@ -209,7 +210,7 @@ p.header {
 }
 
 h1.header {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Molengo',sans-serif;
     font-size: 30px;
     font-weight: 300;
     line-height: 1.3em;
