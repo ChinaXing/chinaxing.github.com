@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>github 不支持 jekyll 插件的解决方法</title>
+    <title>django messages framework</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -66,53 +66,33 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  github 不支持 jekyll 插件的解决方法
+  django messages framework
 </h1>
-<h3>问题描述:</h3>
+<p>django 的messages中间件类似其它语言框架(perl mojolicous)的flash功能。目的是
+实现一个请求中注入信息，另一个请求中可以读取。</p>
 
-<p>为了能够利用jekyll生成blog的文章分类列表.经过网上搜索，得知需要使用插件，使用方法是在jekyll的目录
-下面建立_plugins目录，里面放置插件，jekyll会自动调用.</p>
+<p>实现方式为cookie存储或者session存储或者其它自定义存储方式。</p>
 
-<p>可惜的是github.com并不支持jekyll的插件功能，所以一番折腾白费.</p>
-
-<p>解决方法只有在本地jekyll生成静态页面后再git push到github.com.</p>
-
-<p>github.com约定如果master分支的根目录下有.nojekyll这个文件，就对该目录不做jekyll处理，
-直接作为静态页面输出。</p>
-
-<h3>解决方法:</h3>
-
-<ul>
-<li><p><strong>建立2个分支：dev和master.</strong></p>
-
-<p> dev 放置原始文件，供jekyll转换使用，master分支放置jekyll生成的静态页面.</p></li>
-<li><p><strong>在本地搭建jekyll环境，git clone blog网站的内容到本地</strong>.</p>
+<p>messages 还有一些功能：</p>
 
 <ol>
-<li><p>切换到dev分支写文章:</p>
-
-<pre><code> git checkout dev
-</code></pre></li>
-<li><p>写文章，写好文章后:</p>
-
-<pre><code> jekyll --server --auto 
-</code></pre></li>
-<li><p>在本地浏览器访问看一切正常后.</p>
-
-<p>提交新文章到库</p>
-
-<pre><code> git commit -am '---添加文章---'
-</code></pre></li>
-<li><p>提交静态页面到master分支</p>
-
-<pre><code> commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)
- git update-ref refs/heads/master $commitID
- git checkout master
- git push -f origin master
-</code></pre></li>
+<li>消息的级别(LEVEL) 类型日志级别有<strong>DEBUG~ERROR</strong>。可以设置级别(MESSAGE_LEVEL变量)来过滤低于此级别的消息。</li>
+<li>消息有Tags，通常用来在显示消息的时候当做HTML的类。默认的tag和消息的LEVEL同名的小写字符串。</li>
+<li>消息的过期。消息在每次读取后便过期，系统自动标记为过期，在请求结束时候回收，可以人为的在读取消息后设置为"未使用"，来让消息不过期。</li>
 </ol>
-</li>
-</ul>
+
+
+<div class="highlight"><pre><code class="python"><span class="lineno">1</span> <span class="n">storage</span> <span class="o">=</span> <span class="n">messages</span><span class="o">.</span><span class="n">get_messages</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="lineno">2</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">storage</span><span class="p">:</span>
+<span class="lineno">3</span>     <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="lineno">4</span> <span class="n">storage</span><span class="o">.</span><span class="n">used</span> <span class="o">=</span> <span class="bp">False</span> <span class="c"># 此处标记消息未被使用，系统便不会回收消息</span>
+</code></pre>
+</div>
+
+
+<ol>
+<li>同一个客户端的请求可能会导致消息被串掉(原因是浏览上下文的重叠)。但大多数浏览器和HTML5中不存在这个问题。</li>
+</ol>
 
 
 
