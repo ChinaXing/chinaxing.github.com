@@ -178,7 +178,6 @@ pre > code{
     margin-bottom:-5px;
 }
 
-
 /* Wrapper */
 .wrapper {
      width:100%;
@@ -193,6 +192,7 @@ header {
     width:12%;
     float:left;
     position:fixed;
+    top:10%;
     border: 1px solid #000;
     -webkit-border-top-right-radius: 4px;
     -webkit-border-bottom-right-radius: 4px;
@@ -201,7 +201,7 @@ header {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     padding: 1%;
-    margin: 15% 1% 0 0;
+    margin: 0%;
     -webkit-font-smoothing: antialiased;
 }
 
