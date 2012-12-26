@@ -30,6 +30,7 @@ change_frequency: monthly
 
     $ figlet china xing !
 
+
 <pre style="line-height:1em">
           _     _                    _               _ 
       ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
@@ -42,6 +43,7 @@ change_frequency: monthly
 _-f_ 指定字体:
 
     $ figlet -w 104 -f script  ChinaXing !
+
 
 <pre style="line-height:1em">
       ___  _                      _                         
