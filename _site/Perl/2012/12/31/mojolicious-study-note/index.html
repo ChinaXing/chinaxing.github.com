@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>jekyll markdown中文列表无法解析的问题</title>
+    <title>Mojolicious study note</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -71,18 +71,60 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  jekyll markdown中文列表无法解析的问题
+  Mojolicious study note
 </h1>
-<h3>解决方法</h3>
+<p><strong>Mojolicious</strong>:<a href="http://mojolicio.us/">http://mojolicio.us/</a></p>
 
-<p>默认的markdown解析引擎有问题</p>
+<h1>feature:</h1>
 
-<p>配置_config.yml,将markdown解析引擎换为rdiscount:</p>
+<ul>
+<li>event drive</li>
+<li>minus moduel dependency</li>
+<li>database relateless</li>
+<li>tempalte lauguage embed perl</li>
+<li>and so on ...</li>
+</ul>
 
-<pre><code>markdown: rdiscount
-</code></pre>
 
-<p>问题解决:)</p>
+<h1>architecture:</h1>
+
+<ul>
+<li>route</li>
+<li>controller</li>
+<li>templates</li>
+<li>layouts</li>
+</ul>
+
+
+<h1>misc:</h1>
+
+<ul>
+<li>stash</li>
+<li>flash</li>
+<li>helpers ( default helpers )</li>
+<li>plugins: config plugin, and other third party plugins.</li>
+<li>mode: development, production, prepub, defined in MOJO_MODE and set to <code>app-&gt;mode</code></li>
+</ul>
+
+
+<h1>Q&amp;A:</h1>
+
+<ol>
+<li>request: $controler->req</li>
+<li>http-header: $controler->req->headers</li>
+<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with <code>MOJO_MODE</code> configure file.(can read the config-plugin's source code and confirm ).</li>
+<li>in controller, $self->app: get the application</li>
+<li>$controller->stash, $controller->current_route, $controller->url_for ...</li>
+<li>route: route to Controller#action or to callback</li>
+<li>bridge: in nested route , bridge will return true code, so route can continue, otherwise it will broken.</li>
+<li>over: over a condition or call back. condition check is earler than bridge and other route.</li>
+<li>use $route->add_condition to add condition in route.</li>
+<li>form validation: Validator::Cutstom or thers you like.</li>
+<li>DB: DBIx::Class, a ORM in Perl.</li>
+</ol>
+
+
+<p>... continue</p>
 
 
 <div id="disqus_thread" style="padding-top:3em"></div>
