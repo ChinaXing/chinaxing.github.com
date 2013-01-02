@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>git submodule 学习笔记</title>
+    <title>从数据库自动生成DBIx::Class使用的Schema</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -71,59 +71,53 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  git submodule 学习笔记
+  从数据库自动生成DBIx::Class使用的Schema
 </h1>
-<h3>git help 解释:</h3>
+<p>如果数据库和表已经存在，则我们不需要手动创建Schema，可以使用<a href="http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm">DBIx::Class::Schema::Loader</a>这个模块来自动生成Schema.</p>
 
-<pre><code>git-submodule - Initialize, update or inspect submodules
-</code></pre>
-
-<h3>说明:</h3>
-
-<p>  git 中的submodule是为了解决项目中依赖别的库，submodule即为依赖的库，方便库的更新，管理。</p>
-
-<p>  每个submodule都是一个库，这样可以看到一个大的仓库中包含小的若干仓库，在实际开发中是常见的。</p>
-
-<h3>命令:</h3>
-
-<pre><code>git submodule add 
-git submodule init
-git submodule update
-
-git submodule summary
-...
-</code></pre>
-
-<p>  这些命令完成submodule的添加，初始化(注册到本仓库，然后可以被跟踪到)，更新仓库内容，查看摘要等。纤细的命令可以通过
-<code>git submodule --help</code>获得</p>
-
-<h3>内部机制：</h3>
-
-<p>   git 的主仓库对于submodule的管理是通过如下文件来进行:<code>.gitmodules</code>,<code>.git/config</code>,<code>.git/modules/</code></p>
+<h3>下面是几种方法：</h3>
 
 <ul>
-<li><p>.gitmodules 内容如下:</p>
+<li><p>使用make_schema_at 方法</p>
 
-<p>[submodule "libs/lib2"]</p>
-
-<pre><code>    path = libs/lib2
-    url = ../../repos/lib2.git
+<pre><code> perl -MDBIx::Class::Schema::Loader=make_schema_at &lt;&lt;EOF
+ make_schema_at({
+    'My::Schema',
+    { debug =&gt;1, dump_directory =&gt; './'},
+    [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],
+ });
+ EOF
 </code></pre></li>
+<li><p>使用dbicdump工具<br/>
+该工具其实内部使用了DBIx::Class::Schema::Loader模块.</p>
+
+<pre><code> dbicdump -o dump_directory='./' My::Schema 'dbi:Pg:dbname="pesystem" "pesystem" "pesystem_password"
+</code></pre></li>
+<li><p>使用dump_to_dir方法，如果你的Schema模块已经写好.<br/>
+让模块继承DBIx::Class::Schema::Loader,然后执行:</p>
+
+<pre><code> #My/Schema.pm
+ pakcage My::Schema;
+ use base qw/DBIx::Class::Schema::Loader/;
+ 1;
+
+ perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \
+     -e 'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'
+ # or 
+ use My::Schema;
+ My::Schema-&gt;dump_to_dir('./');
+ My::Schema-&gt;connection(...);
+</code></pre>
+
+<p> 参见:<a href="http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm#dump_to_dir">http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm#dump_to_dir</a></p>
+
+<p> 继承DBIx::Class::Schema::Loader后，每次连接都会进行扫描数据库获取Schema.</p></li>
 </ul>
 
 
-<p>   这个文件在git submodule add的时候生成</p>
+<h3>比较：</h3>
 
-<ul>
-<li><p>.git/config 在git submodule init 的时候生成</p></li>
-<li><p>.git/modules/ 在git submodule add的时候生成，里面是submodule的内容</p></li>
-</ul>
-
-
-<p>  主仓库根据submodule的commit ID来跟踪submodule。</p>
-
-<p>  当submodule做了commit的或者work tree改动的时候，主仓库能够通过git status查看到。需要在主仓库再commit一下，
-更新主仓库引用的submodule的 commit ID。</p>
+<p>使用dbicdump工具比较简单易用.</p>
 
 
 <div id="disqus_thread" style="padding-top:3em"></div>
