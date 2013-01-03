@@ -9,6 +9,7 @@ tag: ca,digtal-sign
 **[Public Key Infrastructure](http://en.wikipedia.org/wiki/Public_key_infrastructure)** 目的是进行数字认证
 
 它的各个组成部分如图：
+
 <img src="/images/Public-Key-Infrastructure.svg">
 
 CA：certifacate Authority :权威认证机构，被完全信赖的。
