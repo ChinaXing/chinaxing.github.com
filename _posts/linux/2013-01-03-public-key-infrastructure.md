@@ -12,9 +12,9 @@ tag: ca,digtal-sign
 
 <img src="/images/Public-Key-Infrastructure.svg">
 
-CA：certifacate Authority :权威认证机构，被完全信赖的。
-RA：Regstration Authority :注册机构，执行实际的绑定。
-VA：Validation Authority : 验证机构，根据CA的信息，对用户身份进行验证。
+- CA：certifacate Authority :权威认证机构，被完全信赖的。
+- RA：Regstration Authority :注册机构，执行实际的绑定。
+- VA：Validation Authority : 验证机构，根据CA的信息，对用户身份进行验证。
 
 ### 过程：
 1. 用户产生自己的public-private key对和自己需要认证的身份信息，提交给RA进行认证(CSR)。
