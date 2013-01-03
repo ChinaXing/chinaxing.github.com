@@ -6,10 +6,10 @@ change_frequency: monthly
 tag: ca,digtal-sign
 ---
 
-[Public Key Infrastructure]<http://en.wikipedia.org/wiki/Public_key_infrastructure> 目的是进行数字认证
+**[Public Key Infrastructure](http://en.wikipedia.org/wiki/Public_key_infrastructure)** 目的是进行数字认证
 
 它的各个组成部分如图：
-<img src=/images/Public-Key-Infrastructure.svg>
+<img src="/images/Public-Key-Infrastructure.svg">
 
 CA：certifacate Authority :权威认证机构，被完全信赖的。
 RA：Regstration Authority :注册机构，执行实际的绑定。
@@ -26,7 +26,7 @@ VA：Validation Authority : 验证机构，根据CA的信息，对用户身份�
 ### 自签名证书：
 是使用自己的私钥进行签名生成的证书。而一般的证书是通过CA的私钥进行签名的。
 
-**用途** [根CA]<http://en.wikipedia.org/wiki/Root_certificate>机构。因为没有更高层的CA来签发的证书(CA分级，低级别的CA由高级别的CA来进行认证)。
+**用途** [根CA](http://en.wikipedia.org/wiki/Root_certificate)机构。因为没有更高层的CA来签发的证书(CA分级，低级别的CA由高级别的CA来进行认证)。
 
 ### 公钥认证在Web浏览器中应用：
 当使用https协议浏览网站的时候，浏览器和网站服务器之间进行了对服务器身份的认证过程：
@@ -37,18 +37,18 @@ VA：Validation Authority : 验证机构，根据CA的信息，对用户身份�
 5. 浏览器选择一个密钥和对称加密算法，使用服务器的公钥进行加密后发给服务器。
 6. 服务器知道了后续通信使用的密钥和算法，之后的通信都使用这个对称加密算法和密钥来对数据加密进行。
 
-#### **[CRL]<http://en.wikipedia.org/wiki/Certificate_revocation_list>**：
-certificate revocation list: 是CA生成的用来发布告知哪些被签名的公钥现在是无效的（无效不等于过期）。一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。
-
+- [CRL](http://en.wikipedia.org/wiki/Certificate_revocation_list)：  
+certificate revocation list: 是CA生成的用来发布告知哪些被签名的公钥现在是无效的（无效不等于过期）。一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。  
 CRL使用 http协议来传输(不过为了客服其问题，一般已经使用[OCSP]<http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol>这个协议来代替它了)，由浏览器发起，chrome里面可以在高级设置->安全里面进行设置，打开*"Check for server certificate revocation"*, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。
 
 
 ### openssl 进行证书的签名过程：
 **TODO**
 
+### 客户端证书：
+**TODO**
+
 ### 其它:
-1. 数字签名中CA/Web browser/developer关系图:
-
-<img src=/images/Usage-of-Digital-Certificate.svg>
-
-2. CA的Wiki:(http://en.wikipedia.org/wiki/Certificate_authority), 很不错的比较全面的介绍。
+1. 数字签名中CA/Web browser/developer关系图:  
+<img src="/images/Usage-of-Digital-Certificate.svg">
+2. CA的Wiki:<http://en.wikipedia.org/wiki/Certificate_authority>, 很不错的比较全面的介绍。
