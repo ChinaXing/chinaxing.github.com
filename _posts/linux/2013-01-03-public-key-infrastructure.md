@@ -40,7 +40,7 @@ tag: ca,digtal-sign
 
 - [CRL](http://en.wikipedia.org/wiki/Certificate_revocation_list)：  
 certificate revocation list: 是CA生成的用来发布告知哪些被签名的公钥现在是无效的（无效不等于过期）。一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。  
-CRL使用 http协议来传输(不过为了客服其问题，一般已经使用[OCSP]<http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol>这个协议来代替它了)，由浏览器发起，chrome里面可以在高级设置->安全里面进行设置，打开*"Check for server certificate revocation"*, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。
+CRL使用 http协议来传输(不过为了客服其问题，一般已经使用[OCSP](http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol>这个协议来代替它了)，由浏览器发起，chrome里面可以在高级设置->安全里面进行设置，打开*"Check for server certificate revocation"*, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。
 
 
 ### openssl 进行证书的签名过程：
