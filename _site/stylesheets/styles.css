@@ -112,6 +112,7 @@ ol li {
 blockquote {
     margin: 0;
     padding: 0 0 0 20px;
+    font-style:italic;
 }
 
 dl, dt, dd, dl p {
@@ -143,7 +144,7 @@ hr {
 img {
     position: relative;
     margin: 0 auto;
-    max-width: 650px;
+    max-width: 96%;
     padding: 5px;
     margin: 10px 0 32px 0;
     border: 1px solid #ccc;
