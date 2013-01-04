@@ -99,14 +99,16 @@ strong {
     font-weight:700;
 }
 
+ul,ol{
+    padding-left:20px;
+}
+
 ul li {
-    list-style: inside;
-    padding-left: 25px;
+    list-style: outside;
 }
 
 ol li {
-    list-style: decimal inside;
-    padding-left: 20px;
+    list-style: decimal outside;
 }
 
 blockquote {
