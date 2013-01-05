@@ -5,6 +5,11 @@ category: linux
 change_frequency: monthly
 tag: ca,digtal-sign
 ---
+### 目录
+{:.no_toc}
+* 
+{:toc}
+<hr>
 
 **[Public Key Infrastructure](http://en.wikipedia.org/wiki/Public_key_infrastructure)** 目的是进行数字认证
 
@@ -16,7 +21,7 @@ tag: ca,digtal-sign
 - RA：Regstration Authority :注册机构，执行实际的绑定。
 - VA：Validation Authority : 验证机构，根据CA的信息，对用户身份进行验证。
 
-### 过程：
+### 过程
 1. 用户产生自己的public-private key对和自己需要认证的身份信息，提交给RA进行认证(CSR)。
 2. RA 根据用户提供的信息，确认符合（valid）后，提交与CA，CA对用户信息和公钥进行签名生成证书(Cert)，发给用户。
 3. 用户发布数字产品的时候，对产品使用私钥进行签名，连同CA颁发给自己的证书一同发布。
@@ -24,12 +29,12 @@ tag: ca,digtal-sign
 5. VA根据证书内容和CA的信息（公钥），判断此证书是CA签发的。告诉客户，该证书有效。
 6. 客户使用证书里面的公钥解密产品，得到用户发布的产品。
 
-### 自签名证书：
+### 自签名证书
 是使用自己的私钥进行签名生成的证书。而一般的证书是通过CA的私钥进行签名的。
 
 **用途** : [根CA](http://en.wikipedia.org/wiki/Root_certificate)机构。因为没有更高层的CA来签发的证书(CA分级，低级别的CA由高级别的CA来进行认证)。
 
-### 公钥认证在Web浏览器中应用：
+### 公钥认证在Web浏览器中应用
 当使用https协议浏览网站的时候，浏览器和网站服务器之间进行了对服务器身份的认证过程：
 
 1. 服务器将自己的证书和公钥发给浏览器。
@@ -45,13 +50,13 @@ certificate revocation list: 是CA生成的用来发布告知哪些被签名的�
 CRL使用 http协议来传输(不过为了克服其问题，一般已经使用[OCSP](http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol)这个协议来代替它了)，由浏览器发起，chrome里面可以在高级设置->安全里面进行设置，打开*"Check for server certificate revocation"*, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。
  
 
-### openssl 进行证书的签名过程：
+### openssl 进行证书的签名过程
 **TODO**
 
-### 客户端证书：
+### 客户端证书
 **TODO**
 
-### 其它:
+### 其它
 1. 数字签名中CA/Web browser/developer关系图:  
 <img src="/images/Usage-of-Digital-Certificate.svg">
 2. CA的Wiki:<http://en.wikipedia.org/wiki/Certificate_authority>, 很不错的比较全面的介绍。

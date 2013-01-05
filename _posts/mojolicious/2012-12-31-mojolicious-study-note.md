@@ -5,10 +5,15 @@ category: Perl
 change_frequency: monthly
 tag: Mojolicious
 ---
+### 目录
+{:.no_toc}
+* 
+{:toc}
+<hr>
 
 **Mojolicious**:<http://mojolicio.us/>
 
-feature:
+feature
 =======
 - event drive 
 - minus moduel dependency
@@ -16,14 +21,14 @@ feature:
 - tempalte lauguage embed perl
 - and so on ...
 
-architecture:
+architecture
 ============
 - route
 - controller
 - templates
 - layouts
 
-misc:
+misc
 =====
 - stash
 - flash
@@ -32,7 +37,7 @@ misc:
 - mode: development, production, prepub, defined in MOJO_MODE and set to `app->mode`
 
 
-Q&A:
+Q&A
 ===
 1. request: $controler->req
 2. http-header: $controler->req->headers 

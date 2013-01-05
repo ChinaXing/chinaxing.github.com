@@ -29,7 +29,7 @@
         
         <li>
         <a href="/categories/linux/">linux</a>
-        <span style="float:right">[6]</span>
+        <span style="float:right">[7]</span>
         </li>
         
         <li>
@@ -73,58 +73,60 @@
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
   Mojolicious study note
 </h1>
+<h3 class="no_toc" id="section">目录</h3>
+<ul id="markdown-toc">
+  <li><a href="#feature">feature</a></li>
+  <li><a href="#architecture">architecture</a></li>
+  <li><a href="#misc">misc</a></li>
+  <li><a href="#qa">Q&amp;A</a></li>
+</ul>
+<hr />
+
 <p><strong>Mojolicious</strong>:<a href="http://mojolicio.us/">http://mojolicio.us/</a></p>
 
-<h1>feature:</h1>
-
+<h1 id="feature">feature</h1>
 <ul>
-<li>event drive</li>
-<li>minus moduel dependency</li>
-<li>database relateless</li>
-<li>tempalte lauguage embed perl</li>
-<li>and so on ...</li>
+  <li>event drive </li>
+  <li>minus moduel dependency</li>
+  <li>database relateless</li>
+  <li>tempalte lauguage embed perl</li>
+  <li>and so on …</li>
 </ul>
 
-
-<h1>architecture:</h1>
-
+<h1 id="architecture">architecture</h1>
 <ul>
-<li>route</li>
-<li>controller</li>
-<li>templates</li>
-<li>layouts</li>
+  <li>route</li>
+  <li>controller</li>
+  <li>templates</li>
+  <li>layouts</li>
 </ul>
 
-
-<h1>misc:</h1>
-
+<h1 id="misc">misc</h1>
 <ul>
-<li>stash</li>
-<li>flash</li>
-<li>helpers ( default helpers )</li>
-<li>plugins: config plugin, and other third party plugins.</li>
-<li>mode: development, production, prepub, defined in MOJO_MODE and set to <code>app-&gt;mode</code></li>
+  <li>stash</li>
+  <li>flash</li>
+  <li>helpers ( default helpers )</li>
+  <li>plugins: config plugin, and other third party plugins.</li>
+  <li>mode: development, production, prepub, defined in MOJO_MODE and set to <code>app-&gt;mode</code></li>
 </ul>
 
-
-<h1>Q&amp;A:</h1>
-
+<h1 id="qa">Q&amp;A</h1>
 <ol>
-<li>request: $controler->req</li>
-<li>http-header: $controler->req->headers</li>
-<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with <code>MOJO_MODE</code> configure file.(can read the config-plugin's source code and confirm ).</li>
-<li>in controller, $self->app: get the application</li>
-<li>$controller->stash, $controller->current_route, $controller->url_for ...</li>
-<li>route: route to Controller#action or to callback</li>
-<li>bridge: in nested route , bridge will return true code, so route can continue, otherwise it will broken.</li>
-<li>over: over a condition or call back. condition check is earler than bridge and other route.</li>
-<li>use $route->add_condition to add condition in route.</li>
-<li>form validation: Validator::Cutstom or thers you like.</li>
-<li>DB: DBIx::Class, a ORM in Perl.</li>
+  <li>request: $controler-&gt;req</li>
+  <li>http-header: $controler-&gt;req-&gt;headers </li>
+  <li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with <code>MOJO_MODE</code> configure file.(can read the config-plugin’s source code and confirm ).</li>
+  <li>in controller, $self-&gt;app: get the application</li>
+  <li>$controller-&gt;stash, $controller-&gt;current_route, $controller-&gt;url_for …</li>
+  <li>route: route to Controller#action or to callback</li>
+  <li>bridge: in nested route , bridge will return true code, so route can continue, otherwise it will broken.</li>
+  <li>over: over a condition or call back. condition check is earler than bridge and other route.</li>
+  <li>use $route-&gt;add_condition to add condition in route.</li>
+  <li>form validation: Validator::Cutstom or thers you like.</li>
+  <li>DB: DBIx::Class, a ORM in Perl.</li>
 </ol>
 
+<p>… continue </p>
 
-<p>... continue</p>
 
 
 

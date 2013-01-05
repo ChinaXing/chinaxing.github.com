@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mojolicious 学习笔记</title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/pygments.css">
+    <script src="/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.htm>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href="/categories/linux/">linux</a>
+        <span style="float:right">[7]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/jekyll/">jekyll</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/github/">github</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/git/">git</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/life/">life</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/postgres/">postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/django/">django</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/Perl/">Perl</a>
+        <span style="float:right">[4]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  Mojolicious 学习笔记
+</h1>
+<p><strong>Mojolicous</strong> : <a href="http://mojolicio.us/">http://mojolicio.us/</a></p>
+
+<h3 id="mojolicous">Mojolicous结构：</h3>
+<ul>
+  <li>
+    <p>route 路由，<br />
+ 根据request进行路由，可以根据：url,param,format,method等进行路由</p>
+  </li>
+  <li>
+    <p>controller, <br />
+ 路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。<br />
+ controller是Mojolicious::Controller的子类。<br />
+ 默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class(‘PeSystem::Controller’) 设定$app的默认controller.<br />
+ controller获得app:<code>$self-&gt;app</code><br />
+ controller获得请求:<code>$self-&gt;req</code><br />
+ controller获得路由匹配的参数:<code>$self-&gt;stash('id')</code><br />
+ controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url_encode等方法方便使用(<code>$self-&gt;stash('a'=&gt;'b')</code>)</p>
+  </li>
+  <li>
+    <p>action<br />
+ action是controller内的子过程。操作都是在action内进行的.<br />
+ 渲染页面:<code>$self-&gt;render('...'),$self-&gt;render_exception,$self-&gt;redirect_to(...),$self-&gt;render </code>,如果controller没有显式渲染，controller返回后页面会被自动渲染。</p>
+  </li>
+  <li>
+    <p>template<br />
+模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）<br />
+异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
+404模版:not_found.$mode.$format.ep,not_found.$format.ep</p>
+  </li>
+  <li>
+    <p>异常:
+Mojo::Exception 是其异常类<br />
+Mojo是通过local $SIG{<strong>DIE</strong>}来注册自己的异常捕获的。<br />
+主动抛出异常用die “string”,用Mojo::Exception-&gt;throw(‘string’)不会携带上下文信息.<br />
+controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.<br />
+捕获异常: </p>
+
+    <pre><code> eval {code } or do { die "xxx" }
+</code></pre>
+  </li>
+  <li>
+    <p>helper,<br />
+辅助工具，默认的/自带的Mojolicious::Plugin::DefaultHelpers 包含stash,dumper等方法.<br />
+也可以自己方便地写helper。</p>
+  </li>
+  <li>
+    <p>plugin,<br />
+插件，许多功能通过插件来添加到Mojo.如Config插件，<br />
+使用插件：</p>
+
+    <pre><code> $self-&gt;app-&gt;plugin('Config',{file =&gt; 'pesystem.conf')
+</code></pre>
+  </li>
+  <li>
+    <p>hook,<br />
+埋点和回调，可以在请求处理和响应的各个阶段进行回调函数的挂入来完成高级自定义。如Exception的处理就是hook来实现的。</p>
+  </li>
+  <li>
+    <p>command 模块，提供命令行选项功能和启动app的功能。</p>
+  </li>
+  <li>
+    <p>daemon 模块，实现daemon，继承了command模块。</p>
+  </li>
+  <li>
+    <p>Hypnotoad模块，实现服务器进程，热部署，websocket支持，非阻塞服务器。</p>
+  </li>
+  <li>
+    <p>websocket,mojo支持websocket</p>
+  </li>
+  <li>
+    <p>CGI，PSGI，mojo 支持部署方式为PSGI。</p>
+  </li>
+  <li>
+    <p>Test::Mojo, 测试模块</p>
+  </li>
+  <li>
+    <p>Useragetn模块</p>
+  </li>
+  <li>
+    <p>morbo 检测代码变化，自动重起，开发环境使用</p>
+  </li>
+</ul>
+
+<h3 id="web">Web开发实践:</h3>
+<ol>
+  <li>数据库：DBIx::Class</li>
+  <li>Form: HTML::FormHandler可以完成很多，很强大。 HTML::FormHandler::TraitFor::Model::DBIC实现和数据库关联</li>
+</ol>
+
+
+
+
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>

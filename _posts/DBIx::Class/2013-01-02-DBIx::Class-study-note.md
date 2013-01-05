@@ -5,12 +5,17 @@ category: Perl
 change_frequency: monthly
 tag: DBIx::Class
 ---
+### 目录
+{:.no_toc}
+* 
+{:toc}
+<hr>
 
 **Perl** 的ORM模块中，DBIx::Class是比较强大和完善的。文档丰富，容易使用。
 
 DBIx::Class的官网:<http://www.dbix-class.org/>,此外也可以在cpan上搜索，它的代码和文档都放在cpan上。
 
-### ORM好处：
+### ORM好处
 
 ORM模块的作用是将数据库操作和表示映射成对象，方便编程，屏蔽数据库层的具体操作。
 使用ORM模块/程序操作数据库，通过调用ORM模块提供的函数/方法等完成，不需要写SQL语句（虽然ORM模块也允许直接写SQL），不需要处理复杂的数据库SQL语句和特殊的数据库连接、转换等具体问题。
@@ -20,7 +25,7 @@ ORM模块的作用是将数据库操作和表示映射成对象，方便编程�
 ### DBIx::Class介绍
 DBIx::Class 的入门介绍可以看[这里](<http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/Manual/Intro.pod)
 
-#### DBIx::Class中有如下概念:
+#### DBIx::Class中有如下概念
 - Schema
 - Result(ResultSource)
 - ResultSet
@@ -71,7 +76,7 @@ DBIx::Class 的入门介绍可以看[这里](<http://search.cpan.org/~getty/DBIx
           $storage = $schema->storage;
 
 
-### 其它:
+### 其它
 1. 调试: 
 
        $schema->storge->debug(1);

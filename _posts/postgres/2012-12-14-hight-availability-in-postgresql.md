@@ -4,6 +4,11 @@ title: Hight availability in postgresql
 category: postgres
 change_frequency: monthly
 ---
+### 目录
+{:.no_toc}
+* 
+{:toc}
+<hr>
 
 
 本文概要: Postgresql 的备份,恢复,热备,复制等机制的说明.
@@ -195,5 +200,5 @@ posgres的热备有2中方式:
          \_ postgres: wal receiver process   streaming 0/28D09728
 
 
-### 参考:
+### 参考
 <http://www.postgresql.org/docs/devel/static/high-availability.html>

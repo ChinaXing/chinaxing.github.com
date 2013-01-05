@@ -5,6 +5,14 @@ category: linux
 change_frequency: monthly
 tag: gettext
 ---
+### 目录
+{:.no_toc}
+* 
+{:toc}
+
+<hr>
+
+### 概述 
 
 程序的国际化/本地化是指根据用户语言和区域的不同程序可以使用针对用户的交互信息。如，中文用户，则语言会变成中文，时间会显示北京时间，货币会显示RMB。
 
@@ -21,7 +29,7 @@ gettext套件的工具包括： gettext,xgettext,msgfmt ...
 - msgfmt : 将配置好的本地化配置文件进行转换成gettext使用的格式。
 
 
-### 使用gettext进行本地化的步骤：
+### 使用gettext进行本地化的步骤
 1. 程序编写的时候,
    - 在程序开始的地方配置gettext:
 
@@ -71,7 +79,7 @@ gettext套件的工具包括： gettext,xgettext,msgfmt ...
 5. 验证，设置环境变量LC_MESSAGES或LANG为zh_CN。然后运行程序即可。
 
 
-### 实例：
+### 实例
 shell 使用gettext的示例:
 
     TEXTDOMAINDIR=/usr/local/share/locale/ # 为gettext查找路径

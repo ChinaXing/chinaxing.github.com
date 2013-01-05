@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>公钥认证体系</title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/pygments.css">
+    <script src="/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.htm>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href="/categories/linux/">linux</a>
+        <span style="float:right">[7]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/jekyll/">jekyll</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/github/">github</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/git/">git</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/life/">life</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/postgres/">postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/django/">django</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/Perl/">Perl</a>
+        <span style="float:right">[4]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  公钥认证体系
+</h1>
+<p><strong><a href="http://en.wikipedia.org/wiki/Public_key_infrastructure">Public Key Infrastructure</a></strong> 目的是进行数字认证</p>
+
+<p>它的各个组成部分如图：</p>
+
+<p><img src="/images/Public-Key-Infrastructure.svg" /></p>
+
+<ul>
+  <li>CA：certifacate Authority :权威认证机构，被完全信赖的。</li>
+  <li>RA：Regstration Authority :注册机构，执行实际的绑定。</li>
+  <li>VA：Validation Authority : 验证机构，根据CA的信息，对用户身份进行验证。</li>
+</ul>
+
+<h3 id="section">过程：</h3>
+<ol>
+  <li>用户产生自己的public-private key对和自己需要认证的身份信息，提交给RA进行认证(CSR)。</li>
+  <li>RA 根据用户提供的信息，确认符合（valid）后，提交与CA，CA对用户信息和公钥进行签名生成证书(Cert)，发给用户。</li>
+  <li>用户发布数字产品的时候，对产品使用私钥进行签名，连同CA颁发给自己的证书一同发布。</li>
+  <li>客户收到产品和证书，将证书发给VA，请求VA进行验证。</li>
+  <li>VA根据证书内容和CA的信息（公钥），判断此证书是CA签发的。告诉客户，该证书有效。</li>
+  <li>客户使用证书里面的公钥解密产品，得到用户发布的产品。</li>
+</ol>
+
+<h3 id="section-1">自签名证书：</h3>
+<p>是使用自己的私钥进行签名生成的证书。而一般的证书是通过CA的私钥进行签名的。</p>
+
+<p><strong>用途</strong> : <a href="http://en.wikipedia.org/wiki/Root_certificate">根CA</a>机构。因为没有更高层的CA来签发的证书(CA分级，低级别的CA由高级别的CA来进行认证)。</p>
+
+<h3 id="web">公钥认证在Web浏览器中应用：</h3>
+<p>当使用https协议浏览网站的时候，浏览器和网站服务器之间进行了对服务器身份的认证过程：</p>
+
+<ol>
+  <li>服务器将自己的证书和公钥发给浏览器。</li>
+  <li>浏览器根据内置的信赖CA列表中找到证书的签发CA，如果没找到，认为证书是不可信赖的，提示用户Dangerous。</li>
+  <li>根据证书提供的或者是CA提供的证书有效性验证信息获取地址，获取证书有效性数据（CRL），判断证书是否还有效（Revocation）。如果无效，则同样认为不可信赖。 此步骤使用CRL协议或OCSP协议获取CRL信息。</li>
+  <li>证书认证完毕，信息可靠。进入密钥协商过程。</li>
+  <li>浏览器选择一个密钥和对称加密算法，使用服务器的公钥进行加密后发给服务器。</li>
+  <li>服务器知道了后续通信使用的密钥和算法，之后的通信都使用这个对称加密算法和密钥来对数据加密进行。</li>
+</ol>
+
+<blockquote>
+
+  <p><strong><a href="http://en.wikipedia.org/wiki/Certificate_revocation_list">CRL</a></strong>：<br />
+certificate revocation list: 是CA生成的用来发布告知哪些被签名的公钥现在是无效的（无效不等于过期）。一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。<br />
+CRL使用 http协议来传输(不过为了克服其问题，一般已经使用<a href="http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a>这个协议来代替它了)，由浏览器发起，chrome里面可以在高级设置-&gt;安全里面进行设置，打开<em>“Check for server certificate revocation”</em>, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。</p>
+</blockquote>
+
+<h3 id="openssl-">openssl 进行证书的签名过程：</h3>
+<p><strong>TODO</strong></p>
+
+<h3 id="section-2">客户端证书：</h3>
+<p><strong>TODO</strong></p>
+
+<h3 id="section-3">其它:</h3>
+<ol>
+  <li>数字签名中CA/Web browser/developer关系图:<br />
+<img src="/images/Usage-of-Digital-Certificate.svg" /></li>
+  <li>CA的Wiki:<a href="http://en.wikipedia.org/wiki/Certificate_authority">http://en.wikipedia.org/wiki/Certificate_authority</a>, 很不错的比较全面的介绍。</li>
+</ol>
+
+
+
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>

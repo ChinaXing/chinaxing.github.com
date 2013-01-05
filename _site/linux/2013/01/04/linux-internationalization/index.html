@@ -29,7 +29,7 @@
         
         <li>
         <a href="/categories/linux/">linux</a>
-        <span style="float:right">[6]</span>
+        <span style="float:right">[7]</span>
         </li>
         
         <li>
@@ -73,6 +73,17 @@
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
   Linux 下使用gettext完成程序国际化/本地化
 </h1>
+<h3 class="no_toc" id="section">目录</h3>
+<ul id="markdown-toc">
+  <li><a href="#section-1">概述</a></li>
+  <li><a href="#gettext">使用gettext进行本地化的步骤</a></li>
+  <li><a href="#section-2">实例</a></li>
+</ul>
+
+<hr />
+
+<h3 id="section-1">概述</h3>
+
 <p>程序的国际化/本地化是指根据用户语言和区域的不同程序可以使用针对用户的交互信息。如，中文用户，则语言会变成中文，时间会显示北京时间，货币会显示RMB。</p>
 
 <p>Linux 下<strong>Gnu/gettext</strong>工具套件可以完成语言(message)的本地化/国际化。</p>
@@ -81,52 +92,48 @@
 
 <p>若要完整的了解和掌握gettext的why，what，how，请看这里。</p>
 
-<p>gettext套件的工具包括： gettext,xgettext,msgfmt ...</p>
+<p>gettext套件的工具包括： gettext,xgettext,msgfmt … </p>
 
 <ul>
-<li>gettext : 进行translate，根据LC_MESSAGES环境变量的值和TEXTDOMAIN查找字串对应的本地表示。</li>
-<li>xgettext : 从程序中抽取调用gettext进行本地化的字符串，生成一份.po结尾的配置文件。</li>
-<li>msgfmt : 将配置好的本地化配置文件进行转换成gettext使用的格式。</li>
+  <li>gettext : 进行translate，根据LC_MESSAGES环境变量的值和TEXTDOMAIN查找字串对应的本地表示。</li>
+  <li>xgettext : 从程序中抽取调用gettext进行本地化的字符串，生成一份.po结尾的配置文件。</li>
+  <li>msgfmt : 将配置好的本地化配置文件进行转换成gettext使用的格式。</li>
 </ul>
 
-
-<h3>使用gettext进行本地化的步骤：</h3>
-
+<h3 id="gettext">使用gettext进行本地化的步骤</h3>
 <ol>
-<li>程序编写的时候,
+  <li>程序编写的时候,
+    <ul>
+      <li>
+        <p>在程序开始的地方配置gettext:</p>
 
-<ul>
-<li><p>在程序开始的地方配置gettext:</p>
-
-<pre><code>setlocale(lc_ALL,""); # "" 空串，则会根据运行时环境变量的情况决定
+        <pre><code>setlocale(lc_ALL,""); # "" 空串，则会根据运行时环境变量的情况决定
 bindtextdomain('myapp','/usr/local/share/locale')
 textdomain('myapp');
-</code></pre></li>
-<li><p>需要本地化的地方调用gettext库函数。如:</p>
-
-<pre><code>printf (gettext("hello,world")); 
 </code></pre>
+      </li>
+      <li>
+        <p>需要本地化的地方调用gettext库函数。如:</p>
 
-<p>代替:</p>
+        <pre><code>printf (gettext("hello,world"));  代替:
 
-<pre><code>printf ("hello,world");
+printf ("hello,world"); gettext 调用可以使用define宏定义为_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
+
+printf (_("hello,world"));
 </code></pre>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>使用xgettext工具处理程序，从中抽取出gettext调用的字符串：</p>
 
-<p>gettext 调用可以使用define宏定义为_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):</p>
-
-<pre><code>printf (_("hello,world"));
-</code></pre></li>
-</ul>
-</li>
-<li><p>使用xgettext工具处理程序，从中抽取出gettext调用的字符串：</p>
-
-<pre><code>xgettext -L c -o zh_CN.po myprogram.c
+    <pre><code>xgettext -L c -o zh_CN.po myprogram.c 假如我想本地化中文:zh_CN
 </code></pre>
+  </li>
+  <li>
+    <p>编辑生成的本地化配置文件(zh_CN.po),设置转换对应关系，注意设置编码(charset)为<em>utf-8</em>，否则转换可能有问题:</p>
 
-<p>假如我想本地化中文:zh_CN</p></li>
-<li><p>编辑生成的本地化配置文件(zh_CN.po),设置转换对应关系，注意设置编码(charset)为<em>utf-8</em>，否则转换可能有问题:</p>
-
-<pre><code># SOME DESCRIPTIVE TITLE.
+    <pre><code># SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR &lt;EMAIL@ADDRESS&gt;, YEAR.
@@ -143,22 +150,18 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
+   
 #: t.sh:6
 msgid "hello,world"
-msgstr "你好，世界"
+msgstr "你好，世界"  使用msgfmt工具将配置文件转换成gettext使用的格式：
 </code></pre>
 
-<p>使用msgfmt工具将配置文件转换成gettext使用的格式：</p>
-
-<pre><code>msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po
-</code></pre></li>
-<li><p>验证，设置环境变量LC_MESSAGES或LANG为zh_CN。然后运行程序即可。</p></li>
+    <p>msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po</p>
+  </li>
+  <li>验证，设置环境变量LC_MESSAGES或LANG为zh_CN。然后运行程序即可。</li>
 </ol>
 
-
-<h3>实例：</h3>
-
+<h3 id="section-2">实例</h3>
 <p>shell 使用gettext的示例:</p>
 
 <pre><code>TEXTDOMAINDIR=/usr/local/share/locale/ # 为gettext查找路径
@@ -172,6 +175,7 @@ echo `gettext "hello,world"`
 
 <pre><code>你好中国
 </code></pre>
+
 
 
 

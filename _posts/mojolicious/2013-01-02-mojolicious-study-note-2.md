@@ -5,10 +5,15 @@ category: Perl
 change_frequency: monthly
 tag: Mojolicious
 ---
+### 目录
+{:.no_toc}
+* 
+{:toc}
+<hr>
 
 **Mojolicous** : <http://mojolicio.us/>
 
-### Mojolicous结构：
+### Mojolicous结构
 - route 路由，  
    根据request进行路由，可以根据：url,param,format,method等进行路由
 
@@ -69,7 +74,7 @@ tag: Mojolicious
 - morbo 检测代码变化，自动重起，开发环境使用
 
 
-### Web开发实践:
+### Web开发实践
 1. 数据库：DBIx::Class
 2. Form: HTML::FormHandler可以完成很多，很强大。 HTML::FormHandler::TraitFor::Model::DBIC实现和数据库关联
 
