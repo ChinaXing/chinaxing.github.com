@@ -98,7 +98,7 @@
 <ul>
 <li><p>在程序开始的地方配置gettext:</p>
 
-<pre><code>setlocale(lc_ALL,"");
+<pre><code>setlocale(lc_ALL,""); # "" 空串，则会根据运行时环境变量的情况决定
 bindtextdomain('myapp','/usr/local/share/locale')
 textdomain('myapp');
 </code></pre></li>

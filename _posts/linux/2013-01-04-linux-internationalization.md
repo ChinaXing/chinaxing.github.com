@@ -25,7 +25,7 @@ gettext套件的工具包括： gettext,xgettext,msgfmt ...
 1. 程序编写的时候,
    - 在程序开始的地方配置gettext:
 
-         setlocale(lc_ALL,"");
+         setlocale(lc_ALL,""); # "" 空串，则会根据运行时环境变量的情况决定
          bindtextdomain('myapp','/usr/local/share/locale')
          textdomain('myapp');
    - 需要本地化的地方调用gettext库函数。如:
