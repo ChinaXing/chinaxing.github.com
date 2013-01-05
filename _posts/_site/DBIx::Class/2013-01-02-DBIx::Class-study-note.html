@@ -1,0 +1,97 @@
+<p><strong>Perl</strong> 的ORM模块中，DBIx::Class是比较强大和完善的。文档丰富，容易使用。</p>
+
+<p>DBIx::Class的官网:<a href='http://www.dbix-class.org/'>http://www.dbix-class.org/</a>,此外也可以在cpan上搜索，它的代码和文档都放在cpan上。</p>
+
+<h3 id='orm'>ORM好处：</h3>
+
+<p>ORM模块的作用是将数据库操作和表示映射成对象，方便编程，屏蔽数据库层的具体操作。 使用ORM模块/程序操作数据库，通过调用ORM模块提供的函数/方法等完成，不需要写SQL语句（虽然ORM模块也允许直接写SQL），不需要处理复杂的数据库SQL语句和特殊的数据库连接、转换等具体问题。</p>
+
+<p>因为有如此多好处，Web开发框架一帮都会集成ORM功能，如果没有集成，程序员也可以将其引入。</p>
+
+<h3 id='dbixclass'>DBIx::Class介绍</h3>
+
+<p>DBIx::Class 的入门介绍可以看<a href='&lt;http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/Manual/Intro.pod'>这里</a></p>
+
+<h4 id='dbixclass'>DBIx::Class中有如下概念:</h4>
+
+<ul>
+<li>Schema</li>
+
+<li>Result(ResultSource)</li>
+
+<li>ResultSet</li>
+
+<li>Row</li>
+</ul>
+
+<ol>
+<li>
+<p>Schema: 表示数据库。<br />1. 连接数据库</p>
+
+<pre><code>   my $schema1 = My::Schema-&gt;connect(....)</code></pre>
+
+<ol>
+<li>
+<p>取得Result</p>
+
+<pre><code>$schema1-&gt;source(&#39;table1&#39;)</code></pre>
+</li>
+
+<li>
+<p>取得ResultSet</p>
+
+<pre><code>$schema1-&gt;resultset(&#39;table1&#39;)</code></pre>
+</li>
+</ol>
+</li>
+
+<li>
+<p>Result: 表示表<br />1. 定义在MySchema/Result/下:</p>
+
+<pre><code>   #MySchema/Result/Table1.pm
+   package MySchema::Result::Table1;
+   use base qw/DBIx::Class:core/;
+
+   __PACKAGE__-&gt;table(&#39;table1&#39;);
+   __PACKAGE__-&gt;add_columns(qw/col1 col2/);
+   ...</code></pre>
+</li>
+
+<li>
+<p>ResultSet: 表示查询<br />1. 如果有则定义在MySchema/ResultSet/下,表示对默认Resultet类的扩展，如加入自定义的方法。 <a href='http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/ResultSet.pm#CUSTOM_ResultSet_CLASSES_THAT_USE_Moose'>扩展方法</a> 2. 取得ResultSet/准备查询</p>
+
+<pre><code>   $schema1-&gt;resultset(&#39;table1&#39;)
+   resultset执行search方法后还是resultset。并没有真正执行。</code></pre>
+
+<ol>
+<li>
+<p>执行查询，取得执行结果(Row)</p>
+
+<pre><code>@rows=$resultset-&gt;all();
+$row=$resultset-&gt;find(1);</code></pre>
+</li>
+</ol>
+</li>
+
+<li>
+<p>Row: 代表查询结果里面的行。<br />1. 取得row里面的数据:</p>
+
+<pre><code>   $row-&gt;get_columns;
+   $row-&gt;get_column(&#39;col1&#39;);
+   $row-&gt;col1;</code></pre>
+</li>
+
+<li>
+<p>storage: 存储<br />涉及具体数据库的通用存储层，下面的子类是其各个数据库的具体连接实现的DBI。 1. 取得storage</p>
+
+<pre><code>   $storage = $schema-&gt;storage;</code></pre>
+</li>
+</ol>
+
+<h3 id='id30'>其它:</h3>
+
+<p>1. 调试:</p>
+
+<pre><code>   $schema-&gt;storge-&gt;debug(1);</code></pre>
+
+<p>可以打印出SQL语句。 2. 相关连接： - DBIx::Class 所有模块的列表:<a href='http://search.cpan.org/dist/DBIx-Class/'>http://search.cpan.org/dist/DBIx-Class/</a> - DBIx::Class 官网:<a href='http://www.dbix-class.org/'>http://www.dbix-class.org/</a> - DBIx::Class Manule:<a href='http://search.cpan.org/dist/DBIx-Class/lib/DBIx/Class/Manual.pod'>http://search.cpan.org/dist/DBIx-Class/lib/DBIx/Class/Manual.pod</a></p>

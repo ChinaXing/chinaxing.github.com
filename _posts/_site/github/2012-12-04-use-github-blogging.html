@@ -1,0 +1,61 @@
+<h3 id='jekyllhtml'>jekyll：从标记语言生成HTML页面</h3>
+
+<p>Jekyll: <a href='https://github.com/mojombo/jekyll/wiki'>https://github.com/mojombo/jekyll/wiki</a></p>
+
+<p>目录结构:</p>
+
+<pre><code>|-- CNAME
+|-- _config.yml
+|-- _layouts
+|   |-- category_index.html
+|   |-- default.html
+|   `-- post.html
+|-- _plugins
+|   `-- category_index_generator.rb
+|-- _posts
+|   |-- default
+|   |   `-- 2012-12-14-test.md
+|   `-- github
+|       `-- 2012-12-04-use-github-blogging.md
+|-- images
+|   |-- arrow-down.png
+|   `-- octocat-small.png
+|-- index.html
+|-- javascripts
+|   `-- scale.fix.js
+|-- params.json
+`-- stylesheets
+    |-- pygment_trac.css
+    `-- styles.css</code></pre>
+
+<ul>
+<li>
+<p>非&#8217;_&#8217;开头的目录jekyll不会进行处理，原样copy进_site目录.</p>
+</li>
+
+<li>
+<p>生成的网站在_site目录.github会自动将请求转至这里.</p>
+</li>
+
+<li>
+<p>默认的jekyll功能有限，通过开发插件(在_plugins目录).</p>
+</li>
+</ul>
+
+<h3 id='mardown__'>Mardown : 标记语言</h3>
+
+<p>Markdown: <a href='http://daringfireball.net/projects/markdown/'>http://daringfireball.net/projects/markdown/</a></p>
+
+<p>类似HTML是一种标记语言</p>
+
+<p>特色:</p>
+
+<p>* 易写,易读.</p>
+
+<ul>
+<li>流行,被多数站点和工具支持(stackoverflow,github等).</li>
+</ul>
+
+<p>* 适合程序员用.</p>
+
+<p>语法:<a href='http://justjavac.com/jekyll/2012/03/31/markdown-syntax.html'>http://justjavac.com/jekyll/2012/03/31/markdown-syntax.html</a></p>
