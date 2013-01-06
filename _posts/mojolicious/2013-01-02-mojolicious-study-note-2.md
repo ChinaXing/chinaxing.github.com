@@ -76,5 +76,5 @@ tag: Mojolicious
 
 ### Web开发实践
 1. 数据库：DBIx::Class
-2. Form: HTML::FormHandler可以完成很多，很强大。 HTML::FormHandler::TraitFor::Model::DBIC实现和数据库关联
+2. Form: HTML::FormHandler可以完成很多功能，很强大。 HTML::FormHandler::TraitFor::Model::DBIC实现和数据库关联
 
