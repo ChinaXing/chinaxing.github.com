@@ -12,7 +12,7 @@ change_frequency: monthly
 
 [Raspberry Pi](http://www.raspberrypi.org/) 是ARM 处理器搭载Gnu/Debian Linux的单片电脑。它的发行目标是促进青少年学习计算机技术。
 
-<img src="/images/Raspberry-Pi.jgp">
+<img src="/images/Raspberry-Pi.jpg">
 
 Raspberry Pi 有早些发布的256M内存/不带网卡的A版本和迟些时候发布的512M内存/带100M网卡的B版本，多数人都买B版本应该。
 
@@ -91,7 +91,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
       sudo yum install rdesktop
 3. 使用Fedora 的Remte Desktop 连接Pi，输入Pi的ip地址和用户名pi，连接后如图：
 
-   <img src="/images/Respberry-pi-Remote-desktop.png">
+   <img src="/images/Raspberry-Pi-Remote-desktop.png">
 
 ### 配置Pi连接Internet
 使用一根网线连接Pi和电脑实现了Pi和电脑的互联，Pi却无法连接internet，访问google，baidu等网站，需要作一些配置。
@@ -133,7 +133,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 配置完成后就可以使用iphone连接到Pi:
 
-<img src="/images/Respberry-Pi-iphone-remote-desktop.png">
+<img src="/images/Raspberry-Pi-iphone-remote-desktop.jpg">
 
 
 Have Fun :)
