@@ -60,3 +60,6 @@ change_frequency: monthly
       Wed Dec 19 11:13:43 2012: "Module" Test::TinyMocker
       Mon Jan  7 14:27:39 2013: "Module" Locale-Maketext
       ... ... 
+
+
+>**Come from** <http://www.cpan.org/misc/cpan-faq.html>
