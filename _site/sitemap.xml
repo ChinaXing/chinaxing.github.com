@@ -2,116 +2,121 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://www.chinaxing.org/linux/2012/11/10/quick-calculate-qps_rt/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/jekyll/2012/12/04/jekyll-chinese-list-problem/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/github/2012/12/04/use-github-blogging/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/jekyll/2012/12/05/cygwin-install-jekyll/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/github/2012/12/05/github-do-not-support-jekyll-plugin/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/git/2012/12/07/git-submodule/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/life/2012/12/08/note-now/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>never</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/linux/2012/12/12/figlet-a-ascii-art-string-printer/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/linux/2012/12/13/linux-man-search-strategy/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/postgres/2012/12/14/hight-availability-in-postgresql/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/django/2012/12/17/django-messages-framework/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/linux/2012/12/26/dvtm/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/Perl/2012/12/31/mojolicious-study-note/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/postgres/2013/01/01/copy-table-from-another-table/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/Perl/2013/01/02/DBIx%3A%3AClass-study-note/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/Perl/2013/01/02/create-schema-from-database/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/Perl/2013/01/02/mojolicious-study-note-2/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/linux/2013/01/03/public-key-infrastructure/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/linux/2013/01/04/linux-internationalization/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/linux/2013/01/06/raspberry-pi/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/Perl/2013/01/08/list-module-you-have-installed/</loc>
-        <lastmod>2013-01-08T10:39:24+08:00</lastmod>
+        <lastmod>2013-01-09T18:31:04+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/Perl/2013/01/09/create-sql-from-schema/</loc>
-        <lastmod>2013-01-09T14:47:06+08:00</lastmod>
+        <lastmod>2013-01-09T14:48:40+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.chinaxing.org/Perl/2013/01/09/perl-array-unique/</loc>
+        <lastmod>2013-01-09T18:32:25+08:00</lastmod>
         <changefreq>monthly</changefreq>
     </url>
     <url>
         <loc>http://www.chinaxing.org/</loc>
-        <lastmod>2013-01-09T14:47:06+08:00</lastmod>
+        <lastmod>2013-01-09T18:32:25+08:00</lastmod>
     </url>
 </urlset>
