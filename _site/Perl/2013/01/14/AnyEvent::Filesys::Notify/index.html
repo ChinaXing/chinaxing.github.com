@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>列出你安装的Perl模块</title>
+    <title>用Anyevent监控目录/文件变动</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -71,70 +71,30 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  列出你安装的Perl模块
+  用Anyevent监控目录/文件变动
 </h1>
-<p>有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过一个很简单的命令成:</p>
+<h3 id="module">module:</h3>
+<p><a href="http://search.cpan.org/~mgrimes/AnyEvent-Filesys-Notify-0.18/lib/AnyEvent/Filesys/Notify.pm">AnyEvent::Filesys::Notify</a></p>
 
-<pre><code>perldoc perllocal 
-</code></pre>
+<p>这个模块可以监控一个或若干目录内文件的变更事件，使用AnyEvent事件处理框架，可以指定后端或者由该模块自动进行选择最优的后端。</p>
 
-<p>如:</p>
+<h3 id="section">后端可以是：</h3>
 
-<pre><code>  Tue Dec 18 13:43:01 2012: "Module" Test::Simple
-    *   "installed into: /usr/share/perl5"
+<ul>
+  <li>定时扫描（比较低效，而且费资源）</li>
+  <li>使用内核的inotify机制（linux系统），kqueue机制（BSD）等各个操作系统提供的文件内核事件通知机制。<br />
+特点是高效，及时，需要相对新版本的内核。</li>
+  <li>其它自定义的。</li>
+</ul>
 
-    *   "LINKTYPE: dynamic"
+<p>在Linux平台上，我们一般指定Linux::Inotify2为其后端，这个模块封装了inotify系统特性。</p>
 
-    *   "VERSION: 0.98"
+<p>也可以直接使用Linux::Inotify2这个模块进行对文件和目录进行监控，具体使用方法可以参看其cpan描述。</p>
 
-    *   "EXE_FILES: "
+<p>这个模块提供了callback的编程方式和file-handler的编程方式，前者可以进行非组塞的使用，后者可以将其集成到AnyEvent
+等事件编程框架中，因为它在被监控文件发生变动时，会触发file-handler可读的事件，从而被监控其file-handler IO的AnyEvent 捕获知晓。</p>
 
-  Tue Dec 18 13:43:03 2012: "Module" version
-    *   "installed into: /usr/local/share/perl5"
-
-    *   "LINKTYPE: dynamic"
-
-    *   "VERSION: 0.9901"
-
-    *   "EXE_FILES: "
-</code></pre>
-
-<p>这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。</p>
-
-<p>我们可以通过grep方便找出这个模块列表：</p>
-
-<pre><code>perldoc -t perllocal | grep "Module"
-</code></pre>
-
-<p>如：</p>
-
-<pre><code>  Tue Dec 18 13:43:01 2012: "Module" Test::Simple
-  Tue Dec 18 13:43:03 2012: "Module" version
-  Tue Dec 18 13:43:04 2012: "Module" Module::Metadata
-  Tue Dec 18 13:43:06 2012: "Module" CPAN::Meta::YAML
-  Tue Dec 18 13:43:12 2012: "Module" JSON::PP
-  Tue Dec 18 13:43:13 2012: "Module" Parse::CPAN::Meta
-  Tue Dec 18 13:43:14 2012: "Module" CPAN::Meta::Requirements
-  Tue Dec 18 13:43:18 2012: "Module" CPAN::Meta
-  Tue Dec 18 13:43:20 2012: "Module" Perl::OSType
-  Tue Dec 18 13:43:22 2012: "Module" Locale::Maketext::Simple
-  Tue Dec 18 13:43:23 2012: "Module" Params::Check
-  Tue Dec 18 13:43:24 2012: "Module" Module::Load
-  Tue Dec 18 13:43:26 2012: "Module" Module::CoreList
-  Tue Dec 18 13:43:27 2012: "Module" Module::Load::Conditional
-  Tue Dec 18 13:43:30 2012: "Module" IPC::Cmd
-  Tue Dec 18 13:43:32 2012: "Module" ExtUtils::CBuilder
-  Tue Dec 18 13:44:34 2012: "Module" App::cpanminus
-  Wed Dec 19 11:13:40 2012: "Module" Try::Tiny
-  Wed Dec 19 11:13:40 2012: "Module" Test::Fatal
-  Wed Dec 19 11:13:43 2012: "Module" Test::TinyMocker
-  Mon Jan  7 14:27:39 2013: "Module" Locale-Maketext
-  ... ... 
-</code></pre>
-
-<blockquote>
-  <p><strong>Come from</strong> <a href="http://www.cpan.org/misc/cpan-faq.html">http://www.cpan.org/misc/cpan-faq.html</a></p>
-</blockquote>
+<p><em>待补充和完善</em></p>
 
 
 

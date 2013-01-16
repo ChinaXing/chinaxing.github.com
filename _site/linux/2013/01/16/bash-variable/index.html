@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>列出你安装的Perl模块</title>
+    <title>有用的bash内置变量</title>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <link rel="stylesheet" href="/stylesheets/pygments.css">
     <script src="/javascripts/scale.fix.js"></script>
@@ -71,70 +71,44 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  列出你安装的Perl模块
+  有用的bash内置变量
 </h1>
-<p>有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过一个很简单的命令成:</p>
+<p>Bash 内置变量可以帮助我们更好的编程。下面是一些比较powerful的bash变量，他们自动被bash设置和使用。</p>
 
-<pre><code>perldoc perllocal 
-</code></pre>
+<ul>
+  <li><strong>$PROMPT_COMMAND</strong> </li>
+  <li><strong>$PIPESTATUS</strong>       <em>(is an array)</em></li>
+  <li><strong>$IFS</strong></li>
+  <li><strong>$SHELLOPTS</strong></li>
+  <li><strong>$SHLVL</strong></li>
+  <li><strong>$TMOUT</strong></li>
+  <li><strong>$REPLY</strong></li>
+  <li><strong>$PWD</strong></li>
+  <li><strong>$OLDPWD</strong></li>
+  <li><strong>$SECONDS</strong></li>
+  <li><strong>$UID</strong></li>
+  <li><strong>$EUID</strong></li>
+  <li><strong>$GROUPS</strong></li>
+  <li><strong>$FUNCNAME</strong></li>
+  <li><strong>$PPID</strong></li>
+  <li><strong>$OSTYPE</strong></li>
+  <li><strong>$MACHTYPE</strong></li>
+  <li><strong>$HOSTYPE</strong></li>
+  <li><strong>$HOSTNAME</strong></li>
+  <li><strong>$LINENO</strong></li>
+  <li><strong>$BASH_VERSION</strong></li>
+  <li><strong>$BASH_VERSINFO</strong>    <em>(is an array)</em></li>
+  <li><strong>$BASH_PID</strong></li>
+  <li><strong>$BASH_ENV</strong></li>
+  <li><strong>$BASH</strong></li>
+  <li><strong>$BASH_SUBSHELL</strong></li>
+  <li><strong>$-</strong></li>
+  <li><strong>$!</strong></li>
+  <li><strong>$_</strong></li>
+  <li><strong>$$</strong></li>
+</ul>
 
-<p>如:</p>
-
-<pre><code>  Tue Dec 18 13:43:01 2012: "Module" Test::Simple
-    *   "installed into: /usr/share/perl5"
-
-    *   "LINKTYPE: dynamic"
-
-    *   "VERSION: 0.98"
-
-    *   "EXE_FILES: "
-
-  Tue Dec 18 13:43:03 2012: "Module" version
-    *   "installed into: /usr/local/share/perl5"
-
-    *   "LINKTYPE: dynamic"
-
-    *   "VERSION: 0.9901"
-
-    *   "EXE_FILES: "
-</code></pre>
-
-<p>这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。</p>
-
-<p>我们可以通过grep方便找出这个模块列表：</p>
-
-<pre><code>perldoc -t perllocal | grep "Module"
-</code></pre>
-
-<p>如：</p>
-
-<pre><code>  Tue Dec 18 13:43:01 2012: "Module" Test::Simple
-  Tue Dec 18 13:43:03 2012: "Module" version
-  Tue Dec 18 13:43:04 2012: "Module" Module::Metadata
-  Tue Dec 18 13:43:06 2012: "Module" CPAN::Meta::YAML
-  Tue Dec 18 13:43:12 2012: "Module" JSON::PP
-  Tue Dec 18 13:43:13 2012: "Module" Parse::CPAN::Meta
-  Tue Dec 18 13:43:14 2012: "Module" CPAN::Meta::Requirements
-  Tue Dec 18 13:43:18 2012: "Module" CPAN::Meta
-  Tue Dec 18 13:43:20 2012: "Module" Perl::OSType
-  Tue Dec 18 13:43:22 2012: "Module" Locale::Maketext::Simple
-  Tue Dec 18 13:43:23 2012: "Module" Params::Check
-  Tue Dec 18 13:43:24 2012: "Module" Module::Load
-  Tue Dec 18 13:43:26 2012: "Module" Module::CoreList
-  Tue Dec 18 13:43:27 2012: "Module" Module::Load::Conditional
-  Tue Dec 18 13:43:30 2012: "Module" IPC::Cmd
-  Tue Dec 18 13:43:32 2012: "Module" ExtUtils::CBuilder
-  Tue Dec 18 13:44:34 2012: "Module" App::cpanminus
-  Wed Dec 19 11:13:40 2012: "Module" Try::Tiny
-  Wed Dec 19 11:13:40 2012: "Module" Test::Fatal
-  Wed Dec 19 11:13:43 2012: "Module" Test::TinyMocker
-  Mon Jan  7 14:27:39 2013: "Module" Locale-Maketext
-  ... ... 
-</code></pre>
-
-<blockquote>
-  <p><strong>Come from</strong> <a href="http://www.cpan.org/misc/cpan-faq.html">http://www.cpan.org/misc/cpan-faq.html</a></p>
-</blockquote>
+<p><em>From</em>:<a href="http://tldp.org/LDP/abs/html/internalvariables.html">http://tldp.org/LDP/abs/html/internalvariables.html</a></p>
 
 
 
