@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Linux man 命令查找man手册的策略</title>
+    <link rel="stylesheet" href="/stylesheet/styles.css">
+    <link rel="stylesheet" href="/stylesheet/pygments.css">
+    <script src="/scripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body id="toc-top">
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.htm>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href="/categories/linux/">linux</a>
+        <span style="float:right">[13]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/life/">life</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/postgres/">postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/Python/">Python</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+        <li>
+        <a href="/categories/Perl/">Perl</a>
+        <span style="float:right">[7]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  Linux man 命令查找man手册的策略
+</h1>
+<div id="toc">
+Table of Content
+<ol></ol>
+</div>
+<p>
+本文的知识是从 <b>man man</b> 命令得到。在这里记录只为了备忘和方便，可以使用 <b>man man</b> 来获得纤细的说明。
+</p>
+<p>
+man 命令是我们经常使用的一个命令，那么当你执行:man [command] 的时候，
+man命令是如何查找命令的手册呢？
+</p>
+<p>
+根据man命令的帮助文档，我得到了如下信息:
+</p>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">查找策略</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>man 命令查找命令帮助手册的策略:  
+</p><ul>
+<li>命令行指定 <b>-M</b> 参数，那么man命令使用这个目录搜索。否则,
+</li>
+<li>使用 <b>MANPATH</b> 环境变量指定的路径进行搜索.否则,
+</li>
+<li>查看/etc/man.config，找到其中的 <b>MANPATH</b> 配置，加入搜索路径. 然后,
+</li>
+<li>查看/etc/man.config, 找到其中的 <b>MANPATH<sub>MAP</sub></b> 配置，加入搜索的"Map"路径，然后,
+</li>
+<li>遍历 <b>PATH</b> 变量中的每个路径,对不在 <b>MANPATH<sub>MAP</sub></b> 中的路径, 执行"nearby"查找。
+</li>
+<li>在搜索路径中进行查找.
+</li>
+</ul>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">说明</h3>
+<div class="outline-text-3" id="text-2">
+
+
+<ol>
+<li>"Map"路径:  
+
+<p>
+   这种路径相当于一张hash表，前面是命令所在的PATH搜索路径，后面是man手册的查找路径，man 会根据这个hash表查找该命令的man手册。
+</p>
+<p>
+   <b>举例</b> :  
+</p><ol>
+<li>设置: <b>MANPATH<sub>MAP</sub> /home/admin/git/bin /home/admin/git/man/</b>
+
+<p>
+      当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 这个命令的位置，在 <b>/home/admin/git/bin</b> 下找到了,
+      所以根据设置的hash表，在 <b>/home/admin/git/man</b> 这个路径下查找git的手册.
+</p>
+</li>
+<li>设置: <b>MANPATH<sub>MAP</sub> /bin /home/admin/git/man</b> 
+
+<p>
+      当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 命令的位置，在 <b>/home/admin/git/bin</b> 下面找到了，
+      但是根据hash, 没有这个路径对应的man手册搜索路径，所以这条MANPATH<sub>MAP不会被使用</sub>.
+</p>
+</li>
+</ol>
+
+</li>
+<li>man查找对象:  
+
+<p>
+    查找对象为 <b>topic.section</b> ,如果没找到，则查找 <b>man[section]/topic.section</b> ,如: <b>man1/git.1</b> 。
+</p>
+</li>
+<li>nearby查找:  
+    nearby查找查找什么呢？  
+
+<p>
+    通过我实验，会在本目录先查找 <b>man</b> ,如果没找到, 然后查找 <b>man[section]</b> 目录  
+</p>
+<p>
+    如果找到 <b>man[section]</b> 目录则将当前目录加入搜索路径,找到 <b>man</b> 目录将 <b>当前目录/man</b> 加入搜索路径。
+</p></li>
+</ol>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">其它</h3>
+<div class="outline-text-3" id="text-3">
+
+<ol>
+<li>查看找到的手册的位置:
+</li>
+</ol>
+
+
+
+
+<pre class="src src-sh">man --path cat
+</pre>
+
+
+
+
+</div>
+</div>
+
+
+<!---------------------------------------------------------
+  ** Table of Content 
+  --------------------------------------------------------->
+<script src="http://code.jquery.com/jquery-1.9.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/scripts/jquery.tableofcontents.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+ $(function(){
+   $("#toc>ol").tableOfContents(
+     null,
+     {
+       startLevel: 3,
+       depth:3,
+       topLinks: true,
+       topBodyId: "toc-top",
+     });
+ });
+</script>
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>
