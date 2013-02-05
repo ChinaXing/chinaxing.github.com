@@ -1,0 +1,114 @@
+---
+layout: post
+title: Mojolicious study note
+category: Perl
+change_frequency: monthly
+tag: Mojolicious
+---
+
+<p>
+*<a href="#http-mojolicio.us">Mojolicious</a>* 是一个Perl 语言开发的Web框架。
+</p>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">feature</h3>
+<div class="outline-text-3" id="text-1">
+
+<ol>
+<li>event drive 
+</li>
+<li>minus moduel dependency
+</li>
+<li>database relateless
+</li>
+<li>tempalte lauguage embed perl
+</li>
+<li>and so on &hellip;
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">architecture</h3>
+<div class="outline-text-3" id="text-2">
+
+<ol>
+<li>route
+</li>
+<li>controller
+</li>
+<li>templates
+</li>
+<li>layouts
+</li>
+<li>plugin
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">misc</h3>
+<div class="outline-text-3" id="text-3">
+
+<ul>
+<li>stash
+</li>
+<li>flash
+</li>
+<li>helpers ( default helpers )
+</li>
+<li>plugins: config plugin, and other third party plugins.
+</li>
+<li>mode: development, production, prepub, defined in MOJO<sub>MODE</sub> and set to `app-&gt;mode`
+</li>
+</ul>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">Q&amp;A</h3>
+<div class="outline-text-3" id="text-4">
+
+<ol>
+<li>request: $controler-&gt;req
+</li>
+<li>http-header: $controler-&gt;req-&gt;headers 
+</li>
+<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with `MOJO<sub>MODE`</sub> configure file.(can read the config-plugin's source code and confirm ).
+</li>
+<li>in controller, $self-&gt;app: get the application
+</li>
+<li>$controller-&gt;stash, $controller-&gt;current<sub>route</sub>, $controller-&gt;url<sub>for</sub> &hellip;
+</li>
+<li>route: route to Controller#action or to callback
+</li>
+<li>bridge: in nested route , bridge will return true code, so route can continue, otherwise it will broken.
+</li>
+<li>over: over a condition or call back. condition check is earler than bridge and other route.
+</li>
+<li>use $route-&gt;add<sub>condition</sub> to add condition in route.
+</li>
+<li>form validation: Validator::Cutstom or thers you like.
+</li>
+<li>DB: DBIx::Class, a ORM in Perl.
+</li>
+</ol>
+
+
+<p>
+&hellip; continue 
+</p>
+</div>
+</div>

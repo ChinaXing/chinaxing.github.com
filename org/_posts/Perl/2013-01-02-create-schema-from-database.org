@@ -1,0 +1,54 @@
+#+begin_html
+---
+layout: post
+title: 从数据库自动生成DBIx::Class使用的Schema
+category: Perl
+change_frequency: monthly
+tag: DBIx::Class
+---
+#+end_html
+
+
+如果数据库和表已经存在，我们不需要手动创建Schema，可以使用 [[http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm][DBIx::Class::Schema::Loader]] 这个模块自动生成.
+
+*** 从数据库产生Schema方法
+
+**** 使用 make\_schema\_at 方法
+#+begin_src sh
+       perl -MDBIx::Class::Schema::Loader=make_schema_at <<EOF
+       make_schema_at({
+          'My::Schema',
+          { debug =>1, dump_directory => './'},
+          [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],
+       });
+       EOF
+#+end_src
+
+**** 使用 dbicdump 工具  
+   该工具其实内部使用了DBIx::Class::Schema::Loader模块. 
+   #+begin_src sh
+       dbicdump -o dump_directory='./' My::Schema 'dbi:Pg:dbname="pesystem" "pesystem" "pesystem_password"
+   #+end_src
+
+**** 使用 dump\_to\_dir 方法
+   如果你的Schema模块已经写好，让模块继承DBIx::Class::Schema::Loader,然后执行:
+   #+begin_src perl
+       ,#My/Schema.pm
+       pakcage My::Schema;
+       use base qw/DBIx::Class::Schema::Loader/;
+       1;
+
+       perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \
+           -e 'My::Schema->connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'
+       # or 
+       use My::Schema;
+       My::Schema->dump_to_dir('./');
+       My::Schema->connection(...);
+   #+end_src
+
+   参见:<http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm#dump_to_dir>
+
+   继承DBIx::Class::Schema::Loader后，每次连接都会进行扫描数据库获取Schema.
+
+*** 比较
+   dbicdump工具比较简单.

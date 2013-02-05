@@ -1,0 +1,35 @@
+---
+layout: post
+title: django messages framework
+category: Python
+change_frequency: monthly
+---
+
+<p>
+django 的messages中间件类似其它语言框架(perl mojolicous)的flash功能。目的是实现一个请求中注入信息，另一个请求中可以读取。
+</p>
+<p>
+实现方式为cookie存储或者session存储或者其它自定义存储方式。
+</p>
+<p>
+messages 还有一些功能：
+</p><ol>
+<li>消息的级别(LEVEL) 类型日志级别有 <span style="text-decoration:underline;">DEBUG~ERROR</span> 。可以设置级别(MESSAGE_LEVEL变量)来过滤低于此级别的消息。
+</li>
+<li>消息有Tags，通常用来在显示消息的时候当做HTML的类。默认的tag和消息的LEVEL同名的小写字符串。
+</li>
+<li>消息的过期。消息在每次读取后便过期，系统自动标记为过期，在请求结束时候回收，可以人为的在读取消息后设置为"未使用"，来让消息不过期。
+
+
+
+<pre class="src src-python"><span style="color: #ffd700; font-style: italic;">storage</span> = messages.get_messages(request)
+<span style="color: #00ffff; font-weight: bold;">for</span> message <span style="color: #00ffff; font-weight: bold;">in</span> storage:
+    do_something_with(message)
+storage.used = <span style="color: #00ffff; font-weight: bold;">False</span> <span style="color: #ffd700;"># &#27492;&#22788;&#26631;&#35760;&#28040;&#24687;&#26410;&#34987;&#20351;&#29992;&#65292;&#31995;&#32479;&#20415;&#19981;&#20250;&#22238;&#25910;&#28040;&#24687;   </span>
+</pre>
+
+</li>
+<li>同一个客户端的请求可能会导致消息被串掉(原因是浏览上下文的重叠)。但大多数浏览器和HTML5中不存在这个问题。
+</li>
+</ol>
+

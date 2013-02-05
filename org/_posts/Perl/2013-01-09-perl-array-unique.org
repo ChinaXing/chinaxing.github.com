@@ -1,0 +1,42 @@
+#+BEGIN_HTML
+---
+layout: post
+title: 去重perl数组
+category: Perl
+change_frequency: monthly
+---
+#+END_HTML
+#+begin_src perl
+    my @new_a = keys %{ {map {$_ => } @a} };
+#+end_src
+
+*** 例子:
+#+begin_src perl -n :results output
+  use Modern::Perl;
+  use Data::Dumper;
+  
+  my @a = (
+      { a => 'b'},
+      { a => 'c'},
+      { a => 'b'},
+  );
+  
+  say "-----------------------";
+  
+  my $e = [ keys %{ {map {$_ => 1}  map {$_->{a} } @a } } ];
+  
+  say Dumper $e;
+  
+#+end_src
+*输出*:
+#+RESULTS:
+: -----------------------
+: $VAR1 = [
+:           'c',
+:           'b'
+:         ];
+: 
+
+
+
+    

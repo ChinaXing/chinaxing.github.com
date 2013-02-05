@@ -1,0 +1,54 @@
+#+begin_html
+---
+layout: post
+title: dvtm -- Tiling window management for the console
+category: linux
+change_frequency: monthly
+---
+#+end_html
+
+
+*dvtm* 可以方便进行linux终端下的窗口管理。
+
+[[http://www.brain-dump.org/projects/dvtm/][官网]]
+
+** 特点
+1. 小巧简洁，秉承unix设计哲学.  
+
+   dvtm只进行窗口的管理，不涉及别的功能，如会话管理等功能。
+2. 支持鼠标，可以通过鼠标完成活动窗口的切换，选择等。
+3. 快捷键功能强大，可以进行窗口内的内容选择，复制。
+
+
+**  编译安装
+
+1. 下载代码:  
+   #+begin_src sh
+       git clone git://repo.or.cz/dvtm.git   
+   #+end_src
+2. 编译&安装:  
+   确保安装了 *ncurses* 库（Ubuntu下为 *libncurses*,Fedora/Redhat下为 *ncurses-devel* ），dvtm依赖这个库
+   #+begin_src sh
+       cd dvtm && make && make install   
+   #+end_src
+**  常见问题解决方法
+1. 终端颜色问题：  
+   如果在dvtm内发现颜色较少，是因为没有设置正确的TERM环境变量.要支持丰富的颜色,
+   
+   设置 *TERM* 变量为 _*-256color_，如:  
+   #+begin_src sh
+       export TERM=xterm-256color   
+   #+end_src
+
+** 快捷键
+Meta键默认为CTRL-g，可以在启动dvtm的时候-m 指定其他键作为Meta键,如: *-m \^w*
+
++ M-c 新窗口  
++ M-j,k 窗口切换  
++ M-t 水平铺开窗口  
++ M-b 垂直铺开川口  
++ M-h,l 窗口放大缩小  
++ M-M 鼠标模式切换（鼠标是否可选中文本，鼠标是否可触发窗口切换等）  
++ M-m 全屏当前窗口  
++ M-. 最小化当前窗口/恢复当前窗口为原来状态（如果当前窗口已经最小化）  
++ M-? 调出help  

@@ -1,0 +1,44 @@
+---
+layout: post
+title: 列出你安装的Perl模块
+category: Perl
+change_frequency: monthly
+---
+
+<p>
+有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过一个很简单的命令成:
+</p>
+
+
+
+<pre class="src src-sh">perldoc perllocal
+</pre>
+
+
+<p>
+这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
+</p>
+<p>
+我们可以通过grep方便找出这个模块列表：
+</p>
+
+
+
+
+
+<pre class="example">Thu Jan 24 20:37:27 2013: "Module" App::cpanminus
+Thu Jan 24 20:47:13 2013: "Module" AnyEvent
+Thu Jan 24 20:49:16 2013: "Module" Guard
+Thu Jan 24 20:49:19 2013: "Module" common::sense
+Thu Jan 24 20:49:23 2013: "Module" Coro
+Mon Jan 28 10:51:32 2013: "Module" Regexp::Common
+Mon Jan 28 11:11:36 2013: "Module" Try::Tiny
+Mon Jan 28 11:11:37 2013: "Module" Test::Fatal
+Mon Jan 28 11:12:19 2013: "Module" Test::Requires
+Mon Jan 28 11:12:26 2013: "Module" Module::Implementation
+</pre>
+
+
+<p>
+<b>Come from</b> <a href="#http-www.cpan.org-misc-cpan-faq.html">CPAN-FAQ</a>
+</p>

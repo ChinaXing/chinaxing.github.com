@@ -1,0 +1,19 @@
+#+begin_html
+---
+layout: post
+title: jekyll markdown中文列表无法解析的问题
+category: linux
+change_frequency: monthly
+---
+#+end_html
+
+** 解决方法
+默认的markdown解析引擎有问题
+
+配置\_config.yml,将markdown解析引擎换为rdiscount:
+
+#+begin_example
+    markdown: rdiscount
+#+end_example
+
+问题解决:)

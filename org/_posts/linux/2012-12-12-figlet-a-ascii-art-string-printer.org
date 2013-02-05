@@ -1,0 +1,56 @@
+:session#+begin_html
+---
+layout: post
+title: figlet 一个ascii字符字体的字符串打印工具
+category: linux
+change_frequency: monthly
+---
+#+end_html
+
+
+** figlet 介绍
+
+*figlet* -- print string use Figlet Font
+
+看个例子就能明白了:
+
+:     _   _      _ _        __        __         _     _   _ 
+:   | | | | ___| | | ___   \ \      / /__  _ __| | __| | | |
+:   | |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _` | | |
+:   |  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| | |_|
+:   |_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_| (_)
+
+*Figlet Font* 是指用ascii字符拼出来的字体，在figlet的 [[http://www.figlet.org/][官网]] 上我们可以看到字体的示例。
+
+*figlet* 有windows(MS-DOS),unix,Macintosh(mac os),等等的版本，都可以在其官网上下载。
+
+字体也有很多我们也可以从其官网上下载得到.
+
+** 实例演示
+    #+begin_src sh :results output :exports results
+      figlet 'china xing !'    
+    #+end_src
+
+    #+RESULTS:
+    :       _     _                    _               _ 
+    :   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
+    :  / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
+    : | (__| | | | | | | | (_| |  >  <| | | | | (_| | |_|
+    :  \___|_| |_|_|_| |_|\__,_| /_/\_\_|_| |_|\__, | (_)
+    :                                          |___/     
+
+
+   _-f_ 指定字体:
+    #+begin_src sh :results output :exports results
+      figlet -w 104 -f script  'ChinaXing !'
+    #+end_src
+
+    #+RESULTS:
+    :   ___  _                      _                         
+    :  / (_)| |    o               (_\  /  o                 |
+    : |     | |        _  _    __,    \/       _  _    __,   |
+    : |     |/ \   |  / |/ |  /  |    /\   |  / |/ |  /  |   |
+    :  \___/|   |_/|_/  |  |_/\_/|_/_/  \_/|_/  |  |_/\_/|/  o
+    :                                                   /|    
+    :                                                   \|    
+

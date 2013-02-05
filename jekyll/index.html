@@ -1,0 +1,21 @@
+---
+layout: default
+title: ChinaXing's Blog
+---
+
+<h3>文章列表</h3>
+<ul>
+  {% for cate in site.categories %}
+  <li>
+  <b>{{ cate|first }} &nbsp;&nbsp; <span>[{{cate|last|size}}]</span></b>
+  <ul>
+    {% for post in cate[1] %}
+    <li>
+    <span>{{ post.date | date_to_string }}</span>
+    &raquo; <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  </li>
+  {% endfor %}
+</ul>
