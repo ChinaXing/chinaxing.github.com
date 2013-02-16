@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>figlet 一个ascii字符字体的字符串打印工具</title>
+    <title>Perl Alien 介绍</title>
     <link rel="stylesheet" href="/stylesheet/styles.css">
     <link rel="stylesheet" href="/stylesheet/pygments.css">
     <script src="/scripts/scale.fix.js"></script>
@@ -56,78 +56,65 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  figlet 一个ascii字符字体的字符串打印工具
+  Perl Alien 介绍
 </h1>
 <div id="toc">
 Table of Content
 <ol></ol>
 </div>
-</p>
-
-
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">figlet 介绍</h3>
+<h3 id="sec-1">Alien是什么</h3>
 <div class="outline-text-3" id="text-1">
 
-
-<p>
-<b>figlet</b> &ndash; print string use Figlet Font
+<p>本文介绍Perl中的Alien。
 </p>
 <p>
-看个例子就能明白了:
-</p>
-<pre class="example">
-    _   _      _ _        __        __         _     _   _ 
-  | | | | ___| | | ___   \ \      / /__  _ __| | __| | | |
-  | |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _` | | |
-  |  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| | |_|
-  |_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_| (_)
-</pre>
-
-
-<p>
-<b>Figlet Font</b> 是指用ascii字符拼出来的字体，在figlet的 <a href="http://www.figlet.org/">官网</a> 上我们可以看到字体的示例。
+Alien 是一个名字空间或者一系列Module/Perl package。 
 </p>
 <p>
-<b>figlet</b> 有windows(MS-DOS),unix,Macintosh(mac os),等等的版本，都可以在其官网上下载。
+Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安装和使用。
 </p>
 <p>
-字体也有很多我们也可以从其官网上下载得到.
+如<a href="http://search.cpan.org/perldoc?Alien::OpenSSL">Alien::NSS</a> 是OpenSSL库的Alien封装。我们可以在其CPAN页面上看到使用说明。
 </p>
 </div>
 
 </div>
 
 <div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">实例演示</h3>
+<h3 id="sec-2">Alien的目标</h3>
 <div class="outline-text-3" id="text-2">
 
-
-
-<pre class="example">
-      _     _                    _               _ 
-  ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
- / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
-| (__| | | | | | | | (_| |  &gt;  &lt;| | | | | (_| | |_|
- \___|_| |_|_|_| |_|\__,_| /_/\_\_|_| |_|\__, | (_)
-                                         |___/     
-</pre>
-
-
-
-<p>
-   <span style="text-decoration:underline;">-f</span> 指定字体:
+<p>Alien的目标是确保某个库已经安装。
 </p>
+<p>
+如Alien::NSS库的目标是确保OpenSSL的库已经安装，如果我们的Perl模块依赖OpenSSL的C库，我们可以在Build.PL中添加对Alien::NSS的依赖，从而确保安装
+模块的时候，OpenSSL库已经安装。
+</p>
+</div>
 
-<pre class="example">
-  ___  _                      _                         
- / (_)| |    o               (_\  /  o                 |
-|     | |        _  _    __,    \/       _  _    __,   |
-|     |/ \   |  / |/ |  /  |    /\   |  / |/ |  /  |   |
- \___/|   |_/|_/  |  |_/\_/|_/_/  \_/|_/  |  |_/\_/|/  o
-                                                  /|    
-                                                  \|    
-</pre>
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">Alien模块的约定/保证</h3>
+<div class="outline-text-3" id="text-3">
+
+<ol>
+<li>安装时候确保依赖的包已经安装，如果未安装则安装他们。
+</li>
+<li>使用Alien模块的时候，确保需要的包存在，否则报错给调用者。
+</li>
+<li>将C库的源码和模块打包绑定发布，或者在安装的时候下载。
+</li>
+<li>允许模块作者访问Alien模块获取的信息。
+</li>
+<li>良好的文档保证容易正确使用。
+</li>
+<li>容易地使用Module::Build。
+</li>
+</ol>
+
+
 
 
 </div>

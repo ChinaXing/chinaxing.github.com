@@ -1,0 +1,35 @@
+#+begin_html
+---
+layout: post
+title: Perl Alien 介绍
+category: Perl
+change_frequency: monthly
+tag: Alien
+---
+#+end_html
+
+** Alien是什么
+本文介绍Perl中的Alien。
+
+Alien 是一个名字空间或者一系列Module/Perl package。 
+
+Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安装和使用。
+
+如[[http://search.cpan.org/perldoc?Alien%3A%3AOpenSSL][Alien::NSS]] 是OpenSSL库的Alien封装。我们可以在其CPAN页面上看到使用说明。
+
+** Alien的目标
+Alien的目标是确保某个库已经安装。
+
+如Alien::NSS库的目标是确保OpenSSL的库已经安装，如果我们的Perl模块依赖OpenSSL的C库，我们可以在Build.PL中添加对Alien::NSS的依赖，从而确保安装
+模块的时候，OpenSSL库已经安装。
+
+** Alien模块的约定/保证
+1. 安装时候确保依赖的包已经安装，如果未安装则安装他们。
+2. 使用Alien模块的时候，确保需要的包存在，否则报错给调用者。
+3. 将C库的源码和模块打包绑定发布，或者在安装的时候下载。
+4. 允许模块作者访问Alien模块获取的信息。
+5. 良好的文档保证容易正确使用。
+6. 容易地使用Module::Build。
+
+
+ 
