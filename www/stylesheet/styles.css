@@ -48,6 +48,10 @@ p, ul, ol, table, dl {
     margin:0 0 12px;
 }
 
+p {
+    text-indent:2em;
+}
+
 h1, h2, h3 {
     font-family: 'Molengo',sans-serif;
     line-height:1.3em;
