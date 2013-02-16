@@ -13,9 +13,8 @@ tag: ca,digtal-sign
 
 ** 构成
 它的各个组成部分如图：
-#+begin_html
-<img src=/images/Public-Key-Infrastructure.svg />
-#+end_html
+
+[[img:../../images/Public-Key-Infrastructure.svg][PKI组成]]
 
 
 + CA：certifacate Authority :权威认证机构，被完全信赖的。
@@ -59,7 +58,5 @@ tag: ca,digtal-sign
 
 ** 其它
 1. 数字签名中CA/Web browser/developer关系图:  
-#+begin_html
- <img src="/images/Usage-of-Digital-Certificate.svg" />
-#+end_html
+ [[img:../..//images/Usage-of-Digital-Certificate.svg][CA/WB/DEV关系]]
 2. CA的Wiki:<http://en.wikipedia.org/wiki/Certificate_authority>, 很不错的比较全面的介绍。
