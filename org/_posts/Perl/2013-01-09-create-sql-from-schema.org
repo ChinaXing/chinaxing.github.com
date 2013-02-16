@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: tech-post
 title: 从DBIx::Class的Schema类生成SQL语句
 category: Perl
 change_frequency: monthly

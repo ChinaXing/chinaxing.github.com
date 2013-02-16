@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: tech-post
 title: 有用的bash内置变量
 category: linux
 change_frequency: monthly

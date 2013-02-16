@@ -1,6 +1,6 @@
 #+BEGIN_HTML
 ---
-layout: post
+layout: tech-post
 title: 用Anyevent监控目录/文件变动
 category: Perl
 change_frequency: monthly

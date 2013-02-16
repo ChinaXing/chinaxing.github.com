@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: tech-post
 title: Perl DBIx::Class 模块学习笔记
 category: Perl
 change_frequency: monthly

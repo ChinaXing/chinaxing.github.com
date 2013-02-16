@@ -62,15 +62,25 @@
 Table of Content
 <ol></ol>
 </div>
-<p>
-django 的messages中间件类似其它语言框架(perl mojolicous)的flash功能。目的是实现一个请求中注入信息，另一个请求中可以读取。
+<div class="tech">
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">about</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>django 的messages中间件类似其它语言框架(perl mojolicous)的flash功能。目的是实现一个请求中注入信息，另一个请求中可以读取。
 </p>
 <p>
 实现方式为cookie存储或者session存储或者其它自定义存储方式。
 </p>
-<p>
-messages 还有一些功能：
-</p><ol>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">messages 还有一些功能</h3>
+<div class="outline-text-3" id="text-2">
+
+<ol>
 <li>消息的级别(LEVEL) 类型日志级别有 <span style="text-decoration:underline;">DEBUG~ERROR</span> 。可以设置级别(MESSAGE_LEVEL变量)来过滤低于此级别的消息。
 </li>
 <li>消息有Tags，通常用来在显示消息的时候当做HTML的类。默认的tag和消息的LEVEL同名的小写字符串。
@@ -90,6 +100,10 @@ storage.used = <span style="color: #00cdcd; font-weight: bold;">False</span> <sp
 </li>
 </ol>
 
+</div>
+</div>
+
+</div>
 
 
 <!---------------------------------------------------------

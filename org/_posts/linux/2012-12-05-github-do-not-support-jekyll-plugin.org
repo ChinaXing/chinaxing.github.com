@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: tech-post
 title: github 不支持 jekyll 插件的解决方法
 category: linux
 change_frequency: monthly

@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: article-post
 title: 2012记
 category: life
 change_frequency: never

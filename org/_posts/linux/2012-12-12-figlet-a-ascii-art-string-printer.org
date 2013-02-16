@@ -1,6 +1,6 @@
 :session#+begin_html
 ---
-layout: post
+layout: tech-post
 title: figlet 一个ascii字符字体的字符串打印工具
 category: linux
 change_frequency: monthly

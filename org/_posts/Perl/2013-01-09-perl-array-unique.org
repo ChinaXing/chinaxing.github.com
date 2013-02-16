@@ -1,6 +1,6 @@
 #+BEGIN_HTML
 ---
-layout: post
+layout: tech-post
 title: 去重perl数组
 category: Perl
 change_frequency: monthly

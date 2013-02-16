@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: tech-post
 title: Linux 下使用gettext完成程序国际化/本地化
 category: linux
 change_frequency: monthly

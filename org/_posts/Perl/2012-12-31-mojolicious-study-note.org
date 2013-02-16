@@ -1,6 +1,6 @@
 #+begin_html
 ---
-layout: post
+layout: tech-post
 title: Mojolicious study note
 category: Perl
 change_frequency: monthly
