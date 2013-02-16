@@ -31,5 +31,10 @@ Alien的目标是确保某个库已经安装。
 5. 良好的文档保证容易正确使用。
 6. 容易地使用Module::Build。
 
+** 编写Alien模块
+1. 继承Alien::Base , use parent Alien::Base;
+2. 编写Build.PL, 继承Alien::Base::ModuleBuild, 根据Alien::Base::ModuleBuild 配置，构建其实例，然后调用create_build_script方法。
+【参见：Alien::NSS等模块的Build.PL文件。】
+
 
  

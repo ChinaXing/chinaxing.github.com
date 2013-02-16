@@ -115,6 +115,23 @@ Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安�
 </ol>
 
 
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">编写Alien模块</h3>
+<div class="outline-text-3" id="text-4">
+
+<ol>
+<li>继承Alien::Base , use parent Alien::Base;
+</li>
+<li>编写Build.PL, 继承Alien::Base::ModuleBuild, 根据Alien::Base::ModuleBuild 配置，构建其实例，然后调用create<sub>build</sub><sub>script方法。</sub>
+</li>
+</ol>
+
+<p>【参见：Alien::NSS等模块的Build.PL文件。】
+</p>
 
 
 </div>
