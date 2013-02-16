@@ -34,7 +34,7 @@
         
         <li>
         <a href="/categories/life/">life</a>
-        <span style="float:right">[1]</span>
+        <span style="float:right">[2]</span>
         </li>
         
         <li>
@@ -82,10 +82,10 @@ Table of Content
 
 
 
-<pre class="src src-sh"><span style="color: #ffd700; font-style: italic;">srm</span>=<span style="color: #f0e68c;">" \[`date -d ' -1 second '  +%d\\\/%h\\\/%Y:%H:%M:%S` +0800\] "</span>
-<span style="color: #ffd700; font-style: italic;">QPS_RT</span>=$(<span style="color: #fa8072;">tac</span> $<span style="color: #ffd700; font-style: italic;">acc_logs</span>|sed -n -e  <span style="color: #f0e68c;">'/'"$srm"'/,${</span>
-<span style="color: #f0e68c;">/'"$srm"'/p</span>
-<span style="color: #f0e68c;">/'"$srm"'/!q}'</span> | awk <span style="color: #f0e68c;">'{sum+=$2;count++}END{printf "%d,%.2f",count,sum/count/1000}'</span>
+<pre class="src src-sh"><span style="color: #ffd700; font-style: italic;">srm</span>=<span style="color: #ffd787;">" \[`date -d ' -1 second '  +%d\\\/%h\\\/%Y:%H:%M:%S` +0800\] "</span>
+<span style="color: #ffd700; font-style: italic;">QPS_RT</span>=$(<span style="color: #cd00cd;">tac</span> $<span style="color: #ffd700; font-style: italic;">acc_logs</span>|sed -n -e  <span style="color: #ffd787;">'/'"$srm"'/,${</span>
+<span style="color: #ffd787;">/'"$srm"'/p</span>
+<span style="color: #ffd787;">/'"$srm"'/!q}'</span> | awk <span style="color: #ffd787;">'{sum+=$2;count++}END{printf "%d,%.2f",count,sum/count/1000}'</span>
 )
 </pre>
 
