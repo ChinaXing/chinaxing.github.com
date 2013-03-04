@@ -122,7 +122,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 2. 添加iptables，完成NAT功能:
    #+begin_src sh
-       sudo iptables -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
+       sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
    #+end_src
 
    *--random* 选项让内核自己帮我们选端口，这个是必须的  
@@ -144,7 +144,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 通过在Fedora上面配置如下iptables完成转发功能：
 #+begin_src sh
-    sudo iptables -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
+    sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
 #+end_src
 
 *wlan0* 是电脑的无线网卡，连接到局域网的无线路由器上网 

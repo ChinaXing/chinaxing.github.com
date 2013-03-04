@@ -226,7 +226,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">sudo iptables -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
+<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
 </pre>
 
 
@@ -270,7 +270,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 </p>
 
 
-<pre class="src src-sh">sudo iptables -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
+<pre class="src src-sh">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
 </pre>
 
 
