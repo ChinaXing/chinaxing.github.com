@@ -83,12 +83,12 @@ Table of Content
 
 
 <pre class="src src-sh">perl -MDBIx::Class::Schema::<span style="color: #ffd700; font-style: italic;">Loader</span>=make_schema_at &lt;&lt;EOF
-<span style="color: #ffaf5f;">make_schema_at({</span>
-<span style="color: #ffaf5f;">   'My::Schema',</span>
-<span style="color: #ffaf5f;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
-<span style="color: #ffaf5f;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
-<span style="color: #ffaf5f;">});</span>
-<span style="color: #ffaf5f;">EOF</span>
+<span style="color: #ffff00; font-weight: bold;">make_schema_at({</span>
+<span style="color: #ffff00; font-weight: bold;">   'My::Schema',</span>
+<span style="color: #ffff00; font-weight: bold;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
+<span style="color: #ffff00; font-weight: bold;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
+<span style="color: #ffff00; font-weight: bold;">});</span>
+<span style="color: #ffff00; font-weight: bold;">EOF</span>
 </pre>
 
 
@@ -104,7 +104,7 @@ Table of Content
 </p>
 
 
-<pre class="src src-sh">dbicdump -o <span style="color: #ffd700; font-style: italic;">dump_directory</span>=<span style="color: #ffd787;">'./'</span> My::Schema <span style="color: #ffd787;">'dbi:Pg:dbname="pesystem" "pesystem" "pesystem_password"</span>
+<pre class="src src-sh">dbicdump -o <span style="color: #ffd700; font-style: italic;">dump_directory</span>=<span style="color: #f0e68c;">'./'</span> My::Schema <span style="color: #f0e68c;">'dbi:Pg:dbname="pesystem" "pesystem" "pesystem_password"</span>
 </pre>
 
 
@@ -122,14 +122,14 @@ Table of Content
 
 <pre class="src src-perl"><span style="color: #ffd700;">#</span><span style="color: #ffd700;">My/Schema.pm</span>
 pakcage My::Schema;
-<span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">base</span> <span style="color: #5fd700;">qw</span><span style="color: #ffd787;">/DBIx::Class::Schema::Loader/</span>;
+<span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">base</span> <span style="color: #ff83fa;">qw</span><span style="color: #f0e68c;">/DBIx::Class::Schema::Loader/</span>;
 1;
 
 perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \
-    <span style="color: #ffd700; font-weight: bold;">-e</span> <span style="color: #ffd787;">'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'</span>
+    <span style="color: #ffd700; font-weight: bold;">-e</span> <span style="color: #f0e68c;">'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'</span>
 <span style="color: #ffd700;"># </span><span style="color: #ffd700;">or</span> 
-<span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">My::Schema</span>;
-My::Schema-&gt;dump_to_dir(<span style="color: #ffd787;">'./'</span>);
+<span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">My::Schema</span>;
+My::Schema-&gt;dump_to_dir(<span style="color: #f0e68c;">'./'</span>);
 My::Schema-&gt;connection(...);
 </pre>
 

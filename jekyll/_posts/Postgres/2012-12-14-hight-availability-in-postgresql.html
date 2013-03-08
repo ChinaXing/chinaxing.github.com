@@ -48,7 +48,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="src src-sql">select pg_start_backup(<span style="color: #ffd787;">'&#22791;&#20221;&#26631;&#31614;'</span>)   
+<pre class="src src-sql">select pg_start_backup(<span style="color: #f0e68c;">'&#22791;&#20221;&#26631;&#31614;'</span>)   
 </pre>
 
 <p>
@@ -266,7 +266,7 @@ posgres的热备有2中方式:
 </p>
 
 
-<pre class="src src-sh">pg_basebackup -D pgsql_DB -f t -x -z -l <span style="color: #ffd787;">"my backup for slave"</span> -U repl    
+<pre class="src src-sh">pg_basebackup -D pgsql_DB -f t -x -z -l <span style="color: #f0e68c;">"my backup for slave"</span> -U repl    
 </pre>
 
 
@@ -441,7 +441,7 @@ posgresql在启动的时候，如果配置了 <b>restore<sub>command</sub></b>, 
 
 
 
-<pre class="src src-sql">select pg_xlogfile_location(<span style="color: #ffd787;">'0/28D09608'</span>);   
+<pre class="src src-sql">select pg_xlogfile_location(<span style="color: #f0e68c;">'0/28D09608'</span>);   
 </pre>
 
 </li>
