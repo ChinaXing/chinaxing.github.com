@@ -75,11 +75,11 @@ Table of Content
 </p>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">配置wap<sub>supplicant</sub></h3>
+<h3 id="sec-1">配置wap_supplicant</h3>
 <div class="outline-text-3" id="text-1">
 
 <p>Raspbian基于Debian系统，系统默认附带了wap<sub>supplicant作为无线链接管理的客户端。</sub>
-wap<sub>supplicant这个程序很了不起，大家可以在这里了解到它：</sub>
+wap_supplicant这个程序很了不起，大家可以在这里了解到它：
 </p><ul>
 <li><a href="http://hostap.epitest.fi">官网</a>
 </li>
@@ -92,7 +92,7 @@ wap<sub>supplicant这个程序很了不起，大家可以在这里了解到它�
 这个程序的开发者还实现了AP协议的服务端软件<a href="http://hostap.epitest.fi/hostapd/">Hostapd</a> ，我们可以安装这个软件，开启网卡的无线AP功能（需要网卡支持），就可一实现热点接入功能了。
 </p>
 <p>
-wap<sub>supplicant的配置，位于</sub>/etc/wpa<sub>supplicant</sub>/wpa<sub>supplicant</sub>.conf
+wap_supplicant的配置，位于/etc/wpa_supplicant/wpa_supplicant.conf
 </p>
 <p>
 我们需要添加针对热点的配置，如：
@@ -115,7 +115,7 @@ wap<sub>supplicant的配置，位于</sub>/etc/wpa<sub>supplicant</sub>/wpa<sub>
 </p><ul>
 <li>ssid : 无线AP的名称 
 </li>
-<li>key<sub>mgmt</sub> : 管理方式，如果是WPA2-PSK也要填写WPA—PSK，请注意。
+<li>key_mgmt : 管理方式，如果是WPA2-PSK也要填写WPA—PSK，请注意。
 </li>
 <li>psk : 密码，此处的密码是加密过后的密码而不是原始密码，加密方法：
 
@@ -125,7 +125,7 @@ wap<sub>supplicant的配置，位于</sub>/etc/wpa<sub>supplicant</sub>/wpa<sub>
 </pre>
 
 <p>
-  这条命令输出一段wpa<sub>supplicant配置，其中psk</sub>="&hellip;"即为要使用在配置文件中的密码。
+  这条命令输出一段wpa_supplicant配置，其中psk="&hellip;"即为要使用在配置文件中的密码。
 </p></li>
 </ul>
 
@@ -166,7 +166,7 @@ sudo ifup wlan0 -vv # 加V可以看到具体启动过程
 </pre>
 
 <p>
-wap<sub>supplicant</sub> 将日志通过syslog输出，因此我们可以在/var/log/daemon中看到启动日志。
+wap_supplicant 将日志通过syslog输出，因此我们可以在/var/log/daemon中看到启动日志。
 </p>
 </div>
 
@@ -190,15 +190,15 @@ wap<sub>supplicant</sub> 将日志通过syslog输出，因此我们可以在/var
 </div>
 
 <div id="outline-container-4-2" class="outline-4">
-<h4 id="sec-4-2">wap<sub>supplicant</sub></h4>
+<h4 id="sec-4-2">wap_supplicant</h4>
 <div class="outline-text-4" id="text-4-2">
 
-<p>    这个程序使用客户端服务端的模式，一个叫wap<sub>supplicant的程序启动起来做daemon进程，然后叫wap</sub><sub>cli的程序会作为客户端，连接daemon进程，</sub>
+<p>    这个程序使用客户端服务端的模式，一个叫wap_supplicant的程序启动起来做daemon进程，然后叫wap_cli的程序会作为客户端，连接daemon进程，
 发送命令（如链接具体的AP）等。 
 </p>
 <p>
-    wap<sub>cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，</sub>
-如，scan 是进行无线网络的扫描，scan<sub>result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。</sub>
+    wap_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
+如，scan 是进行无线网络的扫描，scan_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
 </p>
 
 </div>
