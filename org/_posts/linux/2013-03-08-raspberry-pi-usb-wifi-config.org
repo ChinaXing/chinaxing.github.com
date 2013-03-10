@@ -15,7 +15,7 @@ change_frequency: monthly
 接下来就是配置无线，让它工作起来：
 
 ** 配置wap\_supplicant
-Raspbian基于Debian系统，系统默认附带了wap_supplicant作为无线链接管理的客户端。
+Raspbian基于Debian系统，系统默认附带了wap\_supplicant作为无线链接管理的客户端。
 wap\_supplicant这个程序很了不起，大家可以在这里了解到它：
 + [[http://hostap.epitest.fi][官网]]
 + [[http://en.wikipedia.org/wiki/Wpa_supplicant][Wikipedia]]
