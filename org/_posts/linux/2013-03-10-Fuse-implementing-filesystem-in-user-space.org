@@ -1,0 +1,48 @@
+#+begin_html
+---
+layout: tech-post
+title: Fuse - 用户空间的文件系统实现
+category: linux
+change_frequency: monthly
+---
+#+end_html
+
+** Fuse 介绍
+Fuse 是指用户空间的文件系统，是文件系统的一种实现方式。目前BSD，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
+- 易于调试和开发。
+- 功能可以非常灵活。
+但也有其缺点：
+- 性能相对低下。
+- 安全性可能不好。
+
+Fuse开发出来的文件系统， 对用户提供了一个文件系统的视图，可以当作文件系统来使用。对内核提供了VFS接口，内核当做普通文件系统来调度它。
+
+** Fuse的实现原理
+[[img:../../images/FUSE_structure.svg]]
+
+一次用户使用Fuse类型文件系统的过程如下：
+#+begin_html
+<div style="font-weight:bolder;border:1px solid gray;border-radius:3px;padding:5px;background-color:black">
+<div style="color:red">
+   App -> [filesystem sys_call] -> [Kernel VFS] -> [Fuse Kernel module] -> /dev/fuse -> [userspace Fuse Filesystem]
+</div>
+<div style="color:blue">
+[userspace Fuse Filesystem]  -> /dev/fuse -> [Fuse Kernel Module] -> [Kernl VFS] -> App
+</div>
+</div>
+#+end_html 
+
+- 内核FUSE模块与用户空间文件系统实现程序之间的通信使用FUSE自己的协议。而通信通过/dev/fuse这个设备来进行。
+
+- FUSE模块进行文件系统调用协议到FUSE协议的转换，然后将请求发送给用户空间的文件系统实现程序。
+
+*** libfuse
+libfuse 是用户空间的fuse库，发送到用户空间的请求会先被libfuse进行接收和解析，翻译成具体的操作，然后调用hook的实现函数，完成请求后再进行FUSE协议通信的方式返回给内核的FUSE模块。
+
+所以libfuse充当了用户空间的FUSE协议的另一端。负责和内核空间的FUSE模块进行通信。
+
+
+** 参考资料
+- [[http://lwn.net/Articles/68104/?format=printable][FUSE - implementing filesystems in user space]]
+- [[http://zh.wikipedia.org/wiki/FUSE][FUSE wikipedia]]
+- [[http://sourceforge.net/apps/mediawiki/fuse/index.php?title=FuseProtocolSketch][Fuse Protocol Sketch]]

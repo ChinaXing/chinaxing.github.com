@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>公钥认证体系</title>
+    <title>Fuse - 用户空间的文件系统实现</title>
     <link rel="stylesheet" href="/stylesheet/styles.css">
     <link rel="stylesheet" href="/stylesheet/pygments.css">
     <script src="/scripts/scale.fix.js"></script>
@@ -56,143 +56,97 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  公钥认证体系
+  Fuse - 用户空间的文件系统实现
 </h1>
 <div id="toc">
 Table of Content
 <ol></ol>
 </div>
 <div class="tech">
-<p>
-*<a href="http://en.wikipedia.org/wiki/Public_key_infrastructure">Public Key Infrastructure</a>* 目的是进行数字认证
-</p>
-
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">构成</h3>
+<h3 id="sec-1">Fuse 介绍</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>它的各个组成部分如图：
-</p>
-<p>
-<img src="/images/Public-Key-Infrastructure.svg" alt="PKI组成"/>
-</p>
+<p>Fuse 是指用户空间的文件系统，是文件系统的一种实现方式。目前BSD，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
+</p><ul>
+<li>易于调试和开发。
+</li>
+<li>功能可以非常灵活。
+</li>
+</ul>
 
-<ul>
-<li>CA：certifacate Authority :权威认证机构，被完全信赖的。
+<p>但也有其缺点：
+</p><ul>
+<li>性能相对低下。
 </li>
-<li>RA：Regstration Authority :注册机构，执行实际的绑定。
-</li>
-<li>VA：Validation Authority : 验证机构，根据CA的信息，对用户身份进行验证。
+<li>安全性可能不好。
 </li>
 </ul>
 
 
+<p>
+Fuse开发出来的文件系统， 对用户提供了一个文件系统的视图，可以当作文件系统来使用。对内核提供了VFS接口，内核当做普通文件系统来调度它。
+</p>
 </div>
 
 </div>
 
 <div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">运行过程</h3>
+<h3 id="sec-2">Fuse的实现原理</h3>
 <div class="outline-text-3" id="text-2">
 
-<ol>
-<li>用户产生自己的public-private key对和自己需要认证的身份信息，提交给RA进行认证(CSR)。
+<p><img src="/images/FUSE_structure.svg" alt="img:../../images/FUSE_structure.svg"/>
+</p>
+<p>
+一次用户使用Fuse类型文件系统的过程如下：
+<div style="font-weight:bolder;border:1px solid gray;border-radius:3px;padding:5px;background-color:black">
+<div style="color:red">
+   App -> [filesystem sys_call] -> [Kernel VFS] -> [Fuse Kernel module] -> /dev/fuse -> [userspace Fuse Filesystem]
+</div>
+<div style="color:blue">
+[userspace Fuse Filesystem]  -> /dev/fuse -> [Fuse Kernel Module] -> [Kernl VFS] -> App
+</div>
+</div>
+
+</p><ul>
+<li>内核FUSE模块与用户空间文件系统实现程序之间的通信使用FUSE自己的协议。而通信通过/dev/fuse这个设备来进行。
+
 </li>
-<li>RA 根据用户提供的信息，确认符合（valid）后，提交与CA，CA对用户信息和公钥进行签名生成证书(Cert)，发给用户。
+<li>FUSE模块进行文件系统调用协议到FUSE协议的转换，然后将请求发送给用户空间的文件系统实现程序。
 </li>
-<li>用户发布数字产品的时候，对产品使用私钥进行签名，连同CA颁发给自己的证书一同发布。
-</li>
-<li>客户收到产品和证书，将证书发给VA，请求VA进行验证。
-</li>
-<li>VA根据证书内容和CA的信息（公钥），判断此证书是CA签发的。告诉客户，该证书有效。
-</li>
-<li>客户使用证书里面的公钥解密产品，得到用户发布的产品。
-</li>
-</ol>
+</ul>
 
 
+
+</div>
+
+<div id="outline-container-2-1" class="outline-4">
+<h4 id="sec-2-1">libfuse</h4>
+<div class="outline-text-4" id="text-2-1">
+
+<p>libfuse 是用户空间的fuse库，发送到用户空间的请求会先被libfuse进行接收和解析，翻译成具体的操作，然后调用hook的实现函数，完成请求后再进行FUSE协议通信的方式返回给内核的FUSE模块。
+</p>
+<p>
+所以libfuse充当了用户空间的FUSE协议的另一端。负责和内核空间的FUSE模块进行通信。
+</p>
+
+</div>
 </div>
 
 </div>
 
 <div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">自签名证书</h3>
+<h3 id="sec-3">参考资料</h3>
 <div class="outline-text-3" id="text-3">
 
-<p>是使用自己的私钥进行签名生成的证书。而一般的证书是通过CA的私钥进行签名的。
-</p>
-<p>
-<b>用途</b> : <a href="http://en.wikipedia.org/wiki/Root_certificate">根CA</a> 机构。因为没有更高层的CA来签发的证书(CA分级，低级别的CA由高级别的CA来进行认证)。
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">公钥认证在Web浏览器中应用</h3>
-<div class="outline-text-3" id="text-4">
-
-<p>当使用https协议浏览网站的时候，浏览器和网站服务器之间进行了对服务器身份的认证过程：
-</p>
-<ol>
-<li>服务器将自己的证书和公钥发给浏览器。
+<ul>
+<li><a href="http://lwn.net/Articles/68104/?format=printable">FUSE - implementing filesystems in user space</a>
 </li>
-<li>浏览器根据内置的信赖CA列表中找到证书的签发CA，如果没找到，认为证书是不可信赖的，提示用户Dangerous。
+<li><a href="http://zh.wikipedia.org/wiki/FUSE">FUSE wikipedia</a>
 </li>
-<li>根据证书提供的或者是CA提供的证书有效性验证信息获取地址，获取证书有效性数据（CRL），判断证书是否还有效（Revocation）。如果无效，则同样认为不可信赖。 此步骤使用CRL协议或OCSP协议获取CRL信息。
+<li><a href="http://sourceforge.net/apps/mediawiki/fuse/index.php?title=FuseProtocolSketch">Fuse Protocol Sketch</a>
 </li>
-<li>证书认证完毕，信息可靠。进入密钥协商过程。
-</li>
-<li>浏览器选择一个密钥和对称加密算法，使用服务器的公钥进行加密后发给服务器。
-</li>
-<li>服务器知道了后续通信使用的密钥和算法，之后的通信都使用这个对称加密算法和密钥来对数据加密进行。
-</li>
-</ol>
-
-
-<p>
-<a href="http://en.wikipedia.org/wiki/Certificate_revocation_list">CRL</a>: 
- 即: certificate revocation list。 是CA生成的用来发布告知哪些被签名的公钥现在是无效的（无效不等于过期）。
-</p>
-<p>
- 一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。  
- CRL使用 http协议来传输(不过为了克服其问题，一般已经使用<a href="http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol"> OCSP</a> 这个协议来代替它了)， 由浏览器发起，
- chrome里面可以在高级设置-&gt;安全里面进行设置，打开*"Check for server certificate revocation"*, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。
-</p>
-
-</div>
-
-</div>
-
-<div id="outline-container-5" class="outline-3">
-<h3 id="sec-5"><span class="todo TODO">TODO</span> openssl 进行证书的签名过程</h3>
-<div class="outline-text-3" id="text-5">
-
-
-</div>
-
-</div>
-
-<div id="outline-container-6" class="outline-3">
-<h3 id="sec-6"><span class="todo TODO">TODO</span> 客户端证书</h3>
-<div class="outline-text-3" id="text-6">
-
-
-</div>
-
-</div>
-
-<div id="outline-container-7" class="outline-3">
-<h3 id="sec-7">其它</h3>
-<div class="outline-text-3" id="text-7">
-
-<ol>
-<li>数字签名中CA/Web browser/developer关系图:  
- <img src="//images/Usage-of-Digital-Certificate.svg" alt="CA/WB/DEV关系"/>
-</li>
-<li>CA的Wiki:<a href="http://en.wikipedia.org/wiki/Certificate_authority">http://en.wikipedia.org/wiki/Certificate_authority</a>, 很不错的比较全面的介绍。
-</li>
-</ol>
+</ul>
 
 </div>
 </div>
