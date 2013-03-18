@@ -27,7 +27,7 @@ tag: DBIx::Class
 **** 使用 dbicdump 工具  
    该工具其实内部使用了DBIx::Class::Schema::Loader模块. 
    #+begin_src sh
-       dbicdump -o dump_directory='./' My::Schema 'dbi:Pg:dbname="pesystem" "pesystem" "pesystem_password"
+       dbicdump -o dump_directory='./' My::Schema 'dbi:Pg:dbname="pesystem"' "pesystem" "pesystem_password"
    #+end_src
 
 **** 使用 dump\_to\_dir 方法

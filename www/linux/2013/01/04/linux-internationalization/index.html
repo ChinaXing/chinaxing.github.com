@@ -49,7 +49,7 @@
         
         <li>
         <a href="/categories/Perl/">Perl</a>
-        <span style="float:right">[9]</span>
+        <span style="float:right">[10]</span>
         </li>
         
       </ul>
@@ -118,9 +118,9 @@ Linux 下 <b>Gnu/gettext</b> 工具套件可以完成语言(message)的本地化
 
 
 
-<pre class="src src-C">setlocale(lc_ALL,<span style="color: #f0e68c;">""</span>); <span style="color: #ffd700;">/* </span><span style="color: #ffd700;">"" &#31354;&#20018;&#65292;&#21017;&#20250;&#26681;&#25454;&#36816;&#34892;&#26102;&#29615;&#22659;&#21464;&#37327;&#30340;&#24773;&#20917;&#20915;&#23450; </span><span style="color: #ffd700;">*/</span>
-bindtextdomain(<span style="color: #f0e68c;">'myapp'</span>,<span style="color: #f0e68c;">'/usr/local/share/locale'</span>)
-textdomain(<span style="color: #f0e68c;">'myapp'</span>);     
+<pre class="src src-C">setlocale(lc_ALL,<span style="color: #ffd787;">""</span>); <span style="color: #ffd700;">/* </span><span style="color: #ffd700;">"" &#31354;&#20018;&#65292;&#21017;&#20250;&#26681;&#25454;&#36816;&#34892;&#26102;&#29615;&#22659;&#21464;&#37327;&#30340;&#24773;&#20917;&#20915;&#23450; </span><span style="color: #ffd700;">*/</span>
+bindtextdomain(<span style="color: #ffd787;">'myapp'</span>,<span style="color: #ffd787;">'/usr/local/share/locale'</span>)
+textdomain(<span style="color: #ffd787;">'myapp'</span>);     
 </pre>
 
 
@@ -130,7 +130,7 @@ textdomain(<span style="color: #f0e68c;">'myapp'</span>);
 
 
 
-<pre class="src src-C">printf (gettext(<span style="color: #f0e68c;">"hello,world"</span>)); 
+<pre class="src src-C">printf (gettext(<span style="color: #ffd787;">"hello,world"</span>)); 
 </pre>
 
 <p>
@@ -138,7 +138,7 @@ textdomain(<span style="color: #f0e68c;">'myapp'</span>);
 </p>
 
 
-<pre class="src src-C">printf (<span style="color: #f0e68c;">"hello,world"</span>);     
+<pre class="src src-C">printf (<span style="color: #ffd787;">"hello,world"</span>);     
 </pre>
 
 <p>
@@ -146,7 +146,7 @@ textdomain(<span style="color: #f0e68c;">'myapp'</span>);
 </p>
 
 
-<pre class="src src-C">printf (_(<span style="color: #f0e68c;">"hello,world"</span>));     
+<pre class="src src-C">printf (_(<span style="color: #ffd787;">"hello,world"</span>));     
 </pre>
 
 </li>
@@ -170,24 +170,24 @@ textdomain(<span style="color: #f0e68c;">'myapp'</span>);
 <pre class="src src-perl"><span style="color: #ffd700;"># </span><span style="color: #ffd700;">SOME DESCRIPTIVE TITLE.</span>
 <span style="color: #ffd700;"># </span><span style="color: #ffd700;">Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER</span>
 <span style="color: #ffd700;"># </span><span style="color: #ffd700;">This file is distributed under the same license as the PACKAGE package.</span>
-<span style="color: #ffd700;"># </span><span style="color: #ffd700;">FIRST AUTHOR &lt;EMAIL</span><span style="color: #ffff00; background-color: #000080; font-weight: bold;">@ADDRESS</span><span style="color: #ffd700;">&gt;, YEAR.</span>
+<span style="color: #ffd700;"># </span><span style="color: #ffd700;">FIRST AUTHOR &lt;EMAIL</span><span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@ADDRESS</span><span style="color: #ffd700;">&gt;, YEAR.</span>
 <span style="color: #ffd700;">#</span>
 <span style="color: #ffd700;">#</span><span style="color: #ffd700;">, fuzzy</span>
-msgid <span style="color: #f0e68c;">""</span>
-msgstr <span style="color: #f0e68c;">""</span>
-<span style="color: #f0e68c;">"Project-Id-Version: PACKAGE VERSION\n"</span>
-<span style="color: #f0e68c;">"Report-Msgid-Bugs-To: \n"</span>
-<span style="color: #f0e68c;">"POT-Creation-Date: 2013-01-04 17:11+0800\n"</span>
-<span style="color: #f0e68c;">"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"</span>
-<span style="color: #f0e68c;">"Last-Translator: FULL NAME &lt;EMAIL</span><span style="color: #ffff00; background-color: #000080; font-weight: bold;">@ADDRESS</span><span style="color: #f0e68c;">&gt;\n"</span>
-<span style="color: #f0e68c;">"Language-Team: LANGUAGE &lt;LL</span><span style="color: #ffff00; background-color: #000080; font-weight: bold;">@li</span><span style="color: #f0e68c;">.org&gt;\n"</span>
-<span style="color: #f0e68c;">"MIME-Version: 1.0\n"</span>
-<span style="color: #f0e68c;">"Content-Type: text/plain; charset=utf-8\n"</span>
-<span style="color: #f0e68c;">"Content-Transfer-Encoding: 8bit\n"</span>
+msgid <span style="color: #ffd787;">""</span>
+msgstr <span style="color: #ffd787;">""</span>
+<span style="color: #ffd787;">"Project-Id-Version: PACKAGE VERSION\n"</span>
+<span style="color: #ffd787;">"Report-Msgid-Bugs-To: \n"</span>
+<span style="color: #ffd787;">"POT-Creation-Date: 2013-01-04 17:11+0800\n"</span>
+<span style="color: #ffd787;">"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"</span>
+<span style="color: #ffd787;">"Last-Translator: FULL NAME &lt;EMAIL</span><span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@ADDRESS</span><span style="color: #ffd787;">&gt;\n"</span>
+<span style="color: #ffd787;">"Language-Team: LANGUAGE &lt;LL</span><span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@li</span><span style="color: #ffd787;">.org&gt;\n"</span>
+<span style="color: #ffd787;">"MIME-Version: 1.0\n"</span>
+<span style="color: #ffd787;">"Content-Type: text/plain; charset=utf-8\n"</span>
+<span style="color: #ffd787;">"Content-Transfer-Encoding: 8bit\n"</span>
 
 <span style="color: #ffd700;">#</span><span style="color: #ffd700;">: t.sh:6</span>
-msgid <span style="color: #f0e68c;">"hello,world"</span>
-msgstr <span style="color: #f0e68c;">"&#20320;&#22909;&#65292;&#19990;&#30028;"</span>   
+msgid <span style="color: #ffd787;">"hello,world"</span>
+msgstr <span style="color: #ffd787;">"&#20320;&#22909;&#65292;&#19990;&#30028;"</span>   
 </pre>
 
 
@@ -221,7 +221,7 @@ msgstr <span style="color: #f0e68c;">"&#20320;&#22909;&#65292;&#19990;&#30028;"<
 <span style="color: #ffd700; font-style: italic;">TEXTDOMAIN</span>=myapp.mo <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#20026;gettext&#26597;&#25214;&#25991;&#20214;&#21517;&#31216;</span>
 <span style="color: #ffd700; font-style: italic;">LC_MESSAGES</span>=zh_CN <span style="color: #ffd700;">#</span><span style="color: #ffd700;">gettext&#26597;&#25214;&#36335;&#24452;&#30340;&#26412;&#22320;&#21270;&#37096;&#20998;</span>
 
-<span style="color: #00ffff; font-weight: bold;">echo</span> <span style="color: #fa8072;">`gettext "hello,world"`</span>
+<span style="color: #00cdcd; font-weight: bold;">echo</span> <span style="color: #cd00cd;">`gettext "hello,world"`</span>
 </pre>
 
 

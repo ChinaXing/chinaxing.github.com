@@ -5,7 +5,7 @@ category: Perl
 change_frequency: monthly
 ---
 
-<pre class="src src-perl"><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@new_a</span> = <span style="color: #ff83fa;">keys</span> %{ {<span style="color: #ff83fa;">map</span> {$_ =&gt; } <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@a</span>} };
+<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">my</span> <span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@new_a</span> = <span style="color: #5fd700;">keys</span> %{ {<span style="color: #5fd700;">map</span> {$_ =&gt; } <span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@a</span>} };
 </pre>
 
 
@@ -17,18 +17,18 @@ change_frequency: monthly
 
 
 
-<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Modern::Perl</span>;
-<span class="linenr"> 2:  </span><span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span>;
+<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Modern::Perl</span>;
+<span class="linenr"> 2:  </span><span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span>;
 <span class="linenr"> 3:  </span>
-<span class="linenr"> 4:  </span><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@a</span> = (
-<span class="linenr"> 5:  </span>    { <span style="color: #f0e68c;">a</span> =&gt; <span style="color: #f0e68c;">'b'</span>},
-<span class="linenr"> 6:  </span>    { <span style="color: #f0e68c;">a</span> =&gt; <span style="color: #f0e68c;">'c'</span>},
-<span class="linenr"> 7:  </span>    { <span style="color: #f0e68c;">a</span> =&gt; <span style="color: #f0e68c;">'b'</span>},
+<span class="linenr"> 4:  </span><span style="color: #00cdcd; font-weight: bold;">my</span> <span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@a</span> = (
+<span class="linenr"> 5:  </span>    { <span style="color: #ffd787;">a</span> =&gt; <span style="color: #ffd787;">'b'</span>},
+<span class="linenr"> 6:  </span>    { <span style="color: #ffd787;">a</span> =&gt; <span style="color: #ffd787;">'c'</span>},
+<span class="linenr"> 7:  </span>    { <span style="color: #ffd787;">a</span> =&gt; <span style="color: #ffd787;">'b'</span>},
 <span class="linenr"> 8:  </span>);
 <span class="linenr"> 9:  </span>
-<span class="linenr">10:  </span>say <span style="color: #f0e68c;">"-----------------------"</span>;
+<span class="linenr">10:  </span>say <span style="color: #ffd787;">"-----------------------"</span>;
 <span class="linenr">11:  </span>
-<span class="linenr">12:  </span><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #ffd700; font-style: italic;">$e</span> = [ <span style="color: #ff83fa;">keys</span> %{ {<span style="color: #ff83fa;">map</span> {$_ =&gt; 1}  <span style="color: #ff83fa;">map</span> {$_-&gt;{<span style="color: #f0e68c;">a</span>} } <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@a</span> } } ];
+<span class="linenr">12:  </span><span style="color: #00cdcd; font-weight: bold;">my</span> <span style="color: #ffd700; font-style: italic;">$e</span> = [ <span style="color: #5fd700;">keys</span> %{ {<span style="color: #5fd700;">map</span> {$_ =&gt; 1}  <span style="color: #5fd700;">map</span> {$_-&gt;{<span style="color: #ffd787;">a</span>} } <span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@a</span> } } ];
 <span class="linenr">13:  </span>
 <span class="linenr">14:  </span>say Dumper $e;
 <span class="linenr">15:  </span>
