@@ -14,7 +14,7 @@ git update-ref refs/heads/master $commitID
 
 git checkout master
 
-git push -f blog master
+git push -f origin  master
 
 rm -rf www
 
