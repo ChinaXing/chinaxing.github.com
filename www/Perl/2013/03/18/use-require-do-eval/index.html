@@ -29,7 +29,7 @@
         
         <li>
         <a href="/categories/linux/">linux</a>
-        <span style="float:right">[15]</span>
+        <span style="float:right">[14]</span>
         </li>
         
         <li>
@@ -67,6 +67,39 @@ Table of Content
 use, require, do ,eval 是我们经常见到的perl语言关键字。下面我们简洁明要地进行对他们说明。
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 use</a>
+<ul>
+<li><a href="#sec-1-1">1.1 作用</a></li>
+<li><a href="#sec-1-2">1.2 use 发生在什么时候</a></li>
+<li><a href="#sec-1-3">1.3 use 的实现</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 require</a>
+<ul>
+<li><a href="#sec-2-1">2.1 require 作用</a></li>
+<li><a href="#sec-2-2">2.2 require的执行期</a></li>
+<li><a href="#sec-2-3">2.3 require的实现</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 do</a>
+<ul>
+<li><a href="#sec-3-1">3.1 do作用</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 eval</a>
+<ul>
+<li><a href="#sec-4-1">4.1 eval作用</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 总结</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">use</h3>
 <div class="outline-text-3" id="text-1">
@@ -82,7 +115,7 @@ use, require, do ,eval 是我们经常见到的perl语言关键字。下面我�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span>;
+<pre class="example">use Data::Dumper;
 </pre>
 
 
@@ -117,7 +150,7 @@ use 的作用是：
 
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span>; 
+<pre class="example">use Data::Dumper; 
 </pre>
 
 <p>
@@ -125,26 +158,13 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">BEGIN</span> { <span style="color: #00cdcd; font-weight: bold;">require</span> <span style="color: #ffd787;">"Data::Dumper.pm"</span>; <span style="color: #ffd787;">'Data::Dumper'</span>-&gt;import; }
+<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import; }
 </pre>
 
 
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span> <span style="color: #5fd700;">qw</span><span style="color: #ffd787;">(Dumper)</span>;
-</pre>
-
-<p>
-等效于：
-</p>
-
-
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">BEGIN</span> { <span style="color: #00cdcd; font-weight: bold;">require</span> <span style="color: #ffd787;">"Data::Dumper.pm"</span>; <span style="color: #ffd787;">'Data::Dumper'</span>-&gt;import(<span style="color: #5fd700;">qw</span><span style="color: #ffd787;">(Dumper)</span>); }
-</pre>
-
-
-
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span> ();
+<pre class="example">use Data::Dumper qw(Dumper);
 </pre>
 
 <p>
@@ -152,7 +172,20 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">BEGIN</span> { <span style="color: #00cdcd; font-weight: bold;">require</span> <span style="color: #ffd787;">"Data::Dumper.pm"</span>; }
+<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import(qw(Dumper)); }
+</pre>
+
+
+
+<pre class="example">use Data::Dumper ();
+</pre>
+
+<p>
+等效于：
+</p>
+
+
+<pre class="example">BEGIN { require "Data::Dumper.pm"; }
 </pre>
 
 
@@ -186,8 +219,8 @@ require 加载后，模块的命名空间被建立，就可以通过其命名空
 
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">require</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span>;
-<span style="color: #5fd700;">print</span> Data::Dumper { <span style="color: #ffd787;">a</span> =&gt; 1 , <span style="color: #ffd787;">b</span> =&gt; 2 };
+<pre class="example">require Data::Dumper;
+print Data::Dumper { a =&gt; 1 , b =&gt; 2 };
 </pre>
 
 
@@ -248,7 +281,7 @@ EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文�
 
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">do</span> <span style="color: #ffd787;">'stat.pl'</span>
+<pre class="example">do 'stat.pl'
 </pre>
 
 
@@ -257,7 +290,7 @@ EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00cdcd; font-weight: bold;">eval</span> <span style="color: #ffd787;">`cat stat.pl`</span>
+<pre class="example">eval `cat stat.pl`
 </pre>
 
 

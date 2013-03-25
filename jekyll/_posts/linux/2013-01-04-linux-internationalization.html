@@ -8,6 +8,18 @@ tag: gettext
 
 
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 国际化</a></li>
+<li><a href="#sec-2">2 工具</a></li>
+<li><a href="#sec-3">3 使用gettext进行本地化的步骤</a></li>
+<li><a href="#sec-4">4 实例</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">国际化</h3>
 <div class="outline-text-3" id="text-1">
@@ -63,9 +75,9 @@ Linux 下 <b>Gnu/gettext</b> 工具套件可以完成语言(message)的本地化
 
 
 
-<pre class="src src-C">setlocale(lc_ALL,<span style="color: #ffd787;">""</span>); <span style="color: #ffd700;">/* </span><span style="color: #ffd700;">"" &#31354;&#20018;&#65292;&#21017;&#20250;&#26681;&#25454;&#36816;&#34892;&#26102;&#29615;&#22659;&#21464;&#37327;&#30340;&#24773;&#20917;&#20915;&#23450; </span><span style="color: #ffd700;">*/</span>
-bindtextdomain(<span style="color: #ffd787;">'myapp'</span>,<span style="color: #ffd787;">'/usr/local/share/locale'</span>)
-textdomain(<span style="color: #ffd787;">'myapp'</span>);     
+<pre class="example">setlocale(lc_ALL,""); /* "" 空串，则会根据运行时环境变量的情况决定 */
+bindtextdomain('myapp','/usr/local/share/locale')
+textdomain('myapp');     
 </pre>
 
 
@@ -75,7 +87,7 @@ textdomain(<span style="color: #ffd787;">'myapp'</span>);
 
 
 
-<pre class="src src-C">printf (gettext(<span style="color: #ffd787;">"hello,world"</span>)); 
+<pre class="example">printf (gettext("hello,world")); 
 </pre>
 
 <p>
@@ -83,7 +95,7 @@ textdomain(<span style="color: #ffd787;">'myapp'</span>);
 </p>
 
 
-<pre class="src src-C">printf (<span style="color: #ffd787;">"hello,world"</span>);     
+<pre class="example">printf ("hello,world");     
 </pre>
 
 <p>
@@ -91,7 +103,7 @@ textdomain(<span style="color: #ffd787;">'myapp'</span>);
 </p>
 
 
-<pre class="src src-C">printf (_(<span style="color: #ffd787;">"hello,world"</span>));     
+<pre class="example">printf (_("hello,world"));     
 </pre>
 
 </li>
@@ -102,7 +114,7 @@ textdomain(<span style="color: #ffd787;">'myapp'</span>);
 
 
 
-<pre class="src src-C">xgettext -L c -o zh_CN.po myprogram.c   
+<pre class="example">xgettext -L c -o zh_CN.po myprogram.c   
 </pre>
 
 <p>
@@ -112,27 +124,27 @@ textdomain(<span style="color: #ffd787;">'myapp'</span>);
 
 
 
-<pre class="src src-perl"><span style="color: #ffd700;"># </span><span style="color: #ffd700;">SOME DESCRIPTIVE TITLE.</span>
-<span style="color: #ffd700;"># </span><span style="color: #ffd700;">Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER</span>
-<span style="color: #ffd700;"># </span><span style="color: #ffd700;">This file is distributed under the same license as the PACKAGE package.</span>
-<span style="color: #ffd700;"># </span><span style="color: #ffd700;">FIRST AUTHOR &lt;EMAIL</span><span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@ADDRESS</span><span style="color: #ffd700;">&gt;, YEAR.</span>
-<span style="color: #ffd700;">#</span>
-<span style="color: #ffd700;">#</span><span style="color: #ffd700;">, fuzzy</span>
-msgid <span style="color: #ffd787;">""</span>
-msgstr <span style="color: #ffd787;">""</span>
-<span style="color: #ffd787;">"Project-Id-Version: PACKAGE VERSION\n"</span>
-<span style="color: #ffd787;">"Report-Msgid-Bugs-To: \n"</span>
-<span style="color: #ffd787;">"POT-Creation-Date: 2013-01-04 17:11+0800\n"</span>
-<span style="color: #ffd787;">"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"</span>
-<span style="color: #ffd787;">"Last-Translator: FULL NAME &lt;EMAIL</span><span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@ADDRESS</span><span style="color: #ffd787;">&gt;\n"</span>
-<span style="color: #ffd787;">"Language-Team: LANGUAGE &lt;LL</span><span style="color: #0000ee; background-color: #e4e4e4; font-weight: bold;">@li</span><span style="color: #ffd787;">.org&gt;\n"</span>
-<span style="color: #ffd787;">"MIME-Version: 1.0\n"</span>
-<span style="color: #ffd787;">"Content-Type: text/plain; charset=utf-8\n"</span>
-<span style="color: #ffd787;">"Content-Transfer-Encoding: 8bit\n"</span>
+<pre class="example"># SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR &lt;EMAIL@ADDRESS&gt;, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-01-04 17:11+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;\n"
+"Language-Team: LANGUAGE &lt;LL@li.org&gt;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-<span style="color: #ffd700;">#</span><span style="color: #ffd700;">: t.sh:6</span>
-msgid <span style="color: #ffd787;">"hello,world"</span>
-msgstr <span style="color: #ffd787;">"&#20320;&#22909;&#65292;&#19990;&#30028;"</span>   
+#: t.sh:6
+msgid "hello,world"
+msgstr "你好，世界"   
 </pre>
 
 
@@ -141,7 +153,7 @@ msgstr <span style="color: #ffd787;">"&#20320;&#22909;&#65292;&#19990;&#30028;"<
 </p>
 
 
-<pre class="src src-sh">msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po   
+<pre class="example">msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po   
 </pre>
 
 </li>
@@ -162,11 +174,11 @@ msgstr <span style="color: #ffd787;">"&#20320;&#22909;&#65292;&#19990;&#30028;"<
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ffd700; font-style: italic;">TEXTDOMAINDIR</span>=/usr/local/share/locale/ <span style="color: #ffd700;"># </span><span style="color: #ffd700;">&#20026;gettext&#26597;&#25214;&#36335;&#24452;</span>
-<span style="color: #ffd700; font-style: italic;">TEXTDOMAIN</span>=myapp.mo <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#20026;gettext&#26597;&#25214;&#25991;&#20214;&#21517;&#31216;</span>
-<span style="color: #ffd700; font-style: italic;">LC_MESSAGES</span>=zh_CN <span style="color: #ffd700;">#</span><span style="color: #ffd700;">gettext&#26597;&#25214;&#36335;&#24452;&#30340;&#26412;&#22320;&#21270;&#37096;&#20998;</span>
+<pre class="example">TEXTDOMAINDIR=/usr/local/share/locale/ # 为gettext查找路径
+TEXTDOMAIN=myapp.mo #为gettext查找文件名称
+LC_MESSAGES=zh_CN #gettext查找路径的本地化部分
 
-<span style="color: #00cdcd; font-weight: bold;">echo</span> <span style="color: #cd00cd;">`gettext "hello,world"`</span>
+echo `gettext "hello,world"`
 </pre>
 
 

@@ -29,7 +29,7 @@
         
         <li>
         <a href="/categories/linux/">linux</a>
-        <span style="float:right">[15]</span>
+        <span style="float:right">[14]</span>
         </li>
         
         <li>
@@ -63,6 +63,16 @@ Table of Content
 <ol></ol>
 </div>
 <div class="tech">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 问题描述</a></li>
+<li><a href="#sec-2">2 解决方法:</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">问题描述</h3>
 <div class="outline-text-3" id="text-1">
@@ -102,7 +112,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh">git checkout dev      
+<pre class="example">git checkout dev      
 </pre>
 
 </li>
@@ -110,7 +120,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh">jekyll --server --auto       
+<pre class="example">jekyll --server --auto       
 </pre>
 
 </li>
@@ -121,7 +131,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 </p>
 
 
-<pre class="src src-sh">git commit -am <span style="color: #ffd787;">'---&#28155;&#21152;&#25991;&#31456;---'</span>      
+<pre class="example">git commit -am '---添加文章---'      
 </pre>
 
 </li>
@@ -129,8 +139,8 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh"><span style="color: #ffd700; font-style: italic;">commitID</span>=$(<span style="color: #cd00cd;">echo</span> <span style="color: #ffd787;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
-git update-ref refs/heads/master $<span style="color: #ffd700; font-style: italic;">commitID</span>
+<pre class="example">commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)
+git update-ref refs/heads/master $commitID
 git checkout master
 git push -f origin master
 </pre>

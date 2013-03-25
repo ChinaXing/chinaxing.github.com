@@ -21,6 +21,19 @@ B版本35$，RMB325￥。
 </p>
 
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Raspberry Pi 构成</a></li>
+<li><a href="#sec-2">2 Raspberry Pi ssh 登陆</a></li>
+<li><a href="#sec-3">3 使用远程桌面连接Pi</a></li>
+<li><a href="#sec-4">4 配置Pi连接Internet</a></li>
+<li><a href="#sec-5">5 使用iphone连接Pi</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">Raspberry Pi 构成</h3>
 <div class="outline-text-3" id="text-1">
@@ -73,7 +86,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo yum install dhcp
+<pre class="example">sudo yum install dhcp
 </pre>
 
 <ol>
@@ -81,7 +94,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo vim /etc/dhcp/dhcpd.conf
+<pre class="example">sudo vim /etc/dhcp/dhcpd.conf
 </pre>
 
 <p>
@@ -89,7 +102,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </p>
 
 
-<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 { 
+<pre class="example">subnet 192.168.33.0 netmask 255.255.255.0 { 
     range 192.168.33.2 192.168.33.114; 
     default-lease-time 86400; 
     max-lease-time 259200; 
@@ -105,7 +118,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo ifconfig em1 192.168.33.2/24
+<pre class="example">sudo ifconfig em1 192.168.33.2/24
 </pre>
 
 </li>
@@ -113,7 +126,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo dhcpd
+<pre class="example">sudo dhcpd
 </pre>
 
 </li>
@@ -123,7 +136,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">cat /var/lib/dhcpd/dhcpd.lease   
+<pre class="example">cat /var/lib/dhcpd/dhcpd.lease   
 </pre>
 
 <p>
@@ -133,7 +146,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">ssh pi@192.168.33.3    
+<pre class="example">ssh pi@192.168.33.3    
 </pre>
 
 <p>
@@ -175,7 +188,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="src src-sh">sudo apt-get install xrdp   
+<pre class="example">sudo apt-get install xrdp   
 </pre>
 
 
@@ -186,7 +199,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="src src-sh">sudo yum install rdesktop   
+<pre class="example">sudo yum install rdesktop   
 </pre>
 
 </li>
@@ -217,7 +230,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">sudo bash -c <span style="color: #ffd787;">'echo 1 &gt;/proc/sys/net/ipv4/ip_forward'</span>   
+<pre class="example">sudo bash -c 'echo 1 &gt;/proc/sys/net/ipv4/ip_forward'   
 </pre>
 
 
@@ -226,7 +239,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
+<pre class="example">sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
 </pre>
 
 
@@ -238,7 +251,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">ping www.baidu.com   
+<pre class="example">ping www.baidu.com   
 </pre>
 
 
@@ -270,7 +283,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 </p>
 
 
-<pre class="src src-sh">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
+<pre class="example">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
 </pre>
 
 

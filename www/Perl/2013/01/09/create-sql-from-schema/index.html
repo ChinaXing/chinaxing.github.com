@@ -29,7 +29,7 @@
         
         <li>
         <a href="/categories/linux/">linux</a>
-        <span style="float:right">[15]</span>
+        <span style="float:right">[14]</span>
         </li>
         
         <li>
@@ -70,6 +70,15 @@ Table of Content
 这个模块还附带了一个命令行的工具： <b>dbicadmin</b> ，帮助我们不必写perl脚本就可以使用它的功能。
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 从Schema生成SQL语句</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">从Schema生成SQL语句</h3>
 <div class="outline-text-3" id="text-1">
@@ -77,8 +86,8 @@ Table of Content
 
 
 
-<pre class="src src-sh">dbicadmin --schema=PeSystem::Schema <span style="color: #ffd787;">\</span>
---connect=<span style="color: #ffd787;">'["db:Pg:dbname=pesystem","dbuser","dbpassword"]'</span> <span style="color: #ffd787;">\</span>
+<pre class="example">dbicadmin --schema=PeSystem::Schema \
+--connect='["db:Pg:dbname=pesystem","dbuser","dbpassword"]' \
 --op=create --sql-type=PostgreSQL --sql-dir=./sql/
 </pre>
 
