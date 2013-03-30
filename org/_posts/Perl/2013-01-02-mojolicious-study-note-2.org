@@ -40,7 +40,7 @@ tag: Mojolicious
   controller的render\_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
   捕获异常: 
   #+begin_src perl
-       eval {code } or do { die "xxx" }  
+       eval { code } or do { die "xxx" }  
   #+end_src
   返回异常页面: $self->render_exception(...);
 

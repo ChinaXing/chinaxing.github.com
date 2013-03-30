@@ -1,4 +1,4 @@
-:session#+begin_html
+#+begin_html
 ---
 layout: tech-post
 title: figlet 一个ascii字符字体的字符串打印工具
@@ -27,7 +27,7 @@ change_frequency: monthly
 字体也有很多我们也可以从其官网上下载得到.
 
 ** 实例演示
-    #+begin_src sh :results output :exports results
+    #+begin_src sh :exports both :results output :eval no-export
       figlet 'china xing !'    
     #+end_src
 
@@ -41,7 +41,7 @@ change_frequency: monthly
 
 
    _-f_ 指定字体:
-    #+begin_src sh :results output :exports results
+    #+begin_src sh :exports both :results output :eval no-export
       figlet -w 104 -f script  'ChinaXing !'
     #+end_src
 

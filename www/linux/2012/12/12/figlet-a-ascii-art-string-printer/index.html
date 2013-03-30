@@ -29,7 +29,7 @@
         
         <li>
         <a href="/categories/linux/">linux</a>
-        <span style="float:right">[15]</span>
+        <span style="float:right">[16]</span>
         </li>
         
         <li>
@@ -63,8 +63,15 @@ Table of Content
 <ol></ol>
 </div>
 <div class="tech">
-</p>
-
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 figlet 介绍</a></li>
+<li><a href="#sec-2">2 实例演示</a></li>
+</ul>
+</div>
+</div>
 
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">figlet 介绍</h3>
@@ -105,6 +112,11 @@ Table of Content
 
 
 
+
+<pre class="src src-sh">figlet <span style="color: #f0e68c;">'china xing !'</span>    
+</pre>
+
+
 <pre class="example">
       _     _                    _               _ 
   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
@@ -119,6 +131,11 @@ Table of Content
 <p>
    <span style="text-decoration:underline;">-f</span> 指定字体:
 </p>
+
+
+<pre class="src src-sh">figlet -w 104 -f script  <span style="color: #f0e68c;">'ChinaXing !'</span>
+</pre>
+
 
 <pre class="example">
   ___  _                      _                         

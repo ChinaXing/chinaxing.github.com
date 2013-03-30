@@ -17,7 +17,7 @@ perldoc perllocal
 
 我们可以通过grep方便找出这个模块列表：
 
-#+begin_src sh :exports results :results output
+#+begin_src sh :exports results :results both :eval no-export
   perldoc -t perllocal | grep "Module" | head -10
 #+end_src  
 
