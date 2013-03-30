@@ -130,14 +130,24 @@ Table of Content
 <h4 id="sec-1-2">controller</h4>
 <div class="outline-text-4" id="text-1-2">
 
-<p>   路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。  
-   controller是Mojolicious::Controller的子类。  
-   默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class('PeSystem::Controller') 设定$app的默认controller.  
-   controller获得app: <b>$self-&gt;app</b>
-   controller获得请求: <b>$self-&gt;req</b>
-   controller获得路由匹配的参数: <b>$self-&gt;stash('id')</b>
-   controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url_encode等方法方便使用(<b>$self-&gt;stash('a'=&gt;'b')</b>)
-</p>
+<ul>
+<li>路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。  
+</li>
+<li>controller是Mojolicious::Controller的子类。  
+</li>
+<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class('PeSystem::Controller') 设定$app的默认controller.  
+</li>
+<li>controller获得app: <b>$self-&gt;app</b>
+</li>
+<li>controller获得请求: <b>$self-&gt;req</b>
+</li>
+<li>controller获得路由匹配的参数: <b>$self-&gt;stash('id')</b>
+</li>
+<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url_encode等方法方便使用(<b>$self-&gt;stash('a'=&gt;'b')</b>)
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -146,9 +156,14 @@ Table of Content
 <h4 id="sec-1-3">action</h4>
 <div class="outline-text-4" id="text-1-3">
 
-<p>   action是controller内的子过程。操作都是在action内进行的.  
-   渲染页面: <b>$self-&gt;render('&hellip;'),$self-&gt;render_exception,$self-&gt;redirect_to(&hellip;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
-</p>
+<ul>
+<li>action是controller内的子过程。操作都是在action内进行的.  
+</li>
+<li>渲染页面: <b>$self-&gt;render('&hellip;'),$self-&gt;render_exception,$self-&gt;redirect_to(&hellip;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -157,10 +172,16 @@ Table of Content
 <h4 id="sec-1-4">template</h4>
 <div class="outline-text-4" id="text-1-4">
 
-<p>  模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）  
-  异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
-  404模版:not_found.$mode.$format.ep,not_found.$format.ep
-</p>
+<ul>
+<li>模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）  
+</li>
+<li>异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
+</li>
+<li>404模版:not_found.$mode.$format.ep,not_found.$format.ep
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -169,20 +190,28 @@ Table of Content
 <h4 id="sec-1-5">异常</h4>
 <div class="outline-text-4" id="text-1-5">
 
-<p>  Mojo::Exception 是其异常类  
-  Mojo是通过local $SIG{__DIE__}来注册自己的异常捕获的。  
-  主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.  
-  controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
-  捕获异常: 
-</p>
+<ul>
+<li>Mojo::Exception 是其异常类  
+</li>
+<li>Mojo是通过local $SIG{__DIE__}来注册自己的异常捕获的。  
+</li>
+<li>主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.  
+</li>
+<li>controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+</li>
+<li>捕获异常: 
+
 
 
 <pre class="src src-perl"><span style="color: #00ffff; font-weight: bold;">eval</span> { code } <span style="color: #00ffff; font-weight: bold;">or</span> <span style="color: #00ffff; font-weight: bold;">do</span> { <span style="color: #00ffff; font-weight: bold;">die</span> <span style="color: #f0e68c;">"xxx"</span> }  
 </pre>
 
-<p>
-  返回异常页面: $self-&gt;render<sub>exception</sub>(&hellip;);
-</p>
+</li>
+<li>返回异常页面: $self-&gt;render<sub>exception</sub>(&hellip;);
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -191,9 +220,14 @@ Table of Content
 <h4 id="sec-1-6">helper</h4>
 <div class="outline-text-4" id="text-1-6">
 
-<p>  辅助工具，默认的/自带的Mojolicious::Plugin::DefaultHelpers 包含stash,dumper等方法.  
-  也可以自己方便地写helper。
-</p>
+<ul>
+<li>辅助工具，默认的/自带的Mojolicious::Plugin::DefaultHelpers 包含stash,dumper等方法.  
+</li>
+<li>也可以自己方便地写helper。
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -202,13 +236,18 @@ Table of Content
 <h4 id="sec-1-7">plugin</h4>
 <div class="outline-text-4" id="text-1-7">
 
-<p>  插件，许多功能通过插件来添加到Mojo.如Config插件，  
-  使用插件：
-</p>
+<ul>
+<li>插件，许多功能通过插件来添加到Mojo.如Config插件，  
+</li>
+<li>使用插件：
+
 
 
 <pre class="src src-perl">$self-&gt;app-&gt;plugin(<span style="color: #f0e68c;">'Config'</span>,{<span style="color: #f0e68c;">file</span> =&gt; <span style="color: #f0e68c;">'pesystem.conf'</span>)  
 </pre>
+
+</li>
+</ul>
 
 </div>
 
@@ -246,8 +285,12 @@ Table of Content
 <h4 id="sec-1-9">command 模块</h4>
 <div class="outline-text-4" id="text-1-9">
 
-<p>  提供命令行选项功能和启动app的功能。
-</p>
+<ul>
+<li>提供命令行选项功能和启动app的功能。
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -256,9 +299,14 @@ Table of Content
 <h4 id="sec-1-10">daemon 模块</h4>
 <div class="outline-text-4" id="text-1-10">
 
-<p>  实现daemon，继承了command模块。
-  是单进程实例.
-</p>
+<ul>
+<li>实现daemon，继承了command模块。
+</li>
+<li>是单进程实例.
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -267,8 +315,12 @@ Table of Content
 <h4 id="sec-1-11">Prefork 模块</h4>
 <div class="outline-text-4" id="text-1-11">
 
-<p>  多进程实例,但是进程数固定.
-</p>
+<ul>
+<li>多进程实例,但是进程数固定.
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -277,9 +329,14 @@ Table of Content
 <h4 id="sec-1-12">Hypnotoad模块</h4>
 <div class="outline-text-4" id="text-1-12">
 
-<p>  实现服务器进程，热部署，websocket支持，非阻塞服务器。
-  使用prefork 实现了多进程(固定进程数,类似nginx worker).
-</p>
+<ul>
+<li>实现服务器进程，热部署，websocket支持，非阻塞服务器。
+</li>
+<li>使用prefork 实现了多进程(固定进程数,类似nginx worker).
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -308,7 +365,7 @@ Table of Content
 <h4 id="sec-1-15">Test::Mojo</h4>
 <div class="outline-text-4" id="text-1-15">
 
-<p>   测试模块, Mojolicious 应用测试基类,方便测试.
+<p>  测试模块, Mojolicious 应用测试基类,方便测试.
 </p>
 </div>
 
@@ -318,11 +375,18 @@ Table of Content
 <h4 id="sec-1-16">Useragent模块</h4>
 <div class="outline-text-4" id="text-1-16">
 
-<p>   模拟UserAgent. 支持同步和异步的请求方式.
-   每个controller有一个UserAgent实例,可以通过$self-&gt;ua获取.
-   每个UserAgent有一个app属性,request,response属性等等: $self-&gt;app, $self-&gt;req, $self-&gt;res
-   UserAgent 使用和依赖了Mojo::IOLoop完成具体任务,使用Mojo::Transaction来构建请求事务.
-</p>
+<ul>
+<li>模拟UserAgent. 支持同步和异步的请求方式.
+</li>
+<li>每个controller有一个UserAgent实例,可以通过$self-&gt;ua获取.
+</li>
+<li>每个UserAgent有一个app属性,request,response属性等等: $self-&gt;app, $self-&gt;req, $self-&gt;res
+</li>
+<li>UserAgent 使用和依赖了Mojo::IOLoop完成具体任务,使用Mojo::Transaction来构建请求事务.
+</li>
+</ul>
+
+
 </div>
 
 </div>
