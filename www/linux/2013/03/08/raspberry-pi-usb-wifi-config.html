@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Raspberry Pi usb 无线网卡安装配置</title>
+    <link rel="stylesheet" href="/stylesheet/styles.css">
+    <link rel="stylesheet" href="/stylesheet/pygments.css">
+    <script src="/scripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body id="toc-top">
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.html>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href=/life/>life</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/linux/>linux</a>
+        <span style="float:right">[16]</span>
+        </li>
+        
+        <li>
+        <a href=/Perl/>Perl</a>
+        <span style="float:right">[10]</span>
+        </li>
+        
+        <li>
+        <a href=/postgres/>postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/Python/>Python</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  Raspberry Pi usb 无线网卡安装配置
+</h1>
+<div id="toc">
+Table of Content
+<ol></ol>
+</div>
+<div class="tech">
+
+<p>
+这几天，为了能够无线连接Raspberry-Pi，这样可以方便的使用和配置它，也免的拿来拿去导致损伤。
+</p>
+<p>
+于是，先在淘宝上搜索了USB无线网卡，结果选了一款最便宜最小巧的USB无线网卡，MERCURY MV150US（25￥）。
+150M足够用了。
+</p>
+<p>
+接下来就是配置无线，让它工作起来：
+</p>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">配置wap_supplicant</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>Raspbian基于Debian系统，系统默认附带了wap_supplicant作为无线链接管理的客户端。
+wap_supplicant这个程序很了不起，大家可以在这里了解到它：
+</p><ul>
+<li><a href="http://hostap.epitest.fi">官网</a>
+</li>
+<li><a href="http://en.wikipedia.org/wiki/Wpa_supplicant">Wikipedia</a>
+</li>
+</ul>
+
+
+<p>
+这个程序的开发者还实现了AP协议的服务端软件<a href="http://hostap.epitest.fi/hostapd/">Hostapd</a> ，我们可以安装这个软件，开启网卡的无线AP功能（需要网卡支持），就可一实现热点接入功能了。
+</p>
+<p>
+wap_supplicant的配置，位于/etc/wpa_supplicant/wpa_supplicant.conf
+</p>
+<p>
+我们需要添加针对热点的配置，如：
+</p>
+
+
+<pre class="example">network={
+        ssid="ChinaXing XO"
+        proto=RSN
+        key_mgmt=WPA-PSK
+        pairwise=CCMP
+        group=CCMP
+        psk=18c9f3c76ab41632bc6ac48a8d7646114e452087fdb47c087100e97292a9da39
+}
+</pre>
+
+
+<p>
+说明：
+</p><ul>
+<li>ssid : 无线AP的名称 
+</li>
+<li>key_mgmt : 管理方式，如果是WPA2-PSK也要填写WPA—PSK，请注意。
+</li>
+<li>psk : 密码，此处的密码是加密过后的密码而不是原始密码，加密方法：
+
+
+
+<pre class="example">wpa_passphrase [ssid] [password]        
+</pre>
+
+<p>
+  这条命令输出一段wpa_supplicant配置，其中psk="&hellip;"即为要使用在配置文件中的密码。
+</p></li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">配置网卡wlan0</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>编辑/etc/network/interface,针对wlan0无线网卡（即为usb网卡）添加如下配置：
+</p>
+
+
+<pre class="example">auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp 
+      wpa-driver wext # 明确使用wext驱动，不然wap_supplicant会尝试另一个驱动（没必要）
+      wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">启动</h3>
+<div class="outline-text-3" id="text-3">
+
+
+
+
+<pre class="example">sudo ifdown wlan0
+sudo ifup wlan0 -vv # 加V可以看到具体启动过程
+</pre>
+
+<p>
+wap_supplicant 将日志通过syslog输出，因此我们可以在/var/log/daemon中看到启动日志。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">其它</h3>
+<div class="outline-text-3" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-4">
+<h4 id="sec-4-1">无法识别网卡</h4>
+<div class="outline-text-4" id="text-4-1">
+
+<p>    如果执行ifconfig命令没有看到无线网卡（除了eth0和lo之外的另一个网卡）出现，说明你的网卡未被内核自动识别，就需要安装驱动
+    先通过lsusb命令查看网卡的芯片类型，然后重新编译内核，将相关驱动编译进去。
+</p></div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-4">
+<h4 id="sec-4-2">wap_supplicant</h4>
+<div class="outline-text-4" id="text-4-2">
+
+<p>    这个程序使用客户端服务端的模式，一个叫wap_supplicant的程序启动起来做daemon进程，然后叫wap_cli的程序会作为客户端，连接daemon进程，
+发送命令（如链接具体的AP）等。 
+</p>
+<p>
+    wap_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
+如，scan 是进行无线网络的扫描，scan_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
+</p>
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<!---------------------------------------------------------
+  ** Table of Content 
+  --------------------------------------------------------->
+<script src="http://code.jquery.com/jquery-1.9.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/scripts/jquery.tableofcontents.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+ $(function(){
+   $("#toc>ol").tableOfContents(
+     null,
+     {
+       startLevel: 3,
+       depth:3,
+       topLinks: true,
+       topBodyId: "toc-top",
+     });
+ });
+</script>
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>
