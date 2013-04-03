@@ -1,0 +1,206 @@
+---
+layout: tech-post
+title: Perl DBIx::Class 模块学习笔记
+category: Perl
+change_frequency: monthly
+tag: DBIx::Class
+---
+
+
+<p>
+<b>Perl</b> 的ORM模块中，DBIx::Class比较强大和完善，文档丰富，容易使用。
+</p>
+<p>
+DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.org/</a>， 也可以在CPAN上搜索，它的代码和文档都放在CPAN上。
+</p>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">ORM优点和作用</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+  ORM模块的作用是将数据库操作和表示映射成对象，方便编程，屏蔽数据库层的具体操作。
+</p>
+<p>
+  使用ORM模块/程序操作数据库，通过调用ORM模块提供的函数/方法等完成，不需要写SQL语句(ORM模块也允许直接写SQL)，
+  不需要处理复杂的数据库SQL语句和特殊的数据库连接、转换等具体问题。
+</p>
+<p>
+  因为有如此多好处，Web开发框架一帮都会集成ORM功能，如果没有集成，程序员也可以将其引入。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">DBIx::Class入门介绍</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>  DBIx::Class 的入门介绍可以看<a href="http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/Manual/Intro.pod">这里</a>。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">DBIx::Class基本概念</h3>
+<div class="outline-text-3" id="text-3">
+
+<ol>
+<li>Schema
+</li>
+<li>Result(ResultSource)
+</li>
+<li>ResultSet
+</li>
+<li>Row
+</li>
+</ol>
+
+
+<p>
+下面逐一介绍:
+</p><ol>
+<li>Schema: 表示数据库。  
+<ol>
+<li>连接数据库
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #ffd700; font-style: italic;">$schema1</span> = My::Schema-&gt;<span style="color: #00ffff; font-weight: bold;">connect</span>(....)
+</pre>
+
+</li>
+<li>取得Result
+
+
+
+<pre class="src src-perl">$schema1-&gt;source(<span style="color: #f0e68c;">'table1'</span>)        
+</pre>
+
+</li>
+<li>取得ResultSet
+
+
+
+<pre class="src src-perl">$schema1-&gt;resultset(<span style="color: #f0e68c;">'table1'</span>)        
+</pre>
+
+</li>
+</ol>
+
+</li>
+<li>Result: 表示表  
+<ol>
+<li>定义在MySchema/Result/下:
+
+
+
+<pre class="src src-perl"><span style="color: #ffd700;">#</span><span style="color: #ffd700;">MySchema/Result/Table1.pm</span>
+<span style="color: #00ffff; font-weight: bold;">package</span> <span style="color: #ffd700; font-weight: bold;">MySchema::Result::Table1</span>;
+<span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #f0e68c;">/DBIx::Class:core/</span>;
+
+<span style="color: #00ffff; font-weight: bold;">__PACKAGE__</span>-&gt;table(<span style="color: #f0e68c;">'table1'</span>);
+<span style="color: #00ffff; font-weight: bold;">__PACKAGE__</span>-&gt;add_columns(<span style="color: #66cd00;">qw</span><span style="color: #f0e68c;">/col1 col2/</span>);
+...
+</pre>
+
+
+</li>
+</ol>
+
+</li>
+<li>ResultSet: 表示查询  
+<ol>
+<li>如果有则定义在MySchema/ResultSet/下,表示对默认Resultet类的扩展，如加入自定义的方法。
+        <a href="http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/ResultSet.pm#CUSTOM_ResultSet_CLASSES_THAT_USE_Moose">扩展方法</a>
+</li>
+<li>取得ResultSet/准备查询
+
+
+
+<pre class="src src-perl">$schema1-&gt;resultset(<span style="color: #f0e68c;">'table1'</span>)  
+</pre>
+
+<p>
+         resultset执行search方法后还是resultset。并没有真正执行。
+</p></li>
+<li>执行查询，取得执行结果(Row)
+
+
+
+<pre class="src src-perl"><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@rows</span>=$resultset-&gt;all();
+$row=$resultset-&gt;find(1);
+</pre>
+
+</li>
+</ol>
+
+</li>
+<li>Row: 代表查询结果里面的行。  
+<ol>
+<li>取得row里面的数据:
+
+
+
+<pre class="src src-perl">$row-&gt;get_columns;
+$row-&gt;get_column(<span style="color: #f0e68c;">'col1'</span>);
+$row-&gt;col1;
+</pre>
+
+</li>
+</ol>
+
+</li>
+<li>storage: 存储  
+     涉及具体数据库的通用存储层，下面的子类是其各个数据库的具体连接实现的DBI。
+<ol>
+<li>取得storage
+
+
+
+<pre class="src src-perl">$storage = $schema-&gt;storage;
+</pre>
+
+</li>
+</ol>
+
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">其它</h3>
+<div class="outline-text-3" id="text-4">
+
+<ul>
+<li>调试: 
+
+
+
+<pre class="src src-perl">$schema-&gt;storge-&gt;debug(1);     
+</pre>
+
+<p>
+     可以打印出SQL语句。
+</p></li>
+<li>相关连接：
+<ul>
+<li>DBIx::Class 所有模块的列表:<a href="http://search.cpan.org/dist/DBIx-Class/">http://search.cpan.org/dist/DBIx-Class/</a>
+</li>
+<li>DBIx::Class 官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.org/</a>
+</li>
+<li>DBIx::Class Manule:<a href="http://search.cpan.org/dist/DBIx-Class/lib/DBIx/Class/Manual.pod">http://search.cpan.org/dist/DBIx-Class/lib/DBIx/Class/Manual.pod</a>
+</li>
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+</div>

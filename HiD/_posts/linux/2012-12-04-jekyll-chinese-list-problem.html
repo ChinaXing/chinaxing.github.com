@@ -1,0 +1,28 @@
+---
+layout: tech-post
+title: jekyll markdown中文列表无法解析的问题
+category: linux
+change_frequency: monthly
+---
+
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">解决方法</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>默认的markdown解析引擎有问题
+</p>
+<p>
+配置_config.yml,将markdown解析引擎换为rdiscount:
+</p>
+
+
+
+<pre class="example">markdown: rdiscount
+</pre>
+
+
+<p>
+问题解决:)
+</p></div>
+</div>

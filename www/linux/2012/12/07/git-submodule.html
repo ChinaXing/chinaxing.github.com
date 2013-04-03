@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>git submodule 学习笔记</title>
+    <link rel="stylesheet" href="/stylesheet/styles.css">
+    <link rel="stylesheet" href="/stylesheet/pygments.css">
+    <script src="/scripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body id="toc-top">
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.html>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href=/life/>life</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/linux/>linux</a>
+        <span style="float:right">[16]</span>
+        </li>
+        
+        <li>
+        <a href=/Perl/>Perl</a>
+        <span style="float:right">[10]</span>
+        </li>
+        
+        <li>
+        <a href=/postgres/>postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/Python/>Python</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  git submodule 学习笔记
+</h1>
+<div id="toc">
+Table of Content
+<ol></ol>
+</div>
+<div class="tech">
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 git help 解释</a></li>
+<li><a href="#sec-2">2 说明</a></li>
+<li><a href="#sec-3">3 命令</a></li>
+<li><a href="#sec-4">4 内部机制</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">git help 解释</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+
+<pre class="example">git-submodule - Initialize, update or inspect submodules
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">说明</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>  git 中的submodule是为了解决项目中依赖别的库，submodule即为依赖的库，方便库的更新，管理。
+</p>
+<p>
+  每个submodule都是一个库，这样可以看到一个大的仓库中包含小的若干仓库，在实际开发中是常见的。
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">命令</h3>
+<div class="outline-text-3" id="text-3">
+
+
+
+
+<pre class="src src-sh">git submodule add 
+git submodule init
+git submodule update
+
+git submodule summary
+...
+</pre>
+
+
+<p>
+  这些命令完成submodule的添加，初始化(注册到本仓库，然后可以被跟踪到)，更新仓库内容，查看摘要等。纤细的命令可以通过
+ <b>git submodule &ndash;help</b> 获得
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">内部机制</h3>
+<div class="outline-text-3" id="text-4">
+
+<p>   git 的主仓库对于submodule的管理是通过如下文件来进行: <b>.gitmodules</b>, <b>.git/config</b>, <b>.git/modules/</b>
+</p>
+<ul>
+<li>.gitmodules 内容如下:
+
+
+
+<pre class="example">[submodule "libs/lib2"]
+     path = libs/lib2
+     url = ../../repos/lib2.git
+</pre>
+
+<p>
+   这个文件在git submodule add的时候生成
+</p></li>
+<li>.git/config 在git submodule init 的时候生成
+</li>
+<li>.git/modules/ 在git submodule add的时候生成，里面是submodule的内容
+</li>
+</ul>
+
+
+<p>
+  主仓库根据submodule的commit ID来跟踪submodule。
+</p>
+<p>
+  当submodule做了commit的或者work tree改动的时候，主仓库能够通过git status查看到。需要在主仓库再commit一下，更新主仓库引用的submodule的 commit ID。
+</p>
+</div>
+</div>
+
+</div>
+
+
+<!---------------------------------------------------------
+  ** Table of Content 
+  --------------------------------------------------------->
+<script src="http://code.jquery.com/jquery-1.9.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/scripts/jquery.tableofcontents.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+ $(function(){
+   $("#toc>ol").tableOfContents(
+     null,
+     {
+       startLevel: 3,
+       depth:3,
+       topLinks: true,
+       topBodyId: "toc-top",
+     });
+ });
+</script>
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>

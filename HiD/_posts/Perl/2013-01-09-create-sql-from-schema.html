@@ -1,0 +1,31 @@
+---
+layout: tech-post
+title: 从DBIx::Class的Schema类生成SQL语句
+category: Perl
+change_frequency: monthly
+---
+
+<p>
+<a href="http://search.cpan.org/perldoc?DBIx::Class::Admin">DBIx::Class::Admin</a> 模块提供了数据库管理的一些功能，如：部署,升级版本，更新数据，插入数据，删除，查询和生成数据库SQL表。
+</p>
+<p>
+这个模块还附带了一个命令行的工具： <b>dbicadmin</b> ，帮助我们不必写perl脚本就可以使用它的功能。
+</p>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">从Schema生成SQL语句</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+
+<pre class="src src-sh">dbicadmin --schema=PeSystem::Schema <span style="color: #f0e68c;">\</span>
+--connect=<span style="color: #f0e68c;">'["db:Pg:dbname=pesystem","dbuser","dbpassword"]'</span> <span style="color: #f0e68c;">\</span>
+--op=create --sql-type=PostgreSQL --sql-dir=./sql/
+</pre>
+
+
+<p>
+  这条命令在 <b>./sql/</b> 下生成 <b>PeSystem::Schema</b> 的SQL语句 <b>PeSystem-Schema-1.x-PostgreSQL.sql</b> 。
+</p></div>
+</div>

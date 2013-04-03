@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>emacs org-mode 使用杂记</title>
+    <link rel="stylesheet" href="/stylesheet/styles.css">
+    <link rel="stylesheet" href="/stylesheet/pygments.css">
+    <script src="/scripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body id="toc-top">
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.html>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href=/life/>life</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/linux/>linux</a>
+        <span style="float:right">[16]</span>
+        </li>
+        
+        <li>
+        <a href=/Perl/>Perl</a>
+        <span style="float:right">[10]</span>
+        </li>
+        
+        <li>
+        <a href=/postgres/>postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/Python/>Python</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  emacs org-mode 使用杂记
+</h1>
+<div id="toc">
+Table of Content
+<ol></ol>
+</div>
+<div class="tech">
+
+<p>
+Emacs org-mode 用来写blog,然后export 出HTML,最后再使用jekyll生成静态blog,发布在github上.
+</p>
+<p>
+这是我写blog的方法,刚刚接触emacs org-mode,所以遇到了不少初级麻烦,折腾之后,记录在这里,
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 导出project配置</a></li>
+<li><a href="#sec-2">2 使用org-bable 插入Source Code</a></li>
+<li><a href="#sec-3">3 导出语法高亮的Source Code</a></li>
+<li><a href="#sec-4">4 导出时不执行代码</a></li>
+<li><a href="#sec-5">5 导出代码和代码执行结果</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">导出project配置</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+
+<pre class="src src-emacs-lisp"><span style="color: #ffd700;">;; </span><span style="color: #ffd700;">load org</span>
+(<span style="color: #00ffff; font-weight: bold;">require</span> '<span style="color: #b0c4de; font-weight: bold;">org</span>)
+<span style="color: #ffd700;">;; </span><span style="color: #ffd700;">load htmlize.el , which org-babel export syntax highlight source code need it</span>
+(<span style="color: #00ffff; font-weight: bold;">require</span> '<span style="color: #b0c4de; font-weight: bold;">htmlize</span>)
+<span style="color: #ffd700;">;; </span><span style="color: #ffd700;">org-mode project define</span>
+(setq org-publish-project-alist
+      '(
+        (<span style="color: #f0e68c;">"org-blog-content"</span> <span style="color: #ffd700;">;; </span><span style="color: #ffd700;">&#21338;&#23458;&#20869;&#23481;</span>
+         <span style="color: #ffd700;">;; </span><span style="color: #ffd700;">Path to your org files.</span>
+         <span style="color: #00ffff; font-weight: bold;">:base-directory</span> <span style="color: #f0e68c;">"~/ChinaXing.org/org/"</span>
+         <span style="color: #00ffff; font-weight: bold;">:base-extension</span> <span style="color: #f0e68c;">"org"</span>
+         <span style="color: #ffd700;">;; </span><span style="color: #ffd700;">Path to your jekyll project.</span>
+         <span style="color: #00ffff; font-weight: bold;">:publishing-directory</span> <span style="color: #f0e68c;">"~/ChinaXing.org/jekyll/"</span>
+         <span style="color: #00ffff; font-weight: bold;">:recursive</span> t
+         <span style="color: #00ffff; font-weight: bold;">:publishing-function</span> org-publish-org-to-html
+         <span style="color: #00ffff; font-weight: bold;">:headline-levels</span> 4
+         <span style="color: #00ffff; font-weight: bold;">:html-extension</span> <span style="color: #f0e68c;">"html"</span>
+         <span style="color: #00ffff; font-weight: bold;">:table-of-contents</span> t <span style="color: #ffd700;">;; </span><span style="color: #ffd700;">&#23548;&#20986;&#30446;&#24405;</span>
+         <span style="color: #00ffff; font-weight: bold;">:body-only</span> t <span style="color: #ffd700;">;; </span><span style="color: #ffd700;">Only export section between &lt;body&gt;&lt;/body&gt;</span>
+         )
+        (<span style="color: #f0e68c;">"org-blog-static"</span> <span style="color: #ffd700;">;; </span><span style="color: #ffd700;">&#38745;&#24577;&#25991;&#20214;</span>
+         <span style="color: #00ffff; font-weight: bold;">:base-directory</span> <span style="color: #f0e68c;">"~/ChinaXing.org/org/"</span>
+         <span style="color: #00ffff; font-weight: bold;">:base-extension</span> <span style="color: #f0e68c;">"css</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">js</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">png</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">jpg</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">gif</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">pdf</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">mp3</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">ogg</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">swf</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">php</span><span style="color: #d3d3d3; font-weight: bold;">\\</span><span style="color: #d3d3d3; font-weight: bold;">|</span><span style="color: #f0e68c;">svg"</span>
+         <span style="color: #00ffff; font-weight: bold;">:publishing-directory</span> <span style="color: #f0e68c;">"~/ChinaXing.org/jekyll/"</span>
+         <span style="color: #00ffff; font-weight: bold;">:recursive</span> t
+         <span style="color: #00ffff; font-weight: bold;">:publishing-function</span> org-publish-attachment)
+        (<span style="color: #f0e68c;">"blog"</span> <span style="color: #00ffff; font-weight: bold;">:components</span> (<span style="color: #f0e68c;">"org-blog-content"</span> <span style="color: #f0e68c;">"org-blog-static"</span>))
+        ))
+(setq org-src-fontify-natively t)
+<span style="color: #ffd700;">;; </span><span style="color: #ffd700;">active Babel languages</span>
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((C . t)
+   (emacs-lisp . t)
+   (sh . t)
+   (perl . t)
+   (python .t)
+   ))
+</pre>
+
+
+<p>
+org-mode 是emacs默认自带的,不需要另外安装
+</p>
+<p>
+org-mode 依赖htmlize来导出代码高亮的html,所以需要下载这个package.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">使用org-bable 插入Source Code</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>org-babel 是org-mode 的一部分,用来管理org文档中的源码,org-babel支持多种<a href="http://orgmode.org/worg/org-contrib/babel/languages.html">语言</a>.
+</p>
+<p>
+org-babel 默认只会加载emacs-lisp这种语言,如果我们要插入org文档中别的语言,需要在.emacs配置文件中指明要加载的语言.
+</p>
+<p>
+如,我的配置文件中指明要加载C, perl, python
+</p>
+<p>
+org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的代码,而且可以执行你插入的代码,捕获输出,插入到你代码的下面.
+</p>
+
+
+<pre class="example">#+begin_src sh :exports both :results output :eval no-export
+  figlet 'china xing !'    
+#+end_src
+
+#+RESULTS:
+:       _     _                    _               _ 
+:   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
+:  / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
+: | (__| | | | | | | | (_| |  &gt;  &lt;| | | | | (_| | |_|
+:  \___|_| |_|_|_| |_|\__,_| /_/\_\_|_| |_|\__, | (_)
+:                                          |___/     
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">导出语法高亮的Source Code</h3>
+<div class="outline-text-3" id="text-3">
+
+<p>将org文档导出成html文档,要使导出的html文档中源代码部分保持语法高亮,需要如下设置:
+</p><ol>
+<li>设置 org-src-fontify-natively 为 t 
+
+
+
+<pre class="src src-emacs-lisp">(setq org-src-fontify-natively t)   
+</pre>
+
+</li>
+<li>安装htmlize.el 这个package. org使用其进行颜色转换.
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">导出时不执行代码</h3>
+<div class="outline-text-3" id="text-4">
+
+<p>如果你嵌入的是shell代码,且希望导出执行结果,在你执行导出的时候,emacs 会提问你是否在本机上执行嵌入的代码,这样每次你导出的时候都会进行提问,比较麻烦,
+我们可以通过设置选项eval来解决:
+</p>
+
+
+<pre class="example">#+begin_src sh :exports both :results output :eval no-export
+  figlet 'china xing !'    
+#+end_src
+...
+</pre>
+
+
+<p>
+<b>no-export</b> 告诉org,在执行导出的时候不要对代码块进行执行和求值.
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5">导出代码和代码执行结果</h3>
+<div class="outline-text-3" id="text-5">
+
+<p>在导出的时候,org默认只会导出code,执行结果不会导出
+</p>
+<ol>
+<li>如果希望导出执行结果,使用:exports result
+</li>
+<li>如果希望导出代码和执行结果,使用:exports both
+</li>
+<li>如果不希望导出代码和执行结果,使用:exports none
+</li>
+</ol>
+
+</div>
+</div>
+
+</div>
+
+
+<!---------------------------------------------------------
+  ** Table of Content 
+  --------------------------------------------------------->
+<script src="http://code.jquery.com/jquery-1.9.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/scripts/jquery.tableofcontents.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+ $(function(){
+   $("#toc>ol").tableOfContents(
+     null,
+     {
+       startLevel: 3,
+       depth:3,
+       topLinks: true,
+       topBodyId: "toc-top",
+     });
+ });
+</script>
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>

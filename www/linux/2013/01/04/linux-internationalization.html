@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Linux 下使用gettext完成程序国际化/本地化</title>
+    <link rel="stylesheet" href="/stylesheet/styles.css">
+    <link rel="stylesheet" href="/stylesheet/pygments.css">
+    <script src="/scripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body id="toc-top">
+    <div class="wrapper">
+      <header>
+      <h1 class="header"><a href=/>ChinaXing</a></h1>
+      <ul>
+        <li><a class="buttons github" href="https://github.com/chinaxing">github profile</a></li>
+      </ul>
+      <p class="header">文章分类
+      <a href=/search.html>
+        <img style="float:right;margin:0;margin-top:8px;border:0;padding:0;" 
+        src=http://www.google.com/uds/css/v2/search_box_icon.png />
+      </a>
+      </p>
+      <ul>
+        
+        <li>
+        <a href=/life/>life</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/linux/>linux</a>
+        <span style="float:right">[16]</span>
+        </li>
+        
+        <li>
+        <a href=/Perl/>Perl</a>
+        <span style="float:right">[10]</span>
+        </li>
+        
+        <li>
+        <a href=/postgres/>postgres</a>
+        <span style="float:right">[2]</span>
+        </li>
+        
+        <li>
+        <a href=/Python/>Python</a>
+        <span style="float:right">[1]</span>
+        </li>
+        
+      </ul>
+      </header>
+      <section>
+      <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
+  Linux 下使用gettext完成程序国际化/本地化
+</h1>
+<div id="toc">
+Table of Content
+<ol></ol>
+</div>
+<div class="tech">
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 国际化</a></li>
+<li><a href="#sec-2">2 工具</a></li>
+<li><a href="#sec-3">3 使用gettext进行本地化的步骤</a></li>
+<li><a href="#sec-4">4 实例</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">国际化</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+程序的国际化/本地化是指根据用户语言和区域的不同程序可以使用针对用户的交互信息。
+</p>
+<p>
+如，中文用户，则语言会变成中文，时间会显示北京时间，货币会显示RMB。
+</p>
+<p>
+Linux 下 <b>Gnu/gettext</b> 工具套件可以完成语言(message)的本地化/国际化。
+</p>
+<p>
+<b>gettext的官方手册</b> ：<a href="http://www.gnu.org/software/gettext/manual/gettext.html">http://www.gnu.org/software/gettext/manual/gettext.html</a>
+</p>
+<p>
+若要完整的了解和掌握gettext的why，what，how，请看这里。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">工具</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>gettext套件的工具包括： gettext,xgettext,msgfmt &hellip; 
+</p><ul>
+<li>gettext : 进行translate，根据LC_MESSAGES环境变量的值和TEXTDOMAIN查找字串对应的本地表示。
+</li>
+<li>xgettext : 从程序中抽取调用gettext进行本地化的字符串，生成一份.po结尾的配置文件。
+</li>
+<li>msgfmt : 将配置好的本地化配置文件进行转换成gettext使用的格式。
+</li>
+</ul>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">使用gettext进行本地化的步骤</h3>
+<div class="outline-text-3" id="text-3">
+
+<ol>
+<li>程序编写的时候,
+<ul>
+<li>在程序开始的地方配置gettext:
+
+
+
+<pre class="src src-C">setlocale(lc_ALL,<span style="color: #f0e68c;">""</span>); <span style="color: #ffd700;">/* </span><span style="color: #ffd700;">"" &#31354;&#20018;&#65292;&#21017;&#20250;&#26681;&#25454;&#36816;&#34892;&#26102;&#29615;&#22659;&#21464;&#37327;&#30340;&#24773;&#20917;&#20915;&#23450; </span><span style="color: #ffd700;">*/</span>
+bindtextdomain(<span style="color: #f0e68c;">'myapp'</span>,<span style="color: #f0e68c;">'/usr/local/share/locale'</span>)
+textdomain(<span style="color: #f0e68c;">'myapp'</span>);     
+</pre>
+
+
+</li>
+<li>需要本地化的地方调用gettext库函数。如:
+
+
+
+
+<pre class="src src-C">printf (gettext(<span style="color: #f0e68c;">"hello,world"</span>)); 
+</pre>
+
+<p>
+     代替:
+</p>
+
+
+<pre class="src src-C">printf (<span style="color: #f0e68c;">"hello,world"</span>);     
+</pre>
+
+<p>
+     gettext 调用可以使用define宏定义为_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
+</p>
+
+
+<pre class="src src-C">printf (_(<span style="color: #f0e68c;">"hello,world"</span>));     
+</pre>
+
+</li>
+</ul>
+
+</li>
+<li>使用xgettext工具处理程序，从中抽取出gettext调用的字符串：
+
+
+
+<pre class="src src-C">xgettext -L c -o zh_CN.po myprogram.c   
+</pre>
+
+<p>
+   假如我想本地化中文: <b>zh_CN</b>
+</p></li>
+<li>编辑生成的本地化配置文件(zh_CN.po),设置转换对应关系，注意设置编码(charset)为 <b>utf-8</b> ，否则转换可能有问题:
+
+
+
+<pre class="src src-perl"><span style="color: #ffd700;"># </span><span style="color: #ffd700;">SOME DESCRIPTIVE TITLE.</span>
+<span style="color: #ffd700;"># </span><span style="color: #ffd700;">Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER</span>
+<span style="color: #ffd700;"># </span><span style="color: #ffd700;">This file is distributed under the same license as the PACKAGE package.</span>
+<span style="color: #ffd700;"># </span><span style="color: #ffd700;">FIRST AUTHOR <a href="mailto:EMAIL%40ADDRESS">&lt;EMAIL</a></span><span style="color: #ffff00; background-color: #000080; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@ADDRESS</a></span><span style="color: #ffd700;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>, YEAR.</span>
+<span style="color: #ffd700;">#</span>
+<span style="color: #ffd700;">#</span><span style="color: #ffd700;">, fuzzy</span>
+msgid <span style="color: #f0e68c;">""</span>
+msgstr <span style="color: #f0e68c;">""</span>
+<span style="color: #f0e68c;">"Project-Id-Version: PACKAGE VERSION\n"</span>
+<span style="color: #f0e68c;">"Report-Msgid-Bugs-To: \n"</span>
+<span style="color: #f0e68c;">"POT-Creation-Date: 2013-01-04 17:11+0800\n"</span>
+<span style="color: #f0e68c;">"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"</span>
+<span style="color: #f0e68c;">"Last-Translator: FULL NAME <a href="mailto:EMAIL%40ADDRESS">&lt;EMAIL</a></span><span style="color: #ffff00; background-color: #000080; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@ADDRESS</a></span><span style="color: #f0e68c;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>\n"</span>
+<span style="color: #f0e68c;">"Language-Team: LANGUAGE <a href="mailto:LL%40li.org">&lt;LL</a></span><span style="color: #ffff00; background-color: #000080; font-weight: bold;"><a href="mailto:LL%40li.org">@li</a></span><span style="color: #f0e68c;"><a href="mailto:LL%40li.org">.org&gt;</a>\n"</span>
+<span style="color: #f0e68c;">"MIME-Version: 1.0\n"</span>
+<span style="color: #f0e68c;">"Content-Type: text/plain; charset=utf-8\n"</span>
+<span style="color: #f0e68c;">"Content-Transfer-Encoding: 8bit\n"</span>
+
+<span style="color: #ffd700;">#</span><span style="color: #ffd700;">: t.sh:6</span>
+msgid <span style="color: #f0e68c;">"hello,world"</span>
+msgstr <span style="color: #f0e68c;">"&#20320;&#22909;&#65292;&#19990;&#30028;"</span>   
+</pre>
+
+
+<p>
+   使用msgfmt工具将配置文件转换成gettext使用的格式：
+</p>
+
+
+<pre class="src src-sh">msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po   
+</pre>
+
+</li>
+<li>验证，设置环境变量LC_MESSAGES或LANG为zh_CN。然后运行程序即可。
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">实例</h3>
+<div class="outline-text-3" id="text-4">
+
+<p>shell 使用gettext的示例:
+</p>
+
+
+<pre class="src src-sh"><span style="color: #ffd700; font-style: italic;">TEXTDOMAINDIR</span>=/usr/local/share/locale/ <span style="color: #ffd700;"># </span><span style="color: #ffd700;">&#20026;gettext&#26597;&#25214;&#36335;&#24452;</span>
+<span style="color: #ffd700; font-style: italic;">TEXTDOMAIN</span>=myapp.mo <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#20026;gettext&#26597;&#25214;&#25991;&#20214;&#21517;&#31216;</span>
+<span style="color: #ffd700; font-style: italic;">LC_MESSAGES</span>=zh_CN <span style="color: #ffd700;">#</span><span style="color: #ffd700;">gettext&#26597;&#25214;&#36335;&#24452;&#30340;&#26412;&#22320;&#21270;&#37096;&#20998;</span>
+
+<span style="color: #00ffff; font-weight: bold;">echo</span> <span style="color: #fa8072;">`gettext "hello,world"`</span>
+</pre>
+
+
+<p>
+将会输出:
+</p>
+
+
+<pre class="example">你好中国
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+
+<!---------------------------------------------------------
+  ** Table of Content 
+  --------------------------------------------------------->
+<script src="http://code.jquery.com/jquery-1.9.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/scripts/jquery.tableofcontents.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+ $(function(){
+   $("#toc>ol").tableOfContents(
+     null,
+     {
+       startLevel: 3,
+       depth:3,
+       topLinks: true,
+       topBodyId: "toc-top",
+     });
+ });
+</script>
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+      </section>
+      <footer>
+      <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</html>

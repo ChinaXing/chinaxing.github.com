@@ -1,0 +1,118 @@
+---
+layout: tech-post
+title: Linux man 命令查找man手册的策略
+category: linux
+change_frequency: monthly
+---
+
+<p>
+本文的知识是从 <b>man man</b> 命令得到。在这里记录只为了备忘和方便，可以使用 <b>man man</b> 来获得纤细的说明。
+</p>
+<p>
+man 命令是我们经常使用的一个命令，那么当你执行:man [command] 的时候，
+man命令是如何查找命令的手册呢？
+</p>
+<p>
+根据man命令的帮助文档，我得到了如下信息:
+</p>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">查找策略</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>man 命令查找命令帮助手册的策略:  
+</p><ul>
+<li>命令行指定 <b>-M</b> 参数，那么man命令使用这个目录搜索。否则,
+</li>
+<li>使用 <b>MANPATH</b> 环境变量指定的路径进行搜索.否则,
+</li>
+<li>查看/etc/man.config，找到其中的 <b>MANPATH</b> 配置，加入搜索路径. 然后,
+</li>
+<li>查看/etc/man.config, 找到其中的 <b>MANPATH<sub>MAP</sub></b> 配置，加入搜索的"Map"路径，然后,
+</li>
+<li>遍历 <b>PATH</b> 变量中的每个路径,对不在 <b>MANPATH<sub>MAP</sub></b> 中的路径, 执行"nearby"查找。
+</li>
+<li>在搜索路径中进行查找.
+</li>
+</ul>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">说明</h3>
+<div class="outline-text-3" id="text-2">
+
+
+<ol>
+<li>"Map"路径:  
+
+<p>
+   这种路径相当于一张hash表，前面是命令所在的PATH搜索路径，后面是man手册的查找路径，man 会根据这个hash表查找该命令的man手册。
+</p>
+<p>
+   <b>举例</b> :  
+</p><ol>
+<li>设置: <b>MANPATH<sub>MAP</sub> /home/admin/git/bin /home/admin/git/man/</b>
+
+<p>
+      当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 这个命令的位置，在 <b>/home/admin/git/bin</b> 下找到了,
+      所以根据设置的hash表，在 <b>/home/admin/git/man</b> 这个路径下查找git的手册.
+</p>
+</li>
+<li>设置: <b>MANPATH<sub>MAP</sub> /bin /home/admin/git/man</b> 
+
+<p>
+      当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 命令的位置，在 <b>/home/admin/git/bin</b> 下面找到了，
+      但是根据hash, 没有这个路径对应的man手册搜索路径，所以这条MANPATH<sub>MAP不会被使用</sub>.
+</p>
+</li>
+</ol>
+
+</li>
+<li>man查找对象:  
+
+<p>
+    查找对象为 <b>topic.section</b> ,如果没找到，则查找 <b>man[section]/topic.section</b> ,如: <b>man1/git.1</b> 。
+</p>
+</li>
+<li>nearby查找:  
+    nearby查找查找什么呢？  
+
+<p>
+    通过我实验，会在本目录先查找 <b>man</b> ,如果没找到, 然后查找 <b>man[section]</b> 目录  
+</p>
+<p>
+    如果找到 <b>man[section]</b> 目录则将当前目录加入搜索路径,找到 <b>man</b> 目录将 <b>当前目录/man</b> 加入搜索路径。
+</p></li>
+</ol>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">其它</h3>
+<div class="outline-text-3" id="text-3">
+
+<ol>
+<li>查看找到的手册的位置:
+</li>
+</ol>
+
+
+
+
+<pre class="src src-sh">man --path cat
+</pre>
+
+
+
+
+</div>
+</div>
