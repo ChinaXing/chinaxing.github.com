@@ -69,6 +69,22 @@ Table of Content
 如果数据库和表已经存在，我们不需要手动创建Schema，可以使用 <a href="http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm">DBIx::Class::Schema::Loader</a> 这个模块自动生成.
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 从数据库产生Schema方法</a>
+<ul>
+<li><a href="#sec-1-1">1.1 使用 make_schema_at 方法</a></li>
+<li><a href="#sec-1-2">1.2 使用 dbicdump 工具</a></li>
+<li><a href="#sec-1-3">1.3 使用 dump_to_dir 方法</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 比较</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-4">
 <h4 id="sec-1">从数据库产生Schema方法</h4>
 <div class="outline-text-4" id="text-1">
@@ -84,13 +100,13 @@ Table of Content
 
 
 
-<pre class="src src-sh">perl -MDBIx::Class::Schema::<span style="color: #ffd700; font-style: italic;">Loader</span>=make_schema_at &lt;&lt;EOF
-<span style="color: #ffa54f;">make_schema_at({</span>
-<span style="color: #ffa54f;">   'My::Schema',</span>
-<span style="color: #ffa54f;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
-<span style="color: #ffa54f;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
-<span style="color: #ffa54f;">});</span>
-<span style="color: #ffa54f;">EOF</span>
+<pre class="src src-sh">perl -MDBIx::Class::Schema::<span style="color: #8fbc8f;">Loader</span>=make_schema_at &lt;&lt;EOF
+<span style="color: #ffff00; font-weight: bold;">make_schema_at({</span>
+<span style="color: #ffff00; font-weight: bold;">   'My::Schema',</span>
+<span style="color: #ffff00; font-weight: bold;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
+<span style="color: #ffff00; font-weight: bold;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
+<span style="color: #ffff00; font-weight: bold;">});</span>
+<span style="color: #ffff00; font-weight: bold;">EOF</span>
 </pre>
 
 
@@ -106,7 +122,7 @@ Table of Content
 </p>
 
 
-<pre class="src src-sh">dbicdump -o <span style="color: #ffd700; font-style: italic;">dump_directory</span>=<span style="color: #f0e68c;">'./'</span> My::Schema <span style="color: #f0e68c;">'dbi:Pg:dbname="pesystem"'</span> <span style="color: #f0e68c;">"pesystem"</span> <span style="color: #f0e68c;">"pesystem_password"</span>
+<pre class="src src-sh">dbicdump -o <span style="color: #8fbc8f;">dump_directory</span>=<span style="color: #ffa500;">'./'</span> My::Schema <span style="color: #ffa500;">'dbi:Pg:dbname="pesystem"'</span> <span style="color: #ffa500;">"pesystem"</span> <span style="color: #ffa500;">"pesystem_password"</span>
 </pre>
 
 
@@ -122,17 +138,17 @@ Table of Content
 </p>
 
 
-<pre class="src src-perl"><span style="color: #ffd700;">#</span><span style="color: #ffd700;">My/Schema.pm</span>
+<pre class="src src-perl"><span style="color: #cd5c5c;">#</span><span style="color: #cd5c5c;">My/Schema.pm</span>
 pakcage My::Schema;
-<span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #f0e68c;">/DBIx::Class::Schema::Loader/</span>;
+<span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">base</span> qw<span style="color: #ffa500;">/DBIx::Class::Schema::Loader/</span>;
 1;
 
-perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \
-    <span style="color: #ffd700; font-weight: bold;">-e</span> <span style="color: #f0e68c;">'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'</span>
-<span style="color: #ffd700;"># </span><span style="color: #ffd700;">or</span> 
-<span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">My::Schema</span>;
-My::Schema-&gt;dump_to_dir(<span style="color: #f0e68c;">'./'</span>);
-My::Schema-&gt;connection(...);
+perl -MDBIx::Class::Schema::Loader=dump_to_dir:.<span style="color: #ffa500;">/ -MMy::Schema \</span>
+<span style="color: #ffa500;">    -e 'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'</span>
+<span style="color: #ffa500;"># or </span>
+<span style="color: #ffa500;">use My::Schema;</span>
+<span style="color: #ffa500;">My::Schema-&gt;dump_to_dir('./');</span>
+<span style="color: #ffa500;">My::Schema-&gt;connection(...);</span>
 </pre>
 
 

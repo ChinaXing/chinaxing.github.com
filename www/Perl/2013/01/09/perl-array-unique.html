@@ -64,10 +64,19 @@ Table of Content
 </div>
 <div class="tech">
 
-<pre class="src src-perl"><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
+<pre class="src src-perl"><span style="color: #00ff00;">my</span> @<span style="color: #8fbc8f;">new_a</span> = keys %{ {map {$<span style="color: #8fbc8f;">_</span> =&gt; } @<span style="color: #8fbc8f;">a</span>} };
 </pre>
 
 
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 例子:</a></li>
+</ul>
+</div>
+</div>
 
 <div id="outline-container-1" class="outline-4">
 <h4 id="sec-1">例子:</h4>
@@ -76,20 +85,20 @@ Table of Content
 
 
 
-<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Modern::Perl</span>;
-<span class="linenr"> 2:  </span><span style="color: #00ffff; font-weight: bold;">use</span> <span style="color: #ffd700; font-weight: bold;">Data::Dumper</span>;
+<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Modern</span>::Perl;
+<span class="linenr"> 2:  </span><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Data</span>::Dumper;
 <span class="linenr"> 3:  </span>
-<span class="linenr"> 4:  </span><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> = (
-<span class="linenr"> 5:  </span>    { <span style="color: #f0e68c;">a</span> =&gt; <span style="color: #f0e68c;">'b'</span>},
-<span class="linenr"> 6:  </span>    { <span style="color: #f0e68c;">a</span> =&gt; <span style="color: #f0e68c;">'c'</span>},
-<span class="linenr"> 7:  </span>    { <span style="color: #f0e68c;">a</span> =&gt; <span style="color: #f0e68c;">'b'</span>},
+<span class="linenr"> 4:  </span><span style="color: #00ff00;">my</span> @<span style="color: #8fbc8f;">a</span> = (
+<span class="linenr"> 5:  </span>    { a =&gt; <span style="color: #ffa500;">'b'</span>},
+<span class="linenr"> 6:  </span>    { a =&gt; <span style="color: #ffa500;">'c'</span>},
+<span class="linenr"> 7:  </span>    { a =&gt; <span style="color: #ffa500;">'b'</span>},
 <span class="linenr"> 8:  </span>);
 <span class="linenr"> 9:  </span>
-<span class="linenr">10:  </span>say <span style="color: #f0e68c;">"-----------------------"</span>;
+<span class="linenr">10:  </span>say <span style="color: #ffa500;">"-----------------------"</span>;
 <span class="linenr">11:  </span>
-<span class="linenr">12:  </span><span style="color: #00ffff; font-weight: bold;">my</span> <span style="color: #ffd700; font-style: italic;">$e</span> = [ <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; 1}  <span style="color: #66cd00;">map</span> {$_-&gt;{<span style="color: #f0e68c;">a</span>} } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> } } ];
+<span class="linenr">12:  </span><span style="color: #00ff00;">my</span> $<span style="color: #8fbc8f;">e</span> = [ keys %{ {map {$<span style="color: #8fbc8f;">_</span> =&gt; 1}  map {$<span style="color: #8fbc8f;">_</span>-&gt;{a} } @<span style="color: #8fbc8f;">a</span> } } ];
 <span class="linenr">13:  </span>
-<span class="linenr">14:  </span>say Dumper $e;
+<span class="linenr">14:  </span>say Dumper $<span style="color: #8fbc8f;">e</span>;
 <span class="linenr">15:  </span>
 </pre>
 

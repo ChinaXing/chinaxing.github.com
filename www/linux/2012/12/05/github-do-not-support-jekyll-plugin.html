@@ -65,6 +65,16 @@ Table of Content
 <div class="tech">
 
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 问题描述</a></li>
+<li><a href="#sec-2">2 解决方法:</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">问题描述</h3>
 <div class="outline-text-3" id="text-1">
@@ -123,7 +133,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 </p>
 
 
-<pre class="src src-sh">git commit -am <span style="color: #f0e68c;">'---&#28155;&#21152;&#25991;&#31456;---'</span>      
+<pre class="src src-sh">git commit -am <span style="color: #ffa500;">'---&#28155;&#21152;&#25991;&#31456;---'</span>      
 </pre>
 
 </li>
@@ -131,8 +141,8 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh"><span style="color: #ffd700; font-style: italic;">commitID</span>=$(<span style="color: #ff00ff;">echo</span> <span style="color: #f0e68c;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
-git update-ref refs/heads/master $<span style="color: #ffd700; font-style: italic;">commitID</span>
+<pre class="src src-sh"><span style="color: #8fbc8f;">commitID</span>=$(<span style="color: #fa8072;">echo</span> <span style="color: #ffa500;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
+git update-ref refs/heads/master $<span style="color: #8fbc8f;">commitID</span>
 git checkout master
 git push -f origin master
 </pre>
