@@ -1,0 +1,86 @@
+#+BEGIN_HTML
+---
+layout: tech-post
+title: 使用perl模块HiD取代jekyll编写blog
+category: linux
+change_frequency: monthly
+---
+#+END_HTML
+
+jekyll 是一个非常好用的静态站点生成器，支持插件，可以用来增强它。
+
+如今，许多技术人员的blog开始放在github上面，github同时支持jekyll的基本功能。
+
+经过一些配置，就可以使用org+jekyll+github完成blog的编写到发布。
+
+jekyll使用ruby开发，因为我没有学过ruby，也不打算学，所以一直希望能够有个Perl的类似程序，以便代替jekyll。
+
+于是，在CPAN上面发现了这个模块：[[https://github.com/genehack/HiD][HID]], 类似的模块当然很多，而且灵感都起于jekyll，之所以选这个模块是因为它和
+jekyll的相似度非常高。
+
+美中不足的是，它还有待完善，因为还不能支持全局的分类和tag之类的功能，虽然为它添加这个功能非常简单（我已经添加）。
+
+*** HID介绍
+    HID的作者维护的版本还没有将categories和tags导出到site变量，而且代码中有点bug，对utf8的title会有问题。
+
+    我fork了作者的代码，添加了categories和tags的导出，修正了一些问题，目前来看，可以导出同jekyll一样的结果，而且支持一个after\_publish插件。
+    
+    通过after\_publish插件，可以进行生成分类文章索引、sitemap等自己想要的东西。
+    
+    pull-request已经提交给作者，等待merge，现在使用可以从我的[[git://github.com/ChinaXing/HiD.git][repo]]里面clone，然后安装。
+    
+    此外，我已经写好了生成分类索引页和sitemap的插件，也可以从这里下载，然后放入你的blog目录的_plugin目录。
+*** HID安装
+    - 从github clone代码
+      #+BEGIN_SRC sh 
+      git clone git://github.com/ChinaXing/HiD.git
+      #+END_SRC
+    - 安装此perl模块
+      #+BEGIN_SRC sh
+      cd HID && dzil build
+      cd HID-0.5 && perl Makefile.PL && make && make install 
+      #+END_SRC
+    安装完成后，会有一个*hid*命令，这个命令类似jekyl。
+*** HID生成静态网站
+    使用hid命令来生成静态页面，类似jekyll，只要在目录内部执行`hid publish`即可，hid的配置也类似jekyll，因为它们一样的思想。
+    
+    生成静态网站后，如果想本地测试，运行`hid server`，会在本地启动一个plack服务器，端口默认5000，此功能需要你安装Plack::Runner模块。
+
+*** 以我我的为例子
+    举例我的blog的目录结构：
+    #+BEGIN_SRC sh
+     tree -L 2 ~/ChinaXing.org/
+    #+END_SRC
+    #+BEGIN_EXAMPLE
+    ChinaXing.org/
+    ├── build.sh
+    ├── HiD
+    │   ├── _config.yml
+    │   ├── _layouts
+    │   ├── _plugins
+    │   ├── _posts
+    │   ├── CNAME
+    │   ├── favicon.ico
+    │   ├── images
+    │   ├── index.html
+    │   ├── robots.txt
+    │   ├── scripts
+    │   ├── search.html
+    │   └── stylesheet
+    ├── org
+    │   ├── _layouts
+    │   ├── _posts
+    │   ├── images
+    │   ├── index.org
+    │   ├── scripts
+    │   ├── search.org
+    │   └── stylesheet
+    └── www
+        ├── CNAME
+        ├── favicon.ico
+        ├── images
+        ....
+    #+END_EXAMPLE
+
+
+
