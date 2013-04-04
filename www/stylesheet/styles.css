@@ -28,7 +28,8 @@ time, mark, audio, video {
 
 body {
     padding:10px 50px 0 0;
-    font-family:'Imprima', Helvetica, Arial, sans-serif;
+/*    font-family:'Imprima', Helvetica, Arial, sans-serif; */
+    font-family: 'Libre Baskerville',Georgia,serif;
     font-size: 14px;
     color: #232323;
     background-color: black;
@@ -52,7 +53,8 @@ p, ul, ol, table, dl {
 }
 
 h1, h2, h3 {
-    font-family: 'Molengo',sans-serif;
+/*    font-family: 'Molengo',sans-serif; */
+    font-family: 'Libre Baskerville',Georgia,serif;
     line-height:1.3em;
     font-weight: normal;
 }
@@ -76,7 +78,8 @@ h3 {
 }
 
 h4, h5, h6 {
-    font-family: 'Molengo', sans-serif;
+/*    font-family: 'Molengo', sans-serif; */
+    font-family: 'Libre Baskerville',Georgia,serif;
     font-weight: 700;
 }
 
@@ -254,7 +257,8 @@ p.header {
 }
 
 h1.header {
-    font-family: 'Molengo',sans-serif;
+    /* font-family: 'Molengo',sans-serif; */
+    font-family: 'Libre Baskerville',Georgia,serif;
     font-size: 30px;
     font-weight: 300;
     line-height: 1.3em;
