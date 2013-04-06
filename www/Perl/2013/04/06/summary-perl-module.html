@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>列出你安装的Perl模块</title>
+    <title>Perl module 介绍</title>
     <link rel="stylesheet" href="/stylesheet/styles.css">
     <link rel="stylesheet" href="/stylesheet/pygments.css">
     <script src="/scripts/scale.fix.js"></script>
@@ -56,7 +56,7 @@
       </header>
       <section>
       <h1 style="border:0;text-align:center;color:#C3001D;font-weight:bold">
-  列出你安装的Perl模块
+  Perl module 介绍
 </h1>
 <div id="toc">
 Table of Content
@@ -64,43 +64,161 @@ Table of Content
 </div>
 <div class="tech">
 
+
 <p>
-有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过一个很简单的命令成:
+本文总结和介绍Perl语言的”模块“，知识来源于<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
 </p>
 
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">纲目与理念</h4>
+<div class="outline-text-4" id="text-1">
+
+<ul>
+<li>Perl 用模块来组织代码，一切程序都是模块。默认的模块是*main*.
+</li>
+<li>模块等于namespace，全局变量和subrutine都存在于“某个”模块中，没有完全全局的变量。
+</li>
+<li>使用别的模块内的变量和subroutine，需要将其*导入*到*符号表*,被perl程序*知道*与可访问。
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">Perl 语言由模块构成</h4>
+<div class="outline-text-4" id="text-2">
+
+<ul>
+<li>模块构成了Perl程序，入口点在main模块（是默认的模块）。
+</li>
+<li>模块存放于文件中，结尾以pm,al,so等代表不同的类型。
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3">模块的构成</h4>
+<div class="outline-text-4" id="text-3">
+
+<ul>
+<li>模块的全局变量和子过程存放在符号表中模块名为key的空间中
+</li>
+<li>全局变量：our $var
+</li>
+<li>子过程：sub {}
+</li>
+<li>导出变量和子过程
 
 
-<pre class="src src-sh">perldoc perllocal
+
+<pre class="src src-perl"><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Exporter</span>;
+our @<span style="color: #8fbc8f;">EXPORT</span> = (...) <span style="color: #cd5c5c;"># &#40664;&#35748;&#23548;&#20986;</span>
+our @<span style="color: #8fbc8f;">EXPORT_OK</span> = ( ... ) <span style="color: #cd5c5c;">#&#21487;&#20197;&#26174;&#24335;&#23548;&#20986;&#65292;&#40664;&#35748;&#19981;&#23548;&#20986;&#12290;</span>
+our %<span style="color: #8fbc8f;">EXPORT_TAGS</span> =( T1 =&gt; ( ... ),) <span style="color: #cd5c5c;">#&#25353;&#29031;tag&#23548;&#20986;&#19968;&#32452;&#12290;</span>
 </pre>
 
-
 <p>
-这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
+      导出的变量和子过程被引入了导出者的名字空间，可以直接访问。
 </p>
-<p>
-我们可以通过grep方便找出这个模块列表：
-</p>
+<p>      
+      访问未导出的全局变量和子过程：$PACKAGE::var, &amp;PACKAGE::suba,因为它们存在于模块的名字空间内。
+</p></li>
+</ul>
 
+</div>
 
+</div>
 
+<div id="outline-container-4" class="outline-4">
+<h4 id="sec-4">加载模块和导入模块变量和子过程</h4>
+<div class="outline-text-4" id="text-4">
 
+<ul>
+<li>加载模块
+<ul>
+<li>运行期：require "module";
+</li>
+<li>编译期：use module ();
+</li>
+</ul>
 
-<pre class="example">Thu Jan 24 20:37:27 2013: "Module" App::cpanminus
-Thu Jan 24 20:47:13 2013: "Module" AnyEvent
-Thu Jan 24 20:49:16 2013: "Module" Guard
-Thu Jan 24 20:49:19 2013: "Module" common::sense
-Thu Jan 24 20:49:23 2013: "Module" Coro
-Mon Jan 28 10:51:32 2013: "Module" Regexp::Common
-Mon Jan 28 11:11:36 2013: "Module" Try::Tiny
-Mon Jan 28 11:11:37 2013: "Module" Test::Fatal
-Mon Jan 28 11:12:19 2013: "Module" Test::Requires
-Mon Jan 28 11:12:26 2013: "Module" Module::Implementation
-</pre>
+</li>
+<li>加载模块并导入XX
+<ul>
+<li>导入默认导出的变量：use moduleA;
+</li>
+<li>并导入指定的量：use moduleA qw/A b/;
+</li>
+<li>导入tag指定的一组量：use module A qw/:tagA /;
+</li>
+<li>不导入量只加载模块：use module ();
+</li>
+</ul>
 
+</li>
+</ul>
 
-<p>
-<b>Come from</b> <a href="#http-www.cpan.org-misc-cpan-faq.html">CPAN-FAQ</a>
-</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-4">
+<h4 id="sec-5">模块/类/包</h4>
+<div class="outline-text-4" id="text-5">
+
+<ul>
+<li>模块是一个逻辑上的概念，代表一个可以服用的功能上独立的代码单元。
+</li>
+<li>类是OOP中的一个概念，用来抽象某一个特征的事务群体为单一的代表。
+</li>
+<li>包是从代码层面来将编程组件集合在一起的概念，包中包含了变量，子过程。
+
+</li>
+<li>模块和类的实现都是通过包（package 语法）这种机制实现的。
+</li>
+<li>package 申明包
+</li>
+<li>use和Exporter为包提供了模块的导入和导出功能，实现了模块
+</li>
+<li>包内的@ISA数组实现了类的继承，并通过继承UNIVERSUAL基类，包实现了类的功能。
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-4">
+<h4 id="sec-6">其它</h4>
+<div class="outline-text-4" id="text-6">
+
+<ul>
+<li>use 在编译期执行。加载模块并执行导入。
+</li>
+<li>require 在运行期执行。加载模块。
+</li>
+<li>use 大约相当于 BEGIN{ require Module; Module-&gt;import(LIST) }
+</li>
+<li>require 借助于 do "file" 来实现文件和模块加载。
+</li>
+<li>do 不会重复加载文件和模块，通过%INC hash变量来判断。
+</li>
+<li>do 读入文件，然后执行文件内容，类似于eval。
+</li>
+<li>eval 将参数的字符串当做代码，进行编译，执行。
+</li>
+<li>require，do，eval 都会导致在运行期执行编译。
+</li>
+</ul>
+
+</div>
+</div>
+
 </div>
 
 

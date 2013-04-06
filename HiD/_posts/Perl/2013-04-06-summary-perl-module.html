@@ -1,24 +1,24 @@
 ---
 layout: tech-post
-title: Perl module ����
+title: Perl module 介绍
 category: Perl
 change_frequency: monthly
 ---
 
 <p>
-�����ܽ�ͽ���Perl���Եġ�ģ�顰��֪ʶ��Դ��<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
+本文总结和介绍Perl语言的”模块“，知识来源于<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
 </p>
 
 <div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">��Ŀ������</h4>
+<h4 id="sec-1">纲目与理念</h4>
 <div class="outline-text-4" id="text-1">
 
 <ul>
-<li>Perl ��ģ������֯���룬һ�г�����ģ�顣Ĭ�ϵ�ģ����*main*.
+<li>Perl 用模块来组织代码，一切程序都是模块。默认的模块是*main*.
 </li>
-<li>ģ�����namespace��ȫ�ֱ�����subrutine�������ڡ�ĳ����ģ���У�û����ȫȫ�ֵı�����
+<li>模块等于namespace，全局变量和subrutine都存在于“某个”模块中，没有完全全局的变量。
 </li>
-<li>ʹ�ñ��ģ���ڵı�����subroutine����Ҫ����*����*��*���ű�*,��perl����*֪��*��ɷ��ʡ�
+<li>使用别的模块内的变量和subroutine，需要将其*导入*到*符号表*,被perl程序*知道*与可访问。
 </li>
 </ul>
 
@@ -27,13 +27,13 @@ change_frequency: monthly
 </div>
 
 <div id="outline-container-2" class="outline-4">
-<h4 id="sec-2">Perl ������ģ�鹹��</h4>
+<h4 id="sec-2">Perl 语言由模块构成</h4>
 <div class="outline-text-4" id="text-2">
 
 <ul>
-<li>ģ�鹹����Perl������ڵ���mainģ�飨��Ĭ�ϵ�ģ�飩��
+<li>模块构成了Perl程序，入口点在main模块（是默认的模块）。
 </li>
-<li>ģ�������ļ��У���β��pm,al,so�ȴ�����ͬ�����͡�
+<li>模块存放于文件中，结尾以pm,al,so等代表不同的类型。
 </li>
 </ul>
 
@@ -42,17 +42,17 @@ change_frequency: monthly
 </div>
 
 <div id="outline-container-3" class="outline-4">
-<h4 id="sec-3">ģ��Ĺ���</h4>
+<h4 id="sec-3">模块的构成</h4>
 <div class="outline-text-4" id="text-3">
 
 <ul>
-<li>ģ���ȫ�ֱ������ӹ��̴���ڷ��ű���ģ����Ϊkey�Ŀռ���
+<li>模块的全局变量和子过程存放在符号表中模块名为key的空间中
 </li>
-<li>ȫ�ֱ�����our $var
+<li>全局变量：our $var
 </li>
-<li>�ӹ��̣�sub {}
+<li>子过程：sub {}
 </li>
-<li>�����������ӹ���
+<li>导出变量和子过程
 
 
 
@@ -63,10 +63,10 @@ our %<span style="color: #8fbc8f;">EXPORT_TAGS</span> =( T1 =&gt; ( ... ),) <spa
 </pre>
 
 <p>
-      �����ı������ӹ��̱������˵����ߵ����ֿռ䣬����ֱ�ӷ��ʡ�
+      导出的变量和子过程被引入了导出者的名字空间，可以直接访问。
 </p>
 <p>      
-      ����δ������ȫ�ֱ������ӹ��̣�$PACKAGE::var, &amp;PACKAGE::suba,��Ϊ���Ǵ�����ģ������ֿռ��ڡ�
+      访问未导出的全局变量和子过程：$PACKAGE::var, &amp;PACKAGE::suba,因为它们存在于模块的名字空间内。
 </p></li>
 </ul>
 
@@ -75,28 +75,28 @@ our %<span style="color: #8fbc8f;">EXPORT_TAGS</span> =( T1 =&gt; ( ... ),) <spa
 </div>
 
 <div id="outline-container-4" class="outline-4">
-<h4 id="sec-4">����ģ��͵���ģ��������ӹ���</h4>
+<h4 id="sec-4">加载模块和导入模块变量和子过程</h4>
 <div class="outline-text-4" id="text-4">
 
 <ul>
-<li>����ģ��
+<li>加载模块
 <ul>
-<li>�����ڣ�require "module";
+<li>运行期：require "module";
 </li>
-<li>�����ڣ�use module ();
+<li>编译期：use module ();
 </li>
 </ul>
 
 </li>
-<li>����ģ�鲢����XX
+<li>加载模块并导入XX
 <ul>
-<li>����Ĭ�ϵ����ı�����use moduleA;
+<li>导入默认导出的变量：use moduleA;
 </li>
-<li>������ָ��������use moduleA qw/A b/;
+<li>并导入指定的量：use moduleA qw/A b/;
 </li>
-<li>����tagָ����һ������use module A qw/:tagA /;
+<li>导入tag指定的一组量：use module A qw/:tagA /;
 </li>
-<li>��������ֻ����ģ�飺use module ();
+<li>不导入量只加载模块：use module ();
 </li>
 </ul>
 
@@ -108,24 +108,24 @@ our %<span style="color: #8fbc8f;">EXPORT_TAGS</span> =( T1 =&gt; ( ... ),) <spa
 </div>
 
 <div id="outline-container-5" class="outline-4">
-<h4 id="sec-5">ģ��/��/��</h4>
+<h4 id="sec-5">模块/类/包</h4>
 <div class="outline-text-4" id="text-5">
 
 <ul>
-<li>ģ����һ���߼��ϵĸ������һ�����Է��õĹ����϶����Ĵ��뵥Ԫ��
+<li>模块是一个逻辑上的概念，代表一个可以服用的功能上独立的代码单元。
 </li>
-<li>����OOP�е�һ�������������ĳһ������������Ⱥ��Ϊ��һ�Ĵ�����
+<li>类是OOP中的一个概念，用来抽象某一个特征的事务群体为单一的代表。
 </li>
-<li>���ǴӴ����������������������һ��ĸ�����а����˱������ӹ��̡�
+<li>包是从代码层面来将编程组件集合在一起的概念，包中包含了变量，子过程。
 
 </li>
-<li>ģ������ʵ�ֶ���ͨ������package �﷨�����ֻ���ʵ�ֵġ�
+<li>模块和类的实现都是通过包（package 语法）这种机制实现的。
 </li>
-<li>package ������
+<li>package 申明包
 </li>
-<li>use��ExporterΪ���ṩ��ģ��ĵ���͵������ܣ�ʵ����ģ��
+<li>use和Exporter为包提供了模块的导入和导出功能，实现了模块
 </li>
-<li>���ڵ�@ISA����ʵ������ļ̳У���ͨ���̳�UNIVERSUAL���࣬��ʵ������Ĺ��ܡ�
+<li>包内的@ISA数组实现了类的继承，并通过继承UNIVERSUAL基类，包实现了类的功能。
 </li>
 </ul>
 
@@ -134,25 +134,25 @@ our %<span style="color: #8fbc8f;">EXPORT_TAGS</span> =( T1 =&gt; ( ... ),) <spa
 </div>
 
 <div id="outline-container-6" class="outline-4">
-<h4 id="sec-6">����</h4>
+<h4 id="sec-6">其它</h4>
 <div class="outline-text-4" id="text-6">
 
 <ul>
-<li>use �ڱ�����ִ�С�����ģ�鲢ִ�е��롣
+<li>use 在编译期执行。加载模块并执行导入。
 </li>
-<li>require ��������ִ�С�����ģ�顣
+<li>require 在运行期执行。加载模块。
 </li>
-<li>use ��Լ�൱�� BEGIN{ require Module; Module-&gt;import(LIST) }
+<li>use 大约相当于 BEGIN{ require Module; Module-&gt;import(LIST) }
 </li>
-<li>require ������ do "file" ��ʵ���ļ���ģ����ء�
+<li>require 借助于 do "file" 来实现文件和模块加载。
 </li>
-<li>do �����ظ������ļ���ģ�飬ͨ��%INC hash�������жϡ�
+<li>do 不会重复加载文件和模块，通过%INC hash变量来判断。
 </li>
-<li>do �����ļ���Ȼ��ִ���ļ����ݣ�������eval��
+<li>do 读入文件，然后执行文件内容，类似于eval。
 </li>
-<li>eval ���������ַ����������룬���б��룬ִ�С�
+<li>eval 将参数的字符串当做代码，进行编译，执行。
 </li>
-<li>require��do��eval ���ᵼ����������ִ�б��롣
+<li>require，do，eval 都会导致在运行期执行编译。
 </li>
 </ul>
 
