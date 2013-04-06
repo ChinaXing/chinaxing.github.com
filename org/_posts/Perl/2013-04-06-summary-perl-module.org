@@ -1,0 +1,59 @@
+#+begin_html
+---
+layout: tech-post
+title: Perl module 介绍
+category: Perl
+change_frequency: monthly
+---
+#+end_html
+
+本文总结和介绍Perl语言的”模块“，知识来源于[[http://perldoc.perl.org/perlmod.html][perldoc]].
+
+*** 纲目与理念
+    - Perl 用模块来组织代码，一切程序都是模块。默认的模块是*main*.
+    - 模块等于namespace，全局变量和subrutine都存在于“某个”模块中，没有完全全局的变量。
+    - 使用别的模块内的变量和subroutine，需要将其*导入*到*符号表*,被perl程序*知道*与可访问。
+*** Perl 语言由模块构成
+    - 模块构成了Perl程序，入口点在main模块（是默认的模块）。
+    - 模块存放于文件中，结尾以pm,al,so等代表不同的类型。
+*** 模块的构成
+    - 模块的全局变量和子过程存放在符号表中模块名为key的空间中
+    - 全局变量：our $var
+    - 子过程：sub {}
+    - 导出变量和子过程
+      #+begin_src perl
+      use Exporter;
+      our @EXPORT = (...) # 默认导出
+      our @EXPORT_OK = ( ... ) #可以显式导出，默认不导出。
+      our %EXPORT_TAGS =( T1 => ( ... ),) #按照tag导出一组。
+      #+end_src
+      导出的变量和子过程被引入了导出者的名字空间，可以直接访问。
+      
+      访问未导出的全局变量和子过程：$PACKAGE::var, &PACKAGE::suba,因为它们存在于模块的名字空间内。
+*** 加载模块和导入模块变量和子过程
+    - 加载模块
+      - 运行期：require "module";
+      - 编译期：use module ();
+    - 加载模块并导入XX
+      - 导入默认导出的变量：use moduleA;
+      - 并导入指定的量：use moduleA qw/A b/;
+      - 导入tag指定的一组量：use module A qw/:tagA /;
+      - 不导入量只加载模块：use module ();
+*** 模块/类/包
+    - 模块是一个逻辑上的概念，代表一个可以服用的功能上独立的代码单元。
+    - 类是OOP中的一个概念，用来抽象某一个特征的事务群体为单一的代表。
+    - 包是从代码层面来将编程组件集合在一起的概念，包中包含了变量，子过程。
+
+    - 模块和类的实现都是通过包（package 语法）这种机制实现的。
+    - package 申明包
+    - use和Exporter为包提供了模块的导入和导出功能，实现了模块
+    - 包内的@ISA数组实现了类的继承，并通过继承UNIVERSUAL基类，包实现了类的功能。
+*** 其它
+    - use 在编译期执行。加载模块并执行导入。
+    - require 在运行期执行。加载模块。
+    - use 大约相当于 BEGIN{ require Module; Module->import(LIST) }
+    - require 借助于 do "file" 来实现文件和模块加载。
+    - do 不会重复加载文件和模块，通过%INC hash变量来判断。
+    - do 读入文件，然后执行文件内容，类似于eval。
+    - eval 将参数的字符串当做代码，进行编译，执行。
+    - require，do，eval 都会导致在运行期执行编译。
