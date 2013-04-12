@@ -39,11 +39,11 @@ DBIx::Class的官网:[[http://www.dbix-class.org/]]， 也可以在CPAN上搜索
         #+end_src
      2. 取得Result
         #+begin_src perl
-         $schema1->source('table1')        
+         $schema1->source('table1')
         #+end_src
      3. 取得ResultSet
         #+begin_src perl
-         $schema1->resultset('table1')        
+         $schema1->resultset('table1')
         #+end_src
   2. Result: 表示表  
      1. 定义在MySchema/Result/下:
@@ -62,7 +62,7 @@ DBIx::Class的官网:[[http://www.dbix-class.org/]]， 也可以在CPAN上搜索
         [[http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/ResultSet.pm#CUSTOM_ResultSet_CLASSES_THAT_USE_Moose][扩展方法]]
      2. 取得ResultSet/准备查询
         #+begin_src perl
-          $schema1->resultset('table1')  
+          $schema1->resultset('table1')
         #+end_src
          resultset执行search方法后还是resultset。并没有真正执行。
      3. 执行查询，取得执行结果(Row)
@@ -86,7 +86,7 @@ DBIx::Class的官网:[[http://www.dbix-class.org/]]， 也可以在CPAN上搜索
 ** 其它
    * 调试: 
      #+begin_src perl
-       $schema->storge->debug(1);     
+       $schema->storge->debug(1);
      #+end_src
      可以打印出SQL语句。
    * 相关连接：
