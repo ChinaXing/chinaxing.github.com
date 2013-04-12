@@ -72,18 +72,6 @@ Table of Content
 DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.org/</a>， 也可以在CPAN上搜索，它的代码和文档都放在CPAN上。
 </p>
 
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 ORM优点和作用</a></li>
-<li><a href="#sec-2">2 DBIx::Class入门介绍</a></li>
-<li><a href="#sec-3">3 DBIx::Class基本概念</a></li>
-<li><a href="#sec-4">4 其它</a></li>
-</ul>
-</div>
-</div>
-
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">ORM优点和作用</h3>
 <div class="outline-text-3" id="text-1">
@@ -138,7 +126,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="src src-perl"><span style="color: #00ff00;">my</span> $<span style="color: #8fbc8f;">schema1</span> = My::Schema-&gt;connect(....)
+<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffa07a;">$schema1</span> = My::Schema-&gt;<span style="color: #ffff00;">connect</span>(....)
 </pre>
 
 </li>
@@ -146,7 +134,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">schema1</span>-&gt;source(<span style="color: #ffa500;">'table1'</span>)        
+<pre class="src src-perl">$schema1-&gt;source(<span style="color: #ffa500;">'table1'</span>)<span style="text-decoration: underline;">        </span>
 </pre>
 
 </li>
@@ -154,7 +142,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">schema1</span>-&gt;resultset(<span style="color: #ffa500;">'table1'</span>)        
+<pre class="src src-perl">$schema1-&gt;resultset(<span style="color: #ffa500;">'table1'</span>)<span style="text-decoration: underline;">        </span>
 </pre>
 
 </li>
@@ -167,12 +155,12 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="src src-perl"><span style="color: #cd5c5c;">#</span><span style="color: #cd5c5c;">MySchema/Result/Table1.pm</span>
-<span style="color: PaleYellow;">package</span> <span style="color: #9acd32;">MySchema</span>::Result::Table1;
-<span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">base</span> qw<span style="color: #ffa500;">/DBIx::Class:core/</span>;
+<pre class="src src-perl"><span style="color: #ffd700;">#</span><span style="color: #ffd700;">MySchema/Result/Table1.pm</span>
+<span style="color: #00ffff;">package</span> <span style="color: #00fa9a;">MySchema::Result::Table1</span>;
+<span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #ffa500;">/DBIx::Class:core/</span>;
 
-__PACKAGE__-&gt;table(<span style="color: #ffa500;">'table1'</span>);
-__PACKAGE__-&gt;add_columns(qw<span style="color: #ffa500;">/col1 col2/</span>);
+<span style="color: #ffff00;">__PACKAGE__</span>-&gt;table(<span style="color: #ffa500;">'table1'</span>);
+<span style="color: #ffff00;">__PACKAGE__</span>-&gt;add_columns(<span style="color: #66cd00;">qw</span><span style="color: #ffa500;">/col1 col2/</span>);
 ...
 </pre>
 
@@ -190,7 +178,7 @@ __PACKAGE__-&gt;add_columns(qw<span style="color: #ffa500;">/col1 col2/</span>);
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">schema1</span>-&gt;resultset(<span style="color: #ffa500;">'table1'</span>)  
+<pre class="src src-perl">$schema1-&gt;resultset(<span style="color: #ffa500;">'table1'</span>)<span style="text-decoration: underline;">  </span>
 </pre>
 
 <p>
@@ -200,8 +188,8 @@ __PACKAGE__-&gt;add_columns(qw<span style="color: #ffa500;">/col1 col2/</span>);
 
 
 
-<pre class="src src-perl">@<span style="color: #8fbc8f;">rows</span>=$<span style="color: #8fbc8f;">resultset</span>-&gt;all();
-$<span style="color: #8fbc8f;">row</span>=$<span style="color: #8fbc8f;">resultset</span>-&gt;find(1);
+<pre class="src src-perl"><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@rows</span>=$resultset-&gt;all();
+$row=$resultset-&gt;find(1);
 </pre>
 
 </li>
@@ -214,9 +202,9 @@ $<span style="color: #8fbc8f;">row</span>=$<span style="color: #8fbc8f;">results
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">row</span>-&gt;get_columns;
-$<span style="color: #8fbc8f;">row</span>-&gt;get_column(<span style="color: #ffa500;">'col1'</span>);
-$<span style="color: #8fbc8f;">row</span>-&gt;col1;
+<pre class="src src-perl">$row-&gt;get_columns;
+$row-&gt;get_column(<span style="color: #ffa500;">'col1'</span>);
+$row-&gt;col1;
 </pre>
 
 </li>
@@ -230,7 +218,7 @@ $<span style="color: #8fbc8f;">row</span>-&gt;col1;
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">storage</span> = $<span style="color: #8fbc8f;">schema</span>-&gt;storage;
+<pre class="src src-perl">$storage = $schema-&gt;storage;
 </pre>
 
 </li>
@@ -252,7 +240,7 @@ $<span style="color: #8fbc8f;">row</span>-&gt;col1;
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">schema</span>-&gt;storge-&gt;debug(1);     
+<pre class="src src-perl">$schema-&gt;storge-&gt;debug(1);<span style="text-decoration: underline;">     </span>
 </pre>
 
 <p>

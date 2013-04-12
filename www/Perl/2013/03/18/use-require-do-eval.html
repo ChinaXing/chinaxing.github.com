@@ -83,7 +83,7 @@ use, require, do ,eval 是我们经常见到的perl语言关键字。下面我�
 </p>
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Data</span>::Dumper;
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span>;
 </pre>
 
 
@@ -118,7 +118,7 @@ use 的作用是：
 
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Data</span>::Dumper; 
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span>;<span style="text-decoration: underline;"> </span>
 </pre>
 
 <p>
@@ -126,26 +126,13 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">BEGIN</span> { <span style="color: PaleYellow;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; <span style="color: #ffa500;">'Data::Dumper'</span>-&gt;<span style="color: PaleYellow;">import</span>; }
+<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; <span style="color: #ffa500;">'Data::Dumper'</span>-&gt;import; }
 </pre>
 
 
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Data</span>::Dumper qw<span style="color: #ffa500;">(Dumper)</span>;
-</pre>
-
-<p>
-等效于：
-</p>
-
-
-<pre class="src src-perl"><span style="color: PaleYellow;">BEGIN</span> { <span style="color: PaleYellow;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; <span style="color: #ffa500;">'Data::Dumper'</span>-&gt;<span style="color: PaleYellow;">import</span>(qw<span style="color: #ffa500;">(Dumper)</span>); }
-</pre>
-
-
-
-<pre class="src src-perl"><span style="color: PaleYellow;">use</span> <span style="color: #7fffd4;">Data</span>::Dumper ();
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span> <span style="color: #66cd00;">qw</span><span style="color: #ffa500;">(Dumper)</span>;
 </pre>
 
 <p>
@@ -153,7 +140,20 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">BEGIN</span> { <span style="color: PaleYellow;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; }
+<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; <span style="color: #ffa500;">'Data::Dumper'</span>-&gt;import(<span style="color: #66cd00;">qw</span><span style="color: #ffa500;">(Dumper)</span>); }
+</pre>
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span> ();
+</pre>
+
+<p>
+等效于：
+</p>
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; }
 </pre>
 
 
@@ -187,8 +187,8 @@ require 加载后，模块的命名空间被建立，就可以通过其命名空
 
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">require</span> <span style="color: #7fffd4;">Data</span>::Dumper;
-print Data::Dumper { a =&gt; 1 , b =&gt; 2 };
+<pre class="src src-perl"><span style="color: #00ffff;">require</span> <span style="color: #00fa9a;">Data::Dumper</span>;
+<span style="color: #66cd00;">print</span> Data::Dumper { <span style="color: #ffa500;">a</span> =&gt; 1 , <span style="color: #ffa500;">b</span> =&gt; 2 };
 </pre>
 
 
@@ -249,7 +249,7 @@ EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文�
 
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">do</span> <span style="color: #ffa500;">'stat.pl'</span>
+<pre class="src src-perl"><span style="color: #00ffff;">do</span> <span style="color: #ffa500;">'stat.pl'</span>
 </pre>
 
 
@@ -258,7 +258,7 @@ EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文�
 </p>
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">eval</span> <span style="color: #ffa500;">`cat stat.pl`</span>
+<pre class="src src-perl"><span style="color: #00ffff;">eval</span> <span style="color: #ffa500;">`cat stat.pl`</span>
 </pre>
 
 

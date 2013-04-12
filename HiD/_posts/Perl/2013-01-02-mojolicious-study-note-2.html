@@ -105,7 +105,7 @@ tag: Mojolicious
 
 
 
-<pre class="src src-perl"><span style="color: PaleYellow;">eval</span> { code } or <span style="color: PaleYellow;">do</span> { <span style="color: PaleYellow;">die</span> <span style="color: #ffa500;">"xxx"</span> }  
+<pre class="src src-perl"><span style="color: #00ffff;">eval</span> { code } <span style="color: #ffff00;">or</span> <span style="color: #00ffff;">do</span> { <span style="color: #00ffff;">die</span> <span style="color: #ffa500;">"xxx"</span> }<span style="text-decoration: underline;">  </span>
 </pre>
 
 </li>
@@ -145,7 +145,7 @@ tag: Mojolicious
 
 
 
-<pre class="src src-perl">$<span style="color: #8fbc8f;">self</span>-&gt;app-&gt;plugin(<span style="color: #ffa500;">'Config'</span>,{file =&gt; <span style="color: #ffa500;">'pesystem.conf'</span>)  
+<pre class="src src-perl">$self-&gt;app-&gt;plugin(<span style="color: #ffa500;">'Config'</span>,{<span style="color: #ffa500;">file</span> =&gt; <span style="color: #ffa500;">'pesystem.conf'</span>)<span style="text-decoration: underline;">  </span>
 </pre>
 
 </li>
@@ -456,7 +456,7 @@ tag: Mojolicious
 
 
 <pre class="src src-perl">{
-   hypontoad =&gt; { listen =&gt; [<span style="color: #ffa500;">'http://*:9999'</span>], worker =&gt; 4 },
+   <span style="color: #ffa500;">hypontoad</span> =&gt; { <span style="color: #ffa500;">listen</span> =&gt; [<span style="color: #ffa500;">'http://*:9999'</span>], <span style="color: #ffa500;">worker</span> =&gt; 4 },
 }
 </pre>
 

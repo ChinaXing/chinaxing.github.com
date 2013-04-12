@@ -197,8 +197,7 @@ img {
 /* Code blocks */
 
 code, pre {
-    font-size:14px;
-    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-family: Consolas, Menlo, Monaco, Courier, monospace; 
 }
 pre {
     background: #FDFEFB;
