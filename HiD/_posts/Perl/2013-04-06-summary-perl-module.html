@@ -9,6 +9,20 @@ change_frequency: monthly
 本文总结和介绍Perl语言的”模块“，知识来源于<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 纲目与理念</a></li>
+<li><a href="#sec-2">2 Perl 语言由模块构成</a></li>
+<li><a href="#sec-3">3 模块的构成</a></li>
+<li><a href="#sec-4">4 加载模块和导入模块变量和子过程</a></li>
+<li><a href="#sec-5">5 模块/类/包</a></li>
+<li><a href="#sec-6">6 其它</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-4">
 <h4 id="sec-1">纲目与理念</h4>
 <div class="outline-text-4" id="text-1">
@@ -57,9 +71,9 @@ change_frequency: monthly
 
 
 <pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Exporter</span>;
-<span style="color: #00ffff;">our</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@EXPORT</span> = (...) <span style="color: #ffd700;"># </span><span style="color: #ffd700;">&#40664;&#35748;&#23548;&#20986;</span>
-<span style="color: #00ffff;">our</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@EXPORT_OK</span> = ( ... ) <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#21487;&#20197;&#26174;&#24335;&#23548;&#20986;&#65292;&#40664;&#35748;&#19981;&#23548;&#20986;&#12290;</span>
-<span style="color: #00ffff;">our</span> <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">%EXPORT_TAGS</span> =( <span style="color: #ffa500;">T1</span> =&gt; ( ... ),) <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#25353;&#29031;tag&#23548;&#20986;&#19968;&#32452;&#12290;</span>
+<span style="color: #00ffff;">our</span> <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@EXPORT</span> = (...) <span style="color: #ffd700;"># </span><span style="color: #ffd700;">&#40664;&#35748;&#23548;&#20986;</span>
+<span style="color: #00ffff;">our</span> <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@EXPORT_OK</span> = ( ... ) <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#21487;&#20197;&#26174;&#24335;&#23548;&#20986;&#65292;&#40664;&#35748;&#19981;&#23548;&#20986;&#12290;</span>
+<span style="color: #00ffff;">our</span> <span style="color: #ff0000; background-color: #000080; font-weight: bold; font-style: italic;">%EXPORT_TAGS</span> =( <span style="color: #ffa500;">T1</span> =&gt; ( ... ),) <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#25353;&#29031;tag&#23548;&#20986;&#19968;&#32452;&#12290;</span>
 </pre>
 
 <p>

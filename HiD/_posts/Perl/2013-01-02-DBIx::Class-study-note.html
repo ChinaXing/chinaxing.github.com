@@ -14,6 +14,18 @@ tag: DBIx::Class
 DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.org/</a>， 也可以在CPAN上搜索，它的代码和文档都放在CPAN上。
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 ORM优点和作用</a></li>
+<li><a href="#sec-2">2 DBIx::Class入门介绍</a></li>
+<li><a href="#sec-3">3 DBIx::Class基本概念</a></li>
+<li><a href="#sec-4">4 其它</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">ORM优点和作用</h3>
 <div class="outline-text-3" id="text-1">
@@ -99,10 +111,10 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 <pre class="src src-perl"><span style="color: #ffd700;">#</span><span style="color: #ffd700;">MySchema/Result/Table1.pm</span>
 <span style="color: #00ffff;">package</span> <span style="color: #00fa9a;">MySchema::Result::Table1</span>;
-<span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #ffa500;">/DBIx::Class:core/</span>;
+<span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">base</span> <span style="color: #ff83fa;">qw</span><span style="color: #ffa500;">/DBIx::Class:core/</span>;
 
 <span style="color: #ffff00;">__PACKAGE__</span>-&gt;table(<span style="color: #ffa500;">'table1'</span>);
-<span style="color: #ffff00;">__PACKAGE__</span>-&gt;add_columns(<span style="color: #66cd00;">qw</span><span style="color: #ffa500;">/col1 col2/</span>);
+<span style="color: #ffff00;">__PACKAGE__</span>-&gt;add_columns(<span style="color: #ff83fa;">qw</span><span style="color: #ffa500;">/col1 col2/</span>);
 ...
 </pre>
 
@@ -130,7 +142,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="src src-perl"><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@rows</span>=$resultset-&gt;all();
+<pre class="src src-perl"><span style="color: #ffff00; background-color: #000080; font-weight: bold;">@rows</span>=$resultset-&gt;all();
 $row=$resultset-&gt;find(1);
 </pre>
 

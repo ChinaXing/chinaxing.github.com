@@ -5,10 +5,19 @@ category: Perl
 change_frequency: monthly
 ---
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
+<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@new_a</span> = <span style="color: #ff83fa;">keys</span> %{ {<span style="color: #ff83fa;">map</span> {$_ =&gt; } <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@a</span>} };
 </pre>
 
 
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 例子:</a></li>
+</ul>
+</div>
+</div>
 
 <div id="outline-container-1" class="outline-4">
 <h4 id="sec-1">例子:</h4>
@@ -20,7 +29,7 @@ change_frequency: monthly
 <pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Modern::Perl</span>;
 <span class="linenr"> 2:  </span><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span>;
 <span class="linenr"> 3:  </span>
-<span class="linenr"> 4:  </span><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> = (
+<span class="linenr"> 4:  </span><span style="color: #00ffff;">my</span> <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@a</span> = (
 <span class="linenr"> 5:  </span>    { <span style="color: #ffa500;">a</span> =&gt; <span style="color: #ffa500;">'b'</span>},
 <span class="linenr"> 6:  </span>    { <span style="color: #ffa500;">a</span> =&gt; <span style="color: #ffa500;">'c'</span>},
 <span class="linenr"> 7:  </span>    { <span style="color: #ffa500;">a</span> =&gt; <span style="color: #ffa500;">'b'</span>},
@@ -28,7 +37,7 @@ change_frequency: monthly
 <span class="linenr"> 9:  </span>
 <span class="linenr">10:  </span>say <span style="color: #ffa500;">"-----------------------"</span>;
 <span class="linenr">11:  </span>
-<span class="linenr">12:  </span><span style="color: #00ffff;">my</span> <span style="color: #ffa07a;">$e</span> = [ <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; 1}  <span style="color: #66cd00;">map</span> {$_-&gt;{<span style="color: #ffa500;">a</span>} } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> } } ];
+<span class="linenr">12:  </span><span style="color: #00ffff;">my</span> <span style="color: #ffa07a;">$e</span> = [ <span style="color: #ff83fa;">keys</span> %{ {<span style="color: #ff83fa;">map</span> {$_ =&gt; 1}  <span style="color: #ff83fa;">map</span> {$_-&gt;{<span style="color: #ffa500;">a</span>} } <span style="color: #ffff00; background-color: #000080; font-weight: bold;">@a</span> } } ];
 <span class="linenr">13:  </span>
 <span class="linenr">14:  </span>say Dumper $e;
 <span class="linenr">15:  </span>

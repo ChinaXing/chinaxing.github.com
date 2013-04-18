@@ -8,6 +8,18 @@ tag: gettext
 
 
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 国际化</a></li>
+<li><a href="#sec-2">2 工具</a></li>
+<li><a href="#sec-3">3 使用gettext进行本地化的步骤</a></li>
+<li><a href="#sec-4">4 实例</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">国际化</h3>
 <div class="outline-text-3" id="text-1">
@@ -115,7 +127,7 @@ textdomain(<span style="color: #ffa500;">'myapp'</span>);
 <pre class="src src-perl"><span style="color: #ffd700;"># </span><span style="color: #ffd700;">SOME DESCRIPTIVE TITLE.</span>
 <span style="color: #ffd700;"># </span><span style="color: #ffd700;">Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER</span>
 <span style="color: #ffd700;"># </span><span style="color: #ffd700;">This file is distributed under the same license as the PACKAGE package.</span>
-<span style="color: #ffd700;"># </span><span style="color: #ffd700;">FIRST AUTHOR <a href="mailto:EMAIL%40ADDRESS">&lt;EMAIL</a></span><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@ADDRESS</a></span><span style="color: #ffd700;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>, YEAR.</span>
+<span style="color: #ffd700;"># </span><span style="color: #ffd700;">FIRST AUTHOR <a href="mailto:EMAIL%40ADDRESS">&lt;EMAIL</a></span><span style="color: #ffff00; background-color: #000080; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@ADDRESS</a></span><span style="color: #ffd700;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>, YEAR.</span>
 <span style="color: #ffd700;">#</span>
 <span style="color: #ffd700;">#</span><span style="color: #ffd700;">, fuzzy</span>
 msgid <span style="color: #ffa500;">""</span>
@@ -124,8 +136,8 @@ msgstr <span style="color: #ffa500;">""</span>
 <span style="color: #ffa500;">"Report-Msgid-Bugs-To: \n"</span>
 <span style="color: #ffa500;">"POT-Creation-Date: 2013-01-04 17:11+0800\n"</span>
 <span style="color: #ffa500;">"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"</span>
-<span style="color: #ffa500;">"Last-Translator: FULL NAME <a href="mailto:EMAIL%40ADDRESS">&lt;EMAIL</a></span><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@ADDRESS</a></span><span style="color: #ffa500;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>\n"</span>
-<span style="color: #ffa500;">"Language-Team: LANGUAGE <a href="mailto:LL%40li.org">&lt;LL</a></span><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;"><a href="mailto:LL%40li.org">@li</a></span><span style="color: #ffa500;"><a href="mailto:LL%40li.org">.org&gt;</a>\n"</span>
+<span style="color: #ffa500;">"Last-Translator: FULL NAME <a href="mailto:EMAIL%40ADDRESS">&lt;EMAIL</a></span><span style="color: #ffff00; background-color: #000080; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@ADDRESS</a></span><span style="color: #ffa500;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>\n"</span>
+<span style="color: #ffa500;">"Language-Team: LANGUAGE <a href="mailto:LL%40li.org">&lt;LL</a></span><span style="color: #ffff00; background-color: #000080; font-weight: bold;"><a href="mailto:LL%40li.org">@li</a></span><span style="color: #ffa500;"><a href="mailto:LL%40li.org">.org&gt;</a>\n"</span>
 <span style="color: #ffa500;">"MIME-Version: 1.0\n"</span>
 <span style="color: #ffa500;">"Content-Type: text/plain; charset=utf-8\n"</span>
 <span style="color: #ffa500;">"Content-Transfer-Encoding: 8bit\n"</span>
@@ -166,7 +178,7 @@ msgstr <span style="color: #ffa500;">"&#20320;&#22909;&#65292;&#19990;&#30028;"<
 <span style="color: #ffa07a;">TEXTDOMAIN</span>=myapp.mo <span style="color: #ffd700;">#</span><span style="color: #ffd700;">&#20026;gettext&#26597;&#25214;&#25991;&#20214;&#21517;&#31216;</span>
 <span style="color: #ffa07a;">LC_MESSAGES</span>=zh_CN <span style="color: #ffd700;">#</span><span style="color: #ffd700;">gettext&#26597;&#25214;&#36335;&#24452;&#30340;&#26412;&#22320;&#21270;&#37096;&#20998;</span>
 
-<span style="color: #b0c4de;">echo</span> <span style="color: #ff00ff;">`gettext "hello,world"`</span>
+<span style="color: #b0c4de;">echo</span> <span style="color: #fa8072;">`gettext "hello,world"`</span>
 </pre>
 
 

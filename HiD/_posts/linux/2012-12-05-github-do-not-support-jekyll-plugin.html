@@ -6,6 +6,16 @@ change_frequency: monthly
 ---
 
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 问题描述</a></li>
+<li><a href="#sec-2">2 解决方法:</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">问题描述</h3>
 <div class="outline-text-3" id="text-1">
@@ -72,7 +82,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh"><span style="color: #ffa07a;">commitID</span>=$(<span style="color: #ff00ff;">echo</span> <span style="color: #ffa500;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
+<pre class="src src-sh"><span style="color: #ffa07a;">commitID</span>=$(<span style="color: #fa8072;">echo</span> <span style="color: #ffa500;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
 git update-ref refs/heads/master $<span style="color: #ffa07a;">commitID</span>
 git checkout master
 git push -f origin master

@@ -82,6 +82,36 @@ Table of Content
 故而提了一个issue给作者后，转向使用csync2+incrond来完成任务,于是有了本文。
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 csync2 介绍</a>
+<ul>
+<li><a href="#sec-1-1">1.1 csync2特点</a></li>
+<li><a href="#sec-1-2">1.2 安装</a></li>
+<li><a href="#sec-1-3">1.3 配置</a></li>
+<li><a href="#sec-1-4">1.4 启动</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 incrond 介绍</a>
+<ul>
+<li><a href="#sec-2-1">2.1 安装</a></li>
+<li><a href="#sec-2-2">2.2 配置</a></li>
+<li><a href="#sec-2-3">2.3 启动</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 incrond+csync2配置集群同步</a>
+<ul>
+<li><a href="#sec-3-1">3.1 搭配原因</a></li>
+<li><a href="#sec-3-2">3.2 搭配方法</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 其它</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-4">
 <h4 id="sec-1">csync2 介绍</h4>
 <div class="outline-text-4" id="text-1">
@@ -99,7 +129,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <div class="outline-text-5" id="text-1-1">
 
 <ul>
-<li>使用sqlite（可以编译支持pgsql、mysql等）数据记录跟踪文件变化，可以查看和diff远端和自己的差别，可以查看哪些文件发生了变化。
+<li>使用sqlite（可以编译支持pgsql、mysql等）数据库记录跟踪文件变化，可以查看和diff远端和自己的差别，可以查看哪些文件发生了变化
 </li>
 <li>使用rsync算法进行数据同步，rsync算法是高效的
 </li>
@@ -107,13 +137,13 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </li>
 <li>节点间进行对称加密的认证，同样提供了安全性
 </li>
-<li>支持同步的时候进行备份，防止意外
+<li>支持同步的时候进行备份，防止同步异常造成数据丢失
 </li>
-<li>支持冲突发现，并可以通过配置冲突解决策略自动解决冲突
+<li>支持冲突发现，并可以通过配置冲突解决策略来自动解决冲突
 </li>
 <li>支持一台服务器上配置多个组，同步只发生在组内
 </li>
-<li>丰富的客户端命令选项，便于查看和操作同步
+<li>丰富的客户端命令选项，便于查看同步和手动执行同步
 </li>
 </ul>
 

@@ -11,6 +11,22 @@ tag: DBIx::Class
 如果数据库和表已经存在，我们不需要手动创建Schema，可以使用 <a href="http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm">DBIx::Class::Schema::Loader</a> 这个模块自动生成.
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 从数据库产生Schema方法</a>
+<ul>
+<li><a href="#sec-1-1">1.1 使用 make_schema_at 方法</a></li>
+<li><a href="#sec-1-2">1.2 使用 dbicdump 工具</a></li>
+<li><a href="#sec-1-3">1.3 使用 dump_to_dir 方法</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 比较</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-4">
 <h4 id="sec-1">从数据库产生Schema方法</h4>
 <div class="outline-text-4" id="text-1">
@@ -27,12 +43,12 @@ tag: DBIx::Class
 
 
 <pre class="src src-sh">perl -MDBIx::Class::Schema::<span style="color: #ffa07a;">Loader</span>=make_schema_at &lt;&lt;EOF
-<span style="color: #ffa54f;">make_schema_at({</span>
-<span style="color: #ffa54f;">   'My::Schema',</span>
-<span style="color: #ffa54f;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
-<span style="color: #ffa54f;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
-<span style="color: #ffa54f;">});</span>
-<span style="color: #ffa54f;">EOF</span>
+<span style="color: #ffff00; font-weight: bold;">make_schema_at({</span>
+<span style="color: #ffff00; font-weight: bold;">   'My::Schema',</span>
+<span style="color: #ffff00; font-weight: bold;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
+<span style="color: #ffff00; font-weight: bold;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
+<span style="color: #ffff00; font-weight: bold;">});</span>
+<span style="color: #ffff00; font-weight: bold;">EOF</span>
 </pre>
 
 
@@ -66,7 +82,7 @@ tag: DBIx::Class
 
 <pre class="src src-perl"><span style="color: #ffd700;">#</span><span style="color: #ffd700;">My/Schema.pm</span>
 pakcage My::Schema;
-<span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #ffa500;">/DBIx::Class::Schema::Loader/</span>;
+<span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">base</span> <span style="color: #ff83fa;">qw</span><span style="color: #ffa500;">/DBIx::Class::Schema::Loader/</span>;
 1;
 
 perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \

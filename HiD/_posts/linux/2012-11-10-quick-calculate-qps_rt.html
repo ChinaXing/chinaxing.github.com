@@ -18,6 +18,16 @@ change_frequency: monthly
 经过我这几天的考虑，总结出了下面一条命令。计算qps和rt算是很快了。如果谁有比这个更秒的方法，不吝赐教：
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 脚本</a></li>
+<li><a href="#sec-2">2 说明</a></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-1" class="outline-3">
 <h3 id="sec-1">脚本</h3>
 <div class="outline-text-3" id="text-1">
@@ -26,7 +36,7 @@ change_frequency: monthly
 
 
 <pre class="src src-sh"><span style="color: #ffa07a;">srm</span>=<span style="color: #ffa500;">" \[`date -d ' -1 second '  +%d\\\/%h\\\/%Y:%H:%M:%S` +0800\] "</span>
-<span style="color: #ffa07a;">QPS_RT</span>=$(<span style="color: #ff00ff;">tac</span> $<span style="color: #ffa07a;">acc_logs</span>|sed -n -e  <span style="color: #ffa500;">'/'"$srm"'/,${</span>
+<span style="color: #ffa07a;">QPS_RT</span>=$(<span style="color: #fa8072;">tac</span> $<span style="color: #ffa07a;">acc_logs</span>|sed -n -e  <span style="color: #ffa500;">'/'"$srm"'/,${</span>
 <span style="color: #ffa500;">/'"$srm"'/p</span>
 <span style="color: #ffa500;">/'"$srm"'/!q}'</span> | awk <span style="color: #ffa500;">'{sum+=$2;count++}END{printf "%d,%.2f",count,sum/count/1000}'</span>
 )
