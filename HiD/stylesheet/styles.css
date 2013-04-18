@@ -23,6 +23,17 @@ time, mark, audio, video {
     vertical-align: baseline;
 }
 
+b {
+    font-weight:bolder;
+}
+
+i {
+    font-style:italic;
+}
+
+u {
+    text-decoration: underline;
+}
 
 /* Base text styles */
 

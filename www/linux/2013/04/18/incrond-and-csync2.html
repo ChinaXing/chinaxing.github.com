@@ -68,8 +68,8 @@ Table of Content
 在翻看CPAN上<a href="http://www.cpan.org/misc/how-to-mirror.html">搭建镜像站点</a> 介绍中，<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/">CPAN镜像同步程序</a> 的作者在介绍其算法的时候，举例到<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/lib/File/Rsync/Mirror/Recent.pm#COMPETITORS">竞争者</a>有 <b>csync2</b>, <b>rsync3</b> (batchmode)。
 </p>
 <p>
-由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，于是google了rsync3的batchmode，
-发现其实非常不友好，也没有比rsync高级出多少。
+由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，
+于是google了rsync3的batchmode，发现其实非常不友好，也没有比rsync高级出多少。
 </p>
 <p>
 再gogole了csync2，发现不少文章，都是介绍使用csync2进行集群文件同步，其中不少是将lscynd和csync2结合起来使用。
@@ -79,8 +79,6 @@ Table of Content
 </p>
 <p>
 通过了解发现lsyncd视乎比较令人满意，可惜我的机器上编译lua后怎么也不被lsyncd的configure程序识别为满意，
-</p>
-<p>
 故而提了一个issue给作者后，转向使用csync2+incrond来完成任务,于是有了本文。
 </p>
 
@@ -141,18 +139,16 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </li>
 <li>安装依赖
 <ul>
-<li>gnutls
+<li>gnutls<br/>
     在这里下载 <a href="ftp://ftp.gnutls.org/pub/gnutls/libtasn1/libtasn1-2.1.tar.gz">ftp://ftp.gnutls.org/pub/gnutls/libtasn1/libtasn1-2.1.tar.gz</a>, 然后安装
 </li>
-<li>librsync
+<li>librsync<br/>
     在这里下载 <a href="http://internode.dl.sourceforge.net/sourceforge/librsync/librsync-0.9.7.tar.gz">http://internode.dl.sourceforge.net/sourceforge/librsync/librsync-0.9.7.tar.gz</a>, 然后安装
 </li>
-<li>sqlite2
+<li>sqlite2<br/>
     在这里下载 <a href="http://www.sqlite.org/sqlite-2.8.17.tar.gz">http://www.sqlite.org/sqlite-2.8.17.tar.gz</a>, 然后安装
-
-<p>
     注意sqlite2 编译安装在了/usr/loca/lib下，需要添加/usr/local/lib到ld程序的搜索路径:
-</p>
+
 
 
 <pre class="src src-sh"><span style="color: #b0c4de;">echo</span> /usr/loca/lib | sudo tee -a /etc/ld.so.conf    
@@ -211,20 +207,19 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <ul>
 <li id="sec-1-4-1">csync2的启动方式有3种<br/>
 <ol>
-<li>inetd/xinetd
-       <b>csync2 -i</b>
+<li>inetd/xinetd<br/>
+       <b>csync2 -i</b><br/>
        通过配置xinetd服务，当连接到来时由xinetd启动csync2，处理完请求，csync2会马上退出。
 </li>
-<li>daemon
-       <b>csync2 -ii</b>
+<li>daemon<br/>
+       <b>csync2 -ii</b><br/>
        csync2 以daemon方式运行，不停的处理到来的请求。不自动退出，可以通过执行 <b>csync2 -k</b> 让其退出。
 </li>
-<li>执行一次即退出
-       <b>csync2 -iii</b>
+<li>执行一次即退出<br/>
+       <b>csync2 -iii</b><br/>
        这种模式下，csync2 启动后，处理完一个请求后便退出。
 </li>
 </ol>
-
 
 </li>
 </ul>
@@ -250,14 +245,10 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <h4 id="sec-2">incrond 介绍</h4>
 <div class="outline-text-4" id="text-2">
 
-<p>    incrond 是对Linux内核的inotify api进行的封装，方便应用程序进行集成使用。
-</p>
-<p>
-    incrond 模仿了crontab,使用习惯与crontab一样:
-    incrond = crond, incrontab = crontab 
-</p>
-<p>
-    incrontab 的格式如下：
+<p>    incrond 是对Linux内核的inotify api进行的封装，方便应用程序进行集成使用。<br/>
+    incrond 模仿了crontab,使用习惯与crontab一样:<br/>
+    incrond = crond, incrontab = crontab <br/>
+    incrontab 的格式如下:
 </p>
 
 
@@ -266,10 +257,8 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </pre>
 
 <p>
-    action 是EVENT发生后执行的程序，可以将一些事件关联的属性传给程序，如上例中的$%/$#
-</p>
-<p>    
-    mask中可添加的一个选项 <b>IN<sub>NO</sub><sub>LOOP</sub></b> 用来指定执行程序的过程中不进行事件的触发，即暂时屏蔽了事件，这个特性可以防止多个action实例在运行。
+    action 是EVENT发生后执行的程序，可以将一些事件关联的属性传给程序，如上例中的$%/$#<br/>
+    mask中可添加的一个选项 <b>IN_NO_LOOP</b> 用来指定执行程序的过程中不进行事件的触发，即暂时屏蔽了事件，这个特性可以防止多个action实例在运行。
 </p>
 </div>
 
@@ -299,9 +288,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <h5 id="sec-2-2">配置</h5>
 <div class="outline-text-5" id="text-2-2">
 
-<p>     安装完成后incrond与incrontab两个程序可用，incrond的配置文件位于/etc/incron.conf, 此外/etc/incrond.d/目录下可以存放incrontab配置，类似于crontab的布局。
-</p>
-<p>
+<p>     安装完成后incrond与incrontab两个程序可用，incrond的配置文件位于/etc/incron.conf, 此外/etc/incrond.d/目录下可以存放incrontab配置，类似于crontab的布局。<br/>
      incron.conf 配置比较简单，其中一项是editor配置，我们需要设置为vi、vim或者emacs，之后才能使用incrontab来编辑incrontab。
 </p></div>
 
@@ -318,10 +305,8 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </pre>
 
 <p>
-     incrond 以daemon进程的形式（类似于crond）存在
-</p>
-<p>
-     如果要添加配置，通过incrontab -e 来添加
+     incrond 以daemon进程的形式（类似于crond）存在<br/>
+     如果要添加配置，通过 incrontab -e 来添加
 </p></div>
 </div>
 
@@ -338,9 +323,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <h5 id="sec-3-1">搭配原因</h5>
 <div class="outline-text-5" id="text-3-1">
 
-<p>     csync2 解决了集群内机器将同步问题，但是csync2需要通过手动来触发，它本身是不会自动监控变化的。
-</p>
-<p>
+<p>     csync2 解决了集群内机器将同步问题，但是csync2需要通过手动来触发，它本身是不会自动监控变化的。<br/>
      所以我们结合使用incrond来监控文件/目录的变化，然后触发csync2来进行同步，这就是思路。
 </p></div>
 
@@ -355,7 +338,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </li>
 <li>配置好incrond，运行起来
 </li>
-<li>添加incrontab项，使incrond事件监控和csync2文件同步关联起来
+<li>添加incrontab项，使incrond事件监控和csync2文件同步关联起来<br/>
        如：
 
 
@@ -377,13 +360,13 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 <p>除了csync2还有类似的工具，比如：
 </p><ul>
-<li>unison
+<li>unison<br/>
   可以完成两台服务器间目录的同步
 </li>
-<li>lsyncd
+<li>lsyncd<br/>
   <a href="https://github.com/axkibe/lsyncd">lsyncd</a> 是一个很好的方案，对inotify事件进行了聚合，避免事件的爆发式到来。它使用了intofiy进行监控，并可以配置action（默认的是rsync），一个程序便可以搞定。
 </li>
-<li>DRBD
+<li>DRBD<br/>
   <a href="http://www.drbd.org/">drdb</a>(Distributed Replicated Block Device) 与上面的工具不同的是，它是基于块设备的，处于文件系统之下的块设备，它通过hack内核的方式，为上层文件系统提供了一个逻辑上的块设备，这个块设备其实是一组镜像：
   包括远端与本机。drdb提供了管理工具来进行主备的切换，并提供了同步的方式（同步、异步、内存同步），注意，它的slave设备是不可读写的。使用的时候mount这个设备即可。
 </li>
