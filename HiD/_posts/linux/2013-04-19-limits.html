@@ -1,0 +1,112 @@
+---
+layout: tech-post
+title: Linux中系统资源limit
+category: linux
+tag: linux,limits
+change_frequency: monthly
+---
+
+<p>
+linux 系统通过进程的rlimit字段，限制进程的资源使用，包括：文件打开数,core文件大小等，可以通过ulimit命令查看当前进程的设置:
+</p>
+
+
+<pre class="src src-sh"><span style="color: #b0c4de;">ulimit</span> -a
+</pre>
+
+
+
+<pre class="example">core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 16448
+max locked memory       (kbytes, -l) 32
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 65534
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 10240
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 16448
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+</pre>
+
+
+<p>
+在程序中通过getrlimt和setrlimit系统调用可以获取和设置当前进程的limit值。
+</p>
+<p>
+对于普通用户进程limit 只能调小，不能调大超过当前值，root用户没有此限制。
+</p>
+<p>
+limit 设置中有Hard和Soft两个值，Hard表示无法超过此值，Soft表示可以调整超出此值。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 limit设置策略</a></li>
+<li><a href="#sec-2">2 inittab与/etc/rcX.d/</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">limit设置策略</h4>
+<div class="outline-text-4" id="text-1">
+
+<ol>
+<li>登录用户<br/>
+</li>
+</ol>
+
+<p>通过pam<sub>limits模块来设置，pam</sub><sub>limits模块是PAM认证的一个模块，这一过程在用户登录的时候进行。</sub>
+</p>
+<p>
+用户登录的时候pam<sub>limits读取</sub>/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。<br/>
+加载顺序：先读取limits.conf，然后再用limits.d/中的配置覆盖。
+</p><ol>
+<li>系统进程<br/>
+</li>
+</ol>
+
+<p>对于通过init启动的进程，如/etc/init.d/下面的进程，由于不是通过登录产生的，所以上面提到的配置文件对其无效，这些进程的limits继承自init进程（它们的父进程）。
+如果要设置这些进程的limit，可以由程序自己设定，也可以通过配置/etc/initscripts，在此脚本中设置，来达到目的。/etc/initscripts脚本在inittab执行之前执行，
+可以man initscripts获得帮助。
+</p><ol>
+<li>子进程<br/>
+</li>
+</ol>
+
+<p>子进程继承父进程的值。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">inittab与/etc/rcX.d/</h4>
+<div class="outline-text-4" id="text-2">
+
+<p>init进程会执行inittab的配置，可以看到inittab的配置中有这样的配置:
+</p>
+
+
+<pre class="example">l0:0:wait:/etc/rc.d/rc 0
+l1:1:wait:/etc/rc.d/rc 1
+l2:2:wait:/etc/rc.d/rc 2
+l3:3:wait:/etc/rc.d/rc 3
+l4:4:wait:/etc/rc.d/rc 4
+l5:5:wait:/etc/rc.d/rc 5
+l6:6:wait:/etc/rc.d/rc 6
+</pre>
+
+
+<p>
+根据不同的runlevel，会转向执行相应的目录的启动项
+</p></div>
+</div>

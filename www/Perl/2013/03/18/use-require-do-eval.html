@@ -34,7 +34,7 @@
         
         <li>
         <a href=/linux/>linux</a>
-        <span style="float:right">[18]</span>
+        <span style="float:right">[19]</span>
         </li>
         
         <li>
@@ -165,7 +165,7 @@ use 的作用是：
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span> <span style="color: #ff83fa;">qw</span><span style="color: #ffa500;">(Dumper)</span>;
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #00fa9a;">Data::Dumper</span> <span style="color: #66cd00;">qw</span><span style="color: #ffa500;">(Dumper)</span>;
 </pre>
 
 <p>
@@ -173,7 +173,7 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; <span style="color: #ffa500;">'Data::Dumper'</span>-&gt;import(<span style="color: #ff83fa;">qw</span><span style="color: #ffa500;">(Dumper)</span>); }
+<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffa500;">"Data::Dumper.pm"</span>; <span style="color: #ffa500;">'Data::Dumper'</span>-&gt;import(<span style="color: #66cd00;">qw</span><span style="color: #ffa500;">(Dumper)</span>); }
 </pre>
 
 
@@ -221,7 +221,7 @@ require 加载后，模块的命名空间被建立，就可以通过其命名空
 
 
 <pre class="src src-perl"><span style="color: #00ffff;">require</span> <span style="color: #00fa9a;">Data::Dumper</span>;
-<span style="color: #ff83fa;">print</span> Data::Dumper { <span style="color: #ffa500;">a</span> =&gt; 1 , <span style="color: #ffa500;">b</span> =&gt; 2 };
+<span style="color: #66cd00;">print</span> Data::Dumper { <span style="color: #ffa500;">a</span> =&gt; 1 , <span style="color: #ffa500;">b</span> =&gt; 2 };
 </pre>
 
 

@@ -34,7 +34,7 @@
         
         <li>
         <a href=/linux/>linux</a>
-        <span style="float:right">[18]</span>
+        <span style="float:right">[19]</span>
         </li>
         
         <li>
@@ -95,7 +95,7 @@ Table of Content
 
 
 <pre class="src src-sh"><span style="color: #ffa07a;">srm</span>=<span style="color: #ffa500;">" \[`date -d ' -1 second '  +%d\\\/%h\\\/%Y:%H:%M:%S` +0800\] "</span>
-<span style="color: #ffa07a;">QPS_RT</span>=$(<span style="color: #fa8072;">tac</span> $<span style="color: #ffa07a;">acc_logs</span>|sed -n -e  <span style="color: #ffa500;">'/'"$srm"'/,${</span>
+<span style="color: #ffa07a;">QPS_RT</span>=$(<span style="color: #ff00ff;">tac</span> $<span style="color: #ffa07a;">acc_logs</span>|sed -n -e  <span style="color: #ffa500;">'/'"$srm"'/,${</span>
 <span style="color: #ffa500;">/'"$srm"'/p</span>
 <span style="color: #ffa500;">/'"$srm"'/!q}'</span> | awk <span style="color: #ffa500;">'{sum+=$2;count++}END{printf "%d,%.2f",count,sum/count/1000}'</span>
 )
