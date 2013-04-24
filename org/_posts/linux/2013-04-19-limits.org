@@ -40,17 +40,17 @@ file locks                      (-x) unlimited
 limit 设置中有Hard和Soft两个值，Hard表示无法超过此值，Soft表示可以调整超出此值。
 
 *** limit设置策略
-1. 登录用户\\
-通过pam_limits模块来设置，pam_limits模块是PAM认证的一个模块，这一过程在用户登录的时候进行。
 
-用户登录的时候pam_limits读取/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。\\
-加载顺序：先读取limits.conf，然后再用limits.d/中的配置覆盖。
+1. 登录用户\\
+   通过pam\_limits模块来设置，pam\_limits模块是PAM认证的一个模块，这一过程在用户登录的时候进行。\\
+   用户登录的时候pam\_limits读取/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。\\
+   加载顺序：先读取limits.conf，然后再用limits.d/中的配置覆盖。
 2. 系统进程\\
-对于通过init启动的进程，如/etc/init.d/下面的进程，由于不是通过登录产生的，所以上面提到的配置文件对其无效，这些进程的limits继承自init进程（它们的父进程）。
-如果要设置这些进程的limit，可以由程序自己设定，也可以通过配置/etc/initscripts，在此脚本中设置，来达到目的。/etc/initscripts脚本在inittab执行之前执行，
-可以man initscripts获得帮助。
+   对于通过init启动的进程，如/etc/init.d/下面的进程，由于不是通过登录产生的，所以上面提到的配置文件对其无效，这些进程的limits继承自init进程（它们的父进程）。\\
+   如果要设置这些进程的limit，可以由程序自己设定，也可以通过配置/etc/initscripts，在此脚本中设置，来达到目的。\\
+   /etc/initscripts脚本在inittab执行之前执行，可以man initscripts获得帮助。
 3. 子进程\\
-子进程继承父进程的值。
+   子进程继承父进程的值。
 
 *** inittab与/etc/rcX.d/
 init进程会执行inittab的配置，可以看到inittab的配置中有这样的配置:
