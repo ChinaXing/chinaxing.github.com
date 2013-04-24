@@ -199,7 +199,8 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </pre>
 
 <p>
-   里面可以看到从dhcpd 获取到IP的客户端，可以看到服务器带有Pi字样的服务器，就是Pi了。我的Pi获取的地址是:192.168.33.3
+   里面可以看到从dhcpd 获取到IP的客户端，可以看到服务器带有Pi字样的服务器，就是Pi了。<br/>
+   我的Pi获取的地址是:192.168.33.3
 </p></li>
 <li>使用ssh 登陆Pi:
 
@@ -209,7 +210,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </pre>
 
 <p>
-   密码是*respberry*
+   密码是:*respberry*
 </p></li>
 <li>登陆后我们可以设置Pi的网络配置，配成静态地址，这样就不需要使用dhcp了。网络配置在/etc/network/interfaces
 
@@ -281,7 +282,7 @@ gateway 192.168.33.2
 <p>使用一根网线连接Pi和电脑实现了Pi和电脑的互联，Pi却无法连接internet，访问google，baidu等网站，需要作一些配置。
 </p>
 <p>
-我使用iptables来让Fedora作路由器的功能，相当于Pi通过网线连接到了一台局域网的路由器一样。
+我使用iptables来让Fedora作路由器的功能，相当于Pi通过网线连接到了一台局域网的路由器一样。<br/>
 Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连接局域网的网卡的地址（我这里的网卡是无线网卡），因为局域网路由器和Pi不在一个网段。
 </p>
 <ol>
@@ -289,7 +290,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">sudo bash -c <span style="color: #ffa500;">'echo 1 &gt;/proc/sys/net/ipv4/ip_forward'</span>   
+<pre class="src src-sh"><span style="color: #b0c4de;">echo</span> 1 | sudo tee /proc/sys/net/ipv4/ip_forward<span style="color: #ffa500;">'   </span>
 </pre>
 
 
@@ -303,7 +304,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 <p>
-   <b>&ndash;random</b> 选项让内核帮我们选源端口
+   <b>&ndash;random</b> 选项让内核帮我们选源端口<br/>
    <b>192.168.1.100</b> 是我连接路由器上网的那个网卡的ip地址，是个无线网卡,接口wlan0
 </p></li>
 <li>在Pi内部检测网络联通：
@@ -315,17 +316,38 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 <p>
-   <b>如果没有配置域名服务器</b> 需要配置域名解析服务器地址: <span style="text-decoration:underline;">sudo echo nameserver 8.8.8.8 &gt;/etc/resolv.conf</span>
+   <b>如果没有配置域名服务器</b> 需要配置域名解析服务器地址:
 </p>
+
+
+<pre class="src src-sh"><span style="color: #b0c4de;">echo</span> nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
+</pre>
+
 </li>
+</ol>
+
+
+
+<ol>
 <li>完成设置后，整个网络数据流如下:<br/>
-   Pi ==&gt; internet: <br/>
-   Pi(192.169.33.3)-&gt;Fedora-eth0(192.168.33.2)-&gt;iptables-forward-wlan0(192.168.1.100)-&gt;iptables-postrouting(SNAT:192.168.1.100)
+   Pi ==&gt; internet
+
+
+
+<pre class="example">Pi(192.169.33.3) -&gt; Fedora-eth0(192.168.33.2) -&gt; iptables-forward-wlan0(192.168.1.100)
+  -&gt; iptables-postrouting(SNAT:192.168.1.100)   
+</pre>
 
 <p>
-   Ineternet ==&gt; Pi: <br/>
-   Internet(dest-ip:192.168.1.100)-&gt;Fedora-wlan0-&gt;iptables-prerouting(DNAT:192.168.33.3)-&gt;iptables-forward-eth0(192.168.33.2)-&gt;Pi(192.168.33.3)
-</p></li>
+   Ineternet ==&gt; Pi
+</p>
+
+
+<pre class="example">Internet(dest-ip:192.168.1.100) -&gt; Fedora-wlan0 -&gt; iptables-prerouting(DNAT:192.168.33.3)
+  -&gt; iptables-forward-eth0(192.168.33.2) -&gt; Pi(192.168.33.3)
+</pre>
+
+</li>
 </ol>
 
 
@@ -343,9 +365,11 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 由于iphone通过无线路由器接入局域网，和Fedora是同一个网段:192.168.1.0，和Pi是不在一个局域网的（没有物理连接），
 所以需要通过Fedora的转发来完成iphone到Pi的连接:
 </p>
-<p>
-    iphone &ndash;&gt; Fedora &ndash;&gt; Pi
-</p>
+
+
+<pre class="example">iphone --&gt; Fedora --&gt; Pi
+</pre>
+
 <p>
 通过在Fedora上面配置如下iptables完成转发功能：
 </p>
@@ -356,13 +380,9 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 <p>
-<b>wlan0</b> 是电脑的无线网卡，连接到局域网的无线路由器上网 
-</p>
-<p>
-<b>192.168.3.3</b> 是Pi的地址
-</p>
-<p>
-这句iptables的意思是对访问fedora的3389的连接，DNAT到Pi的3389端口
+<b>wlan0</b> 是电脑的无线网卡，连接到局域网的无线路由器上网 <br/>
+<b>192.168.3.3</b> 是Pi的地址<br/>
+这句iptables的意思是对访问fedora的3389的连接，DNAT到Pi的3389端口。
 </p>
 <p>
 配置完成后就可以使用iphone连接到Pi:
