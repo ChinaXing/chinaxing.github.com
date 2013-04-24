@@ -118,7 +118,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 1. 打开Fedora的ip_forward功能，允许转发从Pi发来的和到达Pi的包，作路由器用:
    #+begin_src sh
-       echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward'   
+       echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
    #+end_src
 
 2. 在Fedora上面添加iptables，实现SNAT:
