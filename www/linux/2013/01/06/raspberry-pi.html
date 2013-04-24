@@ -282,10 +282,10 @@ gateway 192.168.33.2
 </p>
 <p>
 我使用iptables来让Fedora作路由器的功能，相当于Pi通过网线连接到了一台局域网的路由器一样。
-Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连接局域网的网卡的地址（我这里的网卡是无线网卡）。
+Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连接局域网的网卡的地址（我这里的网卡是无线网卡），因为局域网路由器和Pi不在一个网段。
 </p>
 <ol>
-<li>打开Fedora的ip<sub>forward功能，允许转发包，作路由器用</sub>:
+<li>打开Fedora的ip<sub>forward功能，允许转发从Pi发来的和到达Pi的包，作路由器用</sub>:
 
 
 
@@ -294,17 +294,17 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 </li>
-<li>添加iptables，完成NAT功能:
+<li>在Fedora上面添加iptables，实现SNAT:
 
 
 
-<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random   
+<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random
 </pre>
 
 
 <p>
-   <b>&ndash;random</b> 选项让内核自己帮我们选端口，这个是必须的  
-   <b>192.168.1.100</b> 是我连接路由器上网的那个网卡的ip地址，是个无线网卡wlan0
+   <b>&ndash;random</b> 选项让内核帮我们选源端口
+   <b>192.168.1.100</b> 是我连接路由器上网的那个网卡的ip地址，是个无线网卡,接口wlan0
 </p></li>
 <li>在Pi内部检测网络联通：
 
@@ -316,6 +316,15 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 <p>
    <b>如果没有配置域名服务器</b> 需要配置域名解析服务器地址: <span style="text-decoration:underline;">sudo echo nameserver 8.8.8.8 &gt;/etc/resolv.conf</span>
+</p>
+</li>
+<li>完成设置后，整个网络数据流如下:<br/>
+   Pi ==&gt; internet: <br/>
+   Pi(192.169.33.3)-&gt;Fedora-eth0(192.168.33.2)-&gt;iptables-forward-wlan0(192.168.1.100)-&gt;iptables-postrouting(SNAT:192.168.1.100)
+
+<p>
+   Ineternet ==&gt; Pi: <br/>
+   Internet(dest-ip:192.168.1.100)-&gt;Fedora-wlan0-&gt;iptables-prerouting(DNAT:192.168.33.3)-&gt;iptables-forward-eth0(192.168.33.2)-&gt;Pi(192.168.33.3)
 </p></li>
 </ol>
 
