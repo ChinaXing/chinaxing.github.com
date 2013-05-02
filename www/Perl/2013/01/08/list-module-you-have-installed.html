@@ -65,8 +65,24 @@ Table of Content
 <div class="tech">
 
 <p>
-有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过一个很简单的命令成:
+有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
 </p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 perllocal</a></li>
+<li><a href="#sec-2">2 instmodsh</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">perllocal</h4>
+<div class="outline-text-4" id="text-1">
+
+
 
 
 
@@ -83,24 +99,65 @@ Table of Content
 
 
 
-
-
-<pre class="example">Thu Jan 24 20:37:27 2013: "Module" App::cpanminus
-Thu Jan 24 20:47:13 2013: "Module" AnyEvent
-Thu Jan 24 20:49:16 2013: "Module" Guard
-Thu Jan 24 20:49:19 2013: "Module" common::sense
-Thu Jan 24 20:49:23 2013: "Module" Coro
-Mon Jan 28 10:51:32 2013: "Module" Regexp::Common
-Mon Jan 28 11:11:36 2013: "Module" Try::Tiny
-Mon Jan 28 11:11:37 2013: "Module" Test::Fatal
-Mon Jan 28 11:12:19 2013: "Module" Test::Requires
-Mon Jan 28 11:12:26 2013: "Module" Module::Implementation
+<pre class="src src-sh">perldoc -t perllocal | grep <span style="color: #ffa500;">"Module"</span> | head -10
 </pre>
+
+
+
+<pre class="example">Sun Mar 31 15:08:23 2013: "Module" Try::Tiny
+Sun Mar 31 15:08:23 2013: "Module" Test::Fatal
+Sun Mar 31 15:08:29 2013: "Module" Sub::Install
+Sun Mar 31 15:08:33 2013: "Module" Params::Util
+Sun Mar 31 15:08:34 2013: "Module" Data::OptList
+Sun Mar 31 15:08:36 2013: "Module" Sub::Exporter
+Sun Mar 31 15:08:40 2013: "Module" List::MoreUtils
+Sun Mar 31 15:08:42 2013: "Module" Dist::CheckConflicts
+Sun Mar 31 15:08:45 2013: "Module" Test::Requires
+Sun Mar 31 15:08:47 2013: "Module" Sub::Name
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">instmodsh</h4>
+<div class="outline-text-4" id="text-2">
+
+
+<p>
+<b>instmodsh</b> 是 <b>Ext::Utils::Installed</b> 模块提供的一个可执行脚本,可以打印出目前安装的模块.<br/>
+<b>Ext::Utils::Installed</b> 是根据模块安装时候生成的.packlist(存放在每个模块的目录下面) 文件来分析出已经安装的模块.
+</p>
+
+
+
+<pre class="src src-sh">(<span style="color: #b0c4de;">echo</span> l ; <span style="color: #b0c4de;">echo</span> q ) | instmodsh | sed -e <span style="color: #ffa500;">'1,/:/d'</span> -e <span style="color: #ffa500;">'/cmd?/d'</span> | head -10
+</pre>
+
+
+
+<pre class="example">Algorithm::Diff
+App::Cmd
+App::cpanminus
+AppConfig
+B::Hooks::EndOfScope
+B::Keywords
+CPAN::Meta::Check
+CPAN::Uploader
+Capture::Tiny
+Carp::Clan
+</pre>
+
 
 
 <p>
 <b>Come from</b> <a href="#http-www.cpan.org-misc-cpan-faq.html">CPAN-FAQ</a>
-</p>
+</p></div>
+</div>
+
 </div>
 
 
