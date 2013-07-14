@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Perl Alien 介绍</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script type="text/javascript" src="/scripts/index.js" ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  </head>
+  <body class="pure-skin-chinaxing" id="toc-top">
+    <header>
+      <div id="menu">
+        <div id="menu-header">
+          <a href="/" id="site-name">ChinaXing</a>
+          <a data-icon="&#xf00a" id="github-icon" title="View Github profile" href="https://github.com/ChinaXing"></a>
+        </div>
+        <ul id="menu-list">
+             
+               
+               
+               
+               
+          <li class= >
+            <a href=/Java/>Java
+            <sup>3</sup>
+            </a>
+          </li>
+             
+               
+               
+               
+               
+          <li class= >
+            <a href=/life/>life
+            <sup>2</sup>
+            </a>
+          </li>
+             
+               
+               
+               
+               
+          <li class= >
+            <a href=/linux/>linux
+            <sup>20</sup>
+            </a>
+          </li>
+             
+               
+               
+               
+                  
+                  
+          <li class=active >
+            <a href=/Perl/>Perl
+            <sup>22</sup>
+            </a>
+          </li>
+             
+               
+               
+               
+               
+          <li class= >
+            <a href=/postgres/>postgres
+            <sup>2</sup>
+            </a>
+          </li>
+             
+               
+               
+               
+               
+          <li class= >
+            <a href=/Python/>Python
+            <sup>1</sup>
+            </a>
+          </li>
+             
+        </ul>
+        <!-- vistor map -->
+       <div id="clustrmaps-widget"></div>
+      </div>
+    </header>
+    <section>
+      <h2 style="text-align:center">
+  Perl Alien 介绍
+</h2>
+<div id="toc">
+Table of Content
+<ol></ol>
+</div>
+<div class="tech">
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Alien是什么</a></li>
+<li><a href="#sec-2">2 Alien的目标</a></li>
+<li><a href="#sec-3">3 Alien模块的约定/保证</a></li>
+<li><a href="#sec-4">4 编写Alien模块</a></li>
+<li><a href="#sec-5">5 实例</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">Alien是什么</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>本文介绍Perl中的Alien。
+</p>
+<p>
+Alien 是一个名字空间或者一系列Module/Perl package。 
+</p>
+<p>
+Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安装和使用。
+</p>
+<p>
+如<a href="http://search.cpan.org/perldoc?Alien::OpenSSL">Alien::NSS</a> 是OpenSSL库的Alien封装。我们可以在其CPAN页面上看到使用说明。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">Alien的目标</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>Alien的目标是确保某个库已经安装。
+</p>
+<p>
+如Alien::NSS库的目标是确保OpenSSL的库已经安装，如果我们的Perl模块依赖OpenSSL的C库，我们可以在Build.PL中添加对Alien::NSS的依赖，从而确保安装
+模块的时候，OpenSSL库已经安装。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">Alien模块的约定/保证</h3>
+<div class="outline-text-3" id="text-3">
+
+<ol>
+<li>安装时候确保依赖的包已经安装，如果未安装则安装他们。
+</li>
+<li>使用Alien模块的时候，确保需要的包存在，否则报错给调用者。
+</li>
+<li>将C库的源码和模块打包绑定发布，或者在安装的时候下载。
+</li>
+<li>允许模块作者访问Alien模块获取的信息。
+</li>
+<li>良好的文档保证容易正确使用。
+</li>
+<li>容易地使用Module::Build。
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">编写Alien模块</h3>
+<div class="outline-text-3" id="text-4">
+
+<ol>
+<li>继承Alien::Base , use parent Alien::Base;
+</li>
+<li>编写Build.PL, 继承Alien::Base::ModuleBuild, 根据Alien::Base::ModuleBuild 配置，构建其实例，然后调用create<sub>build</sub><sub>script方法。</sub>
+</li>
+</ol>
+
+<p>【参见：Alien::NSS等模块的Build.PL文件。】
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5">实例</h3>
+<div class="outline-text-3" id="text-5">
+
+<p>下面以<a href="http://search.cpan.org/perldoc?Alien::Tidyp">Alien::Tidyp</a> 为例来看,结合<a href="http://search.cpan.org/perldoc?HTML::Tidy">HTML::Tidy </a>模块对其的使用来看Alien模块的作用和使用方式：
+</p><ul>
+<li>HTML::Tidy模块的 <a href="http://cpansearch.perl.org/src/PETDANCE/HTML-Tidy-1.54/Makefile.PL">Makefile.PL</a> 文件中有如下内容：
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">eval</span> { <span style="color: #00ffff;">require</span> <span style="color: #4186be;">Alien::Tidyp</span>; };
+
+<span style="color: #00ffff;">if</span> ( !$@ ) {
+    <span style="color: #66cd00;">print</span> <span style="color: #ffff00;">"Using tidyp via Alien::Tidyp\n"</span>;
+    $libs = Alien::Tidyp-&gt;config(<span style="color: #ffff00;">'LIBS'</span>);
+    $inc = Alien::Tidyp-&gt;config(<span style="color: #ffff00;">'INC'</span>);
+}
+</pre>
+
+<p>
+  从中可以发现HTML::Tidy模块在编译、build的时候回依赖Tidyp这个C库，而它是通过Alien::Tidyp这个模块来间接获取tidyp这个库的一些配置信息（动态连接库的位置LIBS和头文件的位置INC）。<br/>
+  从这里我们可以发现Alien的用途：帮助其它模块找到相关库的配置信息。是一个helper类型的模块。
+</p></li>
+<li>Alien::Tidyp的 <a href="http://cpansearch.perl.org/src/KMX/Alien-Tidyp-v1.4.7/Build.PL">Build.PL</a> 文件有如下内容：
+
+
+
+<pre class="src src-perl"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">set what tidyp tarball we are gonna use</span>
+$builder-&gt;notes(<span style="color: #ffff00;">'tidyp_url'</span>, [<span style="text-decoration: underline;"> </span>
+    <span style="color: #ffff00;">'http://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'</span>,
+    <span style="color: #ffff00;">'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'</span>,
+    <span style="color: #ffff00;">'http://strawberryperl.com/package/kmx/testing/tidyp-1.04.tar.gz'</span>,
+  ]); <span style="color: #ff0000;"># </span><span style="color: #ff0000;">has to be an array</span>
+$builder-&gt;notes(<span style="color: #ffff00;">'tidyp_dir'</span>, <span style="color: #ffff00;">'tidyp-1.04'</span>); <span style="color: #ff0000;"># </span><span style="color: #ff0000;">dirname inside the tarball</span>
+$builder-&gt;notes(<span style="color: #ffff00;">'tidyp_sha1'</span>, <span style="color: #ffff00;">'5d9050512259c3a67a2f48469555932e3a7b8bd0'</span>);
+</pre>
+
+<p>
+  从这里和Alien::Tidyp的文档，我们大致可以知道，Alien::Tidyp在安装自身的时候做了什么：
+</p><ul>
+<li>探测tidyp的位置，包括头文件和二进制库的位置，存储在Alien::Tidyp::ConfigData模块中（此模块在AlienTidyp安装后生成）
+</li>
+<li>如果没有安装则进行从source code的构建，从上面代码片段可以发现其使用的代码位置，然后将信息记录在Alien::Tidyp::ConfigData模块中
+</li>
+</ul>
+
+<p>  最终，Alien::Tidyp安装完成后，我们就可以从其模块中得到tidyp这个库的一些配置信息。这也就是Alien模块的作用：获取库的配置信息（如果没有则安装它们）。
+</p></li>
+</ul>
+
+
+
+</div>
+</div>
+
+</div>
+
+
+<!---------------------------------------------------------
+  ** Table of Content 
+  --------------------------------------------------------->
+<script src="http://code.jquery.com/jquery-1.9.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/scripts/jquery.tableofcontents.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+ $(function(){
+   $("#toc>ol").tableOfContents(
+     null,
+     {
+       startLevel: 3,
+       depth:3,
+       topLinks: "\u21E7",
+       topLinkClass: "toc-top-link",
+       topBodyId: "toc-top",
+     });
+ });
+</script>
+<!---------------------------------------------------------
+  ** Google Plus **
+  --------------------------------------------------------->
+<br>
+<!-- Place this tag where you want the +1 button to render. -->
+<div class="g-plusone" data-size="medium" ></div>
+<!-- google plus -->
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+
+<!---------------------------------------------------------
+  ** DISQUS **
+  --------------------------------------------------------->
+<div id="disqus_thread" style="padding-top:1em"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+  </body>
+
+  <!-- google Analytics -->
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37422195-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  </script>
+  <!-- clusterMaps -->
+  <script type="text/javascript">
+  var _clustrmaps = {
+    'url' : 'http://chinaxing.org', 
+    'user' : 1103575, 
+    'server' : '2',
+    'id' : 'clustrmaps-widget', 
+    'version' : 1, 
+    'date' : '2013-07-14',
+    'lang' : 'zh',
+    'corners' : 'square' 
+  };
+  (function (){
+    var s = document.createElement('script'); 
+    s.type = 'text/javascript'; 
+    s.async = true; 
+    s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+    var x = document.getElementsByTagName('script')[0]; 
+    x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    <a href="http://www2.clustrmaps.com/user/f0710d6d7">
+      <img src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg" alt="Locations of visitors to this page" />
+    </a>
+  </noscript>
+</html>
