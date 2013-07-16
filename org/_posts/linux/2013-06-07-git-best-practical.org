@@ -1,0 +1,63 @@
+#+BEGIN_HTML
+---
+layout: tech-post
+title: git 使用常见问题解决方法
+category: linux
+tag: linux,git
+change_frequency: monthly
+---
+#+END_HTML
+
+*** 撤销commit
+    #+BEGIN_SRC sh :eval no
+    git reset --soft <COMMIT_ID>
+    #+END_SRC
+    这条命令撤销_COMMIT_ID_之后的所有提交，但保持所有的更改
+*** 强制使用远端仓库的内容
+    #+BEGIN_SRC sh :eval no
+      git reset --hard origin/master
+    #+END_SRC
+*** 删除tag，并删除远程tag
+    #+BEGIN_SRC sh :eval no
+    git tag -d <TAG_A>
+    git push origin :refs/tags/<TAG_A>
+    #+END_SRC
+    tag 和branch类似，可以看做一种特殊branch
+*** 添加tag，并推送到远程
+    #+BEGIN_SRC sh :eval no
+    git tag <TAG_A>
+    git push --tags
+    #+END_SRC
+*** 修改上次的commit message
+    #+BEGIN_SRC sh :eval no
+    git commit --amend
+    #+END_SRC
+    会跳出一个编辑器，可以编辑上次的commit 信息，然后保存即修改完成
+*** 修改上次的commit author
+    #+BEGIN_SRC sh :eval no
+    git commit --amend --author 'New Author Name <email@address.com>'
+    #+END_SRC
+*** 删除未跟踪(Untracked)的文件
+    #+BEGIN_SRC sh :eval no
+    git clean -f
+    #+END_SRC
+    git clean 删除没有纳入git管理的文件
+*** 强制覆盖远程
+    #+BEGIN_SRC sh :eval no
+    git push --force origin/master
+    #+END_SRC
+*** 配置
+    - 全局配置文件
+      ~/.gitconfig
+    - 查看配置
+      #+BEGIN_SRC sh :eval no
+      git config -l      
+      #+END_SRC
+    - 开启色彩
+      #+BEGIN_SRC sh :eval no
+      git config --global  color.ui true
+      #+END_SRC
+    - diff 颜色
+      #+BEGIN_SRC sh :eval no
+      git config --global color.diff auto
+      #+END_SRC

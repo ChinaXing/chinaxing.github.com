@@ -1,0 +1,8 @@
+#+begin_html
+---
+layout: post
+---
+<div class="tech">
+[% content %]
+</div>
+#+end_html

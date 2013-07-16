@@ -1,0 +1,115 @@
+#+begin_html
+---
+layout: tech-post
+title: 认识Perl 中use，require，do，eval
+category: Perl
+change_frequency: monthly
+tag: Perl
+---
+#+end_html
+
+use, require, do ,eval 是我们经常见到的perl语言关键字。下面我们简洁明要地进行对他们说明。
+
+** use
+*** 作用
+use 用在导入模块，使用模块中功能的时候，如：
+#+begin_src perl
+   use Data::Dumper;
+#+end_src
+
+use 的作用是：
++ 加载模块
++ 导入模块export的东西（包括变量，常量，子过程）到本命令空间
+
+*** use 发生在什么时候
+  在编译（compile）期
+
+*** use 的实现
+#+begin_src perl
+use Data::Dumper; 
+#+end_src
+等效于：
+#+begin_src perl
+  BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'->import; }
+#+end_src
+
+
+#+begin_src perl
+  use Data::Dumper qw(Dumper);
+#+end_src
+等效于：
+#+begin_src perl
+  BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'->import(qw(Dumper)); }
+#+end_src
+
+#+begin_src perl
+  use Data::Dumper ();
+#+end_src
+等效于：
+#+begin_src perl
+  BEGIN { require "Data::Dumper.pm"; }
+#+end_src
+
+通过将require放在 BEGINE BLOCK里面，加载模块在编译器进行，加载完成后，会调用模块的import函数，将模块导出的变量和子过程导入到本模块的名字空间。
+
+** require
+*** require 作用
+[[http://perldoc.perl.org/functions/require.html][require]] 进行模块的加载，它是perl的原生功能之一，显然它运行在运行期（runtime）。
+
+require 的作用是加载模块，注意他不会重复加载，加载后模块名会出现在%INC哈希表中。
+
+require 加载后，模块的命名空间被建立，就可以通过其命名空间访问其中的内容。
+
+#+begin_src perl
+  require Data::Dumper;
+  print Data::Dumper { a => 1 , b => 2 };
+#+end_src
+
+*** require的执行期
+require在运行期执行
+*** require的实现
+
+require实现依赖于 [[http://perldoc.perl.org/functions/do.html][do]] ，在do的基础上，进行检查加载与否，避免重复加载. 参见这里：[[http://perldoc.perl.org/functions/require.html#require][perldoc#require]]
+
+** do
+
+[[http://perldoc.perl.org/functions/do.html][do]] 有2种形式
+do BLOCK
+do EXPR
+
+我们只看第二种形式，也正是require使用到的。
+
+EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文件和文件全路径记录于%INC哈希表。
+
+*** do作用
+do的作用是执行文件中的perl脚本，do会把文件当做perl脚本来执行，编译，执行，然后返回脚本执行的结果（脚本最后一个表达式的结果）。
+
+作用上类似eval，与eval不同的是，do 无法看到 do 语句所在环境的词法变量。
+
+#+begin_src perl
+  do 'stat.pl'
+#+end_src
+
+功能上类似于
+#+begin_src perl
+  eval `cat stat.pl`
+#+end_src
+
+
+** eval
+
+*** eval作用
+[[http://perldoc.perl.org/functions/eval.html][eval]] 实现运行期动态生成代码的能力，与其他语言的eval能力和概念上是一致的。
+eval 比较复杂，关于eval介绍，参见其perldoc。
+
+eval执行的代码，出现的异常会被eval 捕获，设置于$@变量中。
+
+** 总结
+
++ eval 是do的基础
++ do 是require的基础
++ require 是 use的基础
+
+
+perl 符号表: %::
+

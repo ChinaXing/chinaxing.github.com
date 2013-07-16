@@ -1,0 +1,61 @@
+#+begin_html
+---
+layout: tech-post
+title: Plack 介绍
+category: Perl
+change_frequency: monthly
+---
+#+end_html
+
+[[http://search.cpan.org/~miyagawa/Plack-1.0028/lib/Plack.pm][Plack]] - Perl Superglue for Web frameworks and Web Servers (PSGI toolkit)
+
+** Plack 是什么
+   Plack 是PSGI协议的实现，还包括额外的功能。Plack与PSGI是同一个人做的。
+** Plack Tookit介绍
+*** plackup
+    plackup 是一个命令行程序，用来启动和运行plack程序，包括加载app、启动Plack Server、加载中间件等。plackup 使用Plack::Runner完成这些。
+*** Plack::Runner
+    运行Plack程序，即进行加载程序、启动Server、加载中间件等。
+*** Plack::Loader
+    Plack Server handler 加载程序，可以自动根据环境加载不同的Plack Server handler，plack server handler包括：
+    - PSGI - PSGI 实现
+    - Twiggy - AnyEvent PSGI实现
+    - Corona - Coro PSGI实现
+    - POE
+    - CGI
+    - FCGI
+*** Plack::Handler
+    这些是Plack app与webserver的接口程序，根据同步的web server 分别有：
+    - Apache
+    - FCGI - fastcgi
+    - CGI
+    - PSGI
+*** Palck::Middleware
+   中间件，PSGI中间件模块，位于PSGI server与PSGI app之间，实现上对PSGI app进行wrapper
+*** Plack::Builder
+   app builder, 可以使用它的方法builder 使用middlware对app进行wrapper，创建新的app
+
+** Plack/PSGI资料
+   - Plack作者YAPC上的Plack介绍
+      #+BEGIN_HTML
+      <div>
+      <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+      </div>
+      <div class="mask" onclick="javascript: hide_ppt(this)"></div>
+      <div class="mask_container">
+      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pISmtrNnNSRHRrX3c/preview" width="100%" height="100%">
+      </iframe>
+      </div>
+      #+END_HTML
+   - YAPC上另一份关于Plack的介绍
+      #+BEGIN_HTML
+      <div>
+      <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+      </div>
+      <div class="mask" onclick="javascript: hide_ppt(this)"></div>
+      <div class="mask_container">
+      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIWTN6T0RhRFhUdU0/preview" width="100%" height="100%">
+      </iframe>
+      </div>
+      #+END_HTML
+

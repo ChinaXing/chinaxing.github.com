@@ -1,0 +1,58 @@
+#+begin_html
+---
+layout: tech-post
+title: Mac osx 安装eclipse和maven
+category: Java
+change_frequency: monthly
+tag: eclipse,maven
+---
+#+end_html
+
+Eclipse 是一个IDE工具，用来进行Java开发，是java开发中旗舰级的IDE。Eclipse软件本身的设计就非常优秀和可扩展。在java的IDE中除了IBM的eclipse，还有Sun不久前推出的NetBean。
+
+Maven 是一套构建工具，用来进行项目的打包。maven可以自动进行依赖的下载、打包出一个tgz的压缩包，供web容器加载。
+
+eclipse + maven 是进行java web开发的基础工具搭配，用eclipse开发代码，maven完成打包。
+
+本文介绍怎么在mac osx平台进行这个环境的安装和搭建。
+
+** 安装eclipse与maven
+*** 安装eclipse
+eclipse的安装可以从其[[http://eclipse.org/][官网]]下载。这里选择: Eclipse Standard 4.3，代号开普勒。
+*** 安装maven插件
+下载安装完成后，安装maven插件。
+
+对于4.3这个版本（以及更新的），我们不需要去网站上下载这个插件，而只需要从eclipse自带的插件市场功能里面选择和下载即可：\\
+从菜单中选择：Help->eclipse marketplace , 在出现的面板中输入m2eclipse查找这个插件，然后安装它就完成了。
+*** 安装maven
+使用macport进行安装maven：\\
+在终端中输入 =sudo port install maven= \\
+安装完成后maven的个人配置位于 =~/.m2= 我们将自己的settings.xml文件放置于此，maven就会优先使用个人配置。
+*** 安装jdk
+maven编译java代码需要使用jdk，如果没有需要通过macport进行安装:\\
+=sudo port install jdk=
+*** 配置eclipse集成maven
+eclipse 与maven配合，需要配置eclipse的maven插件：m2eclipse让此插件指向安装的maven（也可以使用其内置的），更重要的是使用我们配置的maven配置(settings.xml)文件。
+
+通过在菜单栏Eclipse->偏好设定->maven下面进行maven的配置:
+- installation: 配置插件使用的maven二进制体（默认是内置的mvn）
+- User settings : 此处用于配置个人配置的路径（要使用的settings.xml文件的位置)和maven管理的local repo的位置（一般在settings.xml设定，要与此处一致）。
+
+在User settings 这里，repo旁边有一个reindex的按钮，点击它进行更新本地repo。这会下载settings.xml里面配置的repo到本地。
+
+配置完成后eclipse的 =CLASS_LIB= 中包含了maven的local repo的地址。
+
+** 使用eclipse与maven
+*** eclipse导入maven工程
+安装了maven插件后，可以在菜单：File->import->maven->Existing maven projects 来将maven工程导入eclipse进行开发。
+
+*** maven构建代码包
+当开发完成后，使用maven进行打包：
+#+BEGIN_SRC sh :eval no
+mvn install
+#+END_SRC
+如果要跳过test：
+#+BEGIN_SRC sh :eval no
+mvn -Dmaven.test.skip=true install
+#+END_SRC
+生成的包位于target目录，如: =t4web.tgz=

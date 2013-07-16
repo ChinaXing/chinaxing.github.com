@@ -1,0 +1,166 @@
+#+begin_html
+---
+layout: tech-post
+title: PSGI 协议杂记
+category: Perl
+change_frequency: monthly
+---
+#+end_html
+
+** PSGI 是什么
+[[http://search.cpan.org/perldoc?PSGI][PSGI]] -  Perl Web Server Gateway Interface Specification
+
+PSGI 是受WSGI(python)、Rack(ruby)、JSGI(javascript)启发而开发，然而可以说是几乎完全一样，只是语言领域是Perl（这一点可以通过各个协议的细节对比发现）
+
+PSGI和CGI、FastCGI类似，他们定义的是 *Web服务器* 与 *web应用程序/web框架* 间的协定：
+#+BEGIN_SRC ditaa :file ../../images/pgsi-instructure.png :cmdline -r :eval no-export
+  +--------------+     +------------+     +----------------------+
+  | cBLU         |     |   cBLU     |     |  cBLU                |
+  |   WebServer  | --> |   PSGI     | --> |  WebApp/WebFramework |
+  |              |     |            |     |                      |
+  +--------------+     +------------+     +----------------------+
+  | apache/nginx |     |   Plack    |     |  .psgi/Mojolicious   |
+  +--------------+     +------------+     +----------------------+
+#+END_SRC
+
+#+RESULTS:
+[[file:../../images/pgsi-instructure.png]]
+
+
+那么有什么好处呢？
+- 便于移植
+- 便于减少重复开发
+- 便于web框架开发
+
+** 相关术语
+*** WebServer
+    web服务器，如apache/nginx, FastCGI, SCGI
+*** PSGI Server
+    PSGI Server处于WebServer与Web Application之间，它的作用是为Web Application提供一个环境（一个PSGI协议的环境），应用程序遵循这个环境的协定来与PSGI Server
+    交互。PSGI Server被称作Web Application的容器，类似Java语言中的Serverlet容器是Java Web应用程序的容器。
+
+    实现上，PSGI Server可能作为Web服务器的一部分，通过协议连接到WebServer或者被WebServer调用。
+
+    Plack 是PSGI Server的一个实现，并且提供了额外的功能。
+*** Web Application/PSGI Application
+    遵守PSGI约定的Web应用程序称为PSGI Application：
+    - 它是一个code reference
+    - 接受一个hash reference 作为输入，其中是PSGI Server为应用准备好的环境
+    - 返回一个array reference或者code reference，代表了请求处理结果
+      - array reference
+	#+BEGIN_SRC perl :eval no
+	my $app = sub {
+            my $env = shift;
+            # ....
+            return [ 200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ];
+        };
+	#+END_SRC
+	格式如：=[status, [ http-headers ], http-content ]=\\
+	其中http-content可以为array refrence，也可以为 Filehandler, 表示一个文件句柄:
+        #+BEGIN_SRC perl :eval no
+        my $app = sub {
+            my $env = shift;
+            # ...
+            return [ 200, [ 'Content-Type', 'application/data' ], $fh ] ];
+        };
+        #+END_SRC
+      - code reference
+        #+BEGIN_SRC perl :eval no
+        my $app = sub {
+            my $env = shift;
+            # ...
+            return sub {
+               my $responder = shift;
+               # ...
+               return $responder->([200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ]);
+            };
+        };
+        #+END_SRC
+	这种情况用在延迟的响应和流式的响应，此匿名函数在被PSGI server调用的时候传递一个responder，此匿名函数应该以调用responder，传递给其请求结果\\
+        对于流式响应，一般是这样的：
+        #+BEGIN_SRC perl :eval no
+        my $app = sub {
+            my $env = shift;
+            # ...
+            return sub {
+               my $responder = shift;
+               # ...
+               my $writer = $responder->( [200, [ 'Content-Type', 'text/plain' ], ]);
+               # ...
+               wait_for_events(sub {
+                     my $ev = shift;
+                     if($ev->last){
+                           $writer->close;
+                      }else{
+                           $writer->write($ev->content);
+                      }
+               });
+          };
+        };
+        #+END_SRC
+        如果调用responder未发生body内容，responder返回一个可以读写的IO::Handler对象，可以操作此对象。
+
+    PSGI application可以仅仅是一个简单的函数引用，也可以是一个Web Framework，支持PSGI的[[http://en.wikipedia.org/wiki/PSGI][Web FrameWork]]有:
+        - Catalyst
+        - Dancer
+        - Mojolicious
+*** Middleware
+    中间件，即处于 *PSGI Server* 与 *PSGI Application* 之间的层，类似nginx的链式处理中的模块(filter), 这些中间件可以方便进行业务之外的处理、统计、分析等操作。\\
+    比如，AccessLog中间件可以进行日志记录，Content-Length中间件可以进行长度的计算和修正等，认证中间件可以进行认证
+
+    中间件在PSGI server看来是一个PSGI Application，在PSGI Application看来是一个PSGI Server。
+
+    实现上中间件对PSGI Application 进行封装（wrapper），然后提供一个 PSGI Application的接口给PSGI server，封装后，得到了新的PSGI Application。
+    #+BEGIN_SRC perl :eval no
+    my $app = sub {
+        my $env = shift;
+        return [ '200', [ 'Content-Type', 'text/plain' ], [ "Hello,World!" ] ];
+    };
+    # middleware, process at response chain
+    my $mymiddleware = sub {
+        my $env = shift;
+        my $res = $app->($env);
+        push @{$res->[1], 'X-PSGI-Used' => 1;
+        return $res;
+    };
+    #+END_SRC
+    中间件可以作用于request chain也可以作用于response chain，也可以都作用于两者:
+    #+BEGIN_SRC ditaa :file ../../images/PSGI-middleware.png :cmdline -r :eval no-export
+    +-------------+     +--------------+     +--------------+        +--------------+
+    |             | --> |              | --> |              | ...--> |              |
+    | PSGI server |     | Middleware A |     | Middleware B |        | PSGI app cBLU|
+    |   cBLU      | <-- |     cRED     | <-- | cGRE         | <--... | cBLU         |
+    +-------------+     +--------------+     +--------------+        +--------------+
+    #+END_SRC
+
+    #+RESULTS:
+    [[file:../../images/PSGI-middleware.png]]
+
+** PSGI资料
+   - PSGI作者YAPC上的Plack介绍
+      #+BEGIN_HTML
+      <div>
+      <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+      </div>
+      <div class="mask" onclick="javascript: hide_ppt(this)"></div>
+      <div class="mask_container">
+      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pISmtrNnNSRHRrX3c/preview" width="100%" height="100%">
+      </iframe>
+      </div>
+      #+END_HTML
+   - YAPC上另一份关于Plack/PSGI的介绍
+      #+BEGIN_HTML
+      <div>
+      <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+      </div>
+      <div class="mask" onclick="javascript: hide_ppt(this)"></div>
+      <div class="mask_container">
+      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIWTN6T0RhRFhUdU0/preview" width="100%" height="100%">
+      </iframe>
+      </div>
+      #+END_HTML
+        
+	
+
+
+
