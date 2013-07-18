@@ -1,0 +1,19 @@
+#+begin_html
+---
+layout: tech-post
+title: Java web 开发小记
+category: Java
+change_frequency: monthly
+tag: java,web
+---
+#+end_html
+本文意在记录自己在用java进行web开发中积累的知识点、技巧以及经验。
+【待完善】
+
+** 数据映射DAO
+*** TODO ibatis debug
+    配置log4j输出ibatis的调试日志，方便进行排查问题。
+    配置如下：
+    #+BEGIN_SRC sh :eval no 
+    balabala .... code block
+    #+END_SRC

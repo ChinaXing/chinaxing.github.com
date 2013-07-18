@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Fuse - 用户空间的文件系统实现</title>
+    <title>eclipse 安装 Jetty 插件辅助开发</title>
     <link rel="stylesheet" href="/styles/styles.css">
     <script type="text/javascript" src="/scripts/index.js" ></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -20,8 +20,9 @@
                
                
                
-               
-          <li class= >
+                  
+                  
+          <li class=active >
             <a href=/Java/>Java
             <sup>5</sup>
             </a>
@@ -40,9 +41,8 @@
                
                
                
-                  
-                  
-          <li class=active >
+               
+          <li class= >
             <a href=/linux/>linux
             <sup>22</sup>
             </a>
@@ -85,7 +85,7 @@
     </header>
     <section>
       <h2 style="text-align:center">
-  Fuse - 用户空间的文件系统实现
+  eclipse 安装 Jetty 插件辅助开发
 </h2>
 <div id="toc">
 Table of Content
@@ -93,107 +93,9 @@ Table of Content
 </div>
 <div class="tech">
 
-
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Fuse 介绍</a></li>
-<li><a href="#sec-2">2 Fuse的实现原理</a>
-<ul>
-<li><a href="#sec-2-1">2.1 libfuse</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">3 参考资料</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Fuse 介绍</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>Fuse 是指用户空间的文件系统，是文件系统的一种实现方式。目前BSD，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
-</p><ul>
-<li>易于调试和开发。
-</li>
-<li>功能可以非常灵活。
-</li>
-</ul>
-
-<p>但也有其缺点：
-</p><ul>
-<li>性能相对低下。
-</li>
-<li>安全性可能不好。
-</li>
-</ul>
-
-
 <p>
-Fuse开发出来的文件系统， 对用户提供了一个文件系统的视图，可以当作文件系统来使用。对内核提供了VFS接口，内核当做普通文件系统来调度它。
+【待写】
 </p>
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">Fuse的实现原理</h3>
-<div class="outline-text-3" id="text-2">
-
-<p><img src="../../../../../../images/FUSE_structure.svg"  alt="../../images/FUSE_structure.svg" />
-</p>
-<p>
-一次用户使用Fuse类型文件系统的过程如下：
-</p>
-
-<p>
-<img src="../../../../../../images/fuse-internal.png"  alt="../../images/fuse-internal.png" />
-</p>
-
-<ul>
-<li>内核FUSE模块与用户空间文件系统实现程序之间的通信使用FUSE自己的协议。而通信通过/dev/fuse这个设备来进行。
-
-</li>
-<li>FUSE模块进行文件系统调用协议到FUSE协议的转换，然后将请求发送给用户空间的文件系统实现程序。
-</li>
-</ul>
-
-
-
-</div>
-
-<div id="outline-container-2-1" class="outline-4">
-<h4 id="sec-2-1">libfuse</h4>
-<div class="outline-text-4" id="text-2-1">
-
-<p>libfuse 是用户空间的fuse库，发送到用户空间的请求会先被libfuse进行接收和解析，翻译成具体的操作，然后调用hook的实现函数，完成请求后再进行FUSE协议通信的方式返回给内核的FUSE模块。
-</p>
-<p>
-所以libfuse充当了用户空间的FUSE协议的另一端。负责和内核空间的FUSE模块进行通信。
-</p>
-
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">参考资料</h3>
-<div class="outline-text-3" id="text-3">
-
-<ul>
-<li><a href="http://lwn.net/Articles/68104/?format=printable">FUSE - implementing filesystems in user space</a>
-</li>
-<li><a href="http://zh.wikipedia.org/wiki/FUSE">FUSE wikipedia</a>
-</li>
-<li><a href="http://sourceforge.net/apps/mediawiki/fuse/index.php?title=FuseProtocolSketch">Fuse Protocol Sketch</a>
-</li>
-</ul>
-
-</div>
-</div>
-
 </div>
 
 

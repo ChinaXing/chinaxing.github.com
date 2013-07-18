@@ -1,0 +1,11 @@
+#+begin_html
+---
+layout: tech-post
+title: eclipse 安装 Jetty 插件辅助开发
+category: Java
+change_frequency: monthly
+tag: eclipse,jetty
+---
+#+end_html
+
+【待写】
