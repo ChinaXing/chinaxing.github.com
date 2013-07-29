@@ -1,0 +1,15 @@
+#+BEGIN_HTML
+---
+layout: default
+title: 我的书签
+---
+#+END_HTML
+
+*** Perl blog
+    - rjbs : http://rjbs.manxome.org/
+    - Ovid : http://blogs.perl.org/users/ovid
+    - David E. Wheeler : http://theory.pm/
+    - A Foolish Manifesto :http://blog.afoolishmanifesto.com/
+    - Quem sou eu : http://blog.gnustavo.com/
+    - Major Hayden : http://major.io/
+
