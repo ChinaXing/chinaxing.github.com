@@ -10,6 +10,7 @@ title: 我的书签
 ** My book mark(s)
 
 *** Perl blog
+    - perlshere : http://perlsphere.net/
     - rjbs : http://rjbs.manxome.org/
     - Ovid : http://blogs.perl.org/users/ovid
     - David E. Wheeler : http://theory.pm/
