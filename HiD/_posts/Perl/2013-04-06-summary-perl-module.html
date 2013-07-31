@@ -28,11 +28,11 @@ change_frequency: monthly
 <div class="outline-text-4" id="text-1">
 
 <ul>
-<li>Perl 用模块来组织代码，一切程序都是模块。默认的模块是*main*.
+<li>Perl 用模块来组织代码，一切程序都是模块。默认的模块是 <b>main</b>.
 </li>
 <li>模块等于namespace，全局变量和subrutine都存在于“某个”模块中，没有完全全局的变量。
 </li>
-<li>使用别的模块内的变量和subroutine，需要将其*导入*到*符号表*,被perl程序*知道*与可访问。
+<li>使用别的模块内的变量和subroutine，需要将其 <b>导入</b> 到 <b>符号表</b>,被perl程序 <b>知道</b> 与可访问。
 </li>
 </ul>
 
@@ -62,9 +62,9 @@ change_frequency: monthly
 <ul>
 <li>模块的全局变量和子过程存放在符号表中模块名为key的空间中
 </li>
-<li>全局变量：our $var
+<li>全局变量： <code>our $var</code>
 </li>
-<li>子过程：sub {}
+<li>子过程： <code>sub {}</code>
 </li>
 <li>导出变量和子过程
 
@@ -80,7 +80,7 @@ change_frequency: monthly
       导出的变量和子过程被引入了导出者的名字空间，可以直接访问。
 </p>
 <p>      
-      访问未导出的全局变量和子过程：$PACKAGE::var, &amp;PACKAGE::suba,因为它们存在于模块的名字空间内。
+      访问未导出的全局变量和子过程： <code>$PACKAGE::var</code> , <code>&amp;PACKAGE::suba</code> ,因为它们存在于模块的名字空间内。
 </p></li>
 </ul>
 
@@ -95,22 +95,22 @@ change_frequency: monthly
 <ul>
 <li>加载模块
 <ul>
-<li>运行期：require "module";
+<li>运行期： <code>require "module";</code>
 </li>
-<li>编译期：use module ();
+<li>编译期： <code>use module ();</code>
 </li>
 </ul>
 
 </li>
 <li>加载模块并导入XX
 <ul>
-<li>导入默认导出的变量：use moduleA;
+<li>导入默认导出的变量： <code>use moduleA;</code>
 </li>
-<li>并导入指定的量：use moduleA qw/A b/;
+<li>并导入指定的量： <code>use moduleA qw/A b/;</code>
 </li>
-<li>导入tag指定的一组量：use module A qw/:tagA /;
+<li>导入tag指定的一组量： <code>use module A qw/:tagA /;</code>
 </li>
-<li>不导入量只加载模块：use module ();
+<li>不导入量只加载模块： <code>use module ();</code>
 </li>
 </ul>
 
@@ -156,7 +156,7 @@ change_frequency: monthly
 </li>
 <li>require 在运行期执行。加载模块。
 </li>
-<li>use 大约相当于 BEGIN{ require Module; Module-&gt;import(LIST) }
+<li>use 大约相当于 <code>BEGIN{ require Module; Module-&gt;import(LIST) }</code>
 </li>
 <li>require 借助于 do "file" 来实现文件和模块加载。
 </li>
