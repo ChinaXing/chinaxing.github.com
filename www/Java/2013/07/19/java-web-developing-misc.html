@@ -24,7 +24,7 @@
                   
           <li class=active >
             <a href=/Java/>Java
-            <sup>5</sup>
+            <sup>6</sup>
             </a>
           </li>
              
@@ -118,7 +118,7 @@ Table of Content
 </div>
 
 <div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1"><span class="todo TODO">TODO</span> ibatis debug</h4>
+<h4 id="sec-1-1">ibatis debug</h4>
 <div class="outline-text-4" id="text-1-1">
 
 <p>    配置log4j输出ibatis的调试日志，方便进行排查问题。
@@ -126,7 +126,26 @@ Table of Content
 </p>
 
 
-<pre class="src src-sh">balabala .... code block
+<pre class="src src-sh"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">Global logging configuration</span>
+log4j.rootLogger=ERROR, stdout
+
+log4j.logger.com.ibatis=DEBUG
+
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows SQL of prepared statements</span>
+<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.Connection=DEBUG</span>
+
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows parameters inserted into prepared statements</span>
+<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.PreparedStatement=DEBUG</span>
+
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows query results</span>
+<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.ResultSet=DEBUG</span>
+
+<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.Statement=DEBUG</span>
+
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">Console output</span>
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%5p [%t] - %m%n
 </pre>
 
 </div>

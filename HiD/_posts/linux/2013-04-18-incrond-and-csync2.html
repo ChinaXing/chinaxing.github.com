@@ -346,7 +346,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <pre class="src src-sh">(
   flock -n 100 || <span style="color: #00ffff;">exit</span> 
   sleep 1 
-  <span style="color: #ffaa00;">echo</span> [$(date +<span style="color: #ffff00;">'%y-%m-%d %h:%M:%S'</span>)] <span style="color: #ffff00;">"${1:-crontab}"</span> &gt;&gt;/home/admin/logs/resource_sync.log
+  <span style="color: #ffaa00;">echo</span> [$(<span style="color: #ff00ff;">date</span> +<span style="color: #ffff00;">'%y-%m-%d %h:%M:%S'</span>)] <span style="color: #ffff00;">"${1:-crontab}"</span> &gt;&gt;/home/admin/logs/resource_sync.log
   /usr/local/sbin/csync2 -vx 2&gt;&gt;/home/admin/logs/csync2.log
   sleep 1
 ) 100&gt;/tmp/csync.lock

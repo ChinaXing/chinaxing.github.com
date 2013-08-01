@@ -10,6 +10,20 @@ change_frequency: monthly
 [[http://search.cpan.org/perldoc?HTML%3A%3AFormHandler][HTML-FormHandler]] - HTML forms using Moose
 ** HTML-FormHandler
    用在web框架中，自动生成表单，自动处理表单，验证表单，自动插入表单数据到数据库等。
+*** 主要功能
+**** Validate
+**** Process form
+**** render form
+**** Update Model
+*** 体系结构
+**** Form
+**** Field
+**** Render
+**** Element
+**** Label
+**** Widget
+**** Wrapper
+**** Theme
 ** 资料
    - PPT介绍
       #+BEGIN_HTML

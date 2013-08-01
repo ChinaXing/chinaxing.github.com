@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>去重perl数组</title>
+    <title>Eclipse 进行远程调试jboss web应用</title>
     <link rel="stylesheet" href="/styles/styles.css">
     <script type="text/javascript" src="/scripts/index.js" ></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -20,8 +20,9 @@
                
                
                
-               
-          <li class= >
+                  
+                  
+          <li class=active >
             <a href=/Java/>Java
             <sup>6</sup>
             </a>
@@ -50,9 +51,8 @@
                
                
                
-                  
-                  
-          <li class=active >
+               
+          <li class= >
             <a href=/Perl/>Perl
             <sup>22</sup>
             </a>
@@ -85,7 +85,7 @@
     </header>
     <section>
       <h2 style="text-align:center">
-  去重perl数组
+  Eclipse 进行远程调试jboss web应用
 </h2>
 <div id="toc">
 Table of Content
@@ -93,60 +93,54 @@ Table of Content
 </div>
 <div class="tech">
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
-</pre>
-
-
+<p>
+通过让运行于服务器上的Jboss打开远程调试的端口:8787, 可以在Eclipse中进行调试服务器上面的Web应用.方便进行程序调试和排查问题.
+</p>
+<p>
+远程调试建立后,你就可以在Eclipse中设置断点, 启动和暂停调试, 查看变量等所有调试操作, 但是调试的对象却是运行于远程的服务.
+</p>
 
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 例子:</a></li>
+<li><a href="#sec-1">1 Jboss配置</a></li>
+<li><a href="#sec-2">2 Eclipse 配置</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">例子:</h4>
-<div class="outline-text-4" id="text-1">
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">Jboss配置</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>   启动Jboss的Java命令行中添加如下选项:
+</p>
 
 
-
-
-<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Modern::Perl</span>;
-<span class="linenr"> 2:  </span><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;
-<span class="linenr"> 3:  </span>
-<span class="linenr"> 4:  </span><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> = (
-<span class="linenr"> 5:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'b'</span>},
-<span class="linenr"> 6:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'c'</span>},
-<span class="linenr"> 7:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'b'</span>},
-<span class="linenr"> 8:  </span>);
-<span class="linenr"> 9:  </span>
-<span class="linenr">10:  </span>say <span style="color: #ffff00;">"-----------------------"</span>;
-<span class="linenr">11:  </span>
-<span class="linenr">12:  </span><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$e</span> = [ <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; 1}  <span style="color: #66cd00;">map</span> {$_-&gt;{<span style="color: #ffff00;">a</span>} } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> } } ];
-<span class="linenr">13:  </span>
-<span class="linenr">14:  </span>say Dumper $e;
-<span class="linenr">15:  </span>
+<pre class="src src-sh">-Xdebug -Xnoagent -Xrunjdwp:<span style="color: #ffffff; font-weight: bold;">transport</span>=dt_socket,<span style="color: #ffffff; font-weight: bold;">address</span>=8787,<span style="color: #ffffff; font-weight: bold;">server</span>=y,<span style="color: #ffffff; font-weight: bold;">suspend</span>=n
 </pre>
 
 <p>
-<b>输出</b>:
-</p><pre class="example">
------------------------
-$VAR1 = [
-          'c',
-          'b'
-        ];
-
-</pre>
-
-
-
-
+   给Jvm添加这些选项后,启动jboss, 此时,jboss开始监听8787端口的远程调试请求,然后会进入调试模式.
+</p></div>
 
 </div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">Eclipse 配置</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>   Eclipse 的Debug选项下,点击Debug configuration, 新建调试配置:<br/>
+   <img src="../../../../../../images/eclipse-setup-remote-debug.png"  alt="../../images/eclipse-setup-remote-debug.png" />
+</p>
+<p>   
+   建立好配置后,就可以通过进行此配置的Debug,来启动远程调试, 此时, eclipse会链接远程的Jboss服务器的远程调试端口,进行协商,进入远程调试模式.
+</p>
+
+<p>
+建立Jboss的远程调试与建立其它Java的Web服务器的远程调试是类似的,诸如Tomcat, Jetty等因为原理是一致的,而且配置也几乎完全相同.
+</p></div>
 </div>
 
 </div>
