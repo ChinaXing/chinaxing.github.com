@@ -82,7 +82,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh"><span style="color: #ffffff; font-weight: bold;">commitID</span>=$(<span style="color: #ffaa00;">echo</span> <span style="color: #ffff00;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
+<pre class="src src-sh"><span style="color: #ffffff; font-weight: bold;">commitID</span>=$(<span style="color: #ff00ff;">echo</span> <span style="color: #ffff00;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
 git update-ref refs/heads/master $<span style="color: #ffffff; font-weight: bold;">commitID</span>
 git checkout master
 git push -f origin master

@@ -23,7 +23,7 @@
                
           <li class= >
             <a href=/Java/>Java
-            <sup>5</sup>
+            <sup>6</sup>
             </a>
           </li>
              
@@ -124,7 +124,7 @@ Table of Content
 
 
 <pre class="src src-sh"><span style="color: #ffffff; font-weight: bold;">srm</span>=<span style="color: #ffff00;">" \[`date -d ' -1 second '  +%d\\\/%h\\\/%Y:%H:%M:%S` +0800\] "</span>
-<span style="color: #ffffff; font-weight: bold;">QPS_RT</span>=$(tac $<span style="color: #ffffff; font-weight: bold;">acc_logs</span>|sed -n -e  <span style="color: #ffff00;">'/'"$srm"'/,${</span>
+<span style="color: #ffffff; font-weight: bold;">QPS_RT</span>=$(<span style="color: #ff00ff;">tac</span> $<span style="color: #ffffff; font-weight: bold;">acc_logs</span>|sed -n -e  <span style="color: #ffff00;">'/'"$srm"'/,${</span>
 <span style="color: #ffff00;">/'"$srm"'/p</span>
 <span style="color: #ffff00;">/'"$srm"'/!q}'</span> | awk <span style="color: #ffff00;">'{sum+=$2;count++}END{printf "%d,%.2f",count,sum/count/1000}'</span>
 )
