@@ -20,6 +20,7 @@ change_frequency: monthly
 <li><a href="#sec-1-6">1.6 配置perl5db初始化</a></li>
 <li><a href="#sec-1-7">1.7 Enbugger - 运行时debug</a></li>
 <li><a href="#sec-1-8">1.8 指定debugger模块</a></li>
+<li><a href="#sec-1-9">1.9 设置最大调用深度</a></li>
 </ul>
 </li>
 <li><a href="#sec-2">2 Debug 相关文档</a></li>
@@ -181,6 +182,15 @@ Enbugger-&gt;load_debugger(<span style="color: #ffff00;">'perl5db'</span>);
 <div class="outline-text-4" id="text-1-8">
 
 <p>    可以通过 <code>-d:Debugger</code> 来指定 Debugger 模块代替默认的perl5db进行debug
+</p></div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-4">
+<h4 id="sec-1-9">设置最大调用深度</h4>
+<div class="outline-text-4" id="text-1-9">
+
+<p>    默认情况下，如果subrutine调用深度超过100，DB就会中断执行，进入断点，可以通过 <code>$DB::deep = 500;</code> 设置深度为500，在大于500的调用深度下，DB自动进入暂停执行。
 </p>
 </div>
 </div>

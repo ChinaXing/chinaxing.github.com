@@ -65,6 +65,8 @@ change_frequency: monthly
       即通过gdb将运行中的perl程序trace，然后执行perl内部函数，加载Enbugger模块，然后Enbugger模块被执行，进入了debug模式
 *** 指定debugger模块
     可以通过 =-d:Debugger= 来指定 Debugger 模块代替默认的perl5db进行debug
+*** 设置最大调用深度
+    默认情况下，如果subrutine调用深度超过100，DB就会中断执行，进入断点，可以通过 =$DB::deep = 500;= 设置深度为500，在大于500的调用深度下，DB自动进入暂停执行。
 
 ** Debug 相关文档
    - [[http://search.cpan.org/perldoc?perl5db.pl][perl5db.pl]] - the perl debugger
