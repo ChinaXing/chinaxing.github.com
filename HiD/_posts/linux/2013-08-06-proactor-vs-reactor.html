@@ -1,0 +1,136 @@
+---
+layout: tech-post
+title: 两种IO模式：Proactor与Reactor模式
+category: linux
+tag: linux,io
+change_frequency: monthly
+---
+
+<p>
+IO多路复用模型有两种Proactor与Reactor，两者的区别主要在于IO是同步还是异步。
+</p>
+<p>
+Proactor比Reactor更高效。
+</p>
+<p>
+下面是两种模式的请求处理过程：
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 处理过程</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Proactor</a></li>
+<li><a href="#sec-1-2">1.2 Reactor</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 区别和联系</a>
+<ul>
+<li><a href="#sec-2-1">2.1 区别</a></li>
+<li><a href="#sec-2-2">2.2 联系</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 参考材料</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">处理过程</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1">Proactor</h4>
+<div class="outline-text-4" id="text-1-1">
+
+<ol>
+<li>client创建要进行的操作，并注册操作完成时的回调处理函数
+</li>
+<li>操作（opration）交由操作系统底层进行处理
+</li>
+<li>处理完成后底层将操作结果和回调函数传给Proactor调度器
+</li>
+<li>Proactor调度器进行分发事件，调用具体的回调处理函数。
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2">Reactor</h4>
+<div class="outline-text-4" id="text-1-2">
+
+<ol>
+<li>对事件进行注册处理函数。
+</li>
+<li>client的请求触发底层的事件。
+</li>
+<li>Reactor调度器检查事件发生，执行注册的处理函数。
+</li>
+</ol>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">区别和联系</h3>
+<div class="outline-text-3" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-4">
+<h4 id="sec-2-1">区别</h4>
+<div class="outline-text-4" id="text-2-1">
+
+<p>   在实现中，Proactor是发出异步IO请求，交由操作系统完成IO请求，然后回调自己。
+</p>
+<p>
+   而Reactor是查询操作系统，发生事件的时候，自己再对操作系统同步IO请求，完成后再回调注册的处理函数。 
+</p>
+<p>
+   因此二者的区别在于IO请求是OS来做，还是应用层来做，即异步与同步IO。
+</p>
+<p>
+   异步IO在windows上比较成熟，支持完善和高效，而在Linux等Unix系列操作系统上支持的不是很好，所以大多以Reactor模式为主。
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-4">
+<h4 id="sec-2-2">联系</h4>
+<div class="outline-text-4" id="text-2-2">
+
+<p>    涉及到高效IO框架都使用了IO多路复用与基于事件的方式，来将请求的处理过程“交叉化”，并行化，异步化，同时尽量的使用底层OS提供的支持功能来达到高效。
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">参考材料</h3>
+<div class="outline-text-3" id="text-3">
+
+<ul>
+<li><a href="https://docs.google.com/file/d/0B8Zm-qV7M9pIclNfdnZwNFNqajg/edit">Proactor</a>
+</li>
+<li><a href="http://www.artima.com/articles/io_design_patterns2.html">Comparing Two High-Performance I/O Design Patterns</a>
+</li>
+</ul>
+
+</div>
+</div>
