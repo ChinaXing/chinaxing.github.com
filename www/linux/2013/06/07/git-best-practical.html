@@ -98,22 +98,38 @@ Table of Content
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">撤销commit</a></li>
-<li><a href="#sec-2">强制使用远端仓库的内容</a></li>
-<li><a href="#sec-3">删除tag，并删除远程tag</a></li>
-<li><a href="#sec-4">添加tag，并推送到远程</a></li>
-<li><a href="#sec-5">修改上次的commit message</a></li>
-<li><a href="#sec-6">修改上次的commit author</a></li>
-<li><a href="#sec-7">删除未跟踪(Untracked)的文件</a></li>
-<li><a href="#sec-8">强制覆盖远程</a></li>
-<li><a href="#sec-9">配置</a></li>
+<li><a href="#sec-1">查询Ref对应的Commit ID</a></li>
+<li><a href="#sec-2">撤销commit</a></li>
+<li><a href="#sec-3">强制使用远端仓库的内容</a></li>
+<li><a href="#sec-4">删除tag，并删除远程tag</a></li>
+<li><a href="#sec-5">添加tag，并推送到远程</a></li>
+<li><a href="#sec-6">修改上次的commit message</a></li>
+<li><a href="#sec-7">修改上次的commit author</a></li>
+<li><a href="#sec-8">删除未跟踪(Untracked)的文件</a></li>
+<li><a href="#sec-9">强制覆盖远程</a></li>
+<li><a href="#sec-10">配置</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">撤销commit</h4>
+<h4 id="sec-1">查询Ref对应的Commit ID</h4>
 <div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="src src-sh">git rev-parse HEAD <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#35810;HEAD&#23545;&#24212;&#30340;commit ID</span>
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">撤销commit</h4>
+<div class="outline-text-4" id="text-2">
 
 
 
@@ -127,9 +143,9 @@ Table of Content
 
 </div>
 
-<div id="outline-container-2" class="outline-4">
-<h4 id="sec-2">强制使用远端仓库的内容</h4>
-<div class="outline-text-4" id="text-2">
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3">强制使用远端仓库的内容</h4>
+<div class="outline-text-4" id="text-3">
 
 
 
@@ -141,9 +157,9 @@ Table of Content
 
 </div>
 
-<div id="outline-container-3" class="outline-4">
-<h4 id="sec-3">删除tag，并删除远程tag</h4>
-<div class="outline-text-4" id="text-3">
+<div id="outline-container-4" class="outline-4">
+<h4 id="sec-4">删除tag，并删除远程tag</h4>
+<div class="outline-text-4" id="text-4">
 
 
 
@@ -158,9 +174,9 @@ git push origin :refs/tags/&lt;TAG_A&gt;
 
 </div>
 
-<div id="outline-container-4" class="outline-4">
-<h4 id="sec-4">添加tag，并推送到远程</h4>
-<div class="outline-text-4" id="text-4">
+<div id="outline-container-5" class="outline-4">
+<h4 id="sec-5">添加tag，并推送到远程</h4>
+<div class="outline-text-4" id="text-5">
 
 
 
@@ -173,9 +189,9 @@ git push --tags
 
 </div>
 
-<div id="outline-container-5" class="outline-4">
-<h4 id="sec-5">修改上次的commit message</h4>
-<div class="outline-text-4" id="text-5">
+<div id="outline-container-6" class="outline-4">
+<h4 id="sec-6">修改上次的commit message</h4>
+<div class="outline-text-4" id="text-6">
 
 
 
@@ -189,9 +205,9 @@ git push --tags
 
 </div>
 
-<div id="outline-container-6" class="outline-4">
-<h4 id="sec-6">修改上次的commit author</h4>
-<div class="outline-text-4" id="text-6">
+<div id="outline-container-7" class="outline-4">
+<h4 id="sec-7">修改上次的commit author</h4>
+<div class="outline-text-4" id="text-7">
 
 
 
@@ -203,9 +219,9 @@ git push --tags
 
 </div>
 
-<div id="outline-container-7" class="outline-4">
-<h4 id="sec-7">删除未跟踪(Untracked)的文件</h4>
-<div class="outline-text-4" id="text-7">
+<div id="outline-container-8" class="outline-4">
+<h4 id="sec-8">删除未跟踪(Untracked)的文件</h4>
+<div class="outline-text-4" id="text-8">
 
 
 
@@ -219,9 +235,9 @@ git push --tags
 
 </div>
 
-<div id="outline-container-8" class="outline-4">
-<h4 id="sec-8">强制覆盖远程</h4>
-<div class="outline-text-4" id="text-8">
+<div id="outline-container-9" class="outline-4">
+<h4 id="sec-9">强制覆盖远程</h4>
+<div class="outline-text-4" id="text-9">
 
 
 
@@ -233,9 +249,9 @@ git push --tags
 
 </div>
 
-<div id="outline-container-9" class="outline-4">
-<h4 id="sec-9">配置</h4>
-<div class="outline-text-4" id="text-9">
+<div id="outline-container-10" class="outline-4">
+<h4 id="sec-10">配置</h4>
+<div class="outline-text-4" id="text-10">
 
 <ul>
 <li>全局配置文件
