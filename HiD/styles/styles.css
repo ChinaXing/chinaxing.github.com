@@ -39,7 +39,8 @@ you can use the generic selector below, but it's slower:
 
 body {
     background-color:black;
-    font: 12px/1.5 tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
+    font-family: tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
+    font-size: 90%;
 }
 
 header {
@@ -61,7 +62,7 @@ section {
     line-height:1.5;
 }
 
-section:first-child {
+section >:first-child {
     font-family:cursive;
 }
 
@@ -80,7 +81,6 @@ section:first-child {
 #menu sup {
     padding:0;
     margin:0;
-    color:gainsboro;
 }
 
 #menu ul {
@@ -147,7 +147,6 @@ a:hover {
     max-height:2em;
     overflow:hidden;
     color:white;
-    border-radius:4px;
 }
 
 #toc a {
@@ -162,16 +161,13 @@ a:hover {
 
 #table-of-contents {
     border:1px solid;
-    padding: 0.5em;
-    border-radius:0.5em;
 }
 
-.src, .example {
-    color:#BBB;
-    background-color:black;
-    border-radius:0.2em;
-    border:1px solid gray;
+.src, .example, code{
+    color:#CCC;
+    background-color:#000000;
     padding: 0.5em;
+    font-family: CONSOLAS, COURIER, cursive, monospace;
 }
 
 .toc-top-link {
@@ -216,7 +212,7 @@ a:hover {
     padding-bottom:2px;
 }
 
-#table-of-contents:first-child {
+#table-of-contents>:first-child {
     display:none;
 }
 
@@ -236,4 +232,12 @@ img {
     margin: auto;
     padding-bottom: 1em;
     margin-top: 1em;
+}
+
+code {
+    line-height: 2em;
+    display: inline-block;
+    padding: 0;
+    padding-left: .2em;
+    padding-right: .2em;
 }
