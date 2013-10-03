@@ -8,6 +8,11 @@ change_frequency: monthly
 ---
 #+END_HTML
 
+*** 查询Ref对应的Commit ID
+    #+BEGIN_SRC sh :eval no
+    git rev-parse HEAD #查询HEAD对应的commit ID
+    #+END_SRC
+
 *** 撤销commit
     #+BEGIN_SRC sh :eval no
     git reset --soft <COMMIT_ID>
