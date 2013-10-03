@@ -1,7 +1,7 @@
 #+begin_html
 ---
 layout: tech-post
-title: Eclipse 进行远程调试jboss web应用
+title: Eclipse进行远程调试jboss web应用
 category: Java
 change_frequency: monthly
 tag: java,web,jboss,eclipse

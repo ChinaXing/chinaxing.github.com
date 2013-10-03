@@ -39,7 +39,7 @@ you can use the generic selector below, but it's slower:
 
 body {
     background-color:black;
-    font-family: github-icon,sans-serif;
+    font: 12px/1.5 tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
     font-size: 90%;
 }
 
@@ -161,12 +161,12 @@ a:hover {
     border-radius:0.5em;
 }
 
-.src, .example {
-    color:#BBB;
-    background-color:black;
+.src, .example, code{
+    color:#CCC;
+    background-color:#000000;
     border-radius:0.2em;
-    border:1px solid gray;
     padding: 0.5em;
+    font-family: CONSOLAS, COURIER, cursive, monospace;
 }
 
 .toc-top-link {
@@ -227,4 +227,12 @@ img {
     margin: auto;
     padding-bottom: 1em;
     margin-top: 1em;
+}
+
+code {
+    line-height: 2em;
+    display: inline-block;
+    padding: 0;
+    padding-left: .2em;
+    padding-right: .2em;
 }
