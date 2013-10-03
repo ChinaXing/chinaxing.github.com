@@ -51,20 +51,20 @@ $self-&gt;_sandbox(<span style="color: #ffff00;">'Read'</span>&#65292; $io-&gt;{
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 请求处理过程</a>
+<li><a href="#sec-1">请求处理过程</a>
 <ul>
-<li><a href="#sec-1-1">1.1 listen socket上面的回调</a></li>
-<li><a href="#sec-1-2">1.2 listen socket上链接达到</a></li>
-<li><a href="#sec-1-3">1.3 为链接创建Mojo::IOLoop::Stream</a></li>
-<li><a href="#sec-1-4">1.4 client发来数据</a></li>
-<li><a href="#sec-1-5">1.5 transaction被创建并处理数据</a></li>
-<li><a href="#sec-1-6">1.6 数据分析完整触发tx上的request事件</a></li>
-<li><a href="#sec-1-7">1.7 执行app上的handler方法</a></li>
-<li><a href="#sec-1-8">1.8 tx被唤醒写response数据到链接</a></li>
-<li><a href="#sec-1-9">1.9 结束tx</a></li>
+<li><a href="#sec-1-1">listen socket上面的回调</a></li>
+<li><a href="#sec-1-2">listen socket上链接达到</a></li>
+<li><a href="#sec-1-3">为链接创建Mojo::IOLoop::Stream</a></li>
+<li><a href="#sec-1-4">client发来数据</a></li>
+<li><a href="#sec-1-5">transaction被创建并处理数据</a></li>
+<li><a href="#sec-1-6">数据分析完整触发tx上的request事件</a></li>
+<li><a href="#sec-1-7">执行app上的handler方法</a></li>
+<li><a href="#sec-1-8">tx被唤醒写response数据到链接</a></li>
+<li><a href="#sec-1-9">结束tx</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">2 总结</a></li>
+<li><a href="#sec-2">总结</a></li>
 </ul>
 </div>
 </div>
