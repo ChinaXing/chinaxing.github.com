@@ -39,8 +39,7 @@ you can use the generic selector below, but it's slower:
 
 body {
     background-color:black;
-    font-family: github-icon,sans-serif;
-    font-size: 90%;
+    font: 12px/1.5 tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
 }
 
 header {
