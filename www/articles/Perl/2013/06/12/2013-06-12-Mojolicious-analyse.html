@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Mojolicious Web框架实现分析 -- App启动过程 - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://chinaxing.org"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>23</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <div id="clustrmaps-widget"></div>
+      </div>
+    </header>
+    <section id="content">
+      <h2 style="text-align:center">Mojolicious Web框架实现分析 -- App启动过程
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <div class="tech">
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1&nbsp;前言</a></li>
+<li><a href="#sec-2">2 启动Mojolicious App</a>
+<ul>
+<li><a href="#sec-2-1">2.1 通过 script/my_app daemon&nbsp;启动应用</a></li>
+<li><a href="#sec-2-2">2.2&nbsp;执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
+<li><a href="#sec-2-3">2.3&nbsp;创建Mojo::Server实例，加载App，启动App</a></li>
+<li><a href="#sec-2-4">2.4&nbsp;App创建完毕，调用其start方法</a></li>
+<li><a href="#sec-2-5">2.5&nbsp;使用Mojolicious::Commands类的run方法执行</a></li>
+<li><a href="#sec-2-6">2.6&nbsp;调用Mojolicious::Command::daemon的run方法</a></li>
+<li><a href="#sec-2-7">2.7&nbsp;Mojo::Server::Daemon执行run方法</a></li>
+<li><a href="#sec-2-8">2.8&nbsp;Mojo::Server::Daemon的start方法</a></li>
+<li><a href="#sec-2-9">2.9&nbsp;调用_listen方法创建监听的server</a></li>
+<li><a href="#sec-2-10">2.10&nbsp;ioloop被启动</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3&nbsp;总结</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">前言</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>   由于我对Web框架的理解不是很清晰，所以希望能借着阅读代码进行全面的了解，加之自己对Perl相对熟悉，所以就选择Perl的web框架来分析，Mojolicious特点是实时，基于事件，&nbsp;比较拟合当前的趋势，加之其代码精简，也可以从中学习到Perl编程的一些经验和技巧.
+</p>
+<p>
+由于Mojolicious.pm&nbsp;是编写App时候继承的类，所以我们从这里开始，分析流程是从程序被启动到一个请求被处理完毕，只会分析<span class="caps">HTTP</span>协议.
+</p>
+<p>
+假设我们编写了MyApp，目录结构如下:
+</p>
+
+
+
+
+<pre class="example">/home/chinaxing/tmp/my_app
+├── lib
+│   ├── MyApp
+│   │   └── Example.pm
+│   └── MyApp.pm
+├── log
+├── public
+│   └── index.html
+├── script
+│   └── my_app
+├── t
+│   └── basic.t
+└── templates
+    ├── example
+    │   └── welcome.html.ep
+    └── layouts
+        └── default.html.ep
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">启动Mojolicious&nbsp;App</h3>
+<div class="outline-text-3" id="text-2">
+
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-4">
+<h4 id="sec-2-1">通过 script/my_app daemon&nbsp;启动应用</h4>
+<div class="outline-text-4" id="text-2-1">
+
+
+
+
+<pre class="src src-perl"><span style="color: #ff0000;">#</span><span style="color: #ff0000;">!/usr/bin/env perl</span>
+
+<span style="color: #00ffff;">use</span> <span style="color: #4186be;">strict</span>;
+<span style="color: #00ffff;">use</span> <span style="color: #4186be;">warnings</span>;
+
+<span style="color: #00ffff;">use</span> <span style="color: #4186be;">FindBin</span>;
+<span style="color: #00ffff;"><span class="caps">BEGIN</span></span> { <span style="color: #66cd00;">unshift</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@<span class="caps">INC</span></span>&#65292; <span style="color: #ffff00;">"$FindBin::Bin/../lib"</span> }
+
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">Start command line interface for application</span>
+<span style="color: #00ffff;">require</span> <span style="color: #4186be;">Mojolicious::Commands</span>;
+Mojolicious::Commands-&gt;start_app(<span style="color: #ffff00;">'MyApp'</span>);
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-4">
+<h4 id="sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</h4>
+<div class="outline-text-4" id="text-2-2">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">start_app</span> {
+  <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$self</span> = <span style="color: #66cd00;">shift</span>;
+  <span style="color: #00ffff;">return</span> Mojo::Server-&gt;new-&gt;build_app(<span style="color: #66cd00;">shift</span>)-&gt;start(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>);
+}
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-4">
+<h4 id="sec-2-3">创建Mojo::Server实例，加载App，启动App</h4>
+<div class="outline-text-4" id="text-2-3">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">build_app</span> {
+  <span style="color: #00ffff;">my</span> (<span style="color: #ffffff; font-weight: bold;">$self</span>&#65292; $app) = <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>;
+  <span style="color: #00ffff;">local</span> <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">ENV</span></span>{<span style="color: #ffff00;">MOJO_EXE</span>};
+  <span style="color: #00ffff;">return</span> $app-&gt;new <span style="color: #00ffff;">unless</span> <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$e</span> = Mojo::Loader-&gt;new-&gt;load($app);
+  <span style="color: #00ffff;">die</span> <span style="color: #ff7f50;">ref</span> $e ? $e : <span style="color: #66cd00;">qq</span><span style="color: #ffff00;">{Couldn't find application class "$app".\n}</span>;
+}
+</pre>
+
+<ul>
+<li>使用Mojo::Loader模块加载器加载App，然后调用$app-&gt;new来实例化一个App类:
+
+
+
+<pre class="src src-perl"> <span style="color: #00ffff;">package</span> <span style="color: #4186be;">MyApp</span>;
+ <span style="color: #00ffff;">use</span> <span style="color: #4186be;">Mojo::Base</span> <span style="color: #ffff00;">'Mojolicious'</span>;
+
+ <span style="color: #ff0000;"># </span><span style="color: #ff0000;">This method will run once at server start</span>
+ <span style="color: #00ffff;">sub</span> <span style="color: #4186be;">startup</span> {
+   <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$self</span> = <span style="color: #66cd00;">shift</span>;
+
+   <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Documentation browser under "/perldoc"</span>
+   $self-&gt;plugin(<span style="color: #ffff00;">'PODRenderer'</span>);
+
+   <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Router</span>
+   <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$r</span> = $self-&gt;routes;
+
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Normal route to controller</span>
+   $r-&gt;get(<span style="color: #ffff00;">'/'</span>)-&gt;to(<span style="color: #ffff00;">'example#welcome'</span>);
+ }
+
+1;
+</pre>
+
+<p>
+    从MyApp代码可以看出，集成了Mojolicious类，所以此处的new方法是调用了父类的方法创建了一个实例.
+</p></li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-4">
+<h4 id="sec-2-4">App创建完毕，调用其start方法</h4>
+<div class="outline-text-4" id="text-2-4">
+
+<p>    mojolicious.pm中
+</p>
+
+
+<pre class="src src-perl">has <span style="color: #ffff00;">commands</span> =&gt; <span style="color: #00ffff;">sub</span> {
+   <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$commands</span> = Mojolicious::Commands-&gt;new(<span style="color: #ffff00;">app</span> =&gt; <span style="color: #66cd00;">shift</span>);
+   weaken $commands-&gt;{<span style="color: #ffff00;">app</span>};
+   <span style="color: #00ffff;">return</span> $commands;
+};
+...
+<span style="color: #00ffff;">sub</span> <span style="color: #4186be;">start</span> { <span style="color: #66cd00;">shift</span>-&gt;commands-&gt;run(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span> ? <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span> : <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@<span class="caps">ARGV</span></span>) }
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-5" class="outline-4">
+<h4 id="sec-2-5">使用Mojolicious::Commands类的run方法执行</h4>
+<div class="outline-text-4" id="text-2-5">
+
+<p>   commands现在的app属性已经设置为MyApp.
+</p>
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">run</span> {
+  <span style="color: #00ffff;">my</span> (<span style="color: #ffffff; font-weight: bold;">$self</span>&#65292; $name&#65292; <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@args</span>) = <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>;
+
+  ...
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Run command</span>
+  <span style="color: #00ffff;">if</span> ($name &amp;&amp; $name =~ <span style="color: #00ff00;">/</span><span style="color: #4186be;">^</span><span style="color: #ffaa00;">\</span><span style="color: #ff7f50;">w</span><span style="color: #ffaa00;">+</span><span style="color: #4186be;">$</span><span style="color: #00ff00;">/</span> &amp;&amp; ($name <span style="color: #ff7f50;">ne</span> <span style="color: #ffff00;">'help'</span> || <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$args</span>[0])) {
+
+    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Help</span>
+    $name = <span style="color: #66cd00;">shift</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@args</span> <span style="color: #00ffff;">if</span> <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$help</span> = $name <span style="color: #ff7f50;">eq</span> <span style="color: #ffff00;">'help'</span>;
+    $help = <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">ENV</span></span>{<span style="color: #ffff00;">MOJO_HELP</span>} = <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">ENV</span></span>{<span style="color: #ffff00;">MOJO_HELP</span>} ? 1 : $help;
+
+    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$module</span>;
+    $module = _command(<span style="color: #ffff00;">"${_}::$name"</span>&#65292; 1) <span style="color: #ff7f50;">and</span> <span style="color: #00ffff;">last</span> <span style="color: #00ffff;">for</span> @{$self-&gt;namespaces};
+
+    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Unknown command</span>
+    <span style="color: #00ffff;">die</span> <span style="color: #66cd00;">qq</span><span style="color: #ffff00;">{Unknown command "$name"&#65292; maybe you need to install it?\n}</span>
+      <span style="color: #00ffff;">unless</span> $module;
+
+    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Run command</span>
+    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$command</span> = $module-&gt;new(<span style="color: #ffff00;">app</span> =&gt; $self-&gt;app);
+    <span style="color: #00ffff;">return</span> $help ? $command-&gt;help(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@args</span>) : $command-&gt;run(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@args</span>);
+  }
+  ...
+</pre>
+
+<p>
+    调用_command加载对应的command模块，我们传的是&#8221;daemon&#8221;命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
+</p></div>
+
+</div>
+
+<div id="outline-container-2-6" class="outline-4">
+<h4 id="sec-2-6">调用Mojolicious::Command::daemon的run方法</h4>
+<div class="outline-text-4" id="text-2-6">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">run</span> {
+  <span style="color: #00ffff;">my</span> (<span style="color: #ffffff; font-weight: bold;">$self</span>&#65292; <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@args</span>) = <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>;
+
+  <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$daemon</span> = Mojo::Server::Daemon-&gt;new(<span style="color: #ffff00;">app</span> =&gt; $self-&gt;app);
+  GetOptionsFromArray \<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@args</span>&#65292;
+    <span style="color: #ffff00;">'b|backlog=i'</span>    =&gt; <span style="color: #00ffff;">sub</span> { $daemon-&gt;backlog(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$_</span>[1]) }&#65292;
+    <span style="color: #ffff00;">'c|clients=i'</span>    =&gt; <span style="color: #00ffff;">sub</span> { $daemon-&gt;max_clients(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$_</span>[1]) }&#65292;
+    <span style="color: #ffff00;">'g|group=s'</span>      =&gt; <span style="color: #00ffff;">sub</span> { $daemon-&gt;group(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$_</span>[1]) }&#65292;
+    <span style="color: #ffff00;">'i|inactivity=i'</span> =&gt; <span style="color: #00ffff;">sub</span> { $daemon-&gt;inactivity_timeout(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$_</span>[1]) }&#65292;
+    <span style="color: #ffff00;">'l|listen=s'</span>     =&gt; \my <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@listen</span>&#65292;
+    <span style="color: #ffff00;">'p|proxy'</span> =&gt; <span style="color: #00ffff;">sub</span> { <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">ENV</span></span>{<span style="color: #ffff00;">MOJO_REVERSE_PROXY</span>} = 1 }&#65292;
+    <span style="color: #ffff00;">'r|requests=i'</span> =&gt; <span style="color: #00ffff;">sub</span> { $daemon-&gt;max_requests(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$_</span>[1]) }&#65292;
+    <span style="color: #ffff00;">'u|user=s'</span>     =&gt; <span style="color: #00ffff;">sub</span> { $daemon-&gt;user(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">$_</span>[1]) };
+
+  $daemon-&gt;<span style="color: #ff7f50;">listen</span>(\<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@listen</span>) <span style="color: #00ffff;">if</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@listen</span>;
+  $daemon-&gt;run;
+}
+</pre>
+
+<p>
+   可以看到实例化了一个Mojo::Server::Daemon类，然后从参数中设置实例的一些属性，设置实例的listen属性.执行run方法启动server.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-7" class="outline-4">
+<h4 id="sec-2-7">Mojo::Server::Daemon执行run方法</h4>
+<div class="outline-text-4" id="text-2-7">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">run</span> {
+  <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$self</span> = <span style="color: #66cd00;">shift</span>;
+  <span style="color: #00ffff;">local</span> <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">SIG</span></span>{<span style="color: #ffff00;"><span class="caps">INT</span></span>} = <span style="color: #00ffff;">local</span> <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">SIG</span></span>{<span style="color: #ffff00;"><span class="caps">TERM</span></span>} = <span style="color: #00ffff;">sub</span> { $self-&gt;ioloop-&gt;stop };
+  $self-&gt;start-&gt;setuidgid-&gt;ioloop-&gt;start;
+}
+</pre>
+
+<p>
+    注册了一些信号处理后，调用start方法，调用setuidgid创建新session，然后启动ioloop.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-8" class="outline-4">
+<h4 id="sec-2-8">Mojo::Server::Daemon的start方法</h4>
+<div class="outline-text-4" id="text-2-8">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">start</span> {
+  <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$self</span> = <span style="color: #66cd00;">shift</span>;
+
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Resume accepting connections</span>
+  <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$loop</span> = $self-&gt;ioloop;
+  <span style="color: #00ffff;">if</span> (<span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$acceptors</span> = $self-&gt;{<span style="color: #ffff00;">acceptors</span>}) {
+    <span style="color: #66cd00;">push</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@</span><span style="color: #ffffff; font-weight: bold;">$acceptors</span>&#65292; $loop-&gt;acceptor(<span style="color: #66cd00;">delete</span> $self-&gt;{<span style="color: #ffff00;">servers</span>}{$_})
+      <span style="color: #00ffff;">for</span> <span style="color: #66cd00;">keys</span> %{$self-&gt;{<span style="color: #ffff00;">servers</span>}};
+  }
+
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">Start listening</span>
+  <span style="color: #00ffff;">else</span> { $self-&gt;_listen($_) <span style="color: #00ffff;">for</span> @{$self-&gt;<span style="color: #ff7f50;">listen</span>} }
+  $loop-&gt;max_connections($self-&gt;max_clients);
+
+  <span style="color: #00ffff;">return</span> $self;
+}
+</pre>
+
+<p>
+    分两种情况:
+</p><ul>
+<li>已经打开了监听socket，&nbsp;每个acceptor对应一个Mojo::IOLoop::Server实例
+</li>
+<li>还没有监听，则调用<sub>listen方法在每个要监听的端口上面开启监听，这样每个端口上启动了一个Mojo</sub>::IOLoop::Server实例
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-9" class="outline-4">
+<h4 id="sec-2-9">调用_listen方法创建监听的server</h4>
+<div class="outline-text-4" id="text-2-9">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">_listen</span> {
+  <span style="color: #00ffff;">my</span> (<span style="color: #ffffff; font-weight: bold;">$self</span>&#65292; $listen) = <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>;
+  ...
+  <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$id</span> = $self-&gt;ioloop-&gt;server(
+    $options =&gt; <span style="color: #00ffff;">sub</span> {
+      <span style="color: #00ffff;">my</span> (<span style="color: #ffffff; font-weight: bold;">$loop</span>&#65292; $stream&#65292; $id) = <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>;
+
+      <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$c</span> = $self-&gt;{<span style="color: #ffff00;">connections</span>}{$id} = {<span style="color: #ffff00;">tls</span> =&gt; $tls};
+      <span style="color: #ff7f50;">warn</span> <span style="color: #ffff00;">"-- Accept (@{[$stream-&gt;handle-&gt;peerhost]})\n"</span> <span style="color: #00ffff;">if</span> <span class="caps">DEBUG</span>;
+      $stream-&gt;timeout($self-&gt;inactivity_timeout);
+
+      $stream-&gt;on(<span style="color: #ffff00;">close</span> =&gt; <span style="color: #00ffff;">sub</span> { $self-&gt;_close($id) });
+      $stream-&gt;on(
+        <span style="color: #ffff00;">error</span> =&gt; <span style="color: #00ffff;">sub</span> {
+          <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">unless</span> $self;
+          $self-&gt;app-&gt;<span style="color: #ff7f50;">log</span>-&gt;error(<span style="color: #66cd00;">pop</span>);
+          $self-&gt;_close($id);
+        }
+      );
+      $stream-&gt;on(<span style="color: #ffff00;">read</span> =&gt; <span style="color: #00ffff;">sub</span> { $self-&gt;_read($id =&gt; <span style="color: #66cd00;">pop</span>) });
+      $stream-&gt;on(<span style="color: #ffff00;">timeout</span> =&gt;
+          <span style="color: #00ffff;">sub</span> { $self-&gt;app-&gt;<span style="color: #ff7f50;">log</span>-&gt;debug(<span style="color: #ffff00;">'Inactivity timeout.'</span>) <span style="color: #00ffff;">if</span> $c-&gt;{<span style="color: #ffff00;">tx</span>} });
+    }
+  );
+  <span style="color: #66cd00;">push</span> @{$self-&gt;{<span style="color: #ffff00;">acceptors</span>} ||= []}&#65292; $id;
+
+  <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">if</span> $self-&gt;silent;
+  $self-&gt;app-&gt;<span style="color: #ff7f50;">log</span>-&gt;info(<span style="color: #66cd00;">qq</span><span style="color: #ffff00;">{Listening at "$listen".}</span>);
+  $listen =~ <span style="color: #66cd00;">s</span><span style="color: #00ff00;">!</span><span style="color: #ffff00;">//</span><span style="color: #ffaa00;">\</span><span style="color: #ffff00;">*</span><span style="color: #00ff00;">!</span><span style="color: #ffff00;">//127.0.0.1</span><span style="color: #00ff00;">!</span><span style="color: #66cd00;">i</span>;
+  say <span style="color: #ffff00;">"Server available at $listen."</span>;
+}
+</pre>
+
+<p>
+    可以看到是通过实例化Mojo::IOLoop::Server来创建一个监听端口的server，并且将创建的server记录在$self-&gt;{acceptors}数组.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-10" class="outline-4">
+<h4 id="sec-2-10">ioloop被启动</h4>
+<div class="outline-text-4" id="text-2-10">
+
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #4186be;">start</span> {
+   <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$self</span> = <span style="color: #66cd00;">shift</span>;
+   croak <span style="color: #ffff00;">'Mojo::IOLoop already running'</span> <span style="color: #00ffff;">if</span> $self-&gt;is_running;
+   (<span style="color: #ff7f50;">ref</span> $self ? $self : $self-&gt;singleton)-&gt;reactor-&gt;start;
+}
+</pre>
+
+<p>
+    执行reactor的start方法:
+</p>
+
+
+<pre class="src src-perl"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#22914;&#26524;Reactor&#26159;Mojo::Reactor::<span class="caps">EV</span></span>
+<span style="color: #00ffff;">sub</span> <span style="color: #4186be;">start</span> {<span class="caps">EV</span>::run}
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#22914;&#26524;&#26159;Mojo::Reactor::Poll</span>
+<span style="color: #00ffff;">sub</span> <span style="color: #4186be;">start</span> {
+    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$self</span> = <span style="color: #66cd00;">shift</span>;
+    <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">if</span> $self-&gt;{<span style="color: #ffff00;">running</span>}++;
+    $self-&gt;one_tick <span style="color: #00ffff;">while</span> $self-&gt;{<span style="color: #ffff00;">running</span>};
+}
+</pre>
+
+<p>
+    注意到如果是<span class="caps">EV</span>，执行run方法会被阻塞，进入了事件循环.如果是Poll，进入了轮询，也是一个循环.
+</p>
+<p>
+自此server启动完毕
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">总结</h3>
+<div class="outline-text-3" id="text-3">
+
+<ul>
+<li>App的start方法启动app
+</li>
+<li>App由commands启动，commands对应于各个server类型(如daemon对应与Mojo::Server::Daemon)
+</li>
+<li>commands使用对应的Mojo::Server子类打开监听端口，启动ioloop等待请求到来
+</li>
+<li>多个进程对同一个监听端口的事件处理注册通过文件锁来互斥
+</li>
+<li>每个新进的链接都被封装成一个Mojo::IOLoop::Stream
+</li>
+<li>App创建实例的时候会调用startup方法，应用程序通过重载此方法来个性化路由，试图，等等其它所有事情(几乎是唯一入口)
+</li>
+<li>自动检测底层事件发生器的类型:<span class="caps">EV</span>或者Poll.优先使用高效的EV
+</li>
+<li>事件发生器支持:timer，io
+</li>
+<li>EventEmitter提供一个注册和触发事件的hub或者桥梁，这里的事件都是自定义事件而不是真实世界的外来事件
+</li>
+<li>一个Transaction表达从request到response的整个过程及其数据.类型有<span class="caps">HTTP</span>和WebSocket
+</li>
+<li>请求和相应都被抽象为Message类，分别子类化为Request和Response
+</li>
+<li>请求和响应的内容被抽象为Content，分别有Multipart和Single类型的Content(content包括<span class="caps">HTTP</span>头部)
+</li>
+<li><span class="caps">HTTP</span>头部字段抽象为Headers
+</li>
+<li>资源(文件，请求体内和响应体的内容等)抽象为Asset，类型有File和Memroy
+</li>
+<li>加载类通过Mojo::Loader
+</li>
+<li>请求<span class="caps">URL</span>为Mojo::URL，请求的路径部分:Mojo::Path，请求的参数部分:Mojo::Parameters
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      <!-- Table of Content-->
+      <script src="http://code.jquery.com/jquery-1.9.0.min.js" charset="utf-8"></script>
+      <script src="/js/jquery.tableofcontents.min.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+           topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- clusterMaps-->
+  <script>
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")
+  </noscript>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://chinaxing.org"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>23</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <div id="clustrmaps-widget"></div>
+      </div>
+    </header>
+    <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>09. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">从DBIx::Class的Schema类生成SQL语句</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+<a href="http://search.cpan.org/perldoc?DBIx::Class::Admin">DBIx::Class::Admin</a>&nbsp;模块提供了数据库管理的一些功能，如：部署,升级版本，更新数据，插入数据，删除，查询和生成数据库<span class="caps">SQL</span>表。
+</p>
+<p>
+这个模块还附带了一个命令行的工具： <b>dbicadmin</b>&nbsp;，帮助我们不必写perl脚本就可以使用它的功能。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1&nbsp;从Schema生成<span class="caps">SQL</span>语句</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">从Schema生成<span class="caps">SQL</span>语句</h3>
+</div>
+          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>09. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">去重perl数组</a></h2>
+        </header>
+        <section class="content">
+
+<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
+</pre>
+
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1&nbsp;例子:</a></li></ul></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>08. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">列出你安装的Perl模块</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1&nbsp;perllocal</a></li>
+<li><a href="#sec-2">2&nbsp;instmodsh</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">perllocal</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+
+<pre class="src src-sh">perldoc perllocal
+</pre>
+
+
+<p>
+这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
+</p></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">more</a></p>
+        </section>
+      </article>
+      <div id="paginator-nav"><a href="/page/11/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/13/" class="nav-next">Next page »</a>
+      </div>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- clusterMaps-->
+  <script>
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")
+  </noscript>
+</html>

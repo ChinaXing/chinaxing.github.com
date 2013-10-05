@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>使用perl模块HiD取代jekyll编写blog - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://chinaxing.org"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>23</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <div id="clustrmaps-widget"></div>
+      </div>
+    </header>
+    <section id="content">
+      <h2 style="text-align:center">使用perl模块HiD取代jekyll编写blog
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <div class="tech">
+
+<p>
+jekyll&nbsp;是一个非常好用的静态站点生成器，支持插件，可以用来增强它。
+</p>
+<p>
+如今，许多技术人员的blog开始放在github上面，github同时支持jekyll的基本功能。
+</p>
+<p>
+经过一些配置，就可以使用org+jekyll+github完成blog的编写到发布。
+</p>
+<p>
+jekyll使用ruby开发，因为我没有学过ruby，也不打算学，所以一直希望能够有个Perl的类似程序，以便代替jekyll。
+</p>
+<p>
+于是，在<span class="caps">CPAN</span>上面发现了这个模块：<a href="https://github.com/genehack/HiD"><span class="caps">HID</span></a>, 类似的模块当然很多，而且灵感都起于jekyll，之所以选这个模块是因为它和&nbsp;jekyll的相似度非常高。
+</p>
+<p>
+美中不足的是，它还有待完善，因为还不能支持全局的分类和tag之类的功能，虽然为它添加这个功能非常简单（我已经添加）。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1&nbsp;<span class="caps">HID</span>介绍</a></li>
+<li><a href="#sec-2">2&nbsp;<span class="caps">HID</span>安装</a></li>
+<li><a href="#sec-3">3&nbsp;<span class="caps">HID</span>生成静态网站</a></li>
+<li><a href="#sec-4">4&nbsp;以我我的为例子</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1"><span class="caps">HID</span>介绍</h4>
+<div class="outline-text-4" id="text-1">
+
+<p>    <span class="caps">HID</span>的作者维护的版本还没有将categories和tags导出到site变量，而且代码中有点bug，对utf8的title会有问题。
+</p>
+<p>
+    我fork了作者的代码，添加了categories和tags的导出，修正了一些问题，目前来看，可以导出同jekyll一样的结果，而且支持一个after_publish插件。
+</p>
+<p>    
+    通过after_publish插件，可以进行生成分类文章索引、sitemap等自己想要的东西。
+</p>
+<p>    
+    pull-request已经提交给作者，等待merge，现在使用可以从我的<a href="https://github.com/ChinaXing/HiD">repo</a>&nbsp;里面clone，然后安装。
+</p>
+<p>    
+    此外，我已经写好了生成分类索引页和sitemap的插件，也可以从这里下载，然后放入你的blog目录的<sub>plugin目录。</sub>
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2"><span class="caps">HID</span>安装</h4>
+<div class="outline-text-4" id="text-2">
+
+<ul>
+<li>从github clone代码
+
+
+
+<pre class="src src-sh">git clone git://github.com/ChinaXing/HiD.git
+</pre>
+
+</li>
+<li>安装此perl模块
+
+
+
+<pre class="src src-sh"><span style="color: #ffaa00;">cd</span> <span class="caps">HID</span> &amp;&amp; dzil build
+<span style="color: #ffaa00;">cd</span> <span class="caps">HID</span>-0.5 &amp;&amp; perl Makefile.PL &amp;&amp; make &amp;&amp; make install 
+</pre>
+
+</li>
+</ul>
+
+<p>    安装完成后，会有一个*hid*命令，这个命令类似jekyl。
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3"><span class="caps">HID</span>生成静态网站</h4>
+<div class="outline-text-4" id="text-3">
+
+<p>    使用hid命令来生成静态页面，类似jekyll，只要在目录内部执行`hid&nbsp;publish`即可，hid的配置也类似jekyll，因为它们一样的思想。
+</p>
+<p>    
+    生成静态网站后，如果想本地测试，运行`hid&nbsp;server`，会在本地启动一个plack服务器，端口默认5000，此功能需要你安装Plack::Runner模块。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-4">
+<h4 id="sec-4">以我我的为例子</h4>
+<div class="outline-text-4" id="text-4">
+
+<p>    举例我的blog的目录结构：
+</p>
+
+
+<pre class="src src-sh">tree -L 2 ~/ChinaXing.org/
+</pre>
+
+
+<pre class="example">ChinaXing.org/
+├── build.sh
+├── HiD
+│   ├── _config.yml
+│   ├── _layouts
+│   ├── _plugins
+│   ├── _posts
+│   ├── CNAME
+│   ├── favicon.ico
+│   ├── images
+│   ├── index.html
+│   ├── robots.txt
+│   ├── scripts
+│   ├── search.html
+│   └── stylesheet
+├── org
+│   ├── _layouts
+│   ├── _posts
+│   ├── images
+│   ├── index.org
+│   ├── scripts
+│   ├── search.org
+│   └── stylesheet
+└── www
+    ├── CNAME
+    ├── favicon.ico
+    ├── images
+    ....
+</pre>
+
+
+
+
+</div>
+</div>
+
+      </div>
+      <!-- Table of Content-->
+      <script src="http://code.jquery.com/jquery-1.9.0.min.js" charset="utf-8"></script>
+      <script src="/js/jquery.tableofcontents.min.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+           topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- clusterMaps-->
+  <script>
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")
+  </noscript>
+</html>
