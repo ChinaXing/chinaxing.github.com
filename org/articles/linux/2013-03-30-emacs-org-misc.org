@@ -1,0 +1,178 @@
+#+BEGIN_HTML
+---
+date: 2013-03-30
+template: tech.jade
+title: emacs org-mode 使用杂记
+category: Linux
+tag: emacs,org-mode
+change_frequency: monthly
+---
+#+END_HTML
+
+Emacs org-mode 用来写blog,然后export 出HTML,最后再使用jekyll生成静态blog,发布在github上.
+
+这是我写blog的方法,刚刚接触emacs org-mode,所以遇到了不少初级麻烦,折腾之后,记录在这里,
+
+** 导出project配置
+#+BEGIN_SRC emacs-lisp :eval no
+;; load org
+(require 'org)
+;; load htmlize.el , which org-babel export syntax highlight source code need it
+(require 'htmlize)
+;; org-mode project define
+(setq org-publish-project-alist
+      '(
+        ("org-blog-content" ;; 博客内容
+         ;; Path to your org files.
+         :base-directory "~/ChinaXing.org/org/"
+         :base-extension "org"
+         ;; Path to your jekyll project.
+         :publishing-directory "~/ChinaXing.org/jekyll/"
+         :recursive t
+         :publishing-function org-publish-org-to-html
+         :headline-levels 4
+         :html-extension "html"
+         :table-of-contents t ;; 导出目录
+         :body-only t ;; Only export section between <body></body>
+         )
+        ("org-blog-static" ;; 静态文件
+         :base-directory "~/ChinaXing.org/org/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php\\|svg"
+         :publishing-directory "~/ChinaXing.org/jekyll/"
+         :recursive t
+         :publishing-function org-publish-attachment)
+        ("blog" :components ("org-blog-content" "org-blog-static"))
+        ))
+(setq org-src-fontify-natively t)
+;; active Babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((C . t)
+   (emacs-lisp . t)
+   (sh . t)
+   (perl . t)
+   (python .t)
+   ))
+#+END_SRC
+
+org-mode 是emacs默认自带的,不需要另外安装
+
+org-mode 依赖htmlize来导出代码高亮的html,所以需要下载这个package.
+
+** 使用org-bable 插入Source Code
+org-babel 是org-mode 的一部分,用来管理org文档中的源码,org-babel支持多种[[http://orgmode.org/worg/org-contrib/babel/languages.html][语言]].
+
+org-babel 默认只会加载emacs-lisp这种语言,如果我们要插入org文档中别的语言,需要在.emacs配置文件中指明要加载的语言.
+
+如,我的配置文件中指明要加载C, perl, python
+
+org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的代码,而且可以执行你插入的代码,捕获输出,插入到你代码的下面.
+#+BEGIN_EXAMPLE
+    #+begin_src sh :exports both :results output :eval no-export
+      figlet 'china xing !'    
+    #+end_src
+
+    #+RESULTS:
+    :       _     _                    _               _ 
+    :   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
+    :  / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
+    : | (__| | | | | | | | (_| |  >  <| | | | | (_| | |_|
+    :  \___|_| |_|_|_| |_|\__,_| /_/\_\_|_| |_|\__, | (_)
+    :                                          |___/     
+#+END_EXAMPLE
+** 导出语法高亮的Source Code
+将org文档导出成html文档,要使导出的html文档中源代码部分保持语法高亮,需要如下设置:
+1. 设置 org-src-fontify-natively 为 t 
+   #+BEGIN_SRC emacs-lisp
+   (setq org-src-fontify-natively t)   
+   #+END_SRC
+2. 安装htmlize.el 这个package. org使用其进行颜色转换.
+
+** 导出时不执行代码
+如果你嵌入的是shell代码,且希望导出执行结果,在你执行导出的时候,emacs 会提问你是否在本机上执行嵌入的代码,这样每次你导出的时候都会进行提问,比较麻烦,
+我们可以通过设置选项eval来解决:
+#+BEGIN_EXAMPLE
+    #+begin_src sh :exports both :results output :eval no-export
+      figlet 'china xing !'    
+    #+end_src
+    ...
+#+END_EXAMPLE
+
+*no-export* 告诉org,在执行导出的时候不要对代码块进行执行和求值.
+
+** 导出代码和代码执行结果
+在导出的时候,org默认只会导出code,执行结果不会导出
+
+1. 如果希望导出执行结果,使用:exports result
+2. 如果希望导出代码和执行结果,使用:exports both
+3. 如果不希望导出代码和执行结果,使用:exports none
+
+** org-mode specific header arguments
+   [[http://orgmode.org/manual/Specific-header-arguments.html][特殊参数]] 控制导出、代码块执行、执行结果的类型、输出格式等
+
+** 有趣的org-bable语言
+   - R 语言
+     该语言可以方便的将数据转换为[[http://orgmode.org/worg/org-contrib/babel/intro.html#source-code-blocks-babel][饼状图]]。
+   - Ditaa 语言
+     该语言的作用是将ASCII画的图转换为bitmap格式的图片，转换后的[[http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-ditaa.html][效果]]非常好看。 [[http://emacs-fu.blogspot.com/2009/01/drawing-pictures.html][See]]
+
+** 输入换行(line break)
+   在行尾，输入"\\"
+
+** 输入整个段落，保持输入的格式
+   #+BEGIN_VERSE
+       Greate clouds overhead
+       Tiny black birds rise and fall
+       Snow covers Emacs
+
+              -- AlexSchroeder
+   #+END_VERSE
+   #+BEGIN_EXAMPLE
+     #+BEGIN_VERSE
+       Greate clouds overhead
+       Tiny black birds rise and fall
+       Snow covers Emacs
+
+              -- AlexSchroeder
+     #+END_VERSE
+   #+END_EXAMPLE
+
+** 输入引用(quoting)
+   #+BEGIN_QUOTE
+       Greate clouds overhead
+       Tiny black birds rise and fall
+       Snow covers Emacs
+
+              -- AlexSchroeder
+   #+END_QUOTE
+   #+BEGIN_EXAMPLE
+     #+BEGIN_QUOTE
+       Greate clouds overhead
+       Tiny black birds rise and fall
+       Snow covers Emacs
+
+              -- AlexSchroeder
+     #+END_QUOTE
+   #+END_EXAMPLE
+
+** 居中
+   #+BEGIN_CENTER
+       Greate clouds overhead
+       Tiny black birds rise and fall
+       Snow covers Emacs
+
+              -- AlexSchroeder
+   #+END_CENTER
+   #+BEGIN_EXAMPLE
+     #+BEGIN_CENTER
+       Greate clouds overhead
+       Tiny black birds rise and fall
+       Snow covers Emacs
+
+              -- AlexSchroeder
+     #+END_CENTER
+   #+END_EXAMPLE
+     
+** Emacs Cool Site
+- USEFUL TRICKS FOR EMACS : [[http://emacs-fu.blogspot.com/][emacs-fu]]
+- Mastering Emacs :  [[http://www.masteringemacs.org/][mastering emacs]]

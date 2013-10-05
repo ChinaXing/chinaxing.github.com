@@ -1,0 +1,69 @@
+---
+date: 2013-04-10
+template: tech.jade
+title: Perl加载模块的模块比较
+category: Perl
+change_frequency: monthly
+---
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 模块分类</a></li>
+<li><a href="#sec-2">2 模块推荐</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">模块分类</h4>
+<div class="outline-text-4" id="text-1">
+
+<p>加载模块，CPAN上有许多模块可以完成。下面是这些模块的对比，以及各种情况下的推荐模块。
+</p>
+<p>
+<img src="../img/perl-loading-module-map.png"  alt="../img/perl-loading-module-map.png" />
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">模块推荐</h4>
+<div class="outline-text-4" id="text-2">
+
+<p>Given the range of features described, there's obviously not one size to fit all, so here are some thoughts on what to use where and when:
+</p>
+<ul>
+<li>If you want to defer loading of a module until you use one of its functions, go for autouse.
+</li>
+<li>If you want to defer loading of a class until you try and instantiate it, go for Class::Autouse.
+</li>
+<li>For lazy loading and lazy instantiation, Class::LazyLoad has a cleaner interface than Object::Trampoline.
+</li>
+<li>If you want to import an external function, and you don't mind which of multiple implementations on CPAN you use, try Devel::UseAnyFunc. You'll need to think about what you declare as your dependencies though.
+</li>
+<li>If you want to provide a single interface, with pure perl and XS implementations behind, Module::Implementation is the module for you.
+</li>
+<li>If you want to use other modules with long names, then aliased might be helpful. If the modules are within your namespace, then relative may be a better fit.
+</li>
+<li>If you want to find and load plugin modules, it's a toss-up between Module::Find, which offers more flexibility, and Mojo::Loader, which has a cleaner interface, but will only find modules where the .pm file is immediately within the namespace specified.
+</li>
+<li>When specifying your base classes, if you want to specify a minimum version, use the new superclass. Otherwise, until superclass is in the core, you might as well go with parent.
+</li>
+<li>If your dist has a lot of subordinate modules, then relative may be useful.
+</li>
+<li>If you want runtime loading of a module, I'd look at Module::Runtime first, but Class::Load and Module::Load are contenders. Module::Runtime has no dependencies, Module::Load has 6 ultimate dependencies, and Class::Load has 21 dependencies, one of which is Module::Runtime.
+</li>
+</ul>
+
+
+
+
+<p>
+<i>本文节选自</i>:<a href="http://neilb.org/reviews/module-loading.html">CPAN modules that (can) load other modules</a>
+</p>
+</div>
+</div>

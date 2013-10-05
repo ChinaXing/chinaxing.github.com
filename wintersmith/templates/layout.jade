@@ -1,0 +1,65 @@
+doctype html
+
+html
+  head
+    block head
+      meta(charset="utf-8")
+      meta(http-equiv="X-UA-Compatible", content="chrome=1")
+      meta(name="viewport", content="width=device-width")
+      title
+        block title
+          = locals.name
+      link(rel="stylesheet", href="/css/styles.css")
+      script(type='text/javascript', src="/js/index.js")
+  body
+    header#header
+      #menu
+        #menu-header
+          a#site-name(href="/") ChinaXing
+          a#github-icon(data-icon!="&#xf00a", title="View Github profile", href=locals.url)
+        ul#menu-list
+          - var categories = contents.categories;
+          each catePage,cate in categories
+              - var active = page.metadata && ( cate == page.metadata.category);
+              li(class=active?'active':'')
+                a(href=catePage.url)= cate
+                  sup= catePage.articles.length
+        // vistor map
+        #clustrmaps-widget
+    section#content
+      block content
+    footer
+      block footer
+  // google Analytics
+  script.
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  // clusterMaps
+  script.
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  noscript.
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")

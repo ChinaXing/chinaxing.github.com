@@ -1,0 +1,13 @@
+
+extends layout
+
+block content
+  h3#cat-title
+    b= page.category
+    | &nbsp;文章列表:
+  ul
+    each article in page.articles
+      - var dateString = article.date.getFullYear() + "-" + article.date.getMonth() + "-" + article.date.getDate()
+      li
+        span!= dateString + "&nbsp;&raquo;&nbsp;"
+        a(href=article.url)= article.title

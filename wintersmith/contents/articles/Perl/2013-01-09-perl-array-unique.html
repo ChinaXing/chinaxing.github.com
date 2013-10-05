@@ -1,0 +1,63 @@
+---
+date: 2013-01-09
+template: tech.jade
+title: 去重perl数组
+category: Perl
+change_frequency: monthly
+---
+
+<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
+</pre>
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 例子:</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">例子:</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Modern::Perl</span>;
+<span class="linenr"> 2:  </span><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;
+<span class="linenr"> 3:  </span>
+<span class="linenr"> 4:  </span><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> = (
+<span class="linenr"> 5:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'b'</span>},
+<span class="linenr"> 6:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'c'</span>},
+<span class="linenr"> 7:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'b'</span>},
+<span class="linenr"> 8:  </span>);
+<span class="linenr"> 9:  </span>
+<span class="linenr">10:  </span>say <span style="color: #ffff00;">"-----------------------"</span>;
+<span class="linenr">11:  </span>
+<span class="linenr">12:  </span><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$e</span> = [ <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; 1}  <span style="color: #66cd00;">map</span> {$_-&gt;{<span style="color: #ffff00;">a</span>} } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> } } ];
+<span class="linenr">13:  </span>
+<span class="linenr">14:  </span>say Dumper $e;
+<span class="linenr">15:  </span>
+</pre>
+
+<p>
+<b>输出</b>:
+</p><pre class="example">
+-----------------------
+$VAR1 = [
+          'c',
+          'b'
+        ];
+
+</pre>
+
+
+
+
+
+</div>
+</div>

@@ -1,0 +1,19 @@
+#+begin_html
+---
+date: 2013-05-03
+template: tech.jade
+title: DBIx::Class 入门
+category: Perl
+change_frequency: monthly
+---
+#+end_html
+
+#+BEGIN_HTML
+<div>
+<button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+</div>
+<div class="mask" onclick="javascript: hide_ppt(this)"></div>
+<div class="mask_container">
+<iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIcTZwMTlxakZhYTQ/preview" width="100%" height="100%"></iframe>
+</div>
+#+END_HTML

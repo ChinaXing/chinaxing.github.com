@@ -1,0 +1,66 @@
+extends layout
+
+block prepend title
+  | #{ page.title + " - "}
+
+block content
+  h2(style="text-align:center")
+    = page.title
+  #toc
+    | Table of Content
+    ol
+  block article-content
+    != typogr(page.html).typogrify()
+
+  // Table of Content
+  script(src="http://code.jquery.com/jquery-1.9.0.min.js", charset="utf-8")
+  script(src="/js/jquery.tableofcontents.min.js", charset="utf-8")
+  script(charset="utf-8").
+    $(function(){
+      $("#toc>ol").tableOfContents(
+       null,
+       {
+         startLevel: 3,
+         depth:3,
+         topLinks: "\u21E7",
+         topLinkClass: "toc-top-link",
+        topBodyId: "toc-top",
+      });
+    });
+
+  // Google Plus
+  br
+  // Place this tag where you want the +1 button to render.
+  .g-plusone(data-size="medium")
+  //google plus
+  // Place this tag after the last +1 button tag.
+  script.
+    window.___gcfg = {lang: 'zh-CN'};
+
+    (function() {
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+
+
+  // DISQUS
+
+  #disqus_thread(style="padding-top:1em")
+  script.
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+  noscript
+    | Please enable JavaScript to view the 
+    a(href="http://disqus.com/?ref_noscript") comments powered by Disqus
+  a#dsq-brlink(href="http://disqus.com")
+    | comments powered by
+    span.logo-disqus Disqus

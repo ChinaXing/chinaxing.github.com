@@ -1,0 +1,101 @@
+---
+date: 2013-01-08
+template: tech.jade
+title: 列出你安装的Perl模块
+category: Perl
+change_frequency: monthly
+---
+
+<p>
+有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 perllocal</a></li>
+<li><a href="#sec-2">2 instmodsh</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">perllocal</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+
+<pre class="src src-sh">perldoc perllocal
+</pre>
+
+
+<p>
+这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
+</p>
+<p>
+我们可以通过grep方便找出这个模块列表：
+</p>
+
+
+
+<pre class="src src-sh">perldoc -t perllocal | grep <span style="color: #ffff00;">"Module"</span> | head -10
+</pre>
+
+
+
+<pre class="example">Sun Mar 31 15:08:23 2013: "Module" Try::Tiny
+Sun Mar 31 15:08:23 2013: "Module" Test::Fatal
+Sun Mar 31 15:08:29 2013: "Module" Sub::Install
+Sun Mar 31 15:08:33 2013: "Module" Params::Util
+Sun Mar 31 15:08:34 2013: "Module" Data::OptList
+Sun Mar 31 15:08:36 2013: "Module" Sub::Exporter
+Sun Mar 31 15:08:40 2013: "Module" List::MoreUtils
+Sun Mar 31 15:08:42 2013: "Module" Dist::CheckConflicts
+Sun Mar 31 15:08:45 2013: "Module" Test::Requires
+Sun Mar 31 15:08:47 2013: "Module" Sub::Name
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">instmodsh</h4>
+<div class="outline-text-4" id="text-2">
+
+
+<p>
+<b>instmodsh</b> 是 <b>Ext::Utils::Installed</b> 模块提供的一个可执行脚本,可以打印出目前安装的模块.<br/>
+<b>Ext::Utils::Installed</b> 是根据模块安装时候生成的.packlist(存放在每个模块的目录下面) 文件来分析出已经安装的模块.
+</p>
+
+
+
+<pre class="src src-sh">(<span style="color: #ffaa00;">echo</span> l ; <span style="color: #ffaa00;">echo</span> q ) | instmodsh | sed -e <span style="color: #ffff00;">'1,/:/d'</span> -e <span style="color: #ffff00;">'/cmd?/d'</span> | head -10
+</pre>
+
+
+
+<pre class="example">Algorithm::Diff
+App::Cmd
+App::cpanminus
+AppConfig
+B::Hooks::EndOfScope
+B::Keywords
+CPAN::Meta::Check
+CPAN::Uploader
+Capture::Tiny
+Carp::Clan
+</pre>
+
+
+
+<p>
+<b>Come from</b> <a href="#http-www.cpan.org-misc-cpan-faq.html">CPAN-FAQ</a>
+</p></div>
+</div>

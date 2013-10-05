@@ -1,0 +1,33 @@
+{
+  "locals": {
+    "url": "http://chinaxing.org",
+    "name": "The Chinaxing's blog",
+    "owner": "Chinaxing",
+    "description": "Chinaxing(陈云星)"
+  },
+  "plugins": [
+    "./plugins/paginator.coffee",
+    "./plugins/html.coffee",
+    "./plugins/category.coffee"
+  ],
+  "require": {
+    "moment": "moment",
+    "_": "underscore",
+    "typogr": "typogr"
+  },
+  "jade": {
+    "pretty": true
+  },
+  "markdown": {
+    "smartLists": true,
+    "smartypants": true
+  },
+  "paginator": {
+    "perPage": 3
+  },
+  "html": {
+    "introSize" : 500
+  },
+  "output" : "../www",
+  "filenameTemplate" : ":year/:month/:day/:file.html"
+}

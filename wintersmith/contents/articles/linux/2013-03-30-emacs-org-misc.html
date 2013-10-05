@@ -1,0 +1,338 @@
+---
+date: 2013-03-30
+template: tech.jade
+title: emacs org-mode 使用杂记
+category: Linux
+tag: emacs,org-mode
+change_frequency: monthly
+---
+
+<p>
+Emacs org-mode 用来写blog,然后export 出HTML,最后再使用jekyll生成静态blog,发布在github上.
+</p>
+<p>
+这是我写blog的方法,刚刚接触emacs org-mode,所以遇到了不少初级麻烦,折腾之后,记录在这里,
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 导出project配置</a></li>
+<li><a href="#sec-2">2 使用org-bable 插入Source Code</a></li>
+<li><a href="#sec-3">3 导出语法高亮的Source Code</a></li>
+<li><a href="#sec-4">4 导出时不执行代码</a></li>
+<li><a href="#sec-5">5 导出代码和代码执行结果</a></li>
+<li><a href="#sec-6">6 org-mode specific header arguments</a></li>
+<li><a href="#sec-7">7 有趣的org-bable语言</a></li>
+<li><a href="#sec-8">8 输入换行(line break)</a></li>
+<li><a href="#sec-9">9 输入整个段落，保持输入的格式</a></li>
+<li><a href="#sec-10">10 输入引用(quoting)</a></li>
+<li><a href="#sec-11">11 居中</a></li>
+<li><a href="#sec-12">12 Emacs Cool Site</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">导出project配置</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+
+<pre class="src src-emacs-lisp"><span style="color: #ff0000;">;; </span><span style="color: #ff0000;">load org</span>
+(<span style="color: #00ffff;">require</span> '<span style="color: #00ff00;">org</span>)
+<span style="color: #ff0000;">;; </span><span style="color: #ff0000;">load htmlize.el , which org-babel export syntax highlight source code need it</span>
+(<span style="color: #00ffff;">require</span> '<span style="color: #00ff00;">htmlize</span>)
+<span style="color: #ff0000;">;; </span><span style="color: #ff0000;">org-mode project define</span>
+(setq org-publish-project-alist
+      '(
+        (<span style="color: #ffff00;">"org-blog-content"</span> <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">&#21338;&#23458;&#20869;&#23481;</span>
+         <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">Path to your org files.</span>
+         <span style="color: #ffaa00;">:base-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/org/"</span>
+         <span style="color: #ffaa00;">:base-extension</span> <span style="color: #ffff00;">"org"</span>
+         <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">Path to your jekyll project.</span>
+         <span style="color: #ffaa00;">:publishing-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/jekyll/"</span>
+         <span style="color: #ffaa00;">:recursive</span> t
+         <span style="color: #ffaa00;">:publishing-function</span> org-publish-org-to-html
+         <span style="color: #ffaa00;">:headline-levels</span> 4
+         <span style="color: #ffaa00;">:html-extension</span> <span style="color: #ffff00;">"html"</span>
+         <span style="color: #ffaa00;">:table-of-contents</span> t <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">&#23548;&#20986;&#30446;&#24405;</span>
+         <span style="color: #ffaa00;">:body-only</span> t <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">Only export section between &lt;body&gt;&lt;/body&gt;</span>
+         )
+        (<span style="color: #ffff00;">"org-blog-static"</span> <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">&#38745;&#24577;&#25991;&#20214;</span>
+         <span style="color: #ffaa00;">:base-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/org/"</span>
+         <span style="color: #ffaa00;">:base-extension</span> <span style="color: #ffff00;">"css</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">js</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">png</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">jpg</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">gif</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">pdf</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">mp3</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">ogg</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">swf</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">php</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">svg"</span>
+         <span style="color: #ffaa00;">:publishing-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/jekyll/"</span>
+         <span style="color: #ffaa00;">:recursive</span> t
+         <span style="color: #ffaa00;">:publishing-function</span> org-publish-attachment)
+        (<span style="color: #ffff00;">"blog"</span> <span style="color: #ffaa00;">:components</span> (<span style="color: #ffff00;">"org-blog-content"</span> <span style="color: #ffff00;">"org-blog-static"</span>))
+        ))
+(setq org-src-fontify-natively t)
+<span style="color: #ff0000;">;; </span><span style="color: #ff0000;">active Babel languages</span>
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((C . t)
+   (emacs-lisp . t)
+   (sh . t)
+   (perl . t)
+   (python .t)
+   ))
+</pre>
+
+
+<p>
+org-mode 是emacs默认自带的,不需要另外安装
+</p>
+<p>
+org-mode 依赖htmlize来导出代码高亮的html,所以需要下载这个package.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">使用org-bable 插入Source Code</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>org-babel 是org-mode 的一部分,用来管理org文档中的源码,org-babel支持多种<a href="http://orgmode.org/worg/org-contrib/babel/languages.html">语言</a>.
+</p>
+<p>
+org-babel 默认只会加载emacs-lisp这种语言,如果我们要插入org文档中别的语言,需要在.emacs配置文件中指明要加载的语言.
+</p>
+<p>
+如,我的配置文件中指明要加载C, perl, python
+</p>
+<p>
+org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的代码,而且可以执行你插入的代码,捕获输出,插入到你代码的下面.
+</p>
+
+
+<pre class="example">#+begin_src sh :exports both :results output :eval no-export
+  figlet 'china xing !'    
+#+end_src
+
+#+RESULTS:
+:       _     _                    _               _ 
+:   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
+:  / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
+: | (__| | | | | | | | (_| |  &gt;  &lt;| | | | | (_| | |_|
+:  \___|_| |_|_|_| |_|\__,_| /_/\_\_|_| |_|\__, | (_)
+:                                          |___/     
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">导出语法高亮的Source Code</h3>
+<div class="outline-text-3" id="text-3">
+
+<p>将org文档导出成html文档,要使导出的html文档中源代码部分保持语法高亮,需要如下设置:
+</p><ol>
+<li>设置 org-src-fontify-natively 为 t 
+
+
+
+<pre class="src src-emacs-lisp">(setq org-src-fontify-natively t)   
+</pre>
+
+</li>
+<li>安装htmlize.el 这个package. org使用其进行颜色转换.
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">导出时不执行代码</h3>
+<div class="outline-text-3" id="text-4">
+
+<p>如果你嵌入的是shell代码,且希望导出执行结果,在你执行导出的时候,emacs 会提问你是否在本机上执行嵌入的代码,这样每次你导出的时候都会进行提问,比较麻烦,
+我们可以通过设置选项eval来解决:
+</p>
+
+
+<pre class="example">#+begin_src sh :exports both :results output :eval no-export
+  figlet 'china xing !'    
+#+end_src
+...
+</pre>
+
+
+<p>
+<b>no-export</b> 告诉org,在执行导出的时候不要对代码块进行执行和求值.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5">导出代码和代码执行结果</h3>
+<div class="outline-text-3" id="text-5">
+
+<p>在导出的时候,org默认只会导出code,执行结果不会导出
+</p>
+<ol>
+<li>如果希望导出执行结果,使用:exports result
+</li>
+<li>如果希望导出代码和执行结果,使用:exports both
+</li>
+<li>如果不希望导出代码和执行结果,使用:exports none
+</li>
+</ol>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-3">
+<h3 id="sec-6">org-mode specific header arguments</h3>
+<div class="outline-text-3" id="text-6">
+
+<p>   <a href="http://orgmode.org/manual/Specific-header-arguments.html">特殊参数</a> 控制导出、代码块执行、执行结果的类型、输出格式等
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-3">
+<h3 id="sec-7">有趣的org-bable语言</h3>
+<div class="outline-text-3" id="text-7">
+
+<ul>
+<li>R 语言
+     该语言可以方便的将数据转换为<a href="http://orgmode.org/worg/org-contrib/babel/intro.html#source-code-blocks-babel">饼状图</a>。
+</li>
+<li>Ditaa 语言
+     该语言的作用是将ASCII画的图转换为bitmap格式的图片，转换后的<a href="http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-ditaa.html">效果</a>非常好看。 <a href="http://emacs-fu.blogspot.com/2009/01/drawing-pictures.html">See</a>
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-3">
+<h3 id="sec-8">输入换行(line break)</h3>
+<div class="outline-text-3" id="text-8">
+
+<p>   在行尾，输入"\\"
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-3">
+<h3 id="sec-9">输入整个段落，保持输入的格式</h3>
+<div class="outline-text-3" id="text-9">
+
+
+<p class="verse">
+Greate clouds overhead<br/>
+Tiny black birds rise and fall<br/>
+Snow covers Emacs<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &ndash; AlexSchroeder<br/>
+</p>
+
+
+
+
+<pre class="example">#+BEGIN_VERSE
+  Greate clouds overhead
+  Tiny black birds rise and fall
+  Snow covers Emacs
+
+         -- AlexSchroeder
+#+END_VERSE
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-3">
+<h3 id="sec-10">输入引用(quoting)</h3>
+<div class="outline-text-3" id="text-10">
+
+<blockquote>
+
+<p>Greate clouds overhead
+Tiny black birds rise and fall
+Snow covers Emacs
+</p>
+<p>
+       &ndash; AlexSchroeder
+</p>
+</blockquote>
+
+
+
+
+<pre class="example">#+BEGIN_QUOTE
+  Greate clouds overhead
+  Tiny black birds rise and fall
+  Snow covers Emacs
+
+         -- AlexSchroeder
+#+END_QUOTE
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-11" class="outline-3">
+<h3 id="sec-11">居中</h3>
+<div class="outline-text-3" id="text-11">
+
+
+<div style="text-align: center">
+<p>Greate clouds overhead
+Tiny black birds rise and fall
+Snow covers Emacs
+</p>
+<p>
+       &ndash; AlexSchroeder
+</p>
+</div>
+
+
+
+<pre class="example">#+BEGIN_CENTER
+  Greate clouds overhead
+  Tiny black birds rise and fall
+  Snow covers Emacs
+
+         -- AlexSchroeder
+#+END_CENTER
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-12" class="outline-3">
+<h3 id="sec-12">Emacs Cool Site</h3>
+<div class="outline-text-3" id="text-12">
+
+<ul>
+<li>USEFUL TRICKS FOR EMACS : <a href="http://emacs-fu.blogspot.com/">emacs-fu</a>
+</li>
+<li>Mastering Emacs :  <a href="http://www.masteringemacs.org/">mastering emacs</a>
+</li>
+</ul>
+
+</div>
+</div>

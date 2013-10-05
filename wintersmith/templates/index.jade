@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  each article in articles
+    article.article.intro
+      header
+        p.date
+          span= moment.utc(article.date).format('DD. MMMM YYYY')
+        h2
+          a(href=article.url)= article.title
+      section.content
+        !{ typogr(article.intro).typogrify() }
+        if article.hasMore
+          p.more
+            a(href=article.url) more
+  #paginator-nav
+    if prevPage
+      a.nav-prev(href=prevPage.url) « Newer
+    a.nav-archive(href=contents["archive.json"].url) « Archives
+    if nextPage
+      a.nav-next(href=nextPage.url) Next page »

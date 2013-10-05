@@ -1,0 +1,49 @@
+#+BEGIN_HTML
+---
+date: 2013-07-16
+template: tech.jade
+title: git reflog
+category: Linux
+tag: linux,git
+change_frequency: monthly
+---
+#+END_HTML
+
+git reflog 命令用来列出reflog，reflog记录了每次当前commit的变化（描述可能不准确）。
+
+** reflog
+   reflog在commit、merge、switch branch等的时候都会记录一条日志。这些日志纤细的记录了每次操作。从中可以找到许多操作信息。
+
+   reflog存储在 =.git/logs/= 目录下。
+
+   每个本地分支都有自己的reflog，HEAD和stash也有。
+** 查看reflog
+   查看reflog通过如下命令：
+   #+BEGIN_SRC sh :eval no
+   git reflog show #查看HEAD的reflog
+   git reflog show master #查看master分支的
+   git reflog show stash #查看stash的，可能没有stash log,如果没有执行过git stash操作
+   git reflog HEAD@{now} show -10 #查看head的最近10条reflog日志
+   #+END_SRC
+** reflog的格式
+   #+BEGIN_EXAMPLE
+   #commit reflog名@{序号或时间}                  操作                          
+   ed3da99 HEAD@{Tue Jul 16 17:51:41 2013 +0800}: checkout: moving from master to dev
+   433e815 HEAD@{Tue Jul 16 17:10:51 2013 +0800}: checkout: moving from dev to master
+   ed3da99 HEAD@{Tue Jul 16 17:06:33 2013 +0800}: pull: Fast-forward
+   2bd32c8 HEAD@{Thu Jul 11 11:15:49 2013 +0800}: checkout: moving from master to dev
+   433e815 HEAD@{Thu Jul 11 11:15:10 2013 +0800}: checkout: moving from dev to master
+   2bd32c8 HEAD@{Thu Jul 11 11:14:57 2013 +0800}: commit: 'add a new article'
+   #+END_EXAMPLE
+   每个reflog对应唯一的commit，虽然有些commit不会出现在git log中（如进行了git commit --amend的commit），但会被记录于reflog，即reflog是线性随时间增长的。
+** 引用reflog
+   在使用commit hash的地方也可以使用reflog代替，如：
+   #+BEGIN_SRC sh :eval no
+   git reset --hard ed3da99
+   git reset --hard HEAD^
+   # 可以用如下代替
+   git reset --hard HEAD@{2}
+   git reset --hard HEAD@{1}
+   #+END_SRC
+   即，在这里 =HEAD@{2}= 对应于reflog中的倒数第二个记录的commit hash: =ed3da99...=
+   

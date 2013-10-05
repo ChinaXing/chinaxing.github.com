@@ -1,0 +1,77 @@
+#+begin_html
+---
+date: 2013-03-08
+template: tech.jade
+title: Raspberry Pi usb 无线网卡安装配置
+category: Linux
+change_frequency: monthly
+---
+#+end_html
+
+这几天，为了能够无线连接Raspberry-Pi，这样可以方便的使用和配置它，也免的拿来拿去导致损伤。
+
+于是，先在淘宝上搜索了USB无线网卡，结果选了一款最便宜最小巧的USB无线网卡，MERCURY MV150US（25￥）。
+150M足够用了。
+
+接下来就是配置无线，让它工作起来：
+
+** 配置wap\_supplicant
+Raspbian基于Debian系统，系统默认附带了wap\_supplicant作为无线链接管理的客户端。
+wap\_supplicant这个程序很了不起，大家可以在这里了解到它：
++ [[http://hostap.epitest.fi][官网]]
++ [[http://en.wikipedia.org/wiki/Wpa_supplicant][Wikipedia]]
+
+这个程序的开发者还实现了AP协议的服务端软件[[http://hostap.epitest.fi/hostapd/][Hostapd]] ，我们可以安装这个软件，开启网卡的无线AP功能（需要网卡支持），就可一实现热点接入功能了。
+
+wap\_supplicant的配置，位于/etc/wpa\_supplicant/wpa\_supplicant.conf
+
+我们需要添加针对热点的配置，如：
+#+begin_example
+network={
+	ssid="ChinaXing XO"
+ 	proto=RSN
+	key_mgmt=WPA-PSK
+	pairwise=CCMP
+	group=CCMP
+	psk=18c9f3c76ab41632bc6ac48a8d7646114e452087fdb47c087100e97292a9da39
+}
+#+end_example
+
+说明：
++ ssid : 无线AP的名称 
++ key\_mgmt : 管理方式，如果是WPA2-PSK也要填写WPA—PSK，请注意。
++ psk : 密码，此处的密码是加密过后的密码而不是原始密码，加密方法：
+  #+begin_example
+        wpa_passphrase [ssid] [password]        
+  #+end_example
+  这条命令输出一段wpa\_supplicant配置，其中psk="..."即为要使用在配置文件中的密码。
+
+** 配置网卡wlan0
+编辑/etc/network/interface,针对wlan0无线网卡（即为usb网卡）添加如下配置：
+#+begin_example
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp 
+      wpa-driver wext # 明确使用wext驱动，不然wap_supplicant会尝试另一个驱动（没必要）
+      wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+#+end_example        
+
+** 启动
+#+begin_example
+sudo ifdown wlan0
+sudo ifup wlan0 -vv # 加V可以看到具体启动过程
+#+end_example
+wap\_supplicant 将日志通过syslog输出，因此我们可以在/var/log/daemon中看到启动日志。
+
+** 其它
+*** 无法识别网卡
+    如果执行ifconfig命令没有看到无线网卡（除了eth0和lo之外的另一个网卡）出现，说明你的网卡未被内核自动识别，就需要安装驱动
+    先通过lsusb命令查看网卡的芯片类型，然后重新编译内核，将相关驱动编译进去。
+*** wap\_supplicant
+    这个程序使用客户端服务端的模式，一个叫wap\_supplicant的程序启动起来做daemon进程，然后叫wap\_cli的程序会作为客户端，连接daemon进程，
+发送命令（如链接具体的AP）等。 
+
+    wap\_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
+如，scan 是进行无线网络的扫描，scan\_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
+
+

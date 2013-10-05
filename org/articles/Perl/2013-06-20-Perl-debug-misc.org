@@ -1,0 +1,76 @@
+#+begin_html
+---
+date: 2013-06-20
+template: tech.jade
+title: Perl5 debug杂记
+category: Perl
+change_frequency: monthly
+---
+#+end_html
+
+** Debug tricks
+*** Readline - 设置Readline处理
+    默认的perl5db 如果没有安装Term::ReadLine模块，不支持历史命令、行编辑等类似bash命令行的功能。\\
+    解决办法是通过安装相应的ReadLine模块:
+    #+BEGIN_SRC sh :eval no
+    # on Linux
+    cpanm Term::ReadLine::Gnu
+    # on other platform
+    cpanm Term::ReadLine::Perl # 纯perl实现
+    #+END_SRC
+*** PadWalker - 自动补全
+    命令 行自动补全、词法变量自动补全等补全功能，安装PadWalker模块:
+    #+BEGIN_SRC sh :eval no
+    cpanm PadWalker
+    #+END_SRC
+*** 在Emacs内调试Perl
+    Emacs 可以高亮Perl语法，可以在调试的同时，看到高亮后的代码，有较好的阅读性
+*** 调试正则表达式
+    在代码的开头添加：
+    #+BEGIN_SRC perl :eval no
+    use re 'debug';
+    #+END_SRC
+    更多请参看："Debugging Regular Expressions" [[http://search.cpan.org/~rjbs/perl-5.18.0/pod/perldebguts.pod#Debugging_Regular_Expressions][perldebguts]]
+*** 提前设置断点
+    在希望中断执行的地方，添加:
+    #+BEGIN_SRC perl :eval no
+    $DB::single = 1;
+    #+END_SRC
+    然后通过 =-d= 命令选项来启动程序，当运行到上诉语句的时候，程序进入debug中断状态，提示 =<DB>= 提示符
+*** 配置perl5db初始化
+    perl5db在初始化时，会读取一些配置文件和环境变量来设置自身：
+    - non-interactive - 非交互\\
+      perl5db.ini
+    - interactive - 交互\\
+      .perldb
+    - PERLDB\_OPTS - 环境变量
+*** Enbugger - 运行时debug
+    注意：使用[[http://search.cpan.org/perldoc?Enbugger][Enbugger]]模块，并不需要以 =-d= 运行选项启动程序
+    - 通过在程序中执行:
+      #+BEGIN_SRC perl :eval no
+    require Enbugger;
+    #+END_SRC
+      程序进入debug模式，提示 =<DB>= 提示符
+    - 还可以指定要使用的debugger:
+      #+BEGIN_SRC perl :eval no
+    use Enbugger 'perl5db';
+    # or
+    Enbugger->load_debugger('perl5db');
+    #+END_SRC
+      目前支持:perl5db和[[https://github.com/rocky/Perl-Devel-Trepan][trepan]] 两个debugger
+    - 支持信号触发的debug：
+      #+BEGIN_SRC perl :eval no
+    use Enbugger::OnError qw( __DIE__ USR1); # 在__DIE__ 和 USER1 信号发生时进入debug模式
+    #+END_SRC
+    - 支持通过[[http://search.cpan.org/~jjore/Enbugger-2.013/lib/Enbugger.pod#From_gdb][gdb进入debug模式]]:\\
+      即通过gdb将运行中的perl程序trace，然后执行perl内部函数，加载Enbugger模块，然后Enbugger模块被执行，进入了debug模式
+*** 指定debugger模块
+    可以通过 =-d:Debugger= 来指定 Debugger 模块代替默认的perl5db进行debug
+*** 设置最大调用深度
+    默认情况下，如果subrutine调用深度超过100，DB就会中断执行，进入断点，可以通过 =$DB::deep = 500;= 设置深度为500，在大于500的调用深度下，DB自动进入暂停执行。
+
+** Debug 相关文档
+   - [[http://search.cpan.org/perldoc?perl5db.pl][perl5db.pl]] - the perl debugger
+   - [[http://search.cpan.org/perldoc?perldebtut][perldebtut]] - Perl debugging tutorial
+   - [[http://search.cpan.org/perldoc?perldebug][perldebug]] - Perl debugging
+   - [[http://search.cpan.org/perldoc?perldebguts][perldebguts]] - Guts of Perl debugging

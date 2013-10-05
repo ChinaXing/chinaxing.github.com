@@ -1,0 +1,91 @@
+#+BEGIN_HTML
+---
+date: 2013-07-16
+template: tech.jade
+title: git 使用小记
+category: Linux
+tag: linux,git
+change_frequency: monthly
+---
+#+END_HTML
+【未完成】
+
+git已经成为非常流行的版本管理工具，在这里记录一些git使用过程中的知识与技术点。
+
+** 一些概念
+*** repository
+    仓库是受git管理的一个目录，如你放在github上面的一个project。
+    
+    仓库分为远程仓库和本地仓库，一份working copy可以track一个远程仓库，在执行git pull的时候会自动从远程仓库拉取新提交。
+
+    远程仓库和本地仓库是没有区别的。
+
+**** create repository
+     使用 git init 命令
+     #+BEGIN_SRC sh :eval no
+     git init --bare #加了--bare 选项，表示创建一个裸仓库，而不是附带有working copy的仓库
+     #+END_SRC
+     #+BEGIN_SRC sh :eval no-export :results output raw
+     cd /home/admin/tmp/tt && tree .
+     #+END_SRC
+     #+BEGIN_EXAMPLE
+     .
+     ├── branches
+     ├── config
+     ├── description
+     ├── HEAD
+     ├── hooks
+     │   ├── applypatch-msg.sample
+     │   ├── commit-msg.sample
+     │   ├── post-update.sample
+     │   ├── pre-applypatch.sample
+     │   ├── pre-commit.sample
+     │   ├── prepare-commit-msg.sample
+     │   ├── pre-rebase.sample
+     │   └── update.sample
+     ├── info
+     │   └── exclude
+     ├── objects
+     │   ├── info
+     │   └── pack
+     └── refs
+	 ├── heads
+	 └── tags
+
+     9 directories, 12 files     
+     #+END_EXAMPLE
+
+**** clone repository
+     克隆仓库，在本地生成一份copy。类似于 =svn= 的 =checkout= 。克隆的仓库不是裸仓库，包含了working copy。
+     #+BEGIN_SRC sh :eval no
+     git clone git@github.com:Chinaxing/chinaxing.github.com ChinaXing.org
+     #+END_SRC
+     将会克隆一份远程仓库到本地的 =ChinaXing.org= 目录
+*** working copy
+*** blob
+*** tree
+*** commit
+*** branch
+*** index
+*** submodule
+*** HEAD
+*** ORIG\_HEAD
+*** FETCH\_HEAD
+*** git clone
+*** git pull
+*** git fetch
+*** git merge
+*** git push
+*** git add
+*** git rm
+*** git clean
+*** git revert
+*** git stash
+*** git reset
+*** git rebase
+*** git log
+*** git diff
+*** git status
+
+** 书籍与资料
+   

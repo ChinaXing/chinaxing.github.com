@@ -1,0 +1,201 @@
+---
+date: 2013-06-07
+template: tech.jade
+title: git 使用常见问题解决方法
+category: Linux
+tag: linux,git
+change_frequency: monthly
+---
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 查询Ref对应的Commit ID</a></li>
+<li><a href="#sec-2">2 撤销commit</a></li>
+<li><a href="#sec-3">3 强制使用远端仓库的内容</a></li>
+<li><a href="#sec-4">4 删除tag，并删除远程tag</a></li>
+<li><a href="#sec-5">5 添加tag，并推送到远程</a></li>
+<li><a href="#sec-6">6 修改上次的commit message</a></li>
+<li><a href="#sec-7">7 修改上次的commit author</a></li>
+<li><a href="#sec-8">8 删除未跟踪(Untracked)的文件</a></li>
+<li><a href="#sec-9">9 强制覆盖远程</a></li>
+<li><a href="#sec-10">10 配置</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">查询Ref对应的Commit ID</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="src src-sh">git rev-parse HEAD <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#35810;HEAD&#23545;&#24212;&#30340;commit ID</span>
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">撤销commit</h4>
+<div class="outline-text-4" id="text-2">
+
+
+
+
+<pre class="src src-sh">git reset --soft &lt;COMMIT_ID&gt;
+</pre>
+
+<p>
+    这条命令撤销<sub>COMMIT</sub><sub>ID</sub><sub>之后的所有提交，但保持所有的更改</sub>
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3">强制使用远端仓库的内容</h4>
+<div class="outline-text-4" id="text-3">
+
+
+
+
+<pre class="src src-sh">git reset --hard origin/master
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-4">
+<h4 id="sec-4">删除tag，并删除远程tag</h4>
+<div class="outline-text-4" id="text-4">
+
+
+
+
+<pre class="src src-sh">git tag -d &lt;TAG_A&gt;
+git push origin :refs/tags/&lt;TAG_A&gt;
+</pre>
+
+<p>
+    tag 和branch类似，可以看做一种特殊branch
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-4">
+<h4 id="sec-5">添加tag，并推送到远程</h4>
+<div class="outline-text-4" id="text-5">
+
+
+
+
+<pre class="src src-sh">git tag &lt;TAG_A&gt;
+git push --tags
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-4">
+<h4 id="sec-6">修改上次的commit message</h4>
+<div class="outline-text-4" id="text-6">
+
+
+
+
+<pre class="src src-sh">git commit --amend
+</pre>
+
+<p>
+    会跳出一个编辑器，可以编辑上次的commit 信息，然后保存即修改完成
+</p></div>
+
+</div>
+
+<div id="outline-container-7" class="outline-4">
+<h4 id="sec-7">修改上次的commit author</h4>
+<div class="outline-text-4" id="text-7">
+
+
+
+
+<pre class="src src-sh">git commit --amend --author <span style="color: #ffff00;">'New Author Name <a href="mailto:email%40address.com">&lt;email@address.com&gt;</a>'</span>
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-4">
+<h4 id="sec-8">删除未跟踪(Untracked)的文件</h4>
+<div class="outline-text-4" id="text-8">
+
+
+
+
+<pre class="src src-sh">git clean -f
+</pre>
+
+<p>
+    git clean 删除没有纳入git管理的文件
+</p></div>
+
+</div>
+
+<div id="outline-container-9" class="outline-4">
+<h4 id="sec-9">强制覆盖远程</h4>
+<div class="outline-text-4" id="text-9">
+
+
+
+
+<pre class="src src-sh">git push --force origin/master
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-4">
+<h4 id="sec-10">配置</h4>
+<div class="outline-text-4" id="text-10">
+
+<ul>
+<li>全局配置文件
+      ~/.gitconfig
+</li>
+<li>查看配置
+
+
+
+<pre class="src src-sh">git config -l      
+</pre>
+
+</li>
+<li>开启色彩
+
+
+
+<pre class="src src-sh">git config --global  color.ui true
+</pre>
+
+</li>
+<li>diff 颜色
+
+
+
+<pre class="src src-sh">git config --global color.diff auto
+</pre>
+
+</li>
+</ul>
+
+</div>
+</div>

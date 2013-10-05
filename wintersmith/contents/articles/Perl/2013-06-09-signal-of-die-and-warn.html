@@ -1,0 +1,168 @@
+---
+date: 2013-06-09
+template: tech.jade
+title: SIG{__DIE__} 和 SIG{__WARN__}
+category: Perl
+change_frequency: monthly
+---
+
+<p>
+__DIE__ 和 __WARN__ 两个特殊的信号，分别在<a href="http://perldoc.perl.org/functions/die.html">die</a> 和 <a href="http://perldoc.perl.org/functions/warn.html">warn</a> 被执行的时候触发，
+perldoc中称这两个信号的注册函数为<a href="http://perldoc.perl.org/perlvar.html#%SIG">hook</a>。
+</p>
+<p>
+两者的触发和处理方式不同。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 $SIG{__DIE__}</a>
+<ul>
+<li><a href="#sec-1-1">1.1 die 发生在非eval语句块内</a></li>
+<li><a href="#sec-1-2">1.2 die 发生在eval语句块内</a></li>
+<li><a href="#sec-1-3">1.3 子过程的处理</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 $SIG{__WARN__}</a>
+<ul>
+<li><a href="#sec-2-1">2.1 warn执行流程</a></li>
+<li><a href="#sec-2-2">2.2 子过程处理</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 异常捕获</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">$SIG{__DIE__}</h3>
+<div class="outline-text-3" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-4">
+<h4 id="sec-1-1">die 发生在非eval语句块内</h4>
+<div class="outline-text-4" id="text-1-1">
+
+<p>   在die执行的时候，错误信息会被收集到"$@"变量中，错误信息可以是多数情况下的字符串，也可以是一个对象的引用，如果是对象的引用，
+perl还会查找其名为 <a href="http://perldoc.perl.org/functions/die.html">PROPAGATE</a> 的方法，然后用方法执行的结果替换"$@",然后，错误信息和行号、文件会被打印出到STDERR，
+接着检查$SIG{__DIE__}是否有函数注册，如果有，执行此函数，然后退出程序。
+</p></div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-4">
+<h4 id="sec-1-2">die 发生在eval语句块内</h4>
+<div class="outline-text-4" id="text-1-2">
+
+<p>   如果die 发生在eval 语句块内，向STDERR打印错误信息这一步不会发生，也不会退出程序而是终止eval 块内语句的执行，然后eval 返回undefined。
+</p></div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-4">
+<h4 id="sec-1-3">子过程的处理</h4>
+<div class="outline-text-4" id="text-1-3">
+
+<p>   在注册的信号处理函数内，第一个参数即为die抛出的错误信息/对象引用，注册的处理函数可以做如下的事情:
+</p><ul>
+<li>重新die，抛出异常<br/>
+     这会重新设置"$@"(不能通过赋值给$@来修改$@,这样做无效,不会对 eval 捕获后的后续程序有效)
+</li>
+<li>做任何事情，不抛出异常
+</li>
+</ul>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">$SIG{__WARN__}</h3>
+<div class="outline-text-3" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-4">
+<h4 id="sec-2-1">warn执行流程</h4>
+<div class="outline-text-4" id="text-2-1">
+
+<p>   在warn执行的时候，将警告信息收集到"$@"变量中，同die的过程，信息设置完成后，查找$SIG{__WARN__}的注册函数，如果有，执行这个函数后完成。
+   如果没有，向STDERR输出警告信息和行号、文件后完成。
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-4">
+<h4 id="sec-2-2">子过程处理</h4>
+<div class="outline-text-4" id="text-2-2">
+
+<p>   在注册的信号处理函数内，可以进行如下的操作:
+</p><ul>
+<li>执行warn、die抛出警告和异常
+</li>
+<li>做其他事情，不执行warn和die
+</li>
+</ul>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">异常捕获</h3>
+<div class="outline-text-3" id="text-3">
+
+<ul>
+<li>通过定义$SIG{__DIE__}来进行异常发生时的捕获处理：
+
+
+
+<pre class="src src-perl">  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#23450;&#20041;&#22788;&#29702;&#20989;&#25968;</span>
+<span style="color: #00ffff;">local</span> <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$SIG</span>{<span style="color: #ffff00;">__DIE__</span>} = <span style="color: #00ffff;">sub</span> {
+      <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$err</span> = <span style="color: #66cd00;">shift</span>;
+      <span style="color: #ff0000;"># </span><span style="color: #ff0000;">... process error</span>
+      <span style="color: #ff0000;"># </span><span style="color: #ff0000;">you can generate exception obj and thorw it</span>
+      <span style="color: #00ffff;">die</span> $err; <span style="color: #ff0000;"># </span><span style="color: #ff0000;">re-throw error;</span>
+};
+ <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#25191;&#34892;&#21487;&#33021;&#25243;&#20986;&#24322;&#24120;&#30340;&#20195;&#30721;</span>
+ <span style="color: #ff0000;"># </span><span style="color: #ff0000;">.... code may thrown exception ;</span>
+</pre>
+
+</li>
+<li>通过eval捕获异常:
+
+
+
+<pre class="src src-perl"><span style="color: #00ffff;">eval</span> {
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#25191;&#34892;&#21487;&#33021;&#25243;&#20986;&#24322;&#24120;&#30340;&#20195;&#30721;</span>
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">.... code may thrown exception ;</span>
+}
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#24322;&#24120;&#21457;&#29983;&#65292;&#22788;&#29702;</span>
+<span style="color: #00ffff;">if</span>($@){
+  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#22788;&#29702;&#24322;&#24120; ...</span>
+}
+</pre>
+
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
