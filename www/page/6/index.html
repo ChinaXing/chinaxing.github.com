@@ -12,7 +12,7 @@
   <body>
     <header id="header">
       <div id="menu">
-        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://chinaxing.org"></a></div>
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
@@ -26,6 +26,29 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>12. June 2013</span></p>
+          <h2><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">Mojolicious Web框架实现分析 -- App启动过程</a></h2>
+        </header>
+        <section class="content">
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1&nbsp;前言</a></li>
+<li><a href="#sec-2">2 启动Mojolicious App</a>
+<ul>
+<li><a href="#sec-2-1">2.1 通过 script/my_app daemon&nbsp;启动应用</a></li>
+<li><a href="#sec-2-2">2.2&nbsp;执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
+<li><a href="#sec-2-3">2.3&nbsp;创建Mojo::Server实例，加载App，启动App</a></li>
+<li><a href="#sec-2-4">2.4&nbsp;App创建完毕，调用其start方法</a></li>
+<li><a href="#sec-2-5">2.5&nbsp;使用Mojolicious</a></li></ul></li></ul></div></div>
+          <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>12. June 2013</span></p>
@@ -56,29 +79,6 @@ Mojolicious&nbsp;是基于事件的web框架，那么如何知道请求这个事
 
 <pre class="src src-perl">++$i </pre></li></ul>
           <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse-2.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. June 2013</span></p>
-          <h2><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">Mojolicious Web框架实现分析 -- App启动过程</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1&nbsp;前言</a></li>
-<li><a href="#sec-2">2 启动Mojolicious App</a>
-<ul>
-<li><a href="#sec-2-1">2.1 通过 script/my_app daemon&nbsp;启动应用</a></li>
-<li><a href="#sec-2-2">2.2&nbsp;执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
-<li><a href="#sec-2-3">2.3&nbsp;创建Mojo::Server实例，加载App，启动App</a></li>
-<li><a href="#sec-2-4">2.4&nbsp;App创建完毕，调用其start方法</a></li>
-<li><a href="#sec-2-5">2.5&nbsp;使用Mojolicious</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
