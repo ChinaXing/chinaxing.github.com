@@ -1,0 +1,72 @@
+#+BEGIN_HTML
+---
+title: wintersmith静态站点生成器
+template: tech.jade
+date: 2013-10-06 15:39:01
+category: Linux
+---
+#+END_HTML
+
+静态站点常用来写blog，比如最近做技术的都将blog放在了github网站上，在文章写好后由一个工具将文章内容结合模板编译一下，加入blog中。
+
+这样的工具非常多了，比较有名的比如：jekyll，是ruby开发的，然后有各种效仿者，前段时间我转向使用HiD这个工具来替代jekyll，主要是出于自己熟悉Perl语言稍微多些，一来支持一下Perl语言，二来出问题比较容易解决。
+
+在windows下Perl的这个工具不容易安装，然后最近几天看了下node.js，发现一款这方面的工具，安装和使用比较方便，所以切换到使用这款工具来生成blog。
+
+这款工具是: [[http://wintersmith.io/][wintersmith]] (感觉像人名？)
+
+
+*** 安装与使用
+安装比较容易，通过npm 我们就可以安装，缺少什么库也通过npm进行安装：[[https://github.com/jnordberg/wintersmith#quick-start][quick-start]]
+
+**** 新建站点
+     #+BEGIN_SRC sh :eval no
+     wintersmith new myBlog
+     #+END_SRC
+     执行此命令后，在myBlog下就生成了一个静态站点的目录结构:
+     #+BEGIN_EXAMPLE
+     config.json       --> 站点配置
+     contents/         --> 站点内容(文章，css，js，img等)
+     node_modules/     --> 插件活wintersmith依赖的模块
+     package.json      --> npm包的配置
+     plugins/          --> 插件目录，自动加载
+     readme.md         
+     templates/        --> 站点模板
+     #+END_EXAMPLE
+     =node_modules/= 目录，放通过npm安装的模块，如果使用 =npm --global= 选项进行安装了，则此目录中可以没有
+
+     wintersmith 默认支持的模板是[[http://jade-lang.com/][jade]]。语法清爽。当然可以自己写(应该别人已写)插件支持其他模板。
+     
+     wintersmith 默认支持markdown与json格式的原文章的转换。其它的格式通过插件支持。
+
+     [[https://github.com/jnordberg/wintersmith/wiki/Plugins][这里是一些插件]] ，包括模板插件与文章格式插件，以及其它辅助插件。
+
+     [[https://github.com/jnordberg/wintersmith/wiki/Writing-plugins][这里可以了解到如何写插件]] 。不过不太详细，可以在从[[https://github.com/jnordberg/wintersmith/tree/master/src/plugins][例子]]中参考着写。
+
+**** 预览与生成站点
+     然后我们可以在contents目录中放入markdown格式的文章、css、js等，在templates中放入模板，一切准备就绪后，回到myBlog目录执行:
+     #+BEGIN_SRC sh :eval no
+     wintersmith preview
+     #+END_SRC
+     在本地8080端口会启动站点，通过浏览器即可访问查看生成的站点。preview下的站点是自动热部署的，即：你的改动会马上在浏览器中看到。所以不需要手动重启wintersmith。
+
+     站点生成调试没问题后，通过如下命令将站点生成出来，然后就可以放于github上了。
+     #+BEGIN_SRC sh :eval no
+     wintersmith build # 在myBlog/build目录下生成站点，config.json里配置
+     #+END_SRC
+     
+*** 扩展wintersmith
+    默认的wintersmith支持markdown，对于html的格式是不支持的，由于我使用Emacs org mode来将org文档编译为html文档，然后再进行构建静态站点，所以写了一个插件，让wintersmith可以识别。
+    
+    默认没发现category的生成插件，我也写了一个。
+
+    [[https://github.com/ChinaXing/chinaxing.github.com/tree/dev/wintersmith/plugins][我写的插件]]。
+
+**** 待增强
+     文章内相对链接的修改，目前写死的，需要自动根据目录深度变化进行。
+     
+*** 使用感受
+    - 模板语言比较好，清爽
+    - 插件使用coffescript进行开发，看起来比较简洁，需要熟悉coffescript
+    - 可扩展性挺好，便于开发插件
+    - 各种依赖很方便的通过npm进行安装

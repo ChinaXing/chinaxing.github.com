@@ -22,6 +22,7 @@ change_frequency: monthly
 <li><a href="#sec-1-7">1.7 Enbugger - 运行时debug</a></li>
 <li><a href="#sec-1-8">1.8 指定debugger模块</a></li>
 <li><a href="#sec-1-9">1.9 设置最大调用深度</a></li>
+<li><a href="#sec-1-10">1.10 hdb - webUI debugger</a></li>
 </ul>
 </li>
 <li><a href="#sec-2">2 Debug 相关文档</a></li>
@@ -192,8 +193,19 @@ Enbugger-&gt;load_debugger(<span style="color: #ffff00;">'perl5db'</span>);
 <div class="outline-text-4" id="text-1-9">
 
 <p>    默认情况下，如果subrutine调用深度超过100，DB就会中断执行，进入断点，可以通过 <code>$DB::deep = 500;</code> 设置深度为500，在大于500的调用深度下，DB自动进入暂停执行。
-</p>
+</p></div>
+
 </div>
+
+<div id="outline-container-1-10" class="outline-4">
+<h4 id="sec-1-10">hdb - webUI debugger</h4>
+<div class="outline-text-4" id="text-1-10">
+
+<p>    <a href="https://github.com/amb43790/Devel-hdb">hdb</a>(<a href="https://metacpan.org/module/Devel::hdb">Devel::hdb</a>) 模块是一个UI使用web浏览器作为UI的debugger，web浏览器的跨平台性，易得性，使得这个debugger非常棒，支持多进程调试，支持debugger的所有特性，建议使用。
+</p>
+<p>
+    <a href="http://perlmaven.com/debugging-perl-with-hdb">可以看看这里的介绍</a>。
+</p></div>
 </div>
 
 </div>

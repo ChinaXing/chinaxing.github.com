@@ -68,7 +68,10 @@ change_frequency: monthly
     可以通过 =-d:Debugger= 来指定 Debugger 模块代替默认的perl5db进行debug
 *** 设置最大调用深度
     默认情况下，如果subrutine调用深度超过100，DB就会中断执行，进入断点，可以通过 =$DB::deep = 500;= 设置深度为500，在大于500的调用深度下，DB自动进入暂停执行。
+*** hdb - webUI debugger
+    [[https://github.com/amb43790/Devel-hdb][hdb]]([[https://metacpan.org/module/Devel::hdb][Devel::hdb]]) 模块是一个UI使用web浏览器作为UI的debugger，web浏览器的跨平台性，易得性，使得这个debugger非常棒，支持多进程调试，支持debugger的所有特性，建议使用。
 
+    [[http://perlmaven.com/debugging-perl-with-hdb][可以看看这里的介绍]]。
 ** Debug 相关文档
    - [[http://search.cpan.org/perldoc?perl5db.pl][perl5db.pl]] - the perl debugger
    - [[http://search.cpan.org/perldoc?perldebtut][perldebtut]] - Perl debugging tutorial
