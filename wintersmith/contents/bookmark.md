@@ -1,7 +1,7 @@
 ---
 template: article.jade
 title: 我的书签
-filename : ":filename.html"
+filename : ":file.html"
 ---
 
 ** My book mark(s)

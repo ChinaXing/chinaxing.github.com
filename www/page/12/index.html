@@ -16,7 +16,7 @@
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>23</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>24</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
@@ -28,22 +28,28 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>09. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">去重perl数组</a></h2>
+          <p class="date"><span>14. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/14/2013-01-14-AnyEvent-Filesys-Notify.html">用Anyevent监控目录/文件变动</a></h2>
         </header>
         <section class="content">
-
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
-</pre>
-
-
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1&nbsp;例子:</a></li></ul></div></div>
-          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">more</a></p>
+<li><a href="#sec-1">1&nbsp;Module介绍</a></li>
+<li><a href="#sec-2">2&nbsp;后端</a></li>
+<li><a href="#sec-3">3&nbsp;类似模块</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">Module介绍</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>    <a href="http://search.cpan.org/~mgrimes/AnyEvent-Filesys-Notify-0.18/lib/AnyEvent/Filesys/Notify.pm">AnyEvent::Filesys::Noti</a></p></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/14/2013-01-14-AnyEvent-Filesys-Notify.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
@@ -77,41 +83,22 @@
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>08. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">列出你安装的Perl模块</a></h2>
+          <p class="date"><span>09. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">去重perl数组</a></h2>
         </header>
         <section class="content">
 
-<p>
-有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
-</p>
+<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
+</pre>
+
+
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1&nbsp;perllocal</a></li>
-<li><a href="#sec-2">2&nbsp;instmodsh</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">perllocal</h4>
-<div class="outline-text-4" id="text-1">
-
-
-
-
-
-<pre class="src src-sh">perldoc perllocal
-</pre>
-
-
-<p>
-这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
-</p></div></div>
-          <p class="more"><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">more</a></p>
+<li><a href="#sec-1">1&nbsp;例子:</a></li></ul></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/11/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/13/" class="nav-next">Next page »</a>
