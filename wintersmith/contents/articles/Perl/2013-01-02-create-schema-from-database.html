@@ -16,14 +16,14 @@ tag: DBIx::Class
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1 从数据库产生Schema方法</a>
+<li><a href="#sec-1">从数据库产生Schema方法</a>
 <ul>
-<li><a href="#sec-1-1">1.1 使用 make_schema_at 方法</a></li>
-<li><a href="#sec-1-2">1.2 使用 dbicdump 工具</a></li>
-<li><a href="#sec-1-3">1.3 使用 dump_to_dir 方法</a></li>
+<li><a href="#sec-1-1">使用 make_schema_at 方法</a></li>
+<li><a href="#sec-1-2">使用 dbicdump 工具</a></li>
+<li><a href="#sec-1-3">使用 dump_to_dir 方法</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">2 比较</a></li>
+<li><a href="#sec-2">比较</a></li>
 </ul>
 </div>
 </div>
@@ -44,12 +44,12 @@ tag: DBIx::Class
 
 
 <pre class="src src-sh">perl -MDBIx::Class::Schema::<span style="color: #ffffff; font-weight: bold;">Loader</span>=make_schema_at &lt;&lt;EOF
-<span style="color: #ffff00; font-weight: bold;">make_schema_at({</span>
-<span style="color: #ffff00; font-weight: bold;">   'My::Schema',</span>
-<span style="color: #ffff00; font-weight: bold;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
-<span style="color: #ffff00; font-weight: bold;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
-<span style="color: #ffff00; font-weight: bold;">});</span>
-<span style="color: #ffff00; font-weight: bold;">EOF</span>
+<span style="color: #ffa54f;">make_schema_at({</span>
+<span style="color: #ffa54f;">   'My::Schema',</span>
+<span style="color: #ffa54f;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
+<span style="color: #ffa54f;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
+<span style="color: #ffa54f;">});</span>
+<span style="color: #ffa54f;">EOF</span>
 </pre>
 
 
