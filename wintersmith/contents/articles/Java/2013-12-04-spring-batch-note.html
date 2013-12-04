@@ -1,0 +1,99 @@
+---
+date: 2013-12-04
+template: tech.jade
+title: Spring batch 介绍
+category: Java
+change_frequency: monthly
+tag: java,web,spring 
+---
+
+<p>
+任务执行是许多时候需要用到的，比如报表的生成，交易的创建。都可以抽象为一个Job，然后由若干个步骤组成。更复杂一些的是，根据每个步骤的运行结果，进行不同的下一步动作。
+</p>
+<p>
+任务可以通过多种方式触发/启动，如通过Command Line启动，或者通过HTTP 请求来触发进行异步执行，或者通过定时器来在特定的时间或者周期启动。
+</p>
+<p>
+<a href="http://docs.spring.io/spring-batch/trunk/reference/html/index.html">Spring batch</a> 即是对这一类运行系统的抽象与框架。将任务的执行流，抽象出来，而任务具体的执行内容，则通过接口给与程序员进行配置。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">任务执行抽象</a></li>
+<li><a href="#sec-2">特点</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">任务执行抽象</h3>
+<div class="outline-text-3" id="text-1">
+
+<ul>
+<li>Job
+</li>
+<li>JobInstance
+</li>
+<li>JobExecution
+</li>
+<li>JobLuncher
+</li>
+<li>JobRepositry
+</li>
+<li>Step
+</li>
+<li>StepExecution
+</li>
+<li>ItemReader
+</li>
+<li>ItemProcesser
+</li>
+<li>ItemWriter
+</li>
+<li>taskLet
+</li>
+<li>flow
+</li>
+<li>chunk
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">特点</h3>
+<div class="outline-text-3" id="text-2">
+
+<ul>
+<li>retry
+</li>
+<li>skip
+</li>
+<li>Control step flow  - 分支
+</li>
+<li>parallel 
+</li>
+<li>multi-threads step
+</li>
+<li>JobOperator
+</li>
+<li>JobExplorer
+</li>
+<li>Repeat
+</li>
+<li>ExecutionContext - 执行上下文，在启动时候自动载入，这样中断的任务可以继续执行
+</li>
+<li>restart - 未完成的可以重新（从中断的地方）执行
+</li>
+</ul>
+
+
+<p>
+[待完善]
+</p></div>
+</div>

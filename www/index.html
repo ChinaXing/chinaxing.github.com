@@ -14,9 +14,9 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>7</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>24</sup></a></li>
@@ -26,6 +26,32 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>04. December 2013</span></p>
+          <h2><a href="/articles/Java/2013/12/04/2013-12-04-spring-batch-note.html">Spring batch 介绍</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+任务执行是许多时候需要用到的，比如报表的生成，交易的创建。都可以抽象为一个Job，然后由若干个步骤组成。更复杂一些的是，根据每个步骤的运行结果，进行不同的下一步动作。
+</p>
+<p>
+任务可以通过多种方式触发/启动，如通过Command Line启动，或者通过<span class="caps">HTTP</span>&nbsp;请求来触发进行异步执行，或者通过定时器来在特定的时间或者周期启动。
+</p>
+<p>
+<a href="http://docs.spring.io/spring-batch/trunk/reference/html/index.html">Spring batch</a>&nbsp;即是对这一类运行系统的抽象与框架。将任务的执行流，抽象出来，而任务具体的执行内容，则通过接口给与程序员进行配置。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">任务执行抽象</a></li>
+<li><a href="#sec-2">特点</a></li></ul></div></div>
+          <p class="more"><a href="/articles/Java/2013/12/04/2013-12-04-spring-batch-note.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>06. October 2013</span></p>
@@ -92,38 +118,6 @@ Proactor比Reactor更高效。
 </ul>
 </div></div>
           <p class="more"><a href="/articles/linux/2013/08/06/2013-08-06-proactor-vs-reactor.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>26. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/26/2013-07-26-eclipse-remote-debug-jboss.html">Eclipse进行远程调试jboss web应用</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-通过让运行于服务器上的Jboss打开远程调试的端口:8787,&nbsp;可以在Eclipse中进行调试服务器上面的Web应用.方便进行程序调试和排查问题.
-</p>
-<p>
-远程调试建立后,你就可以在Eclipse中设置断点, 启动和暂停调试, 查看变量等所有调试操作,&nbsp;但是调试的对象却是运行于远程的服务.
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Jboss配置</a></li>
-<li><a href="#sec-2">Eclipse&nbsp;配置</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Jboss配置</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   启动Jboss的Java命令行中添</p></div></div>
-          <p class="more"><a href="/articles/Java/2013/07/26/2013-07-26-eclipse-remote-debug-jboss.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

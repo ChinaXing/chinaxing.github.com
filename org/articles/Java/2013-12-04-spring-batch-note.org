@@ -1,0 +1,45 @@
+#+BEGIN_HTML
+---
+date: 2013-12-04
+template: tech.jade
+title: Spring batch 介绍
+category: Java
+change_frequency: monthly
+tag: java,web,spring 
+---
+#+END_HTML
+
+任务执行是许多时候需要用到的，比如报表的生成，交易的创建。都可以抽象为一个Job，然后由若干个步骤组成。更复杂一些的是，根据每个步骤的运行结果，进行不同的下一步动作。
+
+任务可以通过多种方式触发/启动，如通过Command Line启动，或者通过HTTP 请求来触发进行异步执行，或者通过定时器来在特定的时间或者周期启动。
+
+[[http://docs.spring.io/spring-batch/trunk/reference/html/index.html][Spring batch]] 即是对这一类运行系统的抽象与框架。将任务的执行流，抽象出来，而任务具体的执行内容，则通过接口给与程序员进行配置。
+
+** 任务执行抽象
+   - Job
+   - JobInstance
+   - JobExecution
+   - JobLuncher
+   - JobRepositry
+   - Step
+   - StepExecution
+   - ItemReader
+   - ItemProcesser
+   - ItemWriter
+   - taskLet
+   - flow
+   - chunk
+
+** 特点
+   - retry
+   - skip
+   - Control step flow  - 分支
+   - parallel 
+   - multi-threads step
+   - JobOperator
+   - JobExplorer
+   - Repeat
+   - ExecutionContext - 执行上下文，在启动时候自动载入，这样中断的任务可以继续执行
+   - restart - 未完成的可以重新（从中断的地方）执行
+
+[待完善]

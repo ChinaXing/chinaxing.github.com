@@ -28,85 +28,41 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>26. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/26/2013-07-26-eclipse-remote-debug-jboss.html">Eclipse进行远程调试jboss web应用</a></h2>
+          <p class="date"><span>10. November 2012</span></p>
+          <h2><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">快速取得apache/nginx的qps和rt</a></h2>
         </header>
         <section class="content">
 
 <p>
-通过让运行于服务器上的Jboss打开远程调试的端口:8787,&nbsp;可以在Eclipse中进行调试服务器上面的Web应用.方便进行程序调试和排查问题.
+在计算<span class="caps">QPS</span>和RT的时候，我们一般使用grep&nbsp;。但是当日志文件很大的时候，grep会很耗时。
 </p>
 <p>
-远程调试建立后,你就可以在Eclipse中设置断点, 启动和暂停调试, 查看变量等所有调试操作,&nbsp;但是调试的对象却是运行于远程的服务.
+监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。
+</p>
+<p>
+但是如果我们仅仅希望链接到服务器，执行一条命令就快速的计算出qps和rt。则需要考虑如何快速读取需要的行的问题：
+</p>
+<p>
+经过我这几天的考虑，总结出了下面一条命令。计算qps和rt算是很快了。如果谁有比这个更秒的方法，不吝赐教：
 </p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Jboss配置</a></li>
-<li><a href="#sec-2">Eclipse&nbsp;配置</a></li>
+<li><a href="#sec-1">脚本</a></li>
+<li><a href="#sec-2">说明</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Jboss配置</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   启动Jboss的Java命令行中添</p></div></div>
-          <p class="more"><a href="/articles/Java/2013/07/26/2013-07-26-eclipse-remote-debug-jboss.html">more</a></p>
+<h3 id="sec-1">脚本</h3>
+</div>
+          <p class="more"><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">more</a></p>
         </section>
       </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>19. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/19/2013-07-19-eclipse-install-jetty-plugin.html">eclipse 安装 Jetty 插件辅助开发</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-【待写】
-</p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>19. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/19/2013-07-19-java-web-developing-misc.html">Java web 开发小记</a></h2>
-        </header>
-        <section class="content">
-<p>
-本文意在记录自己在用java进行web开发中积累的知识点、技巧以及经验。&nbsp;【待完善】
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">数据映射<span class="caps">DAO</span></a>
-<ul>
-<li><a href="#sec-1-1">ibatis&nbsp;debug</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">数据映射<span class="caps">DAO</span></h3>
-<div class="outline-text-3" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1">ibatis&nbsp;debug</h4>
-</div></div>
-          <p class="more"><a href="/articles/Java/2013/07/19/2013-07-19-java-web-developing-misc.html">more</a></p>
-        </section>
-      </article>
-      <div id="paginator-nav"><a href="/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/3/" class="nav-next">Next page »</a>
+      <div id="paginator-nav"><a href="/page/19/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a>
       </div>
     </section>
     <footer>

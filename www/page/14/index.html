@@ -14,9 +14,9 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>7</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>24</sup></a></li>
@@ -26,6 +26,43 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>04. January 2013</span></p>
+          <h2><a href="/articles/linux/2013/01/04/2013-01-04-linux-internationalization.html">Linux 下使用gettext完成程序国际化/本地化</a></h2>
+        </header>
+        <section class="content">
+
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">国际化</a></li>
+<li><a href="#sec-2">工具</a></li>
+<li><a href="#sec-3">使用gettext进行本地化的步骤</a></li>
+<li><a href="#sec-4">实例</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">国际化</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+程序的国际化/本地化是指根据用户语言和区域的不同程序可以使用针对用户的交互信息。
+</p>
+<p>
+如，中文用户，则语言会变成中文，时间会显示北京时间，货币会显示<span class="caps">RMB</span>。
+</p>
+<p>
+Linux 下 <b>Gnu/ge</b></p></div></div>
+          <p class="more"><a href="/articles/linux/2013/01/04/2013-01-04-linux-internationalization.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>03. January 2013</span></p>
@@ -58,59 +95,28 @@
       <article class="article intro">
         <header>
           <p class="date"><span>02. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/02/2013-01-02-mojolicious-study-note-2.html">Mojolicious 学习笔记</a></h2>
+          <h2><a href="/articles/Perl/2013/01/02/2013-01-02-create-schema-from-database.html">从数据库自动生成DBIx::Class使用的Schema</a></h2>
         </header>
         <section class="content">
 
+
 <p>
-<b>Mojolicous</b> : <a href="http://mojolicio.us/">http://mojolicio.us/</a>
+如果数据库和表已经存在，我们不需要手动创建Schema，可以使用 <a href="http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm">DBIx::Class::Schema::Loader</a>&nbsp;这个模块自动生成.
 </p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Mojolicous结构</a>
+<li><a href="#sec-1">从数据库产生Schema方法</a>
 <ul>
-<li><a href="#sec-1-1">route&nbsp;路由</a></li>
-<li><a href="#sec-1-2">controller</a></li>
-<li><a href="#sec-1-3">action</a></li>
-<li><a href="#sec-1-4">template</a></li>
-<li><a href="#sec-1-5">异常</a></li>
-<li><a href="#sec-1-6">helper</a></li>
-<li><a href="#sec-1-7">plugin</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Perl/2013/01/02/2013-01-02-mojolicious-study-note-2.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>02. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/02/2013-01-02-DBIx-Class-study-note.html">Perl DBIx::Class 模块学习笔记</a></h2>
-        </header>
-        <section class="content">
-
-
-<p>
-<b>Perl</b>&nbsp;的<span class="caps">ORM</span>模块中，DBIx::Class比较强大和完善，文档丰富，容易使用。
-</p>
-<p>
-DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.org/</a>，&nbsp;也可以在<span class="caps">CPAN</span>上搜索，它的代码和文档都放在CPAN上。
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">ORM</span>优点和作用</a></li>
-<li><a href="#sec-2">DBIx::Class入门介绍</a></li>
-<li><a href="#sec-3">DBIx::Class基本概念</a></li>
-<li><a href="#sec-4">其它</a></li>
+<li><a href="#sec-1-1">使用 make_schema_at&nbsp;方法</a></li>
+<li><a href="#sec-1-2">使用 dbicdump&nbsp;工具</a></li>
+<li><a href="#sec-1-3">使用 dump_to_dir&nbsp;方法</a></li>
 </ul>
-</div>
-</div>
-
-
-          <p class="more"><a href="/articles/Perl/2013/01/02/2013-01-02-DBIx-Class-study-note.html">more</a></p>
+</li>
+</ul></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/02/2013-01-02-create-schema-from-database.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/13/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/15/" class="nav-next">Next page »</a>
