@@ -1,0 +1,24 @@
+#+BEGIN_HTML
+---
+date: 2013-12-10
+template: tech.jade
+title: Spring circular dependencies -循环引用/依赖解决方法
+category: Java
+change_frequency: monthly
+tag: java,spring 
+---
+#+END_HTML
+
+[[http://docs.spring.io/spring/docs/3.0.0.M3/reference/html/ch04s03.html][出处]]
+
+Circular dependencies
+
+If you are using predominantly constructor injection it is possible to write and configure your classes and beans such that an unresolvable circular dependency scenario is created.
+
+Consider the scenario where you have class A, which requires an instance of class B to be provided via constructor injection, and class B, which requires an instance of class A to be provided via constructor injection. If you configure beans for classes A and B to be injected into each other, the Spring IoC container will detect this circular reference at runtime, and throw a BeanCurrentlyInCreationException.
+
+One possible solution to this issue is to edit the source code of some of your classes to be configured via setters instead of via constructors. Another solution is not to use constructor injection and stick to setter injection only. In other words, while it should generally be avoided in all but the rarest of circumstances, it is possible to configure circular dependencies with setter injection.
+
+Unlike the typical case (with no circular dependencies), a circular dependency between bean A and bean B will force one of the beans to be injected into the other prior to being fully initialized itself (a classic chicken/egg scenario).
+
+
