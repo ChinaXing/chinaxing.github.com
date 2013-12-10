@@ -14,10 +14,10 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Java/index.html">Java<sup>7</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -26,6 +26,49 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>08. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">列出你安装的Perl模块</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">perllocal</a></li>
+<li><a href="#sec-2">instmodsh</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">perllocal</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+
+<pre class="src src-sh">perldoc perllocal
+</pre>
+
+
+<p>
+这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
+</p>
+<p>
+我们可以通过grep方便找出这个模块列表：
+</p>
+</div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>06. January 2013</span></p>
@@ -91,35 +134,6 @@ B版本35$，<span class="caps">RMB325</span>￥。
 <p>
 Linux 下 <b>Gnu/ge</b></p></div></div>
           <p class="more"><a href="/articles/linux/2013/01/04/2013-01-04-linux-internationalization.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>03. January 2013</span></p>
-          <h2><a href="/articles/linux/2013/01/03/2013-01-03-public-key-infrastructure.html">公钥认证体系</a></h2>
-        </header>
-        <section class="content">
-
-
-<p>
-*<a href="http://en.wikipedia.org/wiki/Public_key_infrastructure">Public Key Infrastructure</a>*&nbsp;目的是进行数字认证
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">构成</a></li>
-<li><a href="#sec-2">运行过程</a></li>
-<li><a href="#sec-3">自签名证书</a></li>
-<li><a href="#sec-4">公钥认证在Web浏览器中应用</a></li>
-<li><a href="#sec-5">openssl&nbsp;进行证书的签名过程</a></li>
-<li><a href="#sec-6">客户端证书</a></li>
-<li><a href="#sec-7">其它</a></li>
-</ul>
-</div>
-</div>
-          <p class="more"><a href="/articles/linux/2013/01/03/2013-01-03-public-key-infrastructure.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/13/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/15/" class="nav-next">Next page »</a>
