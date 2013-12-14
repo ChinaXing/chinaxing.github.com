@@ -40,23 +40,23 @@ tag: java,web
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">Global logging configuration</span>
+<pre class="example"># Global logging configuration
 log4j.rootLogger=ERROR, stdout
 
 log4j.logger.com.ibatis=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows SQL of prepared statements</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.Connection=DEBUG</span>
+# shows SQL of prepared statements
+#log4j.logger.java.sql.Connection=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows parameters inserted into prepared statements</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.PreparedStatement=DEBUG</span>
+# shows parameters inserted into prepared statements
+#log4j.logger.java.sql.PreparedStatement=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows query results</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.ResultSet=DEBUG</span>
+# shows query results
+#log4j.logger.java.sql.ResultSet=DEBUG
 
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.Statement=DEBUG</span>
+#log4j.logger.java.sql.Statement=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">Console output</span>
+# Console output
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender
 log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
 log4j.appender.stdout.layout.ConversionPattern=%5p [%t] - %m%n

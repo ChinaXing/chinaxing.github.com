@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -66,7 +66,7 @@
 </p>
 
 <p>
-<img src="../../../../../img/pgsi-instructure.png"  alt="../img/pgsi-instructure.png" />
+<img src="/img/pgsi-instructure.png"  alt="file:///img/pgsi-instructure.png" />
 </p>
 
 <p>
@@ -133,10 +133,10 @@
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">....</span>
-    <span style="color: #00ffff;">return</span> [ 200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], [ <span style="color: #ffff00;">'Hello,World!'</span> ] ];
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ....
+    return [ 200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ];
 };
 </pre>
 
@@ -146,10 +146,10 @@
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-    <span style="color: #00ffff;">return</span> [ 200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'application/data'</span> ], $fh ] ];
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ...
+    return [ 200, [ 'Content-Type', 'application/data' ], $fh ] ];
 };
 </pre>
 
@@ -158,13 +158,13 @@
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-    <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">sub</span> {
-       <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$responder</span> = <span style="color: #66cd00;">shift</span>;
-       <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-       <span style="color: #00ffff;">return</span> $responder-&gt;([200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], [ <span style="color: #ffff00;">'Hello,World!'</span> ] ]);
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ...
+    return sub {
+       my $responder = shift;
+       # ...
+       return $responder-&gt;([200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ]);
     };
 };
 </pre>
@@ -174,20 +174,20 @@
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-    <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">sub</span> {
-       <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$responder</span> = <span style="color: #66cd00;">shift</span>;
-       <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-       <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$writer</span> = $responder-&gt;( [200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], ]);
-       <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-       wait_for_events(<span style="color: #00ffff;">sub</span> {
-             <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$ev</span> = <span style="color: #66cd00;">shift</span>;
-             <span style="color: #00ffff;">if</span>($ev-&gt;<span style="color: #00ffff;">last</span>){
-                   $writer-&gt;<span style="color: #ff7f50;">close</span>;
-              }<span style="color: #00ffff;">else</span>{
-                   $writer-&gt;<span style="color: #ff7f50;">write</span>($ev-&gt;content);
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ...
+    return sub {
+       my $responder = shift;
+       # ...
+       my $writer = $responder-&gt;( [200, [ 'Content-Type', 'text/plain' ], ]);
+       # ...
+       wait_for_events(sub {
+             my $ev = shift;
+             if($ev-&gt;last){
+                   $writer-&gt;close;
+              }else{
+                   $writer-&gt;write($ev-&gt;content);
               }
        });
   };
@@ -232,16 +232,16 @@
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #00ffff;">return</span> [ <span style="color: #ffff00;">'200'</span>, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], [ <span style="color: #ffff00;">"Hello,World!"</span> ] ];
+<pre class="example">my $app = sub {
+    my $env = shift;
+    return [ '200', [ 'Content-Type', 'text/plain' ], [ "Hello,World!" ] ];
 };
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">middleware, process at response chain</span>
-<span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$mymiddleware</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$res</span> = $app-&gt;($env);
-    <span style="color: #66cd00;">push</span> @{$res-&gt;[1], <span style="color: #ffff00;">'X-<span class="caps">PSGI</span>-Used'</span> =&gt; 1;
-    <span style="color: #00ffff;">return</span> $res;
+# middleware, process at response chain
+my $mymiddleware = sub {
+    my $env = shift;
+    my $res = $app-&gt;($env);
+    push @{$res-&gt;[1], 'X-PSGI-Used' =&gt; 1;
+    return $res;
 };
 </pre>
 
@@ -250,7 +250,7 @@
 </p>
 
 <p>
-    <img src="../../../../../img/PSGI-middleware.png"  alt="../img/PSGI-middleware.png" />
+    <img src="/img/PSGI-middleware.png"  alt="file:///img/PSGI-middleware.png" />
 </p>
 </div>
 </div>
@@ -268,7 +268,7 @@
       </div>
       <div class="mask" onclick="javascript: hide_ppt(this)"></div>
       <div class="mask_container">
-      <iframe src="../../../../https://docs.google.com/file/d/0B8Zm-qV7M9pISmtrNnNSRHRrX3c/preview" width="100%" height="100%">
+      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pISmtrNnNSRHRrX3c/preview" width="100%" height="100%">
       </iframe>
       </div>
 </li>
@@ -278,7 +278,7 @@
       </div>
       <div class="mask" onclick="javascript: hide_ppt(this)"></div>
       <div class="mask_container">
-      <iframe src="../../../../https://docs.google.com/file/d/0B8Zm-qV7M9pIWTN6T0RhRFhUdU0/preview" width="100%" height="100%">
+      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIWTN6T0RhRFhUdU0/preview" width="100%" height="100%">
       </iframe>
       </div>
 </li>

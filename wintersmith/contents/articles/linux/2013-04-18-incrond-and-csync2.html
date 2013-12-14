@@ -125,7 +125,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 
 
-<pre class="src src-sh"><span style="color: #ffaa00;">echo</span> /usr/loca/lib | sudo tee -a /etc/ld.so.conf    
+<pre class="example">echo /usr/loca/lib | sudo tee -a /etc/ld.so.conf    
 </pre>
 
 </li>
@@ -137,7 +137,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 
 
-<pre class="src src-sh">./autogen.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install
+<pre class="example">./autogen.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install
 </pre>
 
 <p>
@@ -160,7 +160,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 
 
-<pre class="src src-sh">sudo csync2 -k /etc/csync2.key_mygroup
+<pre class="example">sudo csync2 -k /etc/csync2.key_mygroup
 </pre>
 
 </li>
@@ -254,7 +254,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 
 
-<pre class="src src-sh">make &amp;&amp; sudo make install
+<pre class="example">make &amp;&amp; sudo make install
 </pre>
 
 </li>
@@ -281,7 +281,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 
 
-<pre class="src src-sh">sudo incrond
+<pre class="example">sudo incrond
 </pre>
 
 <p>
@@ -323,7 +323,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 
 
 
-<pre class="src src-sh">/home/admin/resource IN_ALL_EVENTS,IN_NO_LOOP /home/admin/tt.sh $%/$<span style="color: #ffffff; font-weight: bold;">#</span>
+<pre class="example">/home/admin/resource IN_ALL_EVENTS,IN_NO_LOOP /home/admin/tt.sh $%/$#
 </pre>
 
 </li>
@@ -344,10 +344,10 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </p>
 
 
-<pre class="src src-sh">(
-  flock -n 100 || <span style="color: #00ffff;">exit</span> 
+<pre class="example">(
+  flock -n 100 || exit 
   sleep 1 
-  <span style="color: #ffaa00;">echo</span> [$(date +<span style="color: #ffff00;">'%y-%m-%d %h:%M:%S'</span>)] <span style="color: #ffff00;">"${1:-crontab}"</span> &gt;&gt;/home/admin/logs/resource_sync.log
+  echo [$(date +'%y-%m-%d %h:%M:%S')] "${1:-crontab}" &gt;&gt;/home/admin/logs/resource_sync.log
   /usr/local/sbin/csync2 -vx 2&gt;&gt;/home/admin/logs/csync2.log
   sleep 1
 ) 100&gt;/tmp/csync.lock
@@ -358,7 +358,7 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ff0000;">#</span><span style="color: #ff0000;">Run script every 15 seconds : </span>
+<pre class="example">#Run script every 15 seconds : 
 * * * * * /foo/bar/your_script
 * * * * * sleep 15; /foo/bar/your_script
 * * * * * sleep 30; /foo/bar/your_script

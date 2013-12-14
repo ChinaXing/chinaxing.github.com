@@ -28,6 +28,7 @@
   "html": {
     "introSize" : 500
   },
+
   "output" : "../www",
   "filenameTemplate" : ":year/:month/:day/:file.html"
 }

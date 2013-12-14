@@ -10,7 +10,7 @@ change_frequency: monthly
 <a href="http://www.raspberrypi.org/">Raspberry Pi</a> 是ARM 处理器搭载Gnu/Debian Linux的单片电脑。它的发行目标是促进青少年学习计算机技术。
 </p>
 <p> 
-<img src="../img/Raspberry-Pi.jpg"  alt="../img/Raspberry-Pi.jpg" />
+<img src="file:///img/Raspberry-Pi.jpg"  alt="file:///img/Raspberry-Pi.jpg" />
 </p>
 <p>
 Raspberry Pi 有早些发布的256M内存/不带网卡的A版本和迟些时候发布的512M内存/带100M网卡的B版本，多数人应该买B版。
@@ -85,7 +85,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo yum install dhcp
+<pre class="example">sudo yum install dhcp
 </pre>
 
 <ol>
@@ -93,7 +93,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo vim /etc/dhcp/dhcpd.conf
+<pre class="example">sudo vim /etc/dhcp/dhcpd.conf
 </pre>
 
 <p>
@@ -101,7 +101,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </p>
 
 
-<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 { 
+<pre class="example">subnet 192.168.33.0 netmask 255.255.255.0 { 
     range 192.168.33.2 192.168.33.114; 
     default-lease-time 86400; 
     max-lease-time 259200; 
@@ -117,7 +117,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo ifconfig em1 192.168.33.2/24
+<pre class="example">sudo ifconfig em1 192.168.33.2/24
 </pre>
 
 </li>
@@ -125,7 +125,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">sudo dhcpd
+<pre class="example">sudo dhcpd
 </pre>
 
 </li>
@@ -135,7 +135,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">cat /var/lib/dhcpd/dhcpd.lease   
+<pre class="example">cat /var/lib/dhcpd/dhcpd.lease   
 </pre>
 
 <p>
@@ -146,7 +146,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="src src-sh">ssh pi@192.168.33.3    
+<pre class="example">ssh pi@192.168.33.3    
 </pre>
 
 <p>
@@ -188,7 +188,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="src src-sh">sudo apt-get install xrdp   
+<pre class="example">sudo apt-get install xrdp   
 </pre>
 
 
@@ -199,14 +199,14 @@ gateway 192.168.33.2
 
 
 
-<pre class="src src-sh">sudo yum install rdesktop   
+<pre class="example">sudo yum install rdesktop   
 </pre>
 
 </li>
 <li>使用Fedora 的Remte Desktop 连接Pi，输入Pi的ip地址和用户名pi，连接后如图：
 
 <p>  
-   <img src="../img/Raspberry-Pi-Remote-desktop.png"  alt="../img/Raspberry-Pi-Remote-desktop.png" />
+   <img src="file:///img/Raspberry-Pi-Remote-desktop.png"  alt="file:///img/Raspberry-Pi-Remote-desktop.png" />
 </p></li>
 </ol>
 
@@ -230,7 +230,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh"><span style="color: #ffaa00;">echo</span> 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+<pre class="example">echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
 </pre>
 
 
@@ -239,7 +239,8 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random
+<pre class="example">sudo iptables -t nat -A POSTROUTING -j SNAT \
+        --to-source 192.168.1.100 --random
 </pre>
 
 
@@ -251,7 +252,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 
-<pre class="src src-sh">ping www.baidu.com   
+<pre class="example">ping www.baidu.com   
 </pre>
 
 
@@ -260,7 +261,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ffaa00;">echo</span> nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
+<pre class="example">echo nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
 </pre>
 
 </li>
@@ -274,14 +275,14 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 
 <p>
-   <img src="../img/raspberry-pi--pi2internet.png"  alt="../img/raspberry-pi--pi2internet.png" />
+   <img src="file:///img/raspberry-pi--pi2internet.png"  alt="file:///img/raspberry-pi--pi2internet.png" />
 </p>
 <p>
    Ineternet ==&gt; Pi
 </p>
 
 <p>
-   <img src="../img/raspberry-pi--internet2pi.png"  alt="../img/raspberry-pi--internet2pi.png" />
+   <img src="file:///img/raspberry-pi--internet2pi.png"  alt="file:///img/raspberry-pi--internet2pi.png" />
 </p></li>
 </ol>
 
@@ -310,7 +311,8 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 </p>
 
 
-<pre class="src src-sh">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
+<pre class="example">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp \
+       --dport 3389 -j DNAT --to-destination 192.168.33.3 
 </pre>
 
 
@@ -323,7 +325,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 配置完成后就可以使用iphone连接到Pi:
 </p>
 <p>
-<img src="../img/Raspberry-Pi-iphone-remote-desktop.jpg"  alt="../img/Raspberry-Pi-iphone-remote-desktop.jpg" />
+<img src="file:///img/Raspberry-Pi-iphone-remote-desktop.jpg"  alt="file:///img/Raspberry-Pi-iphone-remote-desktop.jpg" />
 </p>
 
 <p>

@@ -32,7 +32,7 @@ tag: java,web,jboss,eclipse
 </p>
 
 
-<pre class="src src-sh">-Xdebug -Xnoagent -Xrunjdwp:<span style="color: #ffffff; font-weight: bold;">transport</span>=dt_socket,<span style="color: #ffffff; font-weight: bold;">address</span>=8787,<span style="color: #ffffff; font-weight: bold;">server</span>=y,<span style="color: #ffffff; font-weight: bold;">suspend</span>=n
+<pre class="example">-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n
 </pre>
 
 <p>
@@ -46,7 +46,7 @@ tag: java,web,jboss,eclipse
 <div class="outline-text-3" id="text-2">
 
 <p>   Eclipse 的Debug选项下,点击Debug configuration, 新建调试配置:<br/>
-   <img src="../img/eclipse-setup-remote-debug.png"  alt="../img/eclipse-setup-remote-debug.png" />
+   <img src="file:///img/eclipse-setup-remote-debug.png"  alt="file:///img/eclipse-setup-remote-debug.png" />
 </p>
 <p>   
    建立好配置后,就可以通过进行此配置的Debug,来启动远程调试, 此时, eclipse会链接远程的Jboss服务器的远程调试端口,进行协商,进入远程调试模式.

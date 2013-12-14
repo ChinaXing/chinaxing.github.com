@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -33,7 +33,7 @@
       </div>
       <div class="tech">
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@new_a</span> = <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span>} };
+<pre class="example">my @new_a = keys %{ {map {$_ =&gt; } @a} };
 </pre>
 
 
@@ -54,18 +54,18 @@
 
 
 
-<pre class="src src-perl"><span class="linenr"> 1:  </span><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Modern::Perl</span>;
-<span class="linenr"> 2:  </span><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;
+<pre class="example"><span class="linenr"> 1:  </span>use Modern::Perl;
+<span class="linenr"> 2:  </span>use Data::Dumper;
 <span class="linenr"> 3:  </span>
-<span class="linenr"> 4:  </span><span style="color: #00ffff;">my</span> <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> = (
-<span class="linenr"> 5:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'b'</span>},
-<span class="linenr"> 6:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'c'</span>},
-<span class="linenr"> 7:  </span>    { <span style="color: #ffff00;">a</span> =&gt; <span style="color: #ffff00;">'b'</span>},
+<span class="linenr"> 4:  </span>my @a = (
+<span class="linenr"> 5:  </span>    { a =&gt; 'b'},
+<span class="linenr"> 6:  </span>    { a =&gt; 'c'},
+<span class="linenr"> 7:  </span>    { a =&gt; 'b'},
 <span class="linenr"> 8:  </span>);
 <span class="linenr"> 9:  </span>
-<span class="linenr">10:  </span>say <span style="color: #ffff00;">"-----------------------"</span>;
+<span class="linenr">10:  </span>say "-----------------------";
 <span class="linenr">11:  </span>
-<span class="linenr">12:  </span><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$e</span> = [ <span style="color: #66cd00;">keys</span> %{ {<span style="color: #66cd00;">map</span> {$_ =&gt; 1}  <span style="color: #66cd00;">map</span> {$_-&gt;{<span style="color: #ffff00;">a</span>} } <span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@a</span> } } ];
+<span class="linenr">12:  </span>my $e = [ keys %{ {map {$_ =&gt; 1}  map {$_-&gt;{a} } @a } } ];
 <span class="linenr">13:  </span>
 <span class="linenr">14:  </span>say Dumper $e;
 <span class="linenr">15:  </span>

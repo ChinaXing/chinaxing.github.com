@@ -10,7 +10,7 @@ tag: eclipse,maven
 #+end_html
 
 在windows下面安装的eclipse的maven插件，在项目上右键run->Run Configuration中新建一个maven Build配置用来进行maven打包。如图：\\
-[[file:../img/eclipse-maven-build-configure.jpg]]
+[[/img/eclipse-maven-build-configure.jpg]]
 
 点击apply应用配置，然后点击run进行打包。发现会提示这样的错误:\\
 #+BEGIN_EXAMPLE
@@ -27,7 +27,7 @@ installation by setting the JAVA_HOME environment variable.
 这个问题的解决方法是给eclipse配置新的JRE，让他使用JDK而不是JRE作为JRE（JDK包含JRE）。
 
 配置如下：
-[[file:../img/eclipse-jdk-add.jpg]]
+[[/img/eclipse-jdk-add.jpg]]
 
 在Run Configurations中配置Maven Build配置的JRE项，选择第三个Alternate JRE，然后看看列表中有没有JDK，如果没有点击右边的Installed JRES，出现对话框，
 然后点击Add添加JDK的路径进来，或者点击Search指定一个路径，查找安装的JDK。

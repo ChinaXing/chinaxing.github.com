@@ -10,7 +10,7 @@ change_frequency: monthly
 
 [[http://www.raspberrypi.org/][Raspberry Pi]] 是ARM 处理器搭载Gnu/Debian Linux的单片电脑。它的发行目标是促进青少年学习计算机技术。
  
-[[file:../img/Raspberry-Pi.jpg]]
+[[/img/Raspberry-Pi.jpg]]
 
 Raspberry Pi 有早些发布的256M内存/不带网卡的A版本和迟些时候发布的512M内存/带100M网卡的B版本，多数人应该买B版。
 
@@ -107,7 +107,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
    #+end_src
 3. 使用Fedora 的Remte Desktop 连接Pi，输入Pi的ip地址和用户名pi，连接后如图：
   
-   [[file:../img/Raspberry-Pi-Remote-desktop.png]]
+   [[/img/Raspberry-Pi-Remote-desktop.png]]
 
 ** 配置Pi连接Internet
 使用一根网线连接Pi和电脑实现了Pi和电脑的互联，Pi却无法连接internet，访问google，baidu等网站，需要作一些配置。
@@ -122,7 +122,8 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 2. 在Fedora上面添加iptables，实现SNAT:
    #+begin_src sh :eval no
-       sudo iptables -t nat -A POSTROUTING -j SNAT --to-source 192.168.1.100 --random
+       sudo iptables -t nat -A POSTROUTING -j SNAT \
+               --to-source 192.168.1.100 --random
    #+end_src
 
    *--random* 选项让内核帮我们选源端口\\
@@ -140,7 +141,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 4. 完成设置后，整个网络数据流如下:\\
    Pi ==> internet
-   #+BEGIN_SRC ditaa :file ../img/raspberry-pi--pi2internet.png :cmdline -r :eval no-export
+   #+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/raspberry-pi--pi2internet.png :cmdline -r :eval no-export
              +----------------+   +-------------------------+    
 	     |Pi(192.169.33.3)|-->|Fedora-eth0(192.168.33.2)|---+
 	     +----------------+   +-------------------------+   |
@@ -152,10 +153,10 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
    #+END_SRC
 
    #+RESULTS:
-   [[file:../img/raspberry-pi--pi2internet.png]]
+   [[file:/img/raspberry-pi--pi2internet.png]]
 
    Ineternet ==> Pi
-   #+BEGIN_SRC ditaa :file ../img/raspberry-pi--internet2pi.png :cmdline -r :eval no-export
+   #+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/raspberry-pi--internet2pi.png :cmdline -r :eval no-export
    +-------------------------------+   +------------+   +--------------------------------------+
    |Internet(dest-ip:192.168.1.100)|-->|Fedora-wlan0|-->|iptables-prerouting(DNAT:192.168.33.3)|
    +-------------------------------+   +------------+   +--------------------------------------+
@@ -167,7 +168,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
    #+END_SRC
 
    #+RESULTS:
-   [[file:../img/raspberry-pi--internet2pi.png]]
+   [[file:/img/raspberry-pi--internet2pi.png]]
 
 ** 使用iphone连接Pi
 使用iphone连接Pi，需要安装远程桌面客户端在iphone上。
@@ -179,7 +180,8 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 #+END_EXAMPLE
 通过在Fedora上面配置如下iptables完成转发功能：
 #+begin_src sh
-    sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 3389 -j DNAT --to-destination 192.168.33.3 
+    sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp \
+           --dport 3389 -j DNAT --to-destination 192.168.33.3 
 #+end_src
 
 *wlan0* 是电脑的无线网卡，连接到局域网的无线路由器上网 \\
@@ -188,7 +190,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 
 配置完成后就可以使用iphone连接到Pi:
 
-[[file:../img/Raspberry-Pi-iphone-remote-desktop.jpg]]
+[[/img/Raspberry-Pi-iphone-remote-desktop.jpg]]
 
 
 Have Fun :)

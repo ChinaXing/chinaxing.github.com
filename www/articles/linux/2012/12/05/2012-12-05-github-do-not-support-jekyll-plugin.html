@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li class="active"><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -82,7 +82,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh">git checkout dev      
+<pre class="example">git checkout dev      
 </pre>
 
 </li>
@@ -90,7 +90,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh">jekyll --server --auto       
+<pre class="example">jekyll --server --auto       
 </pre>
 
 </li>
@@ -101,7 +101,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 </p>
 
 
-<pre class="src src-sh">git commit -am <span style="color: #ffff00;">'---&#28155;&#21152;&#25991;&#31456;---'</span>      
+<pre class="example">git commit -am '---添加文章---'      
 </pre>
 
 </li>
@@ -109,8 +109,8 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="src src-sh"><span style="color: #ffffff; font-weight: bold;">commitID</span>=$(<span style="color: #ffaa00;">echo</span> <span style="color: #ffff00;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
-git update-ref refs/heads/master $<span style="color: #ffffff; font-weight: bold;">commitID</span>
+<pre class="example">commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)
+git update-ref refs/heads/master $commitID
 git checkout master
 git push -f origin master
 </pre>

@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li class="active"><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -64,23 +64,23 @@
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">Global logging configuration</span>
-log4j.rootLogger=<span class="caps">ERROR</span>, stdout
+<pre class="example"># Global logging configuration
+log4j.rootLogger=ERROR, stdout
 
 log4j.logger.com.ibatis=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows <span class="caps">SQL</span> of prepared statements</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.Connection=<span class="caps">DEBUG</span></span>
+# shows SQL of prepared statements
+#log4j.logger.java.sql.Connection=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows parameters inserted into prepared statements</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.PreparedStatement=<span class="caps">DEBUG</span></span>
+# shows parameters inserted into prepared statements
+#log4j.logger.java.sql.PreparedStatement=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">shows query results</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.ResultSet=<span class="caps">DEBUG</span></span>
+# shows query results
+#log4j.logger.java.sql.ResultSet=DEBUG
 
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">log4j.logger.java.sql.Statement=<span class="caps">DEBUG</span></span>
+#log4j.logger.java.sql.Statement=DEBUG
 
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">Console output</span>
+# Console output
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender
 log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
 log4j.appender.stdout.layout.ConversionPattern=%5p [%t] - %m%n

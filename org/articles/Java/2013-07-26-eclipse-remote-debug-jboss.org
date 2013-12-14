@@ -21,7 +21,7 @@ tag: java,web,jboss,eclipse
    给Jvm添加这些选项后,启动jboss, 此时,jboss开始监听8787端口的远程调试请求,然后会进入调试模式.
 ** Eclipse 配置
    Eclipse 的Debug选项下,点击Debug configuration, 新建调试配置:\\
-   [[file:../img/eclipse-setup-remote-debug.png]]
+   [[/img/eclipse-setup-remote-debug.png]]
    
    建立好配置后,就可以通过进行此配置的Debug,来启动远程调试, 此时, eclipse会链接远程的Jboss服务器的远程调试端口,进行协商,进入远程调试模式.
 

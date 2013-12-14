@@ -16,14 +16,14 @@ tag: spring,aop,di,ioc,web
 ** web开发
 *** web服务模型
     Web服务模型概括为client/server模型，在server端，又可以有如下的模型：
-    #+BEGIN_SRC ditaa :file ../img/web-server-model.png :cmdline -r :eval no-export
+    #+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/web-server-model.png :cmdline -r :eval no-export
       +---------+     +----------------+     +----------------+     +---------------------+
       | reqeust | --> | request parse  | --> | business logic | --> | database / external |
       +---------+     +----------------+     +----------------+     +---------------------+
     #+END_SRC
 
     #+RESULTS:
-    [[file:../img/web-server-model.png]]
+    [[file:/img/web-server-model.png]]
 
     - request：一个http/https协议的请求
     - 请求分析处理：\\
@@ -43,7 +43,7 @@ tag: spring,aop,di,ioc,web
     - Controller：代指对请求处理和生成响应（数据）的过程，包括请求的解析，获取和计算数据，生成响应数据。
 
     在MVC的模型下，一个请求的处理过程如下：
-    #+BEGIN_SRC ditaa :file ../img/web-mvc-model.png :cmdline -r :eval no-export
+    #+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/web-mvc-model.png :cmdline -r :eval no-export
                                              +-----------+       +----------------+
                                           -->|   model   |  ---> | business logic |
                                          |   +-----------+       |  cRED          |
@@ -56,7 +56,7 @@ tag: spring,aop,di,ioc,web
     #+END_SRC
 
     #+RESULTS:
-    [[file:../img/web-mvc-model.png]]
+    [[file:/img/web-mvc-model.png]]
     
     - 请求被controller接到
     - controller解析请求的含义
@@ -90,10 +90,10 @@ tag: spring,aop,di,ioc,web
     spring 可打包为一个jar包，也可以使用其各个子包的形式。
 *** 结构
     spring的结构如下：\\
-    [[file:../img/spring_framework.gif]]
+    [[/img/spring_framework.gif]]
 *** spring mvc
     spring mvc是对mvc模型的实现其一次请求处理过程如下：\\
-    [[file:../img/spring-mvc-recquest-flow.jpg]]
+    [[/img/spring-mvc-recquest-flow.jpg]]
 ** DI -- 依赖注入
    依赖注入是一种解耦方法，spring中的依赖注入通过定义XML方式来完成，大体思想是通过在XML中定义类之间的关系（如类A中有一个类B的属性），从而将这种具体的依赖关系剥离在代码外面。\\
    然后在加载类的时候根据XML中的定义，将被依赖类注入到依赖者当中。

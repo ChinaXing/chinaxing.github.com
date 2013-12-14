@@ -14,7 +14,7 @@ change_frequency: monthly
 PSGI 是受WSGI(python)、Rack(ruby)、JSGI(javascript)启发而开发，然而可以说是几乎完全一样，只是语言领域是Perl（这一点可以通过各个协议的细节对比发现）
 
 PSGI和CGI、FastCGI类似，他们定义的是 *Web服务器* 与 *web应用程序/web框架* 间的协定：
-#+BEGIN_SRC ditaa :file ../img/pgsi-instructure.png :cmdline -r :eval no-export
+#+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/pgsi-instructure.png :cmdline -r :eval no-export
   +--------------+     +------------+     +----------------------+
   | cBLU         |     |   cBLU     |     |  cBLU                |
   |   WebServer  | --> |   PSGI     | --> |  WebApp/WebFramework |
@@ -25,7 +25,7 @@ PSGI和CGI、FastCGI类似，他们定义的是 *Web服务器* 与 *web应用程
 #+END_SRC
 
 #+RESULTS:
-[[file:../img/pgsi-instructure.png]]
+[[file:/img/pgsi-instructure.png]]
 
 
 那么有什么好处呢？
@@ -126,7 +126,7 @@ PSGI和CGI、FastCGI类似，他们定义的是 *Web服务器* 与 *web应用程
     };
     #+END_SRC
     中间件可以作用于request chain也可以作用于response chain，也可以都作用于两者:
-    #+BEGIN_SRC ditaa :file ../img/PSGI-middleware.png :cmdline -r :eval no-export
+    #+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/PSGI-middleware.png :cmdline -r :eval no-export
     +-------------+     +--------------+     +--------------+        +--------------+
     |             | --> |              | --> |              | ...--> |              |
     | PSGI server |     | Middleware A |     | Middleware B |        | PSGI app cBLU|
@@ -135,7 +135,7 @@ PSGI和CGI、FastCGI类似，他们定义的是 *Web服务器* 与 *web应用程
     #+END_SRC
 
     #+RESULTS:
-    [[file:../img/PSGI-middleware.png]]
+    [[file:/img/PSGI-middleware.png]]
 
 ** PSGI资料
    - PSGI作者YAPC上的Plack介绍

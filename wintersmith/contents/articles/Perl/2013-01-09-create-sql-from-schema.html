@@ -29,10 +29,10 @@ change_frequency: monthly
 
 
 
-<pre class="src src-sh">dbicadmin --schema=PeSystem::Schema <span style="color: #ffff00;">\</span>
-          --connect=<span style="color: #ffff00;">'["db:Pg:dbname=pesystem","dbuser","dbpassword"]'</span> <span style="color: #ffff00;">\</span>
-          --op=create <span style="color: #ffff00;">\</span>
-          --sql-type=PostgreSQL <span style="color: #ffff00;">\</span>
+<pre class="example">dbicadmin --schema=PeSystem::Schema \
+          --connect='["db:Pg:dbname=pesystem","dbuser","dbpassword"]' \
+          --op=create \
+          --sql-type=PostgreSQL \
           --sql-dir=./sql/
 </pre>
 

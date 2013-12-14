@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -72,10 +72,10 @@
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">on Linux</span>
+<pre class="example"># on Linux
 cpanm Term::ReadLine::Gnu
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">on other platform</span>
-cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#32431;perl&#23454;&#29616;</span>
+# on other platform
+cpanm Term::ReadLine::Perl # 纯perl实现
 </pre>
 
 </div>
@@ -90,7 +90,7 @@ cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="c
 </p>
 
 
-<pre class="src src-sh">cpanm PadWalker
+<pre class="example">cpanm PadWalker
 </pre>
 
 </div>
@@ -114,7 +114,7 @@ cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="c
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">re</span> <span style="color: #ffff00;">'debug'</span>;
+<pre class="example">use re 'debug';
 </pre>
 
 <p>
@@ -131,7 +131,7 @@ cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="c
 </p>
 
 
-<pre class="src src-perl">$DB::single = 1;
+<pre class="example">$DB::single = 1;
 </pre>
 
 <p>
@@ -168,7 +168,7 @@ cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="c
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">require</span> <span style="color: #4186be;">Enbugger</span>;
+<pre class="example">require Enbugger;
 </pre>
 
 <p>
@@ -178,9 +178,9 @@ cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="c
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Enbugger</span> <span style="color: #ffff00;">'perl5db'</span>;
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span>
-Enbugger-&gt;load_debugger(<span style="color: #ffff00;">'perl5db'</span>);
+<pre class="example">use Enbugger 'perl5db';
+# or
+Enbugger-&gt;load_debugger('perl5db');
 </pre>
 
 <p>
@@ -190,7 +190,7 @@ Enbugger-&gt;load_debugger(<span style="color: #ffff00;">'perl5db'</span>);
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Enbugger::OnError</span> <span style="color: #66cd00;">qw</span><span style="color: #ffff00;">( __DIE__ <span class="caps">USR1</span>)</span>; <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#22312;__DIE__ &#21644; <span class="caps">USER1</span> &#20449;&#21495;&#21457;&#29983;&#26102;&#36827;&#20837;debug&#27169;&#24335;</span>
+<pre class="example">use Enbugger::OnError qw( __DIE__ USR1); # 在__DIE__ 和 USER1 信号发生时进入debug模式
 </pre>
 
 </li>

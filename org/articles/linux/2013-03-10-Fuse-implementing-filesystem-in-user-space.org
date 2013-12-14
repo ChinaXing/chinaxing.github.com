@@ -19,10 +19,10 @@ Fuse 是指用户空间的文件系统，是文件系统的一种实现方式。
 Fuse开发出来的文件系统， 对用户提供了一个文件系统的视图，可以当作文件系统来使用。对内核提供了VFS接口，内核当做普通文件系统来调度它。
 
 ** Fuse的实现原理
-[[file:../img/FUSE_structure.svg]]
+[[/img/FUSE_structure.svg]]
 
 一次用户使用Fuse类型文件系统的过程如下：
-#+BEGIN_SRC ditaa :file ../img/fuse-internal.png :cmdline -r :eval no-export
+#+BEGIN_SRC ditaa :file ~/ChinaXing.org/org/img/fuse-internal.png :cmdline -r :eval no-export
   + ---+     +-------------------+     +----------+     +------------------+     +---------+
   | App| --> |filesystem sys_call| --> |Kernel VFS| --> |Fuse Kernel module| --> |/dev/fuse| 
   +----+     +-------------------+     +----------+     +------------------+     +---------+
@@ -34,7 +34,7 @@ Fuse开发出来的文件系统， 对用户提供了一个文件系统的视图
 #+END_SRC
 
 #+RESULTS:
-[[file:../img/fuse-internal.png]]
+[[file:/img/fuse-internal.png]]
 
 
 - 内核FUSE模块与用户空间文件系统实现程序之间的通信使用FUSE自己的协议。而通信通过/dev/fuse这个设备来进行。

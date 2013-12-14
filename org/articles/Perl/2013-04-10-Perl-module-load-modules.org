@@ -11,7 +11,7 @@ change_frequency: monthly
 *** 模块分类
 加载模块，CPAN上有许多模块可以完成。下面是这些模块的对比，以及各种情况下的推荐模块。
 
-[[file:../img/perl-loading-module-map.png]]
+[[/img/perl-loading-module-map.png]]
 
 *** 模块推荐
 Given the range of features described, there's obviously not one size to fit all, so here are some thoughts on what to use where and when:
