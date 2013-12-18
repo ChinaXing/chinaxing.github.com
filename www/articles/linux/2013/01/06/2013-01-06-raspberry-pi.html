@@ -16,9 +16,9 @@
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li class="active"><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -112,7 +112,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="example">sudo yum install dhcp
+<pre class="src src-sh">sudo yum install dhcp
 </pre>
 
 <ol>
@@ -120,7 +120,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="example">sudo vim /etc/dhcp/dhcpd.conf
+<pre class="src src-sh">sudo vim /etc/dhcp/dhcpd.conf
 </pre>
 
 <p>
@@ -128,7 +128,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </p>
 
 
-<pre class="example">subnet 192.168.33.0 netmask 255.255.255.0 { 
+<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 { 
     range 192.168.33.2 192.168.33.114; 
     default-lease-time 86400; 
     max-lease-time 259200; 
@@ -144,7 +144,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="example">sudo ifconfig em1 192.168.33.2/24
+<pre class="src src-sh">sudo ifconfig em1 192.168.33.2/24
 </pre>
 
 </li>
@@ -152,7 +152,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="example">sudo dhcpd
+<pre class="src src-sh">sudo dhcpd
 </pre>
 
 </li>
@@ -162,7 +162,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="example">cat /var/lib/dhcpd/dhcpd.lease   
+<pre class="src src-sh">cat /var/lib/dhcpd/dhcpd.lease   
 </pre>
 
 <p>
@@ -172,7 +172,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 
 
 
-<pre class="example">ssh pi@192.168.33.3    
+<pre class="src src-sh">ssh pi@192.168.33.3    
 </pre>
 
 <p>
@@ -214,7 +214,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="example">sudo apt-get install xrdp   
+<pre class="src src-sh">sudo apt-get install xrdp   
 </pre>
 
 
@@ -225,7 +225,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="example">sudo yum install rdesktop   
+<pre class="src src-sh">sudo yum install rdesktop   
 </pre>
 
 </li>
@@ -255,7 +255,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="example">echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+<pre class="src src-sh"><span style="color: #ffaa00;">echo</span> 1 | sudo tee /proc/sys/net/ipv4/ip_forward
 </pre>
 
 
@@ -264,7 +264,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="example">sudo iptables -t nat -A POSTROUTING -j SNAT \
+<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT <span style="color: #ffff00;">\</span>
         --to-source 192.168.1.100 --random
 </pre>
 
@@ -277,7 +277,7 @@ gateway 192.168.33.2
 
 
 
-<pre class="example">ping www.baidu.com   
+<pre class="src src-sh">ping www.baidu.com   
 </pre>
 
 
@@ -286,7 +286,7 @@ gateway 192.168.33.2
 </p>
 
 
-<pre class="example">echo nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
+<pre class="src src-sh"><span style="color: #ffaa00;">echo</span> nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
 </pre>
 
 </li>
@@ -335,8 +335,8 @@ gateway 192.168.33.2
 </p>
 
 
-<pre class="example">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp \
-       --dport 3389 -j DNAT --to-destination 192.168.33.3 
+<pre class="src src-sh">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp <span style="color: #ffff00;">\</span>
+       --dport 3389 -j <span class="caps">DNAT</span> --to-destination 192.168.33.3 
 </pre>
 
 

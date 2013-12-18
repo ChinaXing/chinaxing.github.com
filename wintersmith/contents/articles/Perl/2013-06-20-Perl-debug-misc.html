@@ -46,10 +46,10 @@ change_frequency: monthly
 </p>
 
 
-<pre class="example"># on Linux
+<pre class="src src-sh"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">on Linux</span>
 cpanm Term::ReadLine::Gnu
-# on other platform
-cpanm Term::ReadLine::Perl # 纯perl实现
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">on other platform</span>
+cpanm Term::ReadLine::Perl <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#32431;perl&#23454;&#29616;</span>
 </pre>
 
 </div>
@@ -64,7 +64,7 @@ cpanm Term::ReadLine::Perl # 纯perl实现
 </p>
 
 
-<pre class="example">cpanm PadWalker
+<pre class="src src-sh">cpanm PadWalker
 </pre>
 
 </div>
@@ -88,7 +88,7 @@ cpanm Term::ReadLine::Perl # 纯perl实现
 </p>
 
 
-<pre class="example">use re 'debug';
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">re</span> <span style="color: #ffff00;">'debug'</span>;
 </pre>
 
 <p>
@@ -105,7 +105,7 @@ cpanm Term::ReadLine::Perl # 纯perl实现
 </p>
 
 
-<pre class="example">$DB::single = 1;
+<pre class="src src-perl">$DB::single = 1;
 </pre>
 
 <p>
@@ -144,7 +144,7 @@ cpanm Term::ReadLine::Perl # 纯perl实现
 
 
 
-<pre class="example">require Enbugger;
+<pre class="src src-perl"><span style="color: #00ffff;">require</span> <span style="color: #4186be;">Enbugger</span>;
 </pre>
 
 <p>
@@ -154,9 +154,9 @@ cpanm Term::ReadLine::Perl # 纯perl实现
 
 
 
-<pre class="example">use Enbugger 'perl5db';
-# or
-Enbugger-&gt;load_debugger('perl5db');
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Enbugger</span> <span style="color: #ffff00;">'perl5db'</span>;
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span>
+Enbugger-&gt;load_debugger(<span style="color: #ffff00;">'perl5db'</span>);
 </pre>
 
 <p>
@@ -166,7 +166,7 @@ Enbugger-&gt;load_debugger('perl5db');
 
 
 
-<pre class="example">use Enbugger::OnError qw( __DIE__ USR1); # 在__DIE__ 和 USER1 信号发生时进入debug模式
+<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Enbugger::OnError</span> <span style="color: #66cd00;">qw</span><span style="color: #ffff00;">( __DIE__ USR1)</span>; <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#22312;__DIE__ &#21644; USER1 &#20449;&#21495;&#21457;&#29983;&#26102;&#36827;&#20837;debug&#27169;&#24335;</span>
 </pre>
 
 </li>

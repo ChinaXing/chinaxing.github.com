@@ -33,7 +33,7 @@ change_frequency: monthly
 
 
 
-<pre class="example">git rev-parse HEAD #查询HEAD对应的commit ID
+<pre class="src src-sh">git rev-parse HEAD <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#35810;HEAD&#23545;&#24212;&#30340;commit ID</span>
 </pre>
 
 
@@ -48,7 +48,7 @@ change_frequency: monthly
 
 
 
-<pre class="example">git reset --soft &lt;COMMIT_ID&gt;
+<pre class="src src-sh">git reset --soft &lt;COMMIT_ID&gt;
 </pre>
 
 <p>
@@ -64,7 +64,7 @@ change_frequency: monthly
 
 
 
-<pre class="example">git reset --hard origin/master
+<pre class="src src-sh">git reset --hard origin/master
 </pre>
 
 </div>
@@ -78,7 +78,7 @@ change_frequency: monthly
 
 
 
-<pre class="example">git tag -d &lt;TAG_A&gt;
+<pre class="src src-sh">git tag -d &lt;TAG_A&gt;
 git push origin :refs/tags/&lt;TAG_A&gt;
 </pre>
 
@@ -95,7 +95,7 @@ git push origin :refs/tags/&lt;TAG_A&gt;
 
 
 
-<pre class="example">git tag &lt;TAG_A&gt;
+<pre class="src src-sh">git tag &lt;TAG_A&gt;
 git push --tags
 </pre>
 
@@ -110,7 +110,7 @@ git push --tags
 
 
 
-<pre class="example">git commit --amend
+<pre class="src src-sh">git commit --amend
 </pre>
 
 <p>
@@ -126,7 +126,7 @@ git push --tags
 
 
 
-<pre class="example">git commit --amend --author 'New Author Name &lt;email@address.com&gt;'
+<pre class="src src-sh">git commit --amend --author <span style="color: #ffff00;">'New Author Name <a href="mailto:email%40address.com">&lt;email@address.com&gt;</a>'</span>
 </pre>
 
 </div>
@@ -140,7 +140,7 @@ git push --tags
 
 
 
-<pre class="example">git clean -f
+<pre class="src src-sh">git clean -f
 </pre>
 
 <p>
@@ -156,7 +156,7 @@ git push --tags
 
 
 
-<pre class="example">git push --force origin/master
+<pre class="src src-sh">git push --force origin/master
 </pre>
 
 </div>
@@ -175,7 +175,7 @@ git push --tags
 
 
 
-<pre class="example">git config -l      
+<pre class="src src-sh">git config -l      
 </pre>
 
 </li>
@@ -183,7 +183,7 @@ git push --tags
 
 
 
-<pre class="example">git config --global  color.ui true
+<pre class="src src-sh">git config --global  color.ui true
 </pre>
 
 </li>
@@ -191,7 +191,7 @@ git push --tags
 
 
 
-<pre class="example">git config --global color.diff auto
+<pre class="src src-sh">git config --global color.diff auto
 </pre>
 
 </li>

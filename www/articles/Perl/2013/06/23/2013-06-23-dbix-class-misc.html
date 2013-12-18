@@ -16,9 +16,9 @@
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -211,10 +211,10 @@
 </p>
 
 
-<pre class="example">$schema-&gt;populate( 'CD' =&gt;
-   [ [qw/Artist Title price/],
-     [qw/Sara  'scarborough fair' 25.5/],
-     [qw/Mozart 'Serenade for Strings in G major' 20/]
+<pre class="src src-perl">$schema-&gt;populate( <span style="color: #ffff00;">'<span class="caps">CD</span>'</span> =&gt;
+   [ [<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/Artist Title price/</span>],
+     [<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/Sara  'scarborough fair' 25.5/</span>],
+     [<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/Mozart 'Serenade for Strings in G major' 20/</span>]
    ]);
 </pre>
 
@@ -230,7 +230,7 @@
 </p>
 
 
-<pre class="example">__PACKAGE__-&gt;storage_type('DBIx::Class::Storage::DBI')
+<pre class="src src-perl"><span style="color: #ff7f50;">__PACKAGE__</span>-&gt;storage_type(<span style="color: #ffff00;">'DBIx::Class::Storage::<span class="caps">DBI</span>'</span>)
 </pre>
 
 </div>
@@ -244,9 +244,9 @@
 
 
 
-<pre class="example">__PACKAGE__-&gt;exception_action( sub { ... } );
-# or
-$schema_obj-&gt;exception_action( sub { ... } );
+<pre class="src src-perl"><span style="color: #ff7f50;">__PACKAGE__</span>-&gt;exception_action( <span style="color: #00ffff;">sub</span> { ... } );
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span>
+$schema_obj-&gt;exception_action( <span style="color: #00ffff;">sub</span> { ... } );
 </pre>
 
 <p>
@@ -262,9 +262,9 @@ $schema_obj-&gt;exception_action( sub { ... } );
 
 
 
-<pre class="example">$schema_obj-&gt;stacktrace(1);
-# or
-$ENV{DBIC_TRACE} = 1;
+<pre class="src src-perl">$schema_obj-&gt;stacktrace(1);
+<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span>
+<span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">ENV</span></span>{<span style="color: #ffff00;">DBIC_TRACE</span>} = 1;
 </pre>
 
 </div>
@@ -287,7 +287,7 @@ $ENV{DBIC_TRACE} = 1;
 
 
 
-<pre class="example">$schema_obj-&gt;thaw($obj);
+<pre class="src src-perl">$schema_obj-&gt;thaw($obj);
 $schema_obj-&gt;freeze($obj);
 </pre>
 

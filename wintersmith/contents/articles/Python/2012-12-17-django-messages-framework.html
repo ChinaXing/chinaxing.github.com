@@ -43,10 +43,10 @@ change_frequency: monthly
 
 
 
-<pre class="example">storage = messages.get_messages(request)
-for message in storage:
+<pre class="src src-python"><span style="color: #ffffff; font-weight: bold;">storage</span> = messages.get_messages(request)
+<span style="color: #00ffff;">for</span> message <span style="color: #00ffff;">in</span> storage:
     do_something_with(message)
-storage.used = False # 此处标记消息未被使用，系统便不会回收消息   
+<span style="color: #ffffff; font-weight: bold;">storage.used</span> = <span style="color: #00ff00;">False</span> <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#27492;&#22788;&#26631;&#35760;&#28040;&#24687;&#26410;&#34987;&#20351;&#29992;&#65292;&#31995;&#32479;&#20415;&#19981;&#20250;&#22238;&#25910;&#28040;&#24687;   </span>
 </pre>
 
 </li>

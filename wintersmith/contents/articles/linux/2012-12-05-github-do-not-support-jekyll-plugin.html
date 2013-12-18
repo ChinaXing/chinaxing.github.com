@@ -56,7 +56,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="example">git checkout dev      
+<pre class="src src-sh">git checkout dev      
 </pre>
 
 </li>
@@ -64,7 +64,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="example">jekyll --server --auto       
+<pre class="src src-sh">jekyll --server --auto       
 </pre>
 
 </li>
@@ -75,7 +75,7 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 </p>
 
 
-<pre class="example">git commit -am '---添加文章---'      
+<pre class="src src-sh">git commit -am <span style="color: #ffff00;">'---&#28155;&#21152;&#25991;&#31456;---'</span>      
 </pre>
 
 </li>
@@ -83,8 +83,8 @@ github.com约定如果master分支的根目录下有 <b>.nojekyll</b> 这个文�
 
 
 
-<pre class="example">commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)
-git update-ref refs/heads/master $commitID
+<pre class="src src-sh"><span style="color: #ffffff; font-weight: bold;">commitID</span>=$(<span style="color: #ffaa00;">echo</span> <span style="color: #ffff00;">"--&#28155;&#21152;&#26032;&#25991;&#31456;--"</span> | git commit-tree dev^{tree}:_site)
+git update-ref refs/heads/master $<span style="color: #ffffff; font-weight: bold;">commitID</span>
 git checkout master
 git push -f origin master
 </pre>

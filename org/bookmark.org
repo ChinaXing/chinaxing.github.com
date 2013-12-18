@@ -17,10 +17,13 @@ filename : ":file.html"
     - Major Hayden : http://major.io/
 
 *** Web front end
+    - HTML5 Rocks : [[http://www.html5rocks.com/en/]]
     - BootStrap 主题: [[https://wrapbootstrap.com/][wrapbootstrap]] [[http://bootswatch.com/][bootswatch]] [[http://builtwithbootstrap.com/][builtwithbootstrap]]
     - BootCSS ：[[http://www.bootcss.com/]]
     - Font Awesome - bootstrap 图标和字体 : [[http://www.bootcss.com/p/font-awesome/]]
     - Pure CSS 框架 : [[http://purecss.io/]]
+    - Polymer : [[http://www.polymer-project.org/]]
+    - AngularJS : [[http://angularjs.org/]]
     - 在线编辑器 : [[http://jsfiddle.net/][jsfiddle]]
     - 在线编辑+查看别人优秀作品 : [[http://codepen.io/][CodePen]]
     - HTML,JS,CSS 优秀作品展示 : [[http://thecodeplayer.com/][thecodeplayer]]

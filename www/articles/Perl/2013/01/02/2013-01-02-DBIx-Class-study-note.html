@@ -16,9 +16,9 @@
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -106,7 +106,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="example">my $schema1 = My::Schema-&gt;connect(....)
+<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$schema1</span> = My::Schema-&gt;<span style="color: #ff7f50;">connect</span>(....)
 </pre>
 
 </li>
@@ -114,7 +114,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="example">$schema1-&gt;source('table1')
+<pre class="src src-perl">$schema1-&gt;source(<span style="color: #ffff00;">'table1'</span>)
 </pre>
 
 </li>
@@ -122,7 +122,7 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="example">$schema1-&gt;resultset('table1')
+<pre class="src src-perl">$schema1-&gt;resultset(<span style="color: #ffff00;">'table1'</span>)
 </pre>
 
 </li>
@@ -135,12 +135,12 @@ DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.
 
 
 
-<pre class="example">#MySchema/Result/Table1.pm
-package MySchema::Result::Table1;
-use base qw/DBIx::Class:core/;
+<pre class="src src-perl"><span style="color: #ff0000;">#</span><span style="color: #ff0000;">MySchema/Result/Table1.pm</span>
+<span style="color: #00ffff;">package</span> <span style="color: #4186be;">MySchema::Result::Table1</span>;
+<span style="color: #00ffff;">use</span> <span style="color: #4186be;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/DBIx::Class:core/</span>;
 
-__PACKAGE__-&gt;table('table1');
-__PACKAGE__-&gt;add_columns(qw/col1 col2/);
+<span style="color: #ff7f50;">__PACKAGE__</span>-&gt;table(<span style="color: #ffff00;">'table1'</span>);
+<span style="color: #ff7f50;">__PACKAGE__</span>-&gt;add_columns(<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/col1 col2/</span>);
 ...
 </pre>
 
@@ -158,7 +158,7 @@ __PACKAGE__-&gt;add_columns(qw/col1 col2/);
 
 
 
-<pre class="example">$schema1-&gt;resultset('table1')
+<pre class="src src-perl">$schema1-&gt;resultset(<span style="color: #ffff00;">'table1'</span>)
 </pre>
 
 <p>
@@ -168,7 +168,7 @@ __PACKAGE__-&gt;add_columns(qw/col1 col2/);
 
 
 
-<pre class="example">@rows=$resultset-&gt;all();
+<pre class="src src-perl"><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@rows</span>=$resultset-&gt;all();
 $row=$resultset-&gt;find(1);
 </pre>
 
@@ -182,8 +182,8 @@ $row=$resultset-&gt;find(1);
 
 
 
-<pre class="example">$row-&gt;get_columns;
-$row-&gt;get_column('col1');
+<pre class="src src-perl">$row-&gt;get_columns;
+$row-&gt;get_column(<span style="color: #ffff00;">'col1'</span>);
 $row-&gt;col1;
 </pre>
 
@@ -198,7 +198,7 @@ $row-&gt;col1;
 
 
 
-<pre class="example">$storage = $schema-&gt;storage;
+<pre class="src src-perl">$storage = $schema-&gt;storage;
 </pre>
 
 </li>
@@ -220,7 +220,7 @@ $row-&gt;col1;
 
 
 
-<pre class="example">$schema-&gt;storge-&gt;debug(1);
+<pre class="src src-perl">$schema-&gt;storge-&gt;debug(1);
 </pre>
 
 <p>

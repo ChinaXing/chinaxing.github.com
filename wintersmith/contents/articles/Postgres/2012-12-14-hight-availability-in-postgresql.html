@@ -88,7 +88,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">select pg_start_backup('备份标签')   
+<pre class="src src-sql">select pg_start_backup(<span style="color: #ffff00;">'&#22791;&#20221;&#26631;&#31614;'</span>)   
 </pre>
 
 <p>
@@ -98,7 +98,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">tar czf pgsql_DB.tar pgsql_DB     
+<pre class="src src-sh">tar czf pgsql_DB.tar pgsql_DB     
 </pre>
 
 <p>
@@ -108,7 +108,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">select pg_stop_backup()   
+<pre class="src src-sql">select pg_stop_backup()   
 </pre>
 
 <p>
@@ -172,7 +172,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">pg_ctl init -D pgsql_DB   
+<pre class="src src-sh">pg_ctl init -D pgsql_DB   
 </pre>
 
 </li>
@@ -180,7 +180,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">psql pgdql.backup.sql   
+<pre class="src src-sh">psql pgdql.backup.sql   
 </pre>
 
 </li>
@@ -199,7 +199,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">tar xzf pgbackup.tar
+<pre class="src src-sh">tar xzf pgbackup.tar
 </pre>
 
 </li>
@@ -207,7 +207,7 @@ pg_dumpall是对整个数据库进行备份。
 
 
 
-<pre class="example">cp /usr/local/pgsql/share/recovery.conf.sample pgsql_DB/recovery.conf   
+<pre class="src src-sh">cp /usr/local/pgsql/share/recovery.conf.sample pgsql_DB/recovery.conf   
 </pre>
 
 </li>
@@ -306,7 +306,7 @@ posgres的热备有2中方式:
 </p>
 
 
-<pre class="example">pg_basebackup -D pgsql_DB -f t -x -z -l "my backup for slave" -U repl    
+<pre class="src src-sh">pg_basebackup -D pgsql_DB -f t -x -z -l <span style="color: #ffff00;">"my backup for slave"</span> -U repl    
 </pre>
 
 
@@ -481,7 +481,7 @@ posgresql在启动的时候，如果配置了 <b>restore<sub>command</sub></b>, 
 
 
 
-<pre class="example">select pg_xlogfile_location('0/28D09608');   
+<pre class="src src-sql">select pg_xlogfile_location(<span style="color: #ffff00;">'0/28D09608'</span>);   
 </pre>
 
 </li>

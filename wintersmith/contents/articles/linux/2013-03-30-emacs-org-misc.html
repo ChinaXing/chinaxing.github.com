@@ -41,36 +41,36 @@ Emacs org-mode 用来写blog,然后export 出HTML,最后再使用jekyll生成静
 
 
 
-<pre class="example">;; load org
-(require 'org)
-;; load htmlize.el , which org-babel export syntax highlight source code need it
-(require 'htmlize)
-;; org-mode project define
+<pre class="src src-emacs-lisp"><span style="color: #ff0000;">;; </span><span style="color: #ff0000;">load org</span>
+(<span style="color: #00ffff;">require</span> '<span style="color: #00ff00;">org</span>)
+<span style="color: #ff0000;">;; </span><span style="color: #ff0000;">load htmlize.el , which org-babel export syntax highlight source code need it</span>
+(<span style="color: #00ffff;">require</span> '<span style="color: #00ff00;">htmlize</span>)
+<span style="color: #ff0000;">;; </span><span style="color: #ff0000;">org-mode project define</span>
 (setq org-publish-project-alist
       '(
-        ("org-blog-content" ;; 博客内容
-         ;; Path to your org files.
-         :base-directory "~/ChinaXing.org/org/"
-         :base-extension "org"
-         ;; Path to your jekyll project.
-         :publishing-directory "~/ChinaXing.org/jekyll/"
-         :recursive t
-         :publishing-function org-publish-org-to-html
-         :headline-levels 4
-         :html-extension "html"
-         :table-of-contents t ;; 导出目录
-         :body-only t ;; Only export section between &lt;body&gt;&lt;/body&gt;
+        (<span style="color: #ffff00;">"org-blog-content"</span> <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">&#21338;&#23458;&#20869;&#23481;</span>
+         <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">Path to your org files.</span>
+         <span style="color: #ffaa00;">:base-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/org/"</span>
+         <span style="color: #ffaa00;">:base-extension</span> <span style="color: #ffff00;">"org"</span>
+         <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">Path to your jekyll project.</span>
+         <span style="color: #ffaa00;">:publishing-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/jekyll/"</span>
+         <span style="color: #ffaa00;">:recursive</span> t
+         <span style="color: #ffaa00;">:publishing-function</span> org-publish-org-to-html
+         <span style="color: #ffaa00;">:headline-levels</span> 4
+         <span style="color: #ffaa00;">:html-extension</span> <span style="color: #ffff00;">"html"</span>
+         <span style="color: #ffaa00;">:table-of-contents</span> t <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">&#23548;&#20986;&#30446;&#24405;</span>
+         <span style="color: #ffaa00;">:body-only</span> t <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">Only export section between &lt;body&gt;&lt;/body&gt;</span>
          )
-        ("org-blog-static" ;; 静态文件
-         :base-directory "~/ChinaXing.org/org/"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php\\|svg"
-         :publishing-directory "~/ChinaXing.org/jekyll/"
-         :recursive t
-         :publishing-function org-publish-attachment)
-        ("blog" :components ("org-blog-content" "org-blog-static"))
+        (<span style="color: #ffff00;">"org-blog-static"</span> <span style="color: #ff0000;">;; </span><span style="color: #ff0000;">&#38745;&#24577;&#25991;&#20214;</span>
+         <span style="color: #ffaa00;">:base-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/org/"</span>
+         <span style="color: #ffaa00;">:base-extension</span> <span style="color: #ffff00;">"css</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">js</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">png</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">jpg</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">gif</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">pdf</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">mp3</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">ogg</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">swf</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">php</span><span style="color: #ffff00; font-weight: bold;">\\</span><span style="color: #ffff00; font-weight: bold;">|</span><span style="color: #ffff00;">svg"</span>
+         <span style="color: #ffaa00;">:publishing-directory</span> <span style="color: #ffff00;">"~/ChinaXing.org/jekyll/"</span>
+         <span style="color: #ffaa00;">:recursive</span> t
+         <span style="color: #ffaa00;">:publishing-function</span> org-publish-attachment)
+        (<span style="color: #ffff00;">"blog"</span> <span style="color: #ffaa00;">:components</span> (<span style="color: #ffff00;">"org-blog-content"</span> <span style="color: #ffff00;">"org-blog-static"</span>))
         ))
 (setq org-src-fontify-natively t)
-;; active Babel languages
+<span style="color: #ff0000;">;; </span><span style="color: #ff0000;">active Babel languages</span>
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((C . t)
@@ -136,7 +136,7 @@ org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的
 
 
 
-<pre class="example">(setq org-src-fontify-natively t)   
+<pre class="src src-emacs-lisp">(setq org-src-fontify-natively t)   
 </pre>
 
 </li>

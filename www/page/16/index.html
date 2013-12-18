@@ -16,9 +16,9 @@
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -60,7 +60,7 @@
         </header>
         <section class="content">
 
-<pre class="example">create table table2 ( 
+<pre class="src src-sql">create table table2 ( 
        like table1 
         INCLUDING DEFAULTS 
         INCLUDING CONSTRAINTS 
@@ -75,7 +75,7 @@ this will create table2 which is clone of&nbsp;table1.
 
 
 
-<pre class="example">select * into table2 from table1 where 1=2;
+<pre class="src src-sql">select * into table2 from table1 where 1=2;
 create table table2 as select * from table1 where 1=2;
 </pre>
 
