@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li class="active"><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -102,9 +102,9 @@ Linux 下 <b>Gnu/gettext</b>&nbsp;工具套件可以完成语言(message)的本�
 
 
 
-<pre class="src src-C">setlocale(lc_ALL,<span style="color: #ffff00;">""</span>); <span style="color: #ff0000;">/* </span><span style="color: #ff0000;">"" &#31354;&#20018;&#65292;&#21017;&#20250;&#26681;&#25454;&#36816;&#34892;&#26102;&#29615;&#22659;&#21464;&#37327;&#30340;&#24773;&#20917;&#20915;&#23450; </span><span style="color: #ff0000;">*/</span>
-bindtextdomain(<span style="color: #ffff00;">'myapp'</span>,<span style="color: #ffff00;">'/usr/local/share/locale'</span>)
-textdomain(<span style="color: #ffff00;">'myapp'</span>);     
+<pre class="example">setlocale(lc_ALL,""); /* "" 空串，则会根据运行时环境变量的情况决定 */
+bindtextdomain('myapp','/usr/local/share/locale')
+textdomain('myapp');     
 </pre>
 
 
@@ -114,7 +114,7 @@ textdomain(<span style="color: #ffff00;">'myapp'</span>);
 
 
 
-<pre class="src src-C">printf (gettext(<span style="color: #ffff00;">"hello,world"</span>)); 
+<pre class="example">printf (gettext("hello,world")); 
 </pre>
 
 <p>
@@ -122,7 +122,7 @@ textdomain(<span style="color: #ffff00;">'myapp'</span>);
 </p>
 
 
-<pre class="src src-C">printf (<span style="color: #ffff00;">"hello,world"</span>);     
+<pre class="example">printf ("hello,world");     
 </pre>
 
 <p>
@@ -130,7 +130,7 @@ textdomain(<span style="color: #ffff00;">'myapp'</span>);
 </p>
 
 
-<pre class="src src-C">printf (_(<span style="color: #ffff00;">"hello,world"</span>));     
+<pre class="example">printf (_("hello,world"));     
 </pre>
 
 </li>
@@ -141,7 +141,7 @@ textdomain(<span style="color: #ffff00;">'myapp'</span>);
 
 
 
-<pre class="src src-C">xgettext -L c -o zh_CN.po myprogram.c   
+<pre class="example">xgettext -L c -o zh_CN.po myprogram.c   
 </pre>
 
 <p>
@@ -151,27 +151,27 @@ textdomain(<span style="color: #ffff00;">'myapp'</span>);
 
 
 
-<pre class="src src-perl"><span style="color: #ff0000;"># </span><span style="color: #ff0000;"><span class="caps">SOME</span> DESCRIPTIVE TITLE.</span>
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">Copyright (C) <span class="caps">YEAR</span> THE PACKAGE'S COPYRIGHT HOLDER</span>
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">This file is distributed under the same license as the <span class="caps">PACKAGE</span> package.</span>
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;"><span class="caps">FIRST</span> AUTHOR <a href="mailto:EMAIL%40ADDRESS">&lt;<span class="caps">EMAIL</span></a></span><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@<span class="caps">ADDRESS</span></a></span><span style="color: #ff0000;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>, <span class="caps">YEAR</span>.</span>
-<span style="color: #ff0000;">#</span>
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">, fuzzy</span>
-msgid <span style="color: #ffff00;">""</span>
-msgstr <span style="color: #ffff00;">""</span>
-<span style="color: #ffff00;">"Project-Id-Version: <span class="caps">PACKAGE</span> VERSION\n"</span>
-<span style="color: #ffff00;">"Report-Msgid-Bugs-To: \n"</span>
-<span style="color: #ffff00;">"<span class="caps">POT</span>-Creation-Date: 2013-01-04 17:11+0800\n"</span>
-<span style="color: #ffff00;">"<span class="caps">PO</span>-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"</span>
-<span style="color: #ffff00;">"Last-Translator: <span class="caps">FULL</span> NAME <a href="mailto:EMAIL%40ADDRESS">&lt;<span class="caps">EMAIL</span></a></span><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;"><a href="mailto:EMAIL%40ADDRESS">@<span class="caps">ADDRESS</span></a></span><span style="color: #ffff00;"><a href="mailto:EMAIL%40ADDRESS">&gt;</a>\n"</span>
-<span style="color: #ffff00;">"Language-Team: <span class="caps">LANGUAGE</span> <a href="mailto:LL%40li.org">&lt;<span class="caps">LL</span></a></span><span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;"><a href="mailto:LL%40li.org">@li</a></span><span style="color: #ffff00;"><a href="mailto:LL%40li.org">.org&gt;</a>\n"</span>
-<span style="color: #ffff00;">"<span class="caps">MIME</span>-Version: 1.0\n"</span>
-<span style="color: #ffff00;">"Content-Type: text/plain; charset=utf-8\n"</span>
-<span style="color: #ffff00;">"Content-Transfer-Encoding: 8bit\n"</span>
+<pre class="example"># SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR &lt;EMAIL@ADDRESS&gt;, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-01-04 17:11+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;\n"
+"Language-Team: LANGUAGE &lt;LL@li.org&gt;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-<span style="color: #ff0000;">#</span><span style="color: #ff0000;">: t.sh:6</span>
-msgid <span style="color: #ffff00;">"hello,world"</span>
-msgstr <span style="color: #ffff00;">"&#20320;&#22909;&#65292;&#19990;&#30028;"</span><span style="text-decoration: underline;">   </span>
+#: t.sh:6
+msgid "hello,world"
+msgstr "你好，世界"   
 </pre>
 
 
@@ -180,7 +180,7 @@ msgstr <span style="color: #ffff00;">"&#20320;&#22909;&#65292;&#19990;&#30028;"<
 </p>
 
 
-<pre class="src src-sh">msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po   
+<pre class="example">msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po   
 </pre>
 
 </li>
@@ -201,11 +201,11 @@ msgstr <span style="color: #ffff00;">"&#20320;&#22909;&#65292;&#19990;&#30028;"<
 </p>
 
 
-<pre class="src src-sh"><span style="color: #ffffff; font-weight: bold;"><span class="caps">TEXTDOMAINDIR</span></span>=/usr/local/share/locale/ <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#20026;gettext&#26597;&#25214;&#36335;&#24452;</span>
-<span style="color: #ffffff; font-weight: bold;"><span class="caps">TEXTDOMAIN</span></span>=myapp.mo <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#20026;gettext&#26597;&#25214;&#25991;&#20214;&#21517;&#31216;</span>
-<span style="color: #ffffff; font-weight: bold;">LC_MESSAGES</span>=zh_CN <span style="color: #ff0000;">#</span><span style="color: #ff0000;">gettext&#26597;&#25214;&#36335;&#24452;&#30340;&#26412;&#22320;&#21270;&#37096;&#20998;</span>
+<pre class="example">TEXTDOMAINDIR=/usr/local/share/locale/ # 为gettext查找路径
+TEXTDOMAIN=myapp.mo #为gettext查找文件名称
+LC_MESSAGES=zh_CN #gettext查找路径的本地化部分
 
-<span style="color: #ffaa00;">echo</span> <span style="color: #ff00ff;">`gettext "hello,world"`</span>
+echo `gettext "hello,world"`
 </pre>
 
 

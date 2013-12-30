@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -55,7 +55,7 @@
 
 
 
-<pre class="src src-sh">perldoc perllocal
+<pre class="example">perldoc perllocal
 </pre>
 
 
@@ -68,7 +68,7 @@
 
 
 
-<pre class="src src-sh">perldoc -t perllocal | grep <span style="color: #ffff00;">"Module"</span> | head -10
+<pre class="example">perldoc -t perllocal | grep "Module" | head -10
 </pre>
 
 
@@ -103,7 +103,7 @@ Sun Mar 31 15:08:47 2013: "Module" Sub::Name
 
 
 
-<pre class="src src-sh">(<span style="color: #ffaa00;">echo</span> l ; <span style="color: #ffaa00;">echo</span> q ) | instmodsh | sed -e <span style="color: #ffff00;">'1,/:/d'</span> -e <span style="color: #ffff00;">'/cmd?/d'</span> | head -10
+<pre class="example">(echo l ; echo q ) | instmodsh | sed -e '1,/:/d' -e '/cmd?/d' | head -10
 </pre>
 
 

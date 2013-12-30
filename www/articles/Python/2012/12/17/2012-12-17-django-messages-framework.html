@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li class="active"><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -70,10 +70,10 @@
 
 
 
-<pre class="src src-python"><span style="color: #ffffff; font-weight: bold;">storage</span> = messages.get_messages(request)
-<span style="color: #00ffff;">for</span> message <span style="color: #00ffff;">in</span> storage:
+<pre class="example">storage = messages.get_messages(request)
+for message in storage:
     do_something_with(message)
-<span style="color: #ffffff; font-weight: bold;">storage.used</span> = <span style="color: #00ff00;">False</span> <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#27492;&#22788;&#26631;&#35760;&#28040;&#24687;&#26410;&#34987;&#20351;&#29992;&#65292;&#31995;&#32479;&#20415;&#19981;&#20250;&#22238;&#25910;&#28040;&#24687;   </span>
+storage.used = False # 此处标记消息未被使用，系统便不会回收消息   
 </pre>
 
 </li>

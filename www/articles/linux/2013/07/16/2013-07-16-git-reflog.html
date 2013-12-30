@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li class="active"><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -72,10 +72,10 @@ git reflog&nbsp;命令用来列出reflog，reflog记录了每次当前commit的�
 </p>
 
 
-<pre class="src src-sh">git reflog show <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#30475;<span class="caps">HEAD</span>&#30340;reflog</span>
-git reflog show master <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#30475;master&#20998;&#25903;&#30340;</span>
-git reflog show stash <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#30475;stash&#30340;&#65292;&#21487;&#33021;&#27809;&#26377;stash log,&#22914;&#26524;&#27809;&#26377;&#25191;&#34892;&#36807;git stash&#25805;&#20316;</span>
-git reflog <span class="caps">HEAD</span>@{now} show -10 <span style="color: #ff0000;">#</span><span style="color: #ff0000;">&#26597;&#30475;head&#30340;&#26368;&#36817;10&#26465;reflog&#26085;&#24535;</span>
+<pre class="example">git reflog show #查看HEAD的reflog
+git reflog show master #查看master分支的
+git reflog show stash #查看stash的，可能没有stash log,如果没有执行过git stash操作
+git reflog HEAD@{now} show -10 #查看head的最近10条reflog日志
 </pre>
 
 </div>
@@ -112,10 +112,10 @@ ed3da99 HEAD@{Tue Jul 16 17:06:33 2013 +0800}: pull: Fast-forward
 </p>
 
 
-<pre class="src src-sh">git reset --hard ed3da99
+<pre class="example">git reset --hard ed3da99
 git reset --hard HEAD^
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#21487;&#20197;&#29992;&#22914;&#19979;&#20195;&#26367;</span>
-git reset --hard <span class="caps">HEAD</span>@{2}
+# 可以用如下代替
+git reset --hard HEAD@{2}
 git reset --hard HEAD@{1}
 </pre>
 

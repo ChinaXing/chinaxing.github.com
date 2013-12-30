@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -130,12 +130,12 @@ Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安�
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">eval</span> { <span style="color: #00ffff;">require</span> <span style="color: #4186be;">Alien::Tidyp</span>; };
+<pre class="example">eval { require Alien::Tidyp; };
 
-<span style="color: #00ffff;">if</span> ( !$@ ) {
-    <span style="color: #66cd00;">print</span> <span style="color: #ffff00;">"Using tidyp via Alien::Tidyp\n"</span>;
-    $libs = Alien::Tidyp-&gt;config(<span style="color: #ffff00;">'<span class="caps">LIBS</span>'</span>);
-    $inc = Alien::Tidyp-&gt;config(<span style="color: #ffff00;">'<span class="caps">INC</span>'</span>);
+if ( !$@ ) {
+    print "Using tidyp via Alien::Tidyp\n";
+    $libs = Alien::Tidyp-&gt;config('LIBS');
+    $inc = Alien::Tidyp-&gt;config('INC');
 }
 </pre>
 
@@ -146,14 +146,14 @@ Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安�
 
 
 
-<pre class="src src-perl"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">set what tidyp tarball we are gonna use</span>
-$builder-&gt;notes(<span style="color: #ffff00;">'tidyp_url'</span>, [<span style="text-decoration: underline;"> </span>
-    <span style="color: #ffff00;">'http://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'</span>,
-    <span style="color: #ffff00;">'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'</span>,
-    <span style="color: #ffff00;">'http://strawberryperl.com/package/kmx/testing/tidyp-1.04.tar.gz'</span>,
-  ]); <span style="color: #ff0000;"># </span><span style="color: #ff0000;">has to be an array</span>
-$builder-&gt;notes(<span style="color: #ffff00;">'tidyp_dir'</span>, <span style="color: #ffff00;">'tidyp-1.04'</span>); <span style="color: #ff0000;"># </span><span style="color: #ff0000;">dirname inside the tarball</span>
-$builder-&gt;notes(<span style="color: #ffff00;">'tidyp_sha1'</span>, <span style="color: #ffff00;">'5d9050512259c3a67a2f48469555932e3a7b8bd0'</span>);
+<pre class="example"># set what tidyp tarball we are gonna use
+$builder-&gt;notes('tidyp_url', [ 
+    'http://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz',
+    'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz',
+    'http://strawberryperl.com/package/kmx/testing/tidyp-1.04.tar.gz',
+  ]); # has to be an array
+$builder-&gt;notes('tidyp_dir', 'tidyp-1.04'); # dirname inside the tarball
+$builder-&gt;notes('tidyp_sha1', '5d9050512259c3a67a2f48469555932e3a7b8bd0');
 </pre>
 
 <p>

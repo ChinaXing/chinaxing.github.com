@@ -59,7 +59,7 @@ use, require, do ,eval 是我们经常见到的perl语言关键字。下面我�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;
+<pre class="example">use Data::Dumper;
 </pre>
 
 
@@ -94,7 +94,7 @@ use 的作用是：
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;<span style="text-decoration: underline;"> </span>
+<pre class="example">use Data::Dumper; 
 </pre>
 
 <p>
@@ -102,26 +102,13 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffff00;">"Data::Dumper.pm"</span>; <span style="color: #ffff00;">'Data::Dumper'</span>-&gt;import; }
+<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import; }
 </pre>
 
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span> <span style="color: #66cd00;">qw</span><span style="color: #ffff00;">(Dumper)</span>;
-</pre>
-
-<p>
-等效于：
-</p>
-
-
-<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffff00;">"Data::Dumper.pm"</span>; <span style="color: #ffff00;">'Data::Dumper'</span>-&gt;import(<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">(Dumper)</span>); }
-</pre>
-
-
-
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span> ();
+<pre class="example">use Data::Dumper qw(Dumper);
 </pre>
 
 <p>
@@ -129,7 +116,20 @@ use 的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">BEGIN</span> { <span style="color: #00ffff;">require</span> <span style="color: #ffff00;">"Data::Dumper.pm"</span>; }
+<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import(qw(Dumper)); }
+</pre>
+
+
+
+<pre class="example">use Data::Dumper ();
+</pre>
+
+<p>
+等效于：
+</p>
+
+
+<pre class="example">BEGIN { require "Data::Dumper.pm"; }
 </pre>
 
 
@@ -163,8 +163,8 @@ require 加载后，模块的命名空间被建立，就可以通过其命名空
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">require</span> <span style="color: #4186be;">Data::Dumper</span>;
-<span style="color: #66cd00;">print</span> Data::Dumper { <span style="color: #ffff00;">a</span> =&gt; 1 , <span style="color: #ffff00;">b</span> =&gt; 2 };
+<pre class="example">require Data::Dumper;
+print Data::Dumper { a =&gt; 1 , b =&gt; 2 };
 </pre>
 
 
@@ -225,7 +225,7 @@ EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文�
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">do</span> <span style="color: #ffff00;">'stat.pl'</span>
+<pre class="example">do 'stat.pl'
 </pre>
 
 
@@ -234,7 +234,7 @@ EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">eval</span> <span style="color: #ffff00;">`cat stat.pl`</span>
+<pre class="example">eval `cat stat.pl`
 </pre>
 
 

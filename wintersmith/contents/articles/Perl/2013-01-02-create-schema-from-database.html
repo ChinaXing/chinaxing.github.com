@@ -43,13 +43,13 @@ tag: DBIx::Class
 
 
 
-<pre class="src src-sh">perl -MDBIx::Class::Schema::<span style="color: #ffffff; font-weight: bold;">Loader</span>=make_schema_at &lt;&lt;EOF
-<span style="color: #ffa54f;">make_schema_at({</span>
-<span style="color: #ffa54f;">   'My::Schema',</span>
-<span style="color: #ffa54f;">   { debug =&gt;1, dump_directory =&gt; './'},</span>
-<span style="color: #ffa54f;">   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],</span>
-<span style="color: #ffa54f;">});</span>
-<span style="color: #ffa54f;">EOF</span>
+<pre class="example">perl -MDBIx::Class::Schema::Loader=make_schema_at &lt;&lt;EOF
+make_schema_at({
+   'My::Schema',
+   { debug =&gt;1, dump_directory =&gt; './'},
+   [ 'dbi:Pg:dbname="pesystem"','pesystem','pesystem_password' ],
+});
+EOF
 </pre>
 
 
@@ -65,7 +65,7 @@ tag: DBIx::Class
 </p>
 
 
-<pre class="src src-sh">dbicdump -o <span style="color: #ffffff; font-weight: bold;">dump_directory</span>=<span style="color: #ffff00;">'./'</span> My::Schema <span style="color: #ffff00;">'dbi:Pg:dbname="pesystem"'</span> <span style="color: #ffff00;">"pesystem"</span> <span style="color: #ffff00;">"pesystem_password"</span>
+<pre class="example">dbicdump -o dump_directory='./' My::Schema 'dbi:Pg:dbname="pesystem"' "pesystem" "pesystem_password"
 </pre>
 
 
@@ -81,16 +81,16 @@ tag: DBIx::Class
 </p>
 
 
-<pre class="src src-perl"><span style="color: #ff0000;">#</span><span style="color: #ff0000;">My/Schema.pm</span>
+<pre class="example">#My/Schema.pm
 pakcage My::Schema;
-<span style="color: #00ffff;">use</span> <span style="color: #4186be;">base</span> <span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/DBIx::Class::Schema::Loader/</span>;
+use base qw/DBIx::Class::Schema::Loader/;
 1;
 
 perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \
-    <span style="color: #4186be;">-e</span> <span style="color: #ffff00;">'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'</span>
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span><span style="text-decoration: underline;"> </span>
-<span style="color: #00ffff;">use</span> <span style="color: #4186be;">My::Schema</span>;
-My::Schema-&gt;dump_to_dir(<span style="color: #ffff00;">'./'</span>);
+    -e 'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'
+# or 
+use My::Schema;
+My::Schema-&gt;dump_to_dir('./');
 My::Schema-&gt;connection(...);
 </pre>
 

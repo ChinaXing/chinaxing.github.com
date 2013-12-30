@@ -126,15 +126,15 @@ perl还会查找其名为 <a href="http://perldoc.perl.org/functions/die.html">P
 
 
 
-<pre class="src src-perl">  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#23450;&#20041;&#22788;&#29702;&#20989;&#25968;</span>
-<span style="color: #00ffff;">local</span> <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$SIG</span>{<span style="color: #ffff00;">__DIE__</span>} = <span style="color: #00ffff;">sub</span> {
-      <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$err</span> = <span style="color: #66cd00;">shift</span>;
-      <span style="color: #ff0000;"># </span><span style="color: #ff0000;">... process error</span>
-      <span style="color: #ff0000;"># </span><span style="color: #ff0000;">you can generate exception obj and thorw it</span>
-      <span style="color: #00ffff;">die</span> $err; <span style="color: #ff0000;"># </span><span style="color: #ff0000;">re-throw error;</span>
+<pre class="example">  # 定义处理函数
+local $SIG{__DIE__} = sub {
+      my $err = shift;
+      # ... process error
+      # you can generate exception obj and thorw it
+      die $err; # re-throw error;
 };
- <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#25191;&#34892;&#21487;&#33021;&#25243;&#20986;&#24322;&#24120;&#30340;&#20195;&#30721;</span>
- <span style="color: #ff0000;"># </span><span style="color: #ff0000;">.... code may thrown exception ;</span>
+ # 执行可能抛出异常的代码
+ # .... code may thrown exception ;
 </pre>
 
 </li>
@@ -142,13 +142,13 @@ perl还会查找其名为 <a href="http://perldoc.perl.org/functions/die.html">P
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">eval</span> {
-  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#25191;&#34892;&#21487;&#33021;&#25243;&#20986;&#24322;&#24120;&#30340;&#20195;&#30721;</span>
-  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">.... code may thrown exception ;</span>
+<pre class="example">eval {
+  # 执行可能抛出异常的代码
+  # .... code may thrown exception ;
 }
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#24322;&#24120;&#21457;&#29983;&#65292;&#22788;&#29702;</span>
-<span style="color: #00ffff;">if</span>($@){
-  <span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#22788;&#29702;&#24322;&#24120; ...</span>
+# 异常发生，处理
+if($@){
+  # 处理异常 ...
 }
 </pre>
 

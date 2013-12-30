@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -85,7 +85,7 @@ use, require, do ,eval&nbsp;是我们经常见到的perl语言关键字。下面
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;
+<pre class="example">use Data::Dumper;
 </pre>
 
 
@@ -120,7 +120,7 @@ use&nbsp;的作用是：
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span>;<span style="text-decoration: underline;"> </span>
+<pre class="example">use Data::Dumper; 
 </pre>
 
 <p>
@@ -128,26 +128,13 @@ use&nbsp;的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;"><span class="caps">BEGIN</span></span> { <span style="color: #00ffff;">require</span> <span style="color: #ffff00;">"Data::Dumper.pm"</span>; <span style="color: #ffff00;">'Data::Dumper'</span>-&gt;import; }
+<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import; }
 </pre>
 
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span> <span style="color: #66cd00;">qw</span><span style="color: #ffff00;">(Dumper)</span>;
-</pre>
-
-<p>
-等效于：
-</p>
-
-
-<pre class="src src-perl"><span style="color: #00ffff;"><span class="caps">BEGIN</span></span> { <span style="color: #00ffff;">require</span> <span style="color: #ffff00;">"Data::Dumper.pm"</span>; <span style="color: #ffff00;">'Data::Dumper'</span>-&gt;import(<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">(Dumper)</span>); }
-</pre>
-
-
-
-<pre class="src src-perl"><span style="color: #00ffff;">use</span> <span style="color: #4186be;">Data::Dumper</span> ();
+<pre class="example">use Data::Dumper qw(Dumper);
 </pre>
 
 <p>
@@ -155,7 +142,20 @@ use&nbsp;的作用是：
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;"><span class="caps">BEGIN</span></span> { <span style="color: #00ffff;">require</span> <span style="color: #ffff00;">"Data::Dumper.pm"</span>; }
+<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import(qw(Dumper)); }
+</pre>
+
+
+
+<pre class="example">use Data::Dumper ();
+</pre>
+
+<p>
+等效于：
+</p>
+
+
+<pre class="example">BEGIN { require "Data::Dumper.pm"; }
 </pre>
 
 
@@ -189,8 +189,8 @@ require&nbsp;加载后，模块的命名空间被建立，就可以通过其命�
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">require</span> <span style="color: #4186be;">Data::Dumper</span>;
-<span style="color: #66cd00;">print</span> Data::Dumper { <span style="color: #ffff00;">a</span> =&gt; 1 , <span style="color: #ffff00;">b</span> =&gt; 2 };
+<pre class="example">require Data::Dumper;
+print Data::Dumper { a =&gt; 1 , b =&gt; 2 };
 </pre>
 
 
@@ -251,7 +251,7 @@ do&nbsp;EXPR
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">do</span> <span style="color: #ffff00;">'stat.pl'</span>
+<pre class="example">do 'stat.pl'
 </pre>
 
 
@@ -260,7 +260,7 @@ do&nbsp;EXPR
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">eval</span> <span style="color: #ffff00;">`cat stat.pl`</span>
+<pre class="example">eval `cat stat.pl`
 </pre>
 
 

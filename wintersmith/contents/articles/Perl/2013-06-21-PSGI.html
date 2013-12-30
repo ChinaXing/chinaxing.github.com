@@ -106,10 +106,10 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">....</span>
-    <span style="color: #00ffff;">return</span> [ 200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], [ <span style="color: #ffff00;">'Hello,World!'</span> ] ];
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ....
+    return [ 200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ];
 };
 </pre>
 
@@ -119,10 +119,10 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-    <span style="color: #00ffff;">return</span> [ 200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'application/data'</span> ], $fh ] ];
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ...
+    return [ 200, [ 'Content-Type', 'application/data' ], $fh ] ];
 };
 </pre>
 
@@ -131,13 +131,13 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-    <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">sub</span> {
-       <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$responder</span> = <span style="color: #66cd00;">shift</span>;
-       <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-       <span style="color: #00ffff;">return</span> $responder-&gt;([200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], [ <span style="color: #ffff00;">'Hello,World!'</span> ] ]);
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ...
+    return sub {
+       my $responder = shift;
+       # ...
+       return $responder-&gt;([200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ]);
     };
 };
 </pre>
@@ -148,20 +148,20 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-    <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">sub</span> {
-       <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$responder</span> = <span style="color: #66cd00;">shift</span>;
-       <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-       <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$writer</span> = $responder-&gt;( [200, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], ]);
-       <span style="color: #ff0000;"># </span><span style="color: #ff0000;">...</span>
-       wait_for_events(<span style="color: #00ffff;">sub</span> {
-             <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$ev</span> = <span style="color: #66cd00;">shift</span>;
-             <span style="color: #00ffff;">if</span>($ev-&gt;<span style="color: #00ffff;">last</span>){
-                   $writer-&gt;<span style="color: #ff7f50;">close</span>;
-              }<span style="color: #00ffff;">else</span>{
-                   $writer-&gt;<span style="color: #ff7f50;">write</span>($ev-&gt;content);
+<pre class="example">my $app = sub {
+    my $env = shift;
+    # ...
+    return sub {
+       my $responder = shift;
+       # ...
+       my $writer = $responder-&gt;( [200, [ 'Content-Type', 'text/plain' ], ]);
+       # ...
+       wait_for_events(sub {
+             my $ev = shift;
+             if($ev-&gt;last){
+                   $writer-&gt;close;
+              }else{
+                   $writer-&gt;write($ev-&gt;content);
               }
        });
   };
@@ -207,16 +207,16 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$app</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #00ffff;">return</span> [ <span style="color: #ffff00;">'200'</span>, [ <span style="color: #ffff00;">'Content-Type'</span>, <span style="color: #ffff00;">'text/plain'</span> ], [ <span style="color: #ffff00;">"Hello,World!"</span> ] ];
+<pre class="example">my $app = sub {
+    my $env = shift;
+    return [ '200', [ 'Content-Type', 'text/plain' ], [ "Hello,World!" ] ];
 };
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">middleware, process at response chain</span>
-<span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$mymiddleware</span> = <span style="color: #00ffff;">sub</span> {
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$env</span> = <span style="color: #66cd00;">shift</span>;
-    <span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$res</span> = $app-&gt;($env);
-    <span style="color: #66cd00;">push</span> @{$res-&gt;[1], <span style="color: #ffff00;">'X-PSGI-Used'</span> =&gt; 1;
-    <span style="color: #00ffff;">return</span> $res;
+# middleware, process at response chain
+my $mymiddleware = sub {
+    my $env = shift;
+    my $res = $app-&gt;($env);
+    push @{$res-&gt;[1], 'X-PSGI-Used' =&gt; 1;
+    return $res;
 };
 </pre>
 

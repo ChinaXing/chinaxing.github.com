@@ -15,9 +15,9 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>2</sup></a></li>
           <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -179,7 +179,7 @@
 
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">eval</span> { code } <span style="color: #ff7f50;">or</span> <span style="color: #00ffff;">do</span> { <span style="color: #00ffff;">die</span> <span style="color: #ffff00;">"xxx"</span> }<span style="text-decoration: underline;">  </span>
+<pre class="example">eval { code } or do { die "xxx" }  
 </pre>
 
 </li>
@@ -219,7 +219,7 @@
 
 
 
-<pre class="src src-perl">$self-&gt;app-&gt;plugin(<span style="color: #ffff00;">'Config'</span>,{<span style="color: #ffff00;">file</span> =&gt; <span style="color: #ffff00;">'pesystem.conf'</span>)<span style="text-decoration: underline;">  </span>
+<pre class="example">$self-&gt;app-&gt;plugin('Config',{file =&gt; 'pesystem.conf')  
 </pre>
 
 </li>
@@ -532,8 +532,8 @@
 </p>
 
 
-<pre class="src src-perl">{
-   <span style="color: #ffff00;">hypontoad</span> =&gt; { <span style="color: #ffff00;">listen</span> =&gt; [<span style="color: #ffff00;">'http://*:9999'</span>], <span style="color: #ffff00;">worker</span> =&gt; 4 },
+<pre class="example">{
+   hypontoad =&gt; { listen =&gt; ['http://*:9999'], worker =&gt; 4 },
 }
 </pre>
 
@@ -618,8 +618,8 @@
 </p>
 
 
-<pre class="src src-perl"><span style="color: #ff0000;"># </span><span style="color: #ff0000;">&#32473;&#35843;&#29992;&#32773;&#28155;&#21152;&#21517;&#20026;del&#30340;&#26041;&#27861;&#25110;&#32773;&#20989;&#25968;(&#35265;Mojolicious::Lite&#28304;&#30721;)</span>
-monkey_patch $caller, <span style="color: #ffff00;">del</span> =&gt; <span style="color: #00ffff;">sub</span> { $routes-&gt;<span style="color: #66cd00;">delete</span>(<span style="color: #0000ff; background-color: #eeeed1; font-weight: bold;">@_</span>) };
+<pre class="example"># 给调用者添加名为del的方法或者函数(见Mojolicious::Lite源码)
+monkey_patch $caller, del =&gt; sub { $routes-&gt;delete(@_) };
 </pre>
 
 
@@ -635,7 +635,7 @@ monkey_patch $caller, <span style="color: #ffff00;">del</span> =&gt; <span style
 </p>
 
 
-<pre class="src src-perl">has <span style="color: #ffff00;">max_message_size</span> =&gt; <span style="color: #00ffff;">sub</span> { <span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$<span class="caps">ENV</span></span>{<span style="color: #ffff00;">MOJO_MAX_MESSAGE_SIZE</span>} || 5242880 };
+<pre class="example">has max_message_size =&gt; sub { $ENV{MOJO_MAX_MESSAGE_SIZE} || 5242880 };
 </pre>
 
 <p>
@@ -643,9 +643,9 @@ monkey_patch $caller, <span style="color: #ffff00;">del</span> =&gt; <span style
 </p>
 
 
-<pre class="src src-perl"><span style="color: #00ffff;">my</span> <span style="color: #ffffff; font-weight: bold;">$tx</span> = $self-&gt;ua-&gt;build_tx( <span style="color: #ffff00;"><span class="caps">GET</span></span> =&gt; $self-&gt;app-&gt;config-&gt;{<span style="color: #ffff00;">VIPINFO_UPDATE_API</span>} );
-  $tx-&gt;res-&gt;max_message_size(7000000); <span style="color: #ff0000;"># </span><span style="color: #ff0000;">here</span>
-  $self-&gt;ua-&gt;start($tx, <span style="color: #00ffff;">sub</span> { ... });
+<pre class="example">my $tx = $self-&gt;ua-&gt;build_tx( GET =&gt; $self-&gt;app-&gt;config-&gt;{VIPINFO_UPDATE_API} );
+  $tx-&gt;res-&gt;max_message_size(7000000); # here
+  $self-&gt;ua-&gt;start($tx, sub { ... });
 </pre>
 
 </div>

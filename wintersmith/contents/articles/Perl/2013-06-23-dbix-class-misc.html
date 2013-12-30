@@ -184,10 +184,10 @@ change_frequency: monthly
 </p>
 
 
-<pre class="src src-perl">$schema-&gt;populate( <span style="color: #ffff00;">'CD'</span> =&gt;
-   [ [<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/Artist Title price/</span>],
-     [<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/Sara  'scarborough fair' 25.5/</span>],
-     [<span style="color: #66cd00;">qw</span><span style="color: #ffff00;">/Mozart 'Serenade for Strings in G major' 20/</span>]
+<pre class="example">$schema-&gt;populate( 'CD' =&gt;
+   [ [qw/Artist Title price/],
+     [qw/Sara  'scarborough fair' 25.5/],
+     [qw/Mozart 'Serenade for Strings in G major' 20/]
    ]);
 </pre>
 
@@ -203,7 +203,7 @@ change_frequency: monthly
 </p>
 
 
-<pre class="src src-perl"><span style="color: #ff7f50;">__PACKAGE__</span>-&gt;storage_type(<span style="color: #ffff00;">'DBIx::Class::Storage::DBI'</span>)
+<pre class="example">__PACKAGE__-&gt;storage_type('DBIx::Class::Storage::DBI')
 </pre>
 
 </div>
@@ -217,9 +217,9 @@ change_frequency: monthly
 
 
 
-<pre class="src src-perl"><span style="color: #ff7f50;">__PACKAGE__</span>-&gt;exception_action( <span style="color: #00ffff;">sub</span> { ... } );
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span>
-$schema_obj-&gt;exception_action( <span style="color: #00ffff;">sub</span> { ... } );
+<pre class="example">__PACKAGE__-&gt;exception_action( sub { ... } );
+# or
+$schema_obj-&gt;exception_action( sub { ... } );
 </pre>
 
 <p>
@@ -235,9 +235,9 @@ $schema_obj-&gt;exception_action( <span style="color: #00ffff;">sub</span> { ...
 
 
 
-<pre class="src src-perl">$schema_obj-&gt;stacktrace(1);
-<span style="color: #ff0000;"># </span><span style="color: #ff0000;">or</span>
-<span style="color: #ff0000; background-color: #eeeed1; font-weight: bold; font-style: italic;">$ENV</span>{<span style="color: #ffff00;">DBIC_TRACE</span>} = 1;
+<pre class="example">$schema_obj-&gt;stacktrace(1);
+# or
+$ENV{DBIC_TRACE} = 1;
 </pre>
 
 </div>
@@ -260,7 +260,7 @@ $schema_obj-&gt;exception_action( <span style="color: #00ffff;">sub</span> { ...
 
 
 
-<pre class="src src-perl">$schema_obj-&gt;thaw($obj);
+<pre class="example">$schema_obj-&gt;thaw($obj);
 $schema_obj-&gt;freeze($obj);
 </pre>
 
