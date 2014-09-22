@@ -1,0 +1,47 @@
+#+BEGIN_HTML
+---
+date: 2014-09-22 22:02:03
+template: tech.jade
+title: java debug 简记
+category: Java
+chage_frequency: monthly
+tag: Java,debug
+---
+#+END_HTML
+
+** overview
+   [[/img/jpda.jpg]]
+** debug client
+jdk 自带的debug工具jdb类似于其他语言如gcc 的 gdb，可以完成命令行模式下进行debug：
+
+#+BEGIN_SRC sh :eval no
+ jdb MainClass args # 启动jvm并进入调试模式（此处会启动2个jvm）
+ jdb attach $pid # 连接到运行中的jvm
+ jdb listen $address # listen等待jvm的连接，这个模式比较奇怪，是被调试程序来connect jdb
+#+END_SRC
+
+** debug target
+对于被调试程序，即目标jvm，要打开debug服务，才能接收jdb发来的debug请求，这通过java的agent功能来加载debug相关的lib来实现：
+#+BEGIN_SRC sh :eval no
+  #使用socket连接来进行jdb的交互(remote debug)
+  java -agentlib:jdwp=transport=dt_socket,address=$address 
+  #使用共享内存模式来进行通信，本机调试
+  java -agentlib:jdwp=transport=dt_shmem 
+  #获取jdwp调试选项的帮助
+  java -agentlib:jdwp=help 
+#+END_SRC
+
+** jdwp 
+jdwp（Java Debug Wire Protocol）是一个debug的协议，是jdb等client跟jvm将互操作的协议，jdwp的传输(transport)用来指明用什么传输层实现，我们可以通过socket来实现远程调试的目的.
+
+jdwp有一个选项:server=y|n 来表达是监听等待debugclient的连接还是去主动连接处于listen状态的debugclient，可以对照上面提到的jdb的listen模式明白它的用处。
+
+** Other
+1. [[http://docs.oracle.com/javase/7/docs/technotes/guides/jpda/][Java Platform Debugger Architecture - JPDA]] \\
+   java的debug有一个debug的体系，可以在Oracle的网站上面了解到详细的说明. 这个架构指导如何进行debug的开发，许多IDE的debug功能即采用这里的架构。
+2. Java Debug Interface - JDI \\
+   JDI 是属于JPDA的规范，定义了代码级别的调试接口，可以通过实现这些接口实现自己的调试程序。
+3. Java Virtual Machine Tools Interface - JMTI \\
+   提供了native方式的接口，可以用来开发调试程序。
+4. 深入java debug 文章 : [[http://www.ibm.com/developerworks/cn/views/java/libraryview.jsp?search_by=深入+Java+调试体系][深入java调试体系]]
+

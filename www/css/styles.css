@@ -39,7 +39,7 @@ you can use the generic selector below, but it's slower:
 
 body {
     background-color:black;
-    font-family: tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
+    font-family: 'Helvetica Neue',Helvetica,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
     font-size: 90%;
 }
 
@@ -63,7 +63,7 @@ body {
 }
 
 #content >:first-child {
-    font-family:cursive;
+/*    font-family:cursive; */
 }
 
 #menu-header {

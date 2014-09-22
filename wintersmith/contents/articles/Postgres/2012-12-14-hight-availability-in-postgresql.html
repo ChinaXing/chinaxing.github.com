@@ -325,8 +325,10 @@ posgres的热备有2中方式:
 
 
 
-<pre class="example">wal_level = archive #日志格式要archive以上.  
-archive_command = 'cp -i %p /home/admin/tmp/pg_archive3/%f &lt;/dev/null' #日志归档       
+<pre class="example">#日志格式要archive以上.  
+wal_level = archive
+#日志归档       
+archive_command = 'cp -i %p ~/pg_archive3/%f &lt;/dev/null'
 </pre>
 
 </li>
@@ -339,8 +341,10 @@ archive_command = 'cp -i %p /home/admin/tmp/pg_archive3/%f &lt;/dev/null' #日�
 
 
 
-<pre class="example">standby_mode = on # 此处表示进入slave模式，而不是recovery完成后成为可读可写的库。  
-restore_command = 'cp /home/admin/tmp/pg_archive/%f %p' # 加载master的归档日志       
+<pre class="example"># 此处表示进入slave模式，而不是recovery完成后成为可读可写的库。  
+standby_mode = on 
+# 加载master的归档日志       
+restore_command = 'cp ~/pg_archive/%f %p'
 </pre>
 
 </li>
@@ -365,8 +369,10 @@ restore_command = 'cp /home/admin/tmp/pg_archive/%f %p' # 加载master的归档�
 
 
 
-<pre class="example">wal_level = hot_standby #日志格式必须hot_standby  
-max_wal_senders = 1  # 此处根据slaver的数量设置       
+<pre class="example">#日志格式必须hot_standby  
+wal_level = hot_standby
+# 此处根据slaver的数量设置       
+max_wal_senders = 1
 </pre>
 
 </li>
@@ -379,7 +385,8 @@ max_wal_senders = 1  # 此处根据slaver的数量设置
 
 
 
-<pre class="example">hot_standby = on # 此处可选，打开表示slaver上可以执行read-only的查询。默认不可以。       
+<pre class="example"># 此处可选，打开表示slaver上可以执行read-only的查询,默认不可以
+hot_standby = on 
 </pre>
 
 </li>
@@ -387,8 +394,10 @@ max_wal_senders = 1  # 此处根据slaver的数量设置
 
 
 
-<pre class="example">standby_mode = on # 此处表示进入slave模式，循环地与master同步。  
-primary_conninfo = 'host=localhost port=5432 user=repl password=repl_213456' # 使用stream 方式进行同步。       
+<pre class="example"># 此处表示进入slave模式，循环地与master同步
+standby_mode = on
+# 使用stream 方式进行同步
+primary_conninfo = 'host=localhost port=5432 user=repl password=repl_213456'
 </pre>
 
 </li>

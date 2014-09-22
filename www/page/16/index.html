@@ -14,11 +14,11 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>9</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -26,6 +26,37 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>02. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/02/2013-01-02-DBIx-Class-study-note.html">Perl DBIx::Class 模块学习笔记</a></h2>
+        </header>
+        <section class="content">
+
+
+<p>
+<b>Perl</b>&nbsp;的<span class="caps">ORM</span>模块中，DBIx::Class比较强大和完善，文档丰富，容易使用。
+</p>
+<p>
+DBIx::Class的官网:<a href="http://www.dbix-class.org/">http://www.dbix-class.org/</a>，&nbsp;也可以在<span class="caps">CPAN</span>上搜索，它的代码和文档都放在CPAN上。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="caps">ORM</span>优点和作用</a></li>
+<li><a href="#sec-2">DBIx::Class入门介绍</a></li>
+<li><a href="#sec-3">DBIx::Class基本概念</a></li>
+<li><a href="#sec-4">其它</a></li>
+</ul>
+</div>
+</div>
+
+
+          <p class="more"><a href="/articles/Perl/2013/01/02/2013-01-02-DBIx-Class-study-note.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>02. January 2013</span></p>
@@ -78,41 +109,6 @@
 <li><a href="#sec-1-6">helper</a></li>
 <li><a href="#sec-1-7">plugin</a></li></ul></li></ul></div></div>
           <p class="more"><a href="/articles/Perl/2013/01/02/2013-01-02-mojolicious-study-note-2.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>01. January 2013</span></p>
-          <h2><a href="/articles/Postgres/2013/01/01/2013-01-01-copy-table-from-another-table.html">Copy table from another table</a></h2>
-        </header>
-        <section class="content">
-
-<pre class="example">create table table2 ( 
-       like table1 
-        INCLUDING DEFAULTS 
-        INCLUDING CONSTRAINTS 
-        INCLUDING INDEXES 
-);
-</pre>
-
-
-<p>
-this will create table2 which is clone of&nbsp;table1.
-</p>
-
-
-
-<pre class="example">select * into table2 from table1 where 1=2;
-create table table2 as select * from table1 where 1=2;
-</pre>
-
-
-<p>
-these will create table2 like table1 , but missing the <b>modifers</b> (default,not null &hellip; attribute)in&nbsp;table1.
-</p>
-
-
-
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/15/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/17/" class="nav-next">Next page »</a>

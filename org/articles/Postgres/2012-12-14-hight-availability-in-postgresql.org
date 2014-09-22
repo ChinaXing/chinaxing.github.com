@@ -125,32 +125,41 @@ posgres的热备有2中方式:
 + master 配置:  
   1. postgresql.conf 中设置:  
      #+begin_example
-     wal_level = archive #日志格式要archive以上.  
-     archive_command = 'cp -i %p /home/admin/tmp/pg_archive3/%f </dev/null' #日志归档       
+     #日志格式要archive以上.  
+     wal_level = archive
+     #日志归档       
+     archive_command = 'cp -i %p ~/pg_archive3/%f </dev/null'
      #+end_example
 + slaver 配置:  
   1. recovery.conf 中配置:  
      #+begin_example
-     standby_mode = on # 此处表示进入slave模式，而不是recovery完成后成为可读可写的库。  
-     restore_command = 'cp /home/admin/tmp/pg_archive/%f %p' # 加载master的归档日志       
+     # 此处表示进入slave模式，而不是recovery完成后成为可读可写的库。  
+     standby_mode = on 
+     # 加载master的归档日志       
+     restore_command = 'cp ~/pg_archive/%f %p'
      #+end_example
 
 *** 基于stream的热备配置
 + master 配置:  
   1. postgresql.conf 中设置:  
      #+begin_example
-     wal_level = hot_standby #日志格式必须hot_standby  
-     max_wal_senders = 1  # 此处根据slaver的数量设置       
+     #日志格式必须hot_standby  
+     wal_level = hot_standby
+     # 此处根据slaver的数量设置       
+     max_wal_senders = 1
      #+end_example
 + slaver 配置:  
   1. postgresql.conf 中设置:  
      #+begin_example
-     hot_standby = on # 此处可选，打开表示slaver上可以执行read-only的查询。默认不可以。       
+     # 此处可选，打开表示slaver上可以执行read-only的查询,默认不可以
+     hot_standby = on 
      #+end_example
   2. recovery.conf 中配置:  
      #+begin_example
-     standby_mode = on # 此处表示进入slave模式，循环地与master同步。  
-     primary_conninfo = 'host=localhost port=5432 user=repl password=repl_213456' # 使用stream 方式进行同步。       
+     # 此处表示进入slave模式，循环地与master同步
+     standby_mode = on
+     # 使用stream 方式进行同步
+     primary_conninfo = 'host=localhost port=5432 user=repl password=repl_213456'
      #+end_example
 *** 两种热备的区别和联系
 
