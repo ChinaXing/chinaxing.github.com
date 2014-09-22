@@ -15,9 +15,8 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>9</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>1</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Python/index.html">Python<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>3</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -28,93 +27,70 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>11. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/11/2013-07-11-eclipse-maven-build-problem.html">eclipse maven插件打包出错解决</a></h2>
+          <p class="date"><span>15. June 2013</span></p>
+          <h2><a href="/articles/Perl/2013/06/15/2013-06-15-Mojolicious-analyse-3.html">Mojolicious Web框架实现分析 -- 请求在App内的处理过程</a></h2>
         </header>
         <section class="content">
 
 <p>
-在windows下面安装的eclipse的maven插件，在项目上右键run-&gt;Run Configuration中新建一个maven Build配置用来进行maven打包。如图：<br/>
-<img src="/img/eclipse-maven-build-configure.jpg"  alt="file:///img/eclipse-maven-build-configure.jpg" />
+Mojolicious&nbsp;请求在App内的处理。。。.
 </p>
-<p>
-点击apply应用配置，然后点击run进行打包。发现会提示这样的错误:<br/>
-</p>
-
-
-<pre class="example">Unable to locate the Javac Compiler in:
-  F:\Program Files\Java\jre7\..\lib\tools.jar
-Please ensure you are using JDK 1.4 or above and
-not a JRE (the com.sun.tools.javac.Main class is required).
-In most cases yo</pre>
-          <p class="more"><a href="/articles/Java/2013/07/11/2013-07-11-eclipse-maven-build-problem.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>07. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/07/2013-07-07-spring-framework-and-java-web.html">Java Spring 框架和java web开发</a></h2>
+          <p class="date"><span>12. June 2013</span></p>
+          <h2><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">Mojolicious Web框架实现分析 -- App启动过程</a></h2>
         </header>
         <section class="content">
 
-<p>
-本文主要记录我学习java的web开发和spring框架时对一些关键技术和概念的理解与记录。
-</p>
-<p>
-<code>待深入</code>
-</p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">web开发</a>
+<li><a href="#sec-1">前言</a></li>
+<li><a href="#sec-2">启动Mojolicious App</a>
 <ul>
-<li><a href="#sec-1-1">web服务模型</a></li>
-<li><a href="#sec-1-2"><span class="caps">MVC</span></a></li>
-</ul>
-</li>
-<li><a href="#sec-2">web框架</a>
-<ul>
-<li><a href="#sec-2-1">位置与作用</a></li>
-<li><a href="#sec-2-2">webapp</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">Spring 框架</a>
-<ul>
-<li><a href="#sec-3-1">spring是什</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Java/2013/07/07/2013-07-07-spring-framework-and-java-web.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>06. July 2013</span></p>
-          <h2><a href="/articles/Java/2013/07/06/2013-07-06-mac-oxs-eclipse-maven-install.html">Mac osx 安装eclipse和maven</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-Eclipse&nbsp;是一个<span class="caps">IDE</span>工具，用来进行Java开发，是java开发中旗舰级的IDE。Eclipse软件本身的设计就非常优秀和可扩展。在java的IDE中除了IBM的eclipse，还有Sun不久前推出的NetBean。
-</p>
-<p>
-Maven&nbsp;是一套构建工具，用来进行项目的打包。maven可以自动进行依赖的下载、打包出一个tgz的压缩包，供web容器加载。
-</p>
-<p>
-eclipse + maven 是进行java&nbsp;web开发的基础工具搭配，用eclipse开发代码，maven完成打包。
-</p>
-<p>
-本文介绍怎么在mac&nbsp;osx平台进行这个环境的安装和搭建。
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">安装eclipse与maven</a>
-<ul>
-<li><a href="#sec-1-1">安装eclipse</a></li>
+<li><a href="#sec-2-1">通过 script/my_app daemon&nbsp;启动应用</a></li>
+<li><a href="#sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
+<li><a href="#sec-2-3">创建Mojo::Server实例，加载App，启动App</a></li>
+<li><a href="#sec-2-4">App创建完毕，调用其start方法</a></li>
+<li><a href="#sec-2-5">使用Mojolicious::Commands类的run方法执行</a></li>
 <li></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Java/2013/07/06/2013-07-06-mac-oxs-eclipse-maven-install.html">more</a></p>
+          <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>12. June 2013</span></p>
+          <h2><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse-2.html">Mojolicious Web框架实现分析 -- 请求处理过程</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+Mojolicious&nbsp;是基于事件的web框架，那么如何知道请求这个事件发生了呢？
+</p>
+<p>
+由于请求是通过网络上达到，通过Client对server监听的端口发起链接而产生，这一事件是accept事件，Mojolicious得知这一事件的方法有两种:
+</p><ul>
+<li>使用<span class="caps">IO</span>::Poll 模块，隔一段时间进行一次轮询，问内核:是否有链接了？&nbsp;这个轮询是被ioloop-&gt;start所启动
+</li>
+<li>使用<span class="caps">EV</span>模块，&nbsp;注册一个回调函数，在链接到达的时候，这个回调函数会被EV模块调用．
+</li>
+</ul>
+
+
+<p>
+不论哪种方式(主动查询还是被动通告)，当一个socket上的accept事件发生的时候，Mojolicious被唤醒
+</p><ul>
+<li><span class="caps">IO</span>::Pool模式
+  此模式下轮询函数是Mojo::Reactor::one_tick方法，可以看到当可读/写发生时候，调用:
+
+
+
+<pre class="example">++$i and $self-&gt;_sandbox('Write'， $self-&gt;{io}{fi</pre></li></ul>
+          <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse-2.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/4/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/6/" class="nav-next">Next page »</a>
