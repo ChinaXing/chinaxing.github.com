@@ -1,0 +1,86 @@
+#+BEGIN_HTML
+---
+date: 2014-09-24 20:13:47
+template: tech.jade
+title: java instrumentation
+category: Java
+chage_frequency: monthly
+tag: Java
+---
+#+END_HTML
+
+** 是什么
+
+Instrumentation, 是Java提供在字节码/jvm层面进行类增强的机制，Instrumentation可以对类加载进行拦截，对已加载类进行转换以及对类进行重新定义。
+
+不仅能够对Java字节码类型的类进行增强，对native类型的类，方法也能进行增强。
+
+** 如何操作
+*** 运作机制
+    可以通过instrumentation类型接口，将ClassTransformer注册给JVM，这些transformer就如同servlet规范中的filter一样，在类加载的时刻，会触发他们的执行，在经过这些tranformer链条的处理后，最终的类字节流被用来初始化类。
+
+    Instrumentation 接受几种类型的transformer:
+    + retransform capable 
+    + retransform incapable
+
+    第一种可以对已经加载的类进行再次tranform，而第二种在retransform的时候，不会被触发调用
+
+    类被tranform的时刻有如下几种情况，这些情况下，这些tranform可以hook进去，对类的定义进行字节码层面的enhance：
+    1. define
+    1. redefine
+    1. retransform
+
+
+    + *define* 是在类被通过class file加载的时候，这种情形会触发transformer的调用，调用次序为：
+      1. retransformer incapable 的transformer
+      2. retransformer incapable 的native transformer
+      3. retransformer capable 的transformer
+      4. retransformer capable 的native transformer
+
+    + *redefine* 发生在调用Instrument.redefineClasses 方法的时刻，它会从指定的class file加载类的定义码，然后触发transformer链的执行：
+      执行的顺序和define类时候执行顺序一样（如上）。
+
+    + *retransform* 发生在调用Instrument.retransformClasses 方法的时刻，它触发retransformer capable的transformer链进行执行：
+      1. retransformer capable 的transformer 被依次执行
+      2. retransformer capable 的native transformer 被依次执行
+
+    注意可以看到，retransformer incapable的transformer未被执行。
+*** 限制性条件
+    transformer 可以对类的字节码进行替换，修改类的初始化方法、字段值默认值等等。但是有些条件不允许违背，否则会在transformer结束后的check和verify过程中失败，抛出异常:\\
+    1. 不能修改类的field的定义（如类型、名称、访问属性等）
+    2. 不能修改方法的签名
+    
+    可见，此种替换仅仅是将类的实现进行了替换，而类的结构、接口是没有改变的，这样就维持了类的对外一致性，保证老版本的class和替换后的class的object能够共存。
+
+*** 替换发生时
+    1. 对已经run的实例没有影响，如一个方法正在被调用，那么这个调用会在老版本上继续执行完成。直到下次的调用才会调用到新的版本。
+    2. 对已经create的object没有影响，如在retransformer/redefine之前new的对象实例，不会做更改。
+
+** 编程接口
+jvm通过agent 接口提供对Instrumentation的支持：
+1. jvm通过允许在JVM启动的时候加载java agent来进行Instrumentation，java agent的jar包指定的Premain-Class的premain方法会在jvm运行MainClass的main方法之前运行，在这个premain方法里，开发者可以定义形如:
+   #+BEGIN_SRC java :eval no
+      public static void premain(String agentArgs, Instrumentation inst)
+   #+END_SRC
+   的方法，将Instrumentation实例拿到，然后依照上面讲到的Instrument机制对类进行增强。具体可以参考Instrumentatin类的方法。
+
+   这种方式的好处是可以对类进行早期的transform：define的时候
+
+2. 通过jvm 提供的Attach API在运行期对JVM进行引导其加载java agent：
+   #+BEGIN_HTML
+   <script src="https://gist.github.com/ChinaXing/6044ef2da3cb7075264c.js"></script>
+   #+END_HTML
+   此种方式除了可对未加载类进行transform外，也可以对已经加载的类进行redefine和retransform
+
+** 字节码增强
+对字节码进行修改的技术叫做字节码增强，字节码增强有许多著名的类库可以使用，如：asm，bcel，Javassist，相对于前两个后者提供了更高level的抽象，用起来简单，不需要对jvm字节码，虚拟机运行机制人有太多理解。
+
+字节码增强用在很多地方，典型的应用有：
+1. AOP运行期植入：Spring 使用cglib对类生成代理，植入切面代码。
+2. 性能剖析：通过在方法执行前后植入统计代码可以辅助分析方法性能，如Btrace使用此技术可以实现Profile功能。
+3. 错误诊断：BTrace可以对已经存在的类进行retransform，植入跟踪代码，可以打印出运行期变量的值，辅助进行问题排查。
+
+** deep in
++ [[http://docs.oracle.com/javase/6/docs/technotes/guides/attach/index.html][Java attach API]]
++ [[http://docs.oracle.com/javase/6/docs/technotes/guides/instrumentation/index.html][Java Instrumentation doc]]
++ [[http://docs.oracle.com/javase/6/docs/technotes/guides/jvmti/index.html][Jvm Tool interface]]
