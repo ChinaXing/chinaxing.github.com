@@ -334,3 +334,7 @@ code {
 .archive a {
   text-decoration: none;
 }
+
+blockquote {
+    border-left:.3em solid black;
+}
