@@ -81,6 +81,6 @@ jvm通过agent 接口提供对Instrumentation的支持：
 3. 错误诊断：BTrace可以对已经存在的类进行retransform，植入跟踪代码，可以打印出运行期变量的值，辅助进行问题排查。
 
 ** deep in
-+ [[http://docs.oracle.com/javase/6/docs/technotes/guides/attach/index.html][Java attach API]]
-+ [[http://docs.oracle.com/javase/6/docs/technotes/guides/instrumentation/index.html][Java Instrumentation doc]]
-+ [[http://docs.oracle.com/javase/6/docs/technotes/guides/jvmti/index.html][Jvm Tool interface]]
++ [[http://docs.oracle.com/javase/7/docs/technotes/guides/attach/index.html][Java attach API]]
++ [[http://docs.oracle.com/javase/7/docs/technotes/guides/instrumentation/index.html][Java Instrumentation doc]]
++ [[http://docs.oracle.com/javase/7/docs/technotes/guides/jvmti/index.html][Jvm Tool interface]]
