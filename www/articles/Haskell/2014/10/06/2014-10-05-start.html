@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Raspberry Pi usb 无线网卡安装配置 - The Chinaxing's blog
+    <title>开始学习Haskell - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -14,177 +14,113 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li class="active"><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>3</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">Raspberry Pi usb 无线网卡安装配置
+      <h2 style="text-align:center">开始学习Haskell
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
       </div>
       <div class="tech">
 
-<p>
-这几天，为了能够无线连接Raspberry-Pi，这样可以方便的使用和配置它，也免的拿来拿去导致损伤。
-</p>
-<p>
-于是，先在淘宝上搜索了<span class="caps">USB</span>无线网卡，结果选了一款最便宜最小巧的USB无线网卡，MERCURY MV150US（25￥）。&nbsp;150M足够用了。
-</p>
-<p>
-接下来就是配置无线，让它工作起来：
-</p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">配置wap_supplicant</a></li>
-<li><a href="#sec-2">配置网卡wlan0</a></li>
-<li><a href="#sec-3">启动</a></li>
-<li><a href="#sec-4">其它</a>
-<ul>
-<li><a href="#sec-4-1">无法识别网卡</a></li>
-<li><a href="#sec-4-2">wap_supplicant</a></li>
-</ul>
-</li>
+<li><a href="#sec-1">why&nbsp;Haskell</a></li>
+<li><a href="#sec-2">学习顺序</a></li>
+<li><a href="#sec-3">时间安排</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">配置wap_supplicant</h3>
+<h3 id="sec-1">why&nbsp;Haskell</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>Raspbian基于Debian系统，系统默认附带了wap_supplicant作为无线链接管理的客户端。&nbsp;wap_supplicant这个程序很了不起，大家可以在这里了解到它：
-</p><ul>
-<li><a href="http://hostap.epitest.fi">官网</a>
+<p>决定要学习一门函数式编程语言，希望能纯粹函数式，于是选择了Haskell，因为它的几个理念让我喜欢：<br/>
+</p><ol>
+<li>纯函数式
 </li>
-<li><a href="http://en.wikipedia.org/wiki/Wpa_supplicant">Wikipedia</a>
+<li><span class="caps">IO</span> / 非IO&nbsp;做明显区分
 </li>
-</ul>
+<li>有学术背景
+</li>
+<li>历史悠久，相对成熟
+</li>
+<li>性能可观，ghc编译器优秀
+</li>
+</ol>
 
 
 <p>
-这个程序的开发者还实现了<span class="caps">AP</span>协议的服务端软件<a href="http://hostap.epitest.fi/hostapd/">Hostapd</a>&nbsp;，我们可以安装这个软件，开启网卡的无线<span class="caps">AP</span>功能（需要网卡支持），就可一实现热点接入功能了。
+这几点有别于其它函数式语言或者具有函数式编程的“杂烩”型语言，因为我主要的目的是学习函数式编程的特点、优势、思维方式。
 </p>
 <p>
-wap_supplicant的配置，位于/etc/wpa_supplicant/wpa_supplicant.conf
+函数式编程给我的感觉是带点数学的学术味道，于是也有一些理论的研究用在了语言之中，可以把函数式语言算作是一种数学理论的现实实现吧。这方面我比较认识肤浅，也比较有兴趣去了解和发掘。
 </p>
-<p>
-我们需要添加针对热点的配置，如：
-</p>
-
-
-<pre class="example">network={
-        ssid="ChinaXing XO"
-        proto=RSN
-        key_mgmt=WPA-PSK
-        pairwise=CCMP
-        group=CCMP
-        psk=18c9f3c76ab41632bc6ac48a8d7646114e452087fdb47c087100e97292a9da39
-}
-</pre>
-
-
-<p>
-说明：
-</p><ul>
-<li>ssid :&nbsp;无线<span class="caps">AP</span>的名称 
-</li>
-<li>key_mgmt :&nbsp;管理方式，如果是<span class="caps">WPA2</span>-PSK也要填写WPA—PSK，请注意。
-</li>
-<li>psk : 密码，此处的密码是加密过后的密码而不是原始密码，加密方法：
-
-
-
-<pre class="example">wpa_passphrase [ssid] [password]        
-</pre>
-
-<p>
-  这条命令输出一段wpa_supplicant配置，其中psk=&#8221;&hellip;&#8221;即为要使用在配置文件中的密码。
-</p></li>
-</ul>
-
-
 </div>
 
 </div>
 
 <div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">配置网卡wlan0</h3>
+<h3 id="sec-2">学习顺序</h3>
 <div class="outline-text-3" id="text-2">
 
-<p>编辑/etc/network/interface,针对wlan0无线网卡（即为usb网卡）添加如下配置：
-</p>
+<p>我的学习顺序是这样的：
+</p><ol>
+<li>阅读Haskell官网的概要性文章，如：why functional programming ?<br/>&nbsp;从整体上了解和认识函数式编程，包括优势、劣势，使用领域，成功案例等等。
+</li>
+<li>找一本全面深入的电子书，开始细致的学习，我选择了“RealWorld Haskell&#8221;<br/>&nbsp;主要是希望能从0开始，全面掌握一些基础概念，打好基础。
+</li>
+<li>找一些实际项目或者实践性的书，学习实际应用，加深对基础的理解和熟练运用
+</li>
+<li>有意识地在日常工作中使用
+</li>
+<li>深入了解语言背后实现：
+<ol>
+<li>内存分配管理和垃圾回收
+</li>
+<li>ghc编译器编译处理的过程
+</li>
+<li>知晓执行效率等内在问题
+</li>
+</ol>
 
-
-<pre class="example">auto wlan0
-allow-hotplug wlan0
-iface wlan0 inet dhcp 
-      wpa-driver wext # 明确使用wext驱动，不然wap_supplicant会尝试另一个驱动（没必要）
-      wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-</pre>
-
+</li>
+</ol>
 
 </div>
 
 </div>
 
 <div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">启动</h3>
+<h3 id="sec-3">时间安排</h3>
 <div class="outline-text-3" id="text-3">
 
+<ul>
+<li>每天学习一章
+</li>
+<li>45天内学习完成基础部分
+</li>
+<li>90天内能够熟练运用和加深理解
+</li>
+<li>120天内能对语言本身的实现有了解 
+</li>
+</ul>
 
 
-
-<pre class="example">sudo ifdown wlan0
-sudo ifup wlan0 -vv # 加V可以看到具体启动过程
-</pre>
-
-<p>
-wap_supplicant&nbsp;将日志通过syslog输出，因此我们可以在/var/log/daemon中看到启动日志。
-</p>
-</div>
-
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">其它</h3>
-<div class="outline-text-3" id="text-4">
-
-
-</div>
-
-<div id="outline-container-4-1" class="outline-4">
-<h4 id="sec-4-1">无法识别网卡</h4>
-<div class="outline-text-4" id="text-4-1">
-
-<p>    如果执行ifconfig命令没有看到无线网卡（除了eth0和lo之外的另一个网卡）出现，说明你的网卡未被内核自动识别，就需要安装驱动&nbsp;先通过lsusb命令查看网卡的芯片类型，然后重新编译内核，将相关驱动编译进去。
-</p></div>
-
-</div>
-
-<div id="outline-container-4-2" class="outline-4">
-<h4 id="sec-4-2">wap_supplicant</h4>
-<div class="outline-text-4" id="text-4-2">
-
-<p>    这个程序使用客户端服务端的模式，一个叫wap_supplicant的程序启动起来做daemon进程，然后叫wap_cli的程序会作为客户端，连接daemon进程，&nbsp;发送命令（如链接具体的<span class="caps">AP</span>）等。 
-</p>
-<p>
-    wap_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
-如，scan&nbsp;是进行无线网络的扫描，scan_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
-</p>
-
-</div>
 </div>
 </div>
 

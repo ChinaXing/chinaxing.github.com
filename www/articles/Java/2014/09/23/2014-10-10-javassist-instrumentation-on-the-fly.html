@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Perl Alien 介绍 - The Chinaxing's blog
+    <title>使用javassist和Jvm Instrumentation运行时增强Java类 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>3</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li class="active"><a href="/Java/index.html">Java<sup>3</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -26,7 +26,7 @@
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">Perl Alien 介绍
+      <h2 style="text-align:center">使用javassist和Jvm Instrumentation运行时增强Java类
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -38,136 +38,175 @@
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Alien是什么</a></li>
-<li><a href="#sec-2">Alien的目标</a></li>
-<li><a href="#sec-3">Alien模块的约定/保证</a></li>
-<li><a href="#sec-4">编写Alien模块</a></li>
-<li><a href="#sec-5">实例</a></li>
+<li><a href="#sec-1">Jvm&nbsp;Instrumentation</a></li>
+<li><a href="#sec-2">字节码增强</a></li>
+<li><a href="#sec-3">方法体增强</a></li>
+<li><a href="#sec-4">运行时方法增强工具</a></li>
+<li><a href="#sec-5">Reference</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Alien是什么</h3>
+<h3 id="sec-1">Jvm&nbsp;Instrumentation</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>本文介绍Perl中的Alien。
-</p>
+
 <p>
-Alien 是一个名字空间或者一系列Module/Perl&nbsp;package。 
+Jvm&nbsp;提供了Instrumentation机制，允许在类加载时进行对类的增强，以及在运行时对已经加载的类进行增强。
 </p>
-<p>
-Alien的目标是对C库进行封装，封装成Perl模块的形式，方便安装和使用。
+<dl>
+<dt>类增强</dt><dd>叫做Instrumentation。具体的方式就是对类的byteCode进行转换
+<ul>
+<li>类加载时进行增强发生在ClassLoader加载类的之前。
+</li>
+<li>运行时进行增强通过调用Instrument接口提供的retrasnformClasses和redefineCLasses触发。
+</li>
+</ul>
+
+<p>  其中，对已有类的增强需要满足一定的约束，保证类的 <b>schema</b>&nbsp;不变
 </p>
+<p>  
+  实现Instrumentation的入口是通过Jvm提供的java agent机制，将agent&nbsp;jar加载进Jvm，并自动调用约定的agentmain或者premain方法
+</p>
+</dd>
+<dt>AttachAPI</dt><dd>对于运行中的Jvm，可以通过Jvm提供的Attach <span class="caps">API</span>，通过编程的方式将java agent&nbsp;jar加载进目标Jvm。
+</dd>
+</dl>
+
+
 <p>
-如<a href="http://search.cpan.org/perldoc?Alien::OpenSSL">Alien::<span class="caps">NSS</span></a>&nbsp;是OpenSSL库的Alien封装。我们可以在其<span class="caps">CPAN</span>页面上看到使用说明。
+[ <span class="timestamp-wrapper"> <span class="timestamp">2014-09-24-instrumentation.html</span></span>[Instrumentation的简单介绍]] 
 </p>
 </div>
 
 </div>
 
 <div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">Alien的目标</h3>
+<h3 id="sec-2">字节码增强</h3>
 <div class="outline-text-3" id="text-2">
 
-<p>Alien的目标是确保某个库已经安装。
+
+<p>
+为了实现更改类方法字节码，可以通过第三方库，比较容易使用的如javassist包，以及比较底层的asm库等。
 </p>
 <p>
-如Alien::<span class="caps">NSS</span>库的目标是确保OpenSSL的库已经安装，如果我们的Perl模块依赖OpenSSL的C库，我们可以在Build.PL中添加对Alien::NSS的依赖，从而确保安装&nbsp;模块的时候，OpenSSL库已经安装。
+<a href="http://www.javassist.org">javassist</a>&nbsp;包提供了非常便捷的使用，修改方法名，对方法的body进行更改，替换，before/after的插入源代码block。
 </p>
 </div>
 
 </div>
 
 <div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">Alien模块的约定/保证</h3>
+<h3 id="sec-3">方法体增强</h3>
 <div class="outline-text-3" id="text-3">
 
-<ol>
-<li>安装时候确保依赖的包已经安装，如果未安装则安装他们。
-</li>
-<li>使用Alien模块的时候，确保需要的包存在，否则报错给调用者。
-</li>
-<li>将C库的源码和模块打包绑定发布，或者在安装的时候下载。
-</li>
-<li>允许模块作者访问Alien模块获取的信息。
-</li>
-<li>良好的文档保证容易正确使用。
-</li>
-<li>容易地使用Module::Build。
-</li>
-</ol>
+
+<p>
+通过javassist库，可以使用如下的代码，将一段java源代码，插入到方法体的开头：
+</p>
 
 
-</div>
+<pre class="example">System.out.println("begin transform =&gt; " + className);
+ClassPool classPool = ClassPool.getDefault();
+CtClass ctClass = classPool.get(this.className);
+CtMethod ctMethod = ctClass.getDeclaredMethod(methodName);
+ctMethod.insertBefore(enhanceCode);
+System.out.println("transform ok !");
+return ctClass.toBytecode();
+</pre>
 
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">编写Alien模块</h3>
-<div class="outline-text-3" id="text-4">
-
-<ol>
-<li>继承Alien::Base , use parent&nbsp;Alien::Base;
-</li>
-<li>编写Build.<span class="caps">PL</span>, 继承Alien::Base::ModuleBuild, 根据Alien::Base::ModuleBuild 配置，构建其实例，然后调用create<sub>build</sub><sub>script方法。</sub>
-</li>
-</ol>
-
-<p>【参见：Alien::<span class="caps">NSS</span>等模块的Build.PL文件。】
+<p>
+这里的 <b>CtMethod.insertBefore</b> 作用是将java代码插入到方法体的最前面，类似的方法还有 <b>insertAfter</b>&nbsp;等。
+</p>
+<p>
+这样我们就可以将一段代码插入到一个方法中，比如：修改对象属性、执行特定方法、打印debug信息等等。
 </p>
 </div>
 
 </div>
 
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">运行时方法增强工具</h3>
+<div class="outline-text-3" id="text-4">
+
+
+<p>
+通过结合以上的知识点和技术，可以开发一个工具，完成对运行中的Jvm进行指定方法注入java代码，实现动态修改运行中对象等目的。可以说是功能非常强大，可做的事情非常多：
+</p><ul>
+<li>插入一段debug代码，辅助问题诊断，可以代替Btrace的部分功能
+</li>
+<li>插入修改对象属性和状态的代码，动态更改对象的属性和状态，实现一种动态开关
+</li>
+<li>插入return&nbsp;语句，实现短路某些方法或者mock某些场景的目的
+</li>
+</ul>
+
+
+<p>
+为此，需要实现两个工具：
+</p><dl>
+<dt>Agent</dt><dd>用来执行代码注入，实现为java&nbsp;agent,打包为jar包。
+</dd>
+<dt>Attacher</dt><dd>用来将此jar包Load进运行中的jvm，通过Jvm提供的Attach&nbsp;<span class="caps">API</span>来实现。
+</dd>
+</dl>
+
+
+<p>
+agent的实现可以参见 <a href="https://github.com/ChinaXing/CnAgent">CnAgent</a>
+</p>
+<p>
+attach实现可以参见 <a href="https://github.com/ChinaXing/CnJvmAttacher">CnJvmAttacher</a>
+</p>
+<p>
+结合起来使用的方式如：
+</p>
+
+
+<pre class="example"># target jvm pid = 2099
+java -cp .:/usr/lib/jvm/jdk-1.7.0/lib/tools.jar \
+     -jar CnJvmAttacher.jar 2099 \
+     /root/CnAgent.jar \
+    'com.exmaple.ClassA::methodA System.out.println("Hi,Agent");'
+</pre>
+
+<p>
+注意，jvm attach&nbsp;api在jdk的toosl.jar中，需要加入classpath
+</p>
+<p>
+这样就将 <code>System.out.println("Hi,Agent");</code> 这句代码插入到了methodA方法的头部，可以在目标jvm的日志中看到一行输出为:
+</p><blockquote>
+
+<p>Hi,Agent
+</p>
+</blockquote>
+
+
+</div>
+
+</div>
+
 <div id="outline-container-5" class="outline-3">
-<h3 id="sec-5">实例</h3>
+<h3 id="sec-5">Reference</h3>
 <div class="outline-text-3" id="text-5">
 
-<p>下面以<a href="http://search.cpan.org/perldoc?Alien::Tidyp">Alien::Tidyp</a> 为例来看,结合<a href="http://search.cpan.org/perldoc?HTML::Tidy"><span class="caps">HTML</span>::Tidy </a>模块对其的使用来看Alien模块的作用和使用方式：
-</p><ul>
-<li><span class="caps">HTML</span>::Tidy模块的 <a href="http://cpansearch.perl.org/src/PETDANCE/HTML-Tidy-1.54/Makefile.PL">Makefile.<span class="caps">PL</span></a> 文件中有如下内容：
-
-
-
-<pre class="example">eval { require Alien::Tidyp; };
-
-if ( !$@ ) {
-    print "Using tidyp via Alien::Tidyp\n";
-    $libs = Alien::Tidyp-&gt;config('LIBS');
-    $inc = Alien::Tidyp-&gt;config('INC');
-}
-</pre>
-
-<p>
-  从中可以发现<span class="caps">HTML</span>::Tidy模块在编译、build的时候回依赖Tidyp这个C库，而它是通过Alien::Tidyp这个模块来间接获取tidyp这个库的一些配置信息（动态连接库的位置LIBS和头文件的位置INC）。<br/>&nbsp;从这里我们可以发现Alien的用途：帮助其它模块找到相关库的配置信息。是一个helper类型的模块。
-</p></li>
-<li>Alien::Tidyp的 <a href="http://cpansearch.perl.org/src/KMX/Alien-Tidyp-v1.4.7/Build.PL">Build.<span class="caps">PL</span></a> 文件有如下内容：
-
-
-
-<pre class="example"># set what tidyp tarball we are gonna use
-$builder-&gt;notes('tidyp_url', [ 
-    'http://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz',
-    'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz',
-    'http://strawberryperl.com/package/kmx/testing/tidyp-1.04.tar.gz',
-  ]); # has to be an array
-$builder-&gt;notes('tidyp_dir', 'tidyp-1.04'); # dirname inside the tarball
-$builder-&gt;notes('tidyp_sha1', '5d9050512259c3a67a2f48469555932e3a7b8bd0');
-</pre>
-
-<p>
-  从这里和Alien::Tidyp的文档，我们大致可以知道，Alien::Tidyp在安装自身的时候做了什么：
-</p><ul>
-<li>探测tidyp的位置，包括头文件和二进制库的位置，存储在Alien::Tidyp::ConfigData模块中（此模块在AlienTidyp安装后生成）
+<ul>
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html#package_description">Java Instrumentation And&nbsp;Agent</a>
 </li>
-<li>如果没有安装则进行从source&nbsp;code的构建，从上面代码片段可以发现其使用的代码位置，然后将信息记录在Alien::Tidyp::ConfigData模块中
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/tools/index.html">Jdk&nbsp;tools</a>
+</li>
+<li><a href="http://javassist.org">javassist</a>
+</li>
+<li><a href="http://asm.ow2.org">asm</a>
+</li>
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/attach/index.html">Java Attach&nbsp;<span class="caps">API</span></a>
 </li>
 </ul>
 
-<p>  最终，Alien::Tidyp安装完成后，我们就可以从其模块中得到tidyp这个库的一些配置信息。这也就是Alien模块的作用：获取库的配置信息（如果没有则安装它们）。
-</p></li>
-</ul>
+
+
+
 
 
 

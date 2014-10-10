@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Raspberry Pi usb 无线网卡安装配置 - The Chinaxing's blog
+    <title>使用javassist和Jvm Instrumentation运行时增强Java类 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -15,176 +15,201 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>3</sup></a></li>
+          <li class="active"><a href="/Java/index.html">Java<sup>3</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">Raspberry Pi usb 无线网卡安装配置
+      <h2 style="text-align:center">使用javassist和Jvm Instrumentation运行时增强Java类
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
       </div>
       <div class="tech">
 
-<p>
-这几天，为了能够无线连接Raspberry-Pi，这样可以方便的使用和配置它，也免的拿来拿去导致损伤。
-</p>
-<p>
-于是，先在淘宝上搜索了<span class="caps">USB</span>无线网卡，结果选了一款最便宜最小巧的USB无线网卡，MERCURY MV150US（25￥）。&nbsp;150M足够用了。
-</p>
-<p>
-接下来就是配置无线，让它工作起来：
-</p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">配置wap_supplicant</a></li>
-<li><a href="#sec-2">配置网卡wlan0</a></li>
-<li><a href="#sec-3">启动</a></li>
-<li><a href="#sec-4">其它</a>
-<ul>
-<li><a href="#sec-4-1">无法识别网卡</a></li>
-<li><a href="#sec-4-2">wap_supplicant</a></li>
-</ul>
-</li>
+<li><a href="#sec-1">Jvm&nbsp;Instrumentation</a></li>
+<li><a href="#sec-2">字节码增强</a></li>
+<li><a href="#sec-3">方法体增强</a></li>
+<li><a href="#sec-4">运行时方法增强工具</a></li>
+<li><a href="#sec-5">Reference</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">配置wap_supplicant</h3>
+<h3 id="sec-1">Jvm&nbsp;Instrumentation</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>Raspbian基于Debian系统，系统默认附带了wap_supplicant作为无线链接管理的客户端。&nbsp;wap_supplicant这个程序很了不起，大家可以在这里了解到它：
-</p><ul>
-<li><a href="http://hostap.epitest.fi">官网</a>
+
+<p>
+Jvm&nbsp;提供了Instrumentation机制，允许在类加载时进行对类的增强，以及在运行时对已经加载的类进行增强。
+</p>
+<dl>
+<dt>类增强</dt><dd>叫做Instrumentation。具体的方式就是对类的byteCode进行转换
+<ul>
+<li>类加载时进行增强发生在ClassLoader加载类的之前。
 </li>
-<li><a href="http://en.wikipedia.org/wiki/Wpa_supplicant">Wikipedia</a>
+<li>运行时进行增强通过调用Instrument接口提供的retrasnformClasses和redefineCLasses触发。
 </li>
 </ul>
 
-
-<p>
-这个程序的开发者还实现了<span class="caps">AP</span>协议的服务端软件<a href="http://hostap.epitest.fi/hostapd/">Hostapd</a>&nbsp;，我们可以安装这个软件，开启网卡的无线<span class="caps">AP</span>功能（需要网卡支持），就可一实现热点接入功能了。
+<p>  其中，对已有类的增强需要满足一定的约束，保证类的 <b>schema</b>&nbsp;不变
 </p>
-<p>
-wap_supplicant的配置，位于/etc/wpa_supplicant/wpa_supplicant.conf
+<p>  
+  实现Instrumentation的入口是通过Jvm提供的java agent机制，将agent&nbsp;jar加载进Jvm，并自动调用约定的agentmain或者premain方法
 </p>
+</dd>
+<dt>AttachAPI</dt><dd>对于运行中的Jvm，可以通过Jvm提供的Attach <span class="caps">API</span>，通过编程的方式将java agent&nbsp;jar加载进目标Jvm。
+</dd>
+</dl>
+
+
 <p>
-我们需要添加针对热点的配置，如：
+[ <span class="timestamp-wrapper"> <span class="timestamp">2014-09-24-instrumentation.html</span></span>[Instrumentation的简单介绍]] 
 </p>
-
-
-<pre class="example">network={
-        ssid="ChinaXing XO"
-        proto=RSN
-        key_mgmt=WPA-PSK
-        pairwise=CCMP
-        group=CCMP
-        psk=18c9f3c76ab41632bc6ac48a8d7646114e452087fdb47c087100e97292a9da39
-}
-</pre>
-
-
-<p>
-说明：
-</p><ul>
-<li>ssid :&nbsp;无线<span class="caps">AP</span>的名称 
-</li>
-<li>key_mgmt :&nbsp;管理方式，如果是<span class="caps">WPA2</span>-PSK也要填写WPA—PSK，请注意。
-</li>
-<li>psk : 密码，此处的密码是加密过后的密码而不是原始密码，加密方法：
-
-
-
-<pre class="example">wpa_passphrase [ssid] [password]        
-</pre>
-
-<p>
-  这条命令输出一段wpa_supplicant配置，其中psk=&#8221;&hellip;&#8221;即为要使用在配置文件中的密码。
-</p></li>
-</ul>
-
-
 </div>
 
 </div>
 
 <div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">配置网卡wlan0</h3>
+<h3 id="sec-2">字节码增强</h3>
 <div class="outline-text-3" id="text-2">
 
-<p>编辑/etc/network/interface,针对wlan0无线网卡（即为usb网卡）添加如下配置：
+
+<p>
+为了实现更改类方法字节码，可以通过第三方库，比较容易使用的如javassist包，以及比较底层的asm库等。
 </p>
-
-
-<pre class="example">auto wlan0
-allow-hotplug wlan0
-iface wlan0 inet dhcp 
-      wpa-driver wext # 明确使用wext驱动，不然wap_supplicant会尝试另一个驱动（没必要）
-      wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-</pre>
-
-
+<p>
+<a href="http://www.javassist.org">javassist</a>&nbsp;包提供了非常便捷的使用，修改方法名，对方法的body进行更改，替换，before/after的插入源代码block。
+</p>
 </div>
 
 </div>
 
 <div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">启动</h3>
+<h3 id="sec-3">方法体增强</h3>
 <div class="outline-text-3" id="text-3">
 
 
+<p>
+通过javassist库，可以使用如下的代码，将一段java源代码，插入到方法体的开头：
+</p>
 
 
-<pre class="example">sudo ifdown wlan0
-sudo ifup wlan0 -vv # 加V可以看到具体启动过程
+<pre class="example">System.out.println("begin transform =&gt; " + className);
+ClassPool classPool = ClassPool.getDefault();
+CtClass ctClass = classPool.get(this.className);
+CtMethod ctMethod = ctClass.getDeclaredMethod(methodName);
+ctMethod.insertBefore(enhanceCode);
+System.out.println("transform ok !");
+return ctClass.toBytecode();
 </pre>
 
 <p>
-wap_supplicant&nbsp;将日志通过syslog输出，因此我们可以在/var/log/daemon中看到启动日志。
+这里的 <b>CtMethod.insertBefore</b> 作用是将java代码插入到方法体的最前面，类似的方法还有 <b>insertAfter</b>&nbsp;等。
+</p>
+<p>
+这样我们就可以将一段代码插入到一个方法中，比如：修改对象属性、执行特定方法、打印debug信息等等。
 </p>
 </div>
 
 </div>
 
 <div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">其它</h3>
+<h3 id="sec-4">运行时方法增强工具</h3>
 <div class="outline-text-3" id="text-4">
 
 
-</div>
+<p>
+通过结合以上的知识点和技术，可以开发一个工具，完成对运行中的Jvm进行指定方法注入java代码，实现动态修改运行中对象等目的。可以说是功能非常强大，可做的事情非常多：
+</p><ul>
+<li>插入一段debug代码，辅助问题诊断，可以代替Btrace的部分功能
+</li>
+<li>插入修改对象属性和状态的代码，动态更改对象的属性和状态，实现一种动态开关
+</li>
+<li>插入return&nbsp;语句，实现短路某些方法或者mock某些场景的目的
+</li>
+</ul>
 
-<div id="outline-container-4-1" class="outline-4">
-<h4 id="sec-4-1">无法识别网卡</h4>
-<div class="outline-text-4" id="text-4-1">
 
-<p>    如果执行ifconfig命令没有看到无线网卡（除了eth0和lo之外的另一个网卡）出现，说明你的网卡未被内核自动识别，就需要安装驱动&nbsp;先通过lsusb命令查看网卡的芯片类型，然后重新编译内核，将相关驱动编译进去。
-</p></div>
+<p>
+为此，需要实现两个工具：
+</p><dl>
+<dt>Agent</dt><dd>用来执行代码注入，实现为java&nbsp;agent,打包为jar包。
+</dd>
+<dt>Attacher</dt><dd>用来将此jar包Load进运行中的jvm，通过Jvm提供的Attach&nbsp;<span class="caps">API</span>来实现。
+</dd>
+</dl>
 
-</div>
 
-<div id="outline-container-4-2" class="outline-4">
-<h4 id="sec-4-2">wap_supplicant</h4>
-<div class="outline-text-4" id="text-4-2">
-
-<p>    这个程序使用客户端服务端的模式，一个叫wap_supplicant的程序启动起来做daemon进程，然后叫wap_cli的程序会作为客户端，连接daemon进程，&nbsp;发送命令（如链接具体的<span class="caps">AP</span>）等。 
+<p>
+agent的实现可以参见 <a href="https://github.com/ChinaXing/CnAgent">CnAgent</a>
 </p>
 <p>
-    wap_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
-如，scan&nbsp;是进行无线网络的扫描，scan_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
+attach实现可以参见 <a href="https://github.com/ChinaXing/CnJvmAttacher">CnJvmAttacher</a>
+</p>
+<p>
+结合起来使用的方式如：
 </p>
 
+
+<pre class="example"># target jvm pid = 2099
+java -cp .:/usr/lib/jvm/jdk-1.7.0/lib/tools.jar \
+     -jar CnJvmAttacher.jar 2099 \
+     /root/CnAgent.jar \
+    'com.exmaple.ClassA::methodA System.out.println("Hi,Agent");'
+</pre>
+
+<p>
+注意，jvm attach&nbsp;api在jdk的toosl.jar中，需要加入classpath
+</p>
+<p>
+这样就将 <code>System.out.println("Hi,Agent");</code> 这句代码插入到了methodA方法的头部，可以在目标jvm的日志中看到一行输出为:
+</p><blockquote>
+
+<p>Hi,Agent
+</p>
+</blockquote>
+
+
 </div>
+
+</div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5">Reference</h3>
+<div class="outline-text-3" id="text-5">
+
+<ul>
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html#package_description">Java Instrumentation And&nbsp;Agent</a>
+</li>
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/tools/index.html">Jdk&nbsp;tools</a>
+</li>
+<li><a href="http://javassist.org">javassist</a>
+</li>
+<li><a href="http://asm.ow2.org">asm</a>
+</li>
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/attach/index.html">Java Attach&nbsp;<span class="caps">API</span></a>
+</li>
+</ul>
+
+
+
+
+
+
+
 </div>
 </div>
 

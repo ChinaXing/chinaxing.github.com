@@ -166,8 +166,8 @@ a:hover {
 }
 
 .src, .example, code{
-    color:#CCC;
-    background-color:#000000;
+    color:black;
+    background-color:gray;
     padding: 0.5em;
     font-family: monospace;
 }
@@ -218,7 +218,7 @@ a:hover {
 }
 
 .tech a, .article a {
-    border-bottom:1px dotted black;
+    border-bottom:1px solid black;
     padding-bottom:2px;
 }
 
@@ -245,8 +245,9 @@ img {
 }
 
 code {
-    border: 2px solid black;
+    border: 0;
     padding: 0;
+    vertical-align: text-bottom;
 }
 
 #paginator-nav {
@@ -338,4 +339,9 @@ code {
 
 blockquote {
     border-left:.3em solid black;
+    padding-left: .5em;
+}
+
+dt {
+    font-weight: bolder;
 }
