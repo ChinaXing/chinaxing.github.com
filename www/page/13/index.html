@@ -17,8 +17,8 @@
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>3</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -29,30 +29,35 @@
       <article class="article intro">
         <header>
           <p class="date"><span>09. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">从DBIx::Class的Schema类生成SQL语句</a></h2>
+          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">去重perl数组</a></h2>
         </header>
         <section class="content">
 
-<p>
-<a href="http://search.cpan.org/perldoc?DBIx::Class::Admin">DBIx::Class::Admin</a>&nbsp;模块提供了数据库管理的一些功能，如：部署,升级版本，更新数据，插入数据，删除，查询和生成数据库<span class="caps">SQL</span>表。
-</p>
-<p>
-这个模块还附带了一个命令行的工具： <b>dbicadmin</b>&nbsp;，帮助我们不必写perl脚本就可以使用它的功能。
-</p>
+<pre class="example">my @new_a = keys %{ {map {$_ =&gt; } @a} };
+</pre>
+
+
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">从Schema生成<span class="caps">SQL</span>语句</a></li>
+<li><a href="#sec-1">例子:</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">从Schema生成<span class="caps">SQL</span>语句</h3>
-</div>
-          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">more</a></p>
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">例子:</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="example"><span class="linenr"> 1:  </span>use Modern::Perl;
+<span class="linenr"> 2:  </span>use Data::Dumper;
+<span class="linenr"> 3:  </span></pre></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">more</a></p>
         </section>
       </article>
       <article class="article intro">

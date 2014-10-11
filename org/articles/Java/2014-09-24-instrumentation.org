@@ -84,3 +84,5 @@ jvm通过agent 接口提供对Instrumentation的支持：
 + [[http://docs.oracle.com/javase/7/docs/technotes/guides/attach/index.html][Java attach API]]
 + [[http://docs.oracle.com/javase/7/docs/technotes/guides/instrumentation/index.html][Java Instrumentation doc]]
 + [[http://docs.oracle.com/javase/7/docs/technotes/guides/jvmti/index.html][Jvm Tool interface]]
++ [[http://www.jcarder.org/manual.html][Jcarder]] -  finding potential deadlocks
++ [[http://jiprof.sourceforge.net][JIP]] - The Java Interactive Profiler 

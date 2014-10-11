@@ -82,7 +82,8 @@ Hi,Agent
 + [[http://javassist.org][javassist]]
 + [[http://asm.ow2.org][asm]]
 + [[http://docs.oracle.com/javase/7/docs/technotes/guides/attach/index.html][Java Attach API]]
-
++ [[http://www.jcarder.org/manual.html][Jcarder]] -  finding potential deadlocks
++ [[http://jiprof.sourceforge.net][JIP]] - The Java Interactive Profiler 
 
 
 
