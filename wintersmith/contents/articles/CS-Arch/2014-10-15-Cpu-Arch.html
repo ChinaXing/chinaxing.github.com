@@ -1,0 +1,332 @@
+---
+date: 2014-10-12 22:56:29
+template: tech.jade
+title: Cpu - architecture
+category: CS-Arch
+chage_frequency: monthly
+tag: hardware,cpu
+---
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">CPU 组成</a>
+<ul>
+<li><a href="#sec-1-1">执行单元</a></li>
+<li><a href="#sec-1-2">逻辑和运算单元</a></li>
+<li><a href="#sec-1-3">SuperScaler</a></li>
+<li><a href="#sec-1-4">Cache</a></li>
+<li><a href="#sec-1-5">寄存器</a></li>
+<li><a href="#sec-1-6">中断</a></li>
+<li><a href="#sec-1-7">IO</a></li>
+<li><a href="#sec-1-8">时钟</a></li>
+<li><a href="#sec-1-9">频率</a></li>
+<li><a href="#sec-1-10">BUS</a></li>
+<li><a href="#sec-1-11">QPI</a></li>
+<li><a href="#sec-1-12">内存控制器</a></li>
+<li><a href="#sec-1-13">停机</a></li>
+<li><a href="#sec-1-14">idle</a></li>
+<li><a href="#sec-1-15">内存映射和访问</a></li>
+<li><a href="#sec-1-16">PMC - 性能监视计数器</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">指令执行完整流程</a>
+<ul>
+<li><a href="#sec-2-1">计算型</a></li>
+<li><a href="#sec-2-2">数据存取型</a></li>
+<li><a href="#sec-2-3">IO型</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">NUMA</a></li>
+<li><a href="#sec-4">获取cpu信息</a></li>
+<li><a href="#sec-5">SMP</a>
+<ul>
+<li><a href="#sec-5-1">进程迁移</a></li>
+<li><a href="#sec-5-2">缓存失效</a></li>
+<li><a href="#sec-5-3">cpu affinity - 亲和性</a></li>
+<li><a href="#sec-5-4">SMP 系统启动过程</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">Reference</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1"><span class="todo TODO">TODO</span> CPU 组成</h4>
+<div class="outline-text-4" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-5">
+<h5 id="sec-1-1">执行单元</h5>
+<div class="outline-text-5" id="text-1-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-5">
+<h5 id="sec-1-2">逻辑和运算单元</h5>
+<div class="outline-text-5" id="text-1-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-5">
+<h5 id="sec-1-3">SuperScaler</h5>
+<div class="outline-text-5" id="text-1-3">
+
+<p>超标量技术
+</p></div>
+
+</div>
+
+<div id="outline-container-1-4" class="outline-5">
+<h5 id="sec-1-4">Cache</h5>
+<div class="outline-text-5" id="text-1-4">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-5" class="outline-5">
+<h5 id="sec-1-5">寄存器</h5>
+<div class="outline-text-5" id="text-1-5">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-6" class="outline-5">
+<h5 id="sec-1-6">中断</h5>
+<div class="outline-text-5" id="text-1-6">
+
+<ul>
+<li id="sec-1-6-1">中断处理过程<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-6-2">处理器间中断<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-6-3">本地中断<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-7" class="outline-5">
+<h5 id="sec-1-7">IO</h5>
+<div class="outline-text-5" id="text-1-7">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-8" class="outline-5">
+<h5 id="sec-1-8">时钟</h5>
+<div class="outline-text-5" id="text-1-8">
+
+<p>时钟源
+TSC
+HPT
+</p></div>
+
+</div>
+
+<div id="outline-container-1-9" class="outline-5">
+<h5 id="sec-1-9">频率</h5>
+<div class="outline-text-5" id="text-1-9">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-10" class="outline-5">
+<h5 id="sec-1-10">BUS</h5>
+<div class="outline-text-5" id="text-1-10">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-11" class="outline-5">
+<h5 id="sec-1-11">QPI</h5>
+<div class="outline-text-5" id="text-1-11">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-12" class="outline-5">
+<h5 id="sec-1-12">内存控制器</h5>
+<div class="outline-text-5" id="text-1-12">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-13" class="outline-5">
+<h5 id="sec-1-13">停机</h5>
+<div class="outline-text-5" id="text-1-13">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-14" class="outline-5">
+<h5 id="sec-1-14">idle</h5>
+<div class="outline-text-5" id="text-1-14">
+
+</div>
+
+</div>
+
+<div id="outline-container-1-15" class="outline-5">
+<h5 id="sec-1-15">内存映射和访问</h5>
+<div class="outline-text-5" id="text-1-15">
+
+<ul>
+<li id="sec-1-15-1">TLB<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-15-2">CR0, CR3<br/>
+</li>
+</ul>
+<ul>
+<li id="sec-1-15-3">Memory barray<br/>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-1-16" class="outline-5">
+<h5 id="sec-1-16">PMC - 性能监视计数器</h5>
+<div class="outline-text-5" id="text-1-16">
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2"><span class="todo TODO">TODO</span> 指令执行完整流程</h4>
+<div class="outline-text-4" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-5">
+<h5 id="sec-2-1">计算型</h5>
+<div class="outline-text-5" id="text-2-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-5">
+<h5 id="sec-2-2">数据存取型</h5>
+<div class="outline-text-5" id="text-2-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-5">
+<h5 id="sec-2-3">IO型</h5>
+<div class="outline-text-5" id="text-2-3">
+
+<ul>
+<li id="sec-2-3-1">文件系统型<br/>
+DMA
+</li>
+</ul>
+<ul>
+<li id="sec-2-3-2">网络型<br/>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3"><span class="todo TODO">TODO</span> NUMA</h4>
+<div class="outline-text-4" id="text-3">
+
+<p>内存访问模型
+打开关闭NUMA 在Linux
+</p></div>
+
+</div>
+
+<div id="outline-container-4" class="outline-4">
+<h4 id="sec-4"><span class="todo TODO">TODO</span> 获取cpu信息</h4>
+<div class="outline-text-4" id="text-4">
+
+<p>从Linux系统下如何获取本文涉及的各种CPU信息
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-4">
+<h4 id="sec-5"><span class="todo TODO">TODO</span> SMP</h4>
+<div class="outline-text-4" id="text-5">
+
+
+</div>
+
+<div id="outline-container-5-1" class="outline-5">
+<h5 id="sec-5-1">进程迁移</h5>
+<div class="outline-text-5" id="text-5-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-5">
+<h5 id="sec-5-2">缓存失效</h5>
+<div class="outline-text-5" id="text-5-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-5-3" class="outline-5">
+<h5 id="sec-5-3">cpu affinity - 亲和性</h5>
+<div class="outline-text-5" id="text-5-3">
+
+</div>
+
+</div>
+
+<div id="outline-container-5-4" class="outline-5">
+<h5 id="sec-5-4">SMP 系统启动过程</h5>
+<div class="outline-text-5" id="text-5-4">
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-4">
+<h4 id="sec-6"><span class="todo TODO">TODO</span> Reference</h4>
+<div class="outline-text-4" id="text-6">
+
+
+
+
+
+</div>
+</div>

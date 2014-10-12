@@ -345,3 +345,7 @@ blockquote {
 dt {
     font-weight: bolder;
 }
+
+span.todo.TODO {
+    color: red;
+}

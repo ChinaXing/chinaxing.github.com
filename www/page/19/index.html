@@ -14,11 +14,12 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
+          <li><a href="/CS-Arch/index.html">CS-Arch<sup>3</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>3</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -28,8 +29,8 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>04. December 2012</span></p>
-          <h2><a href="/articles/linux/2012/12/04/2012-12-04-jekyll-chinese-list-problem.html">jekyll markdown中文列表无法解析的问题</a></h2>
+          <p class="date"><span>07. December 2012</span></p>
+          <h2><a href="/articles/linux/2012/12/07/2012-12-07-git-submodule.html">git submodule 学习笔记</a></h2>
         </header>
         <section class="content">
 
@@ -38,103 +39,110 @@
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">解决方法</a></li>
+<li><a href="#sec-1">git help&nbsp;解释</a></li>
+<li><a href="#sec-2">说明</a></li>
+<li><a href="#sec-3">命令</a></li>
+<li><a href="#sec-4">内部机制</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">解决方法</h3>
+<h3 id="sec-1">git help&nbsp;解释</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>默认的markdown解析引擎有问题
+
+
+
+<pre class="example">git-submodule - Initialize, update or inspect submodules
+</pre>
+
+</div>
+
+</div>
+
+
+          <p class="more"><a href="/articles/linux/2012/12/07/2012-12-07-git-submodule.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. December 2012</span></p>
+          <h2><a href="/articles/linux/2012/12/05/2012-12-05-github-do-not-support-jekyll-plugin.html">github 不支持 jekyll 插件的解决方法</a></h2>
+        </header>
+        <section class="content">
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">问题描述</a></li>
+<li><a href="#sec-2">解决方法:</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">问题描述</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+为了能够利用jekyll生成blog的文章分类列表.经过网上搜索，得知需要使用插件，使用方法是在jekyll的目录
+下面建立<sub>plugins目录，里面放置插件，jekyll会自动调用</sub>.
 </p>
 <p>
-配置_config.yml,将markdown解析引擎换为rdiscount:
+可惜的是github.com并不支持jekyll的插件功能，所以一番折腾白费.
 </p>
+<p>
+解决方法只有在本地jekyll生成静态页面后再git&nbsp;p</p></div></div>
+          <p class="more"><a href="/articles/linux/2012/12/05/2012-12-05-github-do-not-support-jekyll-plugin.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. December 2012</span></p>
+          <h2><a href="/articles/linux/2012/12/05/2012-12-05-cygwin-install-jekyll.html">cygwin 下安装jekyll</a></h2>
+        </header>
+        <section class="content">
+
+
+<p>
+Windows 下cygwin可以模拟Linux环境.于是打算用cygwin+jekyll&nbsp;来作写博客的环境.
+</p>
+<p>
+安装jekyll在cygwin下面没有在linux下那样顺利，下面记录下我的安装过程:
+</p>
+<ol>
+<li>从cygwin安装基础软件
+
+<p>
+   cygwin安装时候选择安装ruby,rake,gcc4,gcc4-g++,make,git,openssh等开发工具安上.
+</p>
+<p>
+   安装上工具之后,gem&nbsp;工具就安装好了.
+</p></li>
+<li>通过gem 安装jekyll环境  
+   首先安装 rake-compiler:
 
 
 
-<pre class="example">markdown: rdiscount
+<pre class="example">gem install rake-compiler   
 </pre>
 
 
 <p>
-问题解决:)
-</p></div>
-</div>
+   安装posix-spawn这个库，gem自带的有问题，需要从github上安装:
+</p>
 
+
+<pre class="example">git clone git://github.com/rtomayko/posix-spawn.git
+cd pos</pre></li></ol>
+          <p class="more"><a href="/articles/linux/2012/12/05/2012-12-05-cygwin-install-jekyll.html">more</a></p>
         </section>
       </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>04. December 2012</span></p>
-          <h2><a href="/articles/linux/2012/12/04/2012-12-04-use-github-blogging.html">use github pages to write blog</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">jekyll：从标记语言生成<span class="caps">HTML</span>页面</a>
-<ul>
-<li><a href="#sec-1-1">目录结构:</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">Mardown :&nbsp;标记语言</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">jekyll：从标记语言生成<span class="caps">HTML</span>页面</h3>
-<div class="outline-text-3" id="text-1">
-
-
-<p>
-Jekyll: <a href="https://github.com/mojombo/jekyll/wiki">https://github.com/mojombo/jekyll/wiki</a></p></div></div>
-          <p class="more"><a href="/articles/linux/2012/12/04/2012-12-04-use-github-blogging.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>10. November 2012</span></p>
-          <h2><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">快速取得apache/nginx的qps和rt</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-在计算<span class="caps">QPS</span>和RT的时候，我们一般使用grep&nbsp;。但是当日志文件很大的时候，grep会很耗时。
-</p>
-<p>
-监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。
-</p>
-<p>
-但是如果我们仅仅希望链接到服务器，执行一条命令就快速的计算出qps和rt。则需要考虑如何快速读取需要的行的问题：
-</p>
-<p>
-经过我这几天的考虑，总结出了下面一条命令。计算qps和rt算是很快了。如果谁有比这个更秒的方法，不吝赐教：
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">脚本</a></li>
-<li><a href="#sec-2">说明</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">脚本</h3>
-</div>
-          <p class="more"><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">more</a></p>
-        </section>
-      </article>
-      <div id="paginator-nav"><a href="/page/18/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a>
+      <div id="paginator-nav"><a href="/page/18/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/20/" class="nav-next">Next page »</a>
       </div>
     </section>
     <footer>
