@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Mojolicious Web框架实现分析 -- 请求在App内的处理过程 - The Chinaxing's blog
+    <title>LinkedHashMap 特性和用途 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -16,8 +16,8 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>3</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>4</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li class="active"><a href="/Java/index.html">Java<sup>4</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
@@ -27,7 +27,7 @@
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">Mojolicious Web框架实现分析 -- 请求在App内的处理过程
+      <h2 style="text-align:center">LinkedHashMap 特性和用途
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -35,8 +35,94 @@
       <div class="tech">
 
 <p>
-Mojolicious&nbsp;请求在App内的处理。。。.
+无意中在Netty代码中看到一个函数，testOrderMap，里面提到LinkedHashMap有序性，这个真心不知道，所以转头去看LinkedHashMap的代码，看到一些不错的点记录下来。
 </p>
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">内部实现</a></li>
+<li><a href="#sec-2">LinkedHashMap&nbsp;的特点</a></li>
+<li><a href="#sec-3">Reference</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">内部实现</h4>
+<div class="outline-text-4" id="text-1">
+
+<p>LinkedHashMap内部实现是在原有HashMap之上添加了一个Double Linked List。&nbsp;在遍历上要比HashMap快速。
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">LinkedHashMap&nbsp;的特点</h4>
+<div class="outline-text-4" id="text-2">
+
+<ul>
+<li>有序性
+  能够保证某种有序性，非排序有序性，而是指某种稳定性：
+<dl>
+<dt>access-ordered</dt><dd>按照访问时间排序，最近访问的排在最前面。这一点可以被用作cache。
+</dd>
+<dt>insert-ordered</dt><dd>按照插入顺序排序，最后插入的排在最前面。更新不影响次序。
+</dd>
+</dl>
+
+<p>  上面2点有序性是互斥的，即2者必居其一。&nbsp;你可以通过下面的构造函数指定这种有序性，默认是插入有序:
+</p>
+
+
+<pre class="example">public LinkedHashMap(int initialCapacity,
+                       float loadFactor,
+                       boolean accessOrder) {
+      super(initialCapacity, loadFactor);
+      this.accessOrder = accessOrder;
+  }
+</pre>
+
+
+<p>
+  关于access-ordered特性的实现，通过覆盖HashMap.Entry.recordAccess方法。&nbsp;HashMap.Entry.还有一个recordRemoval方法，在Entry被remove的时候调用。（之前不知道)
+</p></li>
+<li>非线程安全
+  LinkedHashMap并没有做并发保护，要使用在Concurrent环境，请加壳保护：
+
+
+
+<pre class="example">Map m = Collections.synchronizedMap(new LinkedHashMap(...));
+</pre>
+
+</li>
+<li>ConcurrentModifyException&nbsp;同其他Collection对象类似，在获取Iterator对象后，Iterator对象会比对Map的ModCount，如果发现ModCount不一致，就抛出此异常，fast-fail。
+</li>
+<li>removeEldestEntry
+  支持添加映射的时候触发剔除陈旧的映射，可以用此来实现有界的map（如Hibernate的BoundedConcurrentHashMap就是基于此特性实现）。
+
+<p>  
+  默认的实现是返回false，即不做evcit。
+</p></li>
+</ul>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3">Reference</h4>
+<div class="outline-text-4" id="text-3">
+
+<ul>
+<li>Jdk java.util.LinkedHashMap&nbsp;类
+</li>
+</ul>
+
+</div>
+</div>
+
       </div>
       <!-- Table of Content-->
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>

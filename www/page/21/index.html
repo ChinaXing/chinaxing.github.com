@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Mojolicious Web框架实现分析 -- 请求在App内的处理过程 - The Chinaxing's blog
+    <title>The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -17,7 +17,7 @@
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>3</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>4</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
@@ -27,65 +27,44 @@
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">Mojolicious Web框架实现分析 -- 请求在App内的处理过程
-      </h2>
-      <div id="toc">Table of Content
-        <ol></ol>
-      </div>
-      <div class="tech">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>10. November 2012</span></p>
+          <h2><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">快速取得apache/nginx的qps和rt</a></h2>
+        </header>
+        <section class="content">
 
 <p>
-Mojolicious&nbsp;请求在App内的处理。。。.
+在计算<span class="caps">QPS</span>和RT的时候，我们一般使用grep&nbsp;。但是当日志文件很大的时候，grep会很耗时。
 </p>
+<p>
+监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。
+</p>
+<p>
+但是如果我们仅仅希望链接到服务器，执行一条命令就快速的计算出qps和rt。则需要考虑如何快速读取需要的行的问题：
+</p>
+<p>
+经过我这几天的考虑，总结出了下面一条命令。计算qps和rt算是很快了。如果谁有比这个更秒的方法，不吝赐教：
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">脚本</a></li>
+<li><a href="#sec-2">说明</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">脚本</h3>
+</div>
+          <p class="more"><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">more</a></p>
+        </section>
+      </article>
+      <div id="paginator-nav"><a href="/page/20/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a>
       </div>
-      <!-- Table of Content-->
-      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
-      <script src="/js/tableofcontents.js" charset="utf-8"></script>
-      <script charset="utf-8">
-        $(function(){
-          $("#toc>ol").tableOfContents(
-           null,
-           {
-             startLevel: 3,
-             depth:3,
-             topLinks: "\u21E7",
-             topLinkClass: "toc-top-link",
-             topBodyId: "toc-top",
-          });
-        });
-        
-      </script>
-      <!-- Google Plus--><br>
-      <!-- Place this tag where you want the +1 button to render.-->
-      <div data-size="medium" class="g-plusone"></div>
-      <!--google plus-->
-      <!-- Place this tag after the last +1 button tag.-->
-      <script>
-        window.___gcfg = {lang: 'zh-CN'};
-        
-        (function() {
-          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-          po.src = 'https://apis.google.com/js/plusone.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-        
-        
-      </script>
-      <!-- DISQUS-->
-      <div id="disqus_thread" style="padding-top:1em"></div>
-      <script>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
-        
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
     </section>
     <footer>
     </footer>

@@ -1,0 +1,47 @@
+#+BEGIN_HTML
+---
+date: 2014-10-13 15:18:00
+template: tech.jade
+title: LinkedHashMap 特性和用途
+category: Java
+chage_frequency: monthly
+tag: java
+---
+#+END_HTML
+
+无意中在Netty代码中看到一个函数，testOrderMap，里面提到LinkedHashMap有序性，这个真心不知道，所以转头去看LinkedHashMap的代码，看到一些不错的点记录下来。
+*** 内部实现
+LinkedHashMap内部实现是在原有HashMap之上添加了一个Double Linked List。
+在遍历上要比HashMap快速。
+*** LinkedHashMap 的特点
++ 有序性
+  能够保证某种有序性，非排序有序性，而是指某种稳定性：
+  + access-ordered :: 按照访问时间排序，最近访问的排在最前面。这一点可以被用作cache。
+  + insert-ordered :: 按照插入顺序排序，最后插入的排在最前面。更新不影响次序。
+  上面2点有序性是互斥的，即2者必居其一。
+  你可以通过下面的构造函数指定这种有序性，默认是插入有序:
+  #+BEGIN_SRC java :eval no
+  public LinkedHashMap(int initialCapacity,
+                         float loadFactor,
+                         boolean accessOrder) {
+        super(initialCapacity, loadFactor);
+        this.accessOrder = accessOrder;
+    }
+  #+END_SRC
+
+  关于access-ordered特性的实现，通过覆盖HashMap.Entry.recordAccess方法。
+  HashMap.Entry.还有一个recordRemoval方法，在Entry被remove的时候调用。（之前不知道)
++ 非线程安全
+  LinkedHashMap并没有做并发保护，要使用在Concurrent环境，请加壳保护：
+  #+BEGIN_SRC java :eval no
+  Map m = Collections.synchronizedMap(new LinkedHashMap(...));
+  #+END_SRC
++ ConcurrentModifyException
+  同其他Collection对象类似，在获取Iterator对象后，Iterator对象会比对Map的ModCount，如果发现ModCount不一致，就抛出此异常，fast-fail。
++ removeEldestEntry
+  支持添加映射的时候触发剔除陈旧的映射，可以用此来实现有界的map（如Hibernate的BoundedConcurrentHashMap就是基于此特性实现）。
+  
+  默认的实现是返回false，即不做evcit。
+
+*** Reference
++ Jdk java.util.LinkedHashMap 类

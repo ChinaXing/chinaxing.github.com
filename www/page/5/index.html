@@ -16,9 +16,9 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>3</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>3</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>4</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>25</sup></a></li>
         </ul>
@@ -29,33 +29,41 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>16. July 2013</span></p>
-          <h2><a href="/articles/linux/2013/07/16/2013-07-16-git-reflog.html">git reflog</a></h2>
+          <p class="date"><span>06. August 2013</span></p>
+          <h2><a href="/articles/linux/2013/08/06/2013-08-06-proactor-vs-reactor.html">两种IO模式：Proactor与Reactor模式</a></h2>
         </header>
         <section class="content">
 
 <p>
-git reflog&nbsp;命令用来列出reflog，reflog记录了每次当前commit的变化（描述可能不准确）。
+<span class="caps">IO</span>多路复用模型有两种Proactor与Reactor，两者的区别主要在于IO是同步还是异步。
+</p>
+<p>
+Proactor比Reactor更高效。
+</p>
+<p>
+下面是两种模式的请求处理过程：
 </p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">reflog</a></li>
-<li><a href="#sec-2">查看reflog</a></li>
-<li><a href="#sec-3">reflog的格式</a></li>
-<li><a href="#sec-4">引用reflog</a></li>
+<li><a href="#sec-1">处理过程</a>
+<ul>
+<li><a href="#sec-1-1">Proactor</a></li>
+<li><a href="#sec-1-2">Reactor</a></li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">reflog</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   reflog在commit、merge、switch&nbsp;branch等的时</p></div></div>
-          <p class="more"><a href="/articles/linux/2013/07/16/2013-07-16-git-reflog.html">more</a></p>
+</li>
+<li><a href="#sec-2">区别和联系</a>
+<ul>
+<li><a href="#sec-2-1">区别</a></li>
+<li><a href="#sec-2-2">联系</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">参考材料</a></li>
+</ul>
+</div></div>
+          <p class="more"><a href="/articles/linux/2013/08/06/2013-08-06-proactor-vs-reactor.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
@@ -92,30 +100,33 @@ git已经成为非常流行的版本管理工具，在这里记录一些git使�
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>23. June 2013</span></p>
-          <h2><a href="/articles/Perl/2013/06/23/2013-06-23-HTML-formhandler.html">Web开发form模块 HTML-FormHandler</a></h2>
+          <p class="date"><span>16. July 2013</span></p>
+          <h2><a href="/articles/linux/2013/07/16/2013-07-16-git-reflog.html">git reflog</a></h2>
         </header>
         <section class="content">
 
 <p>
-<a href="http://search.cpan.org/perldoc?HTML::FormHandler"><span class="caps">HTML</span>-FormHandler</a> - <span class="caps">HTML</span> forms using&nbsp;Moose
+git reflog&nbsp;命令用来列出reflog，reflog记录了每次当前commit的变化（描述可能不准确）。
 </p>
+
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1"><span class="caps">HTML</span>-FormHandler</a>
-<ul>
-<li><a href="#sec-1-1">主要功能</a>
-<ul>
-<li><a href="#sec-1-1-1">Validate</a></li>
-<li><a href="#sec-1-1-2">Process&nbsp;form</a></li>
-<li><a href="#sec-1-1-3">render&nbsp;form</a></li>
-<li><a href="#sec-1-1-4">Update&nbsp;Model</a></li>
+<li><a href="#sec-1">reflog</a></li>
+<li><a href="#sec-2">查看reflog</a></li>
+<li><a href="#sec-3">reflog的格式</a></li>
+<li><a href="#sec-4">引用reflog</a></li>
 </ul>
-</li>
-<li></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Perl/2013/06/23/2013-06-23-HTML-formhandler.html">more</a></p>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">reflog</h3>
+<div class="outline-text-3" id="text-1">
+
+<p>   reflog在commit、merge、switch&nbsp;branch等的时</p></div></div>
+          <p class="more"><a href="/articles/linux/2013/07/16/2013-07-16-git-reflog.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/4/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/6/" class="nav-next">Next page »</a>
