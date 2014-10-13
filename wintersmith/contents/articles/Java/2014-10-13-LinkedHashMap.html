@@ -15,7 +15,14 @@ tag: java
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#sec-1">内部实现</a></li>
-<li><a href="#sec-2">LinkedHashMap 的特点</a></li>
+<li><a href="#sec-2">LinkedHashMap 的特点</a>
+<ul>
+<li><a href="#sec-2-1">有序性</a></li>
+<li><a href="#sec-2-2">非线程安全</a></li>
+<li><a href="#sec-2-3">ConcurrentModifyException</a></li>
+<li><a href="#sec-2-4">removeEldestEntry</a></li>
+</ul>
+</li>
 <li><a href="#sec-3">Reference</a></li>
 </ul>
 </div>
@@ -35,10 +42,15 @@ tag: java
 <h4 id="sec-2">LinkedHashMap 的特点</h4>
 <div class="outline-text-4" id="text-2">
 
-<ul>
-<li>有序性
-  能够保证某种有序性，非排序有序性，而是指某种稳定性：
-<dl>
+
+</div>
+
+<div id="outline-container-2-1" class="outline-5">
+<h5 id="sec-2-1">有序性</h5>
+<div class="outline-text-5" id="text-2-1">
+
+<p>  能够保证某种有序性，非排序有序性，而是指某种稳定性：
+</p><dl>
 <dt>access-ordered</dt><dd>按照访问时间排序，最近访问的排在最前面。这一点可以被用作cache。
 </dd>
 <dt>insert-ordered</dt><dd>按照插入顺序排序，最后插入的排在最前面。更新不影响次序。
@@ -62,28 +74,43 @@ tag: java
 <p>
   关于access-ordered特性的实现，通过覆盖HashMap.Entry.recordAccess方法。
   HashMap.Entry.还有一个recordRemoval方法，在Entry被remove的时候调用。（之前不知道)
-</p></li>
-<li>非线程安全
-  LinkedHashMap并没有做并发保护，要使用在Concurrent环境，请加壳保护：
+</p></div>
 
+</div>
+
+<div id="outline-container-2-2" class="outline-5">
+<h5 id="sec-2-2">非线程安全</h5>
+<div class="outline-text-5" id="text-2-2">
+
+<p>  LinkedHashMap并没有做并发保护，要使用在Concurrent环境，请加壳保护：
+</p>
 
 
 <pre class="example">Map m = Collections.synchronizedMap(new LinkedHashMap(...));
 </pre>
 
-</li>
-<li>ConcurrentModifyException
-  同其他Collection对象类似，在获取Iterator对象后，Iterator对象会比对Map的ModCount，如果发现ModCount不一致，就抛出此异常，fast-fail。
-</li>
-<li>removeEldestEntry
-  支持添加映射的时候触发剔除陈旧的映射，可以用此来实现有界的map（如Hibernate的BoundedConcurrentHashMap就是基于此特性实现）。
+</div>
 
+</div>
+
+<div id="outline-container-2-3" class="outline-5">
+<h5 id="sec-2-3">ConcurrentModifyException</h5>
+<div class="outline-text-5" id="text-2-3">
+
+<p>  同其他Collection对象类似，在获取Iterator对象后，Iterator对象会比对Map的ModCount，如果发现ModCount不一致，就抛出此异常，fast-fail。
+</p></div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-5">
+<h5 id="sec-2-4">removeEldestEntry</h5>
+<div class="outline-text-5" id="text-2-4">
+
+<p>  支持添加映射的时候触发剔除陈旧的映射，可以用此来实现有界的map（如Hibernate的BoundedConcurrentHashMap就是基于此特性实现）。
+</p>
 <p>  
   默认的实现是返回false，即不做evcit。
-</p></li>
-</ul>
-
-
+</p></div>
 </div>
 
 </div>
