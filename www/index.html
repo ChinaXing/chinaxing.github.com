@@ -14,9 +14,10 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>3</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>4</sup></a></li>
+          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>4</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
@@ -27,6 +28,86 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>14. October 2014</span></p>
+          <h2><a href="/articles/DS-Alg/2014/10/15/CLH-QueueLock.html">CLH 队列锁</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+<span class="caps">CLH</span>队列锁有很多优势，Java的ASQ同步器就基于CLH锁。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">优势/特点</a></li>
+<li><a href="#sec-2">实现原理</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">优势/特点</h3>
+<div class="outline-text-3" id="text-1">
+
+<ul>
+<li>实现公平调度 - <span class="caps">FIFO</span>,&nbsp;fair
+</li>
+<li>无饥饿 -&nbsp;starvation-free
+</li>
+<li>无竞争情况下，内存占用少
+</li>
+<li>spin在单一内存地址上，cache miss&nbsp;hit少
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+          <p class="more"><a href="/articles/DS-Alg/2014/10/15/CLH-QueueLock.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>14. October 2014</span></p>
+          <h2><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">Concurrency support - LL/SC</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+本文介绍<span class="caps">CPU</span>/硬件对并发的支持之LL/SC&nbsp;(Load-Link/Store-Conditional).
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="caps">LL</span>/SC</a>
+<ul>
+<li><a href="#sec-1-1">vs&nbsp;<span class="caps">CAS</span></a></li>
+<li><a href="#sec-1-2">Implementation</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">refrence</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="caps">LL</span>/SC</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+<span class="caps">LL</span>/SC&nbsp;可以实现Lock-Free的同步原</p></div></div>
+          <p class="more"><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>13. October 2014</span></p>
@@ -52,71 +133,6 @@
 </li>
 <li></li></ul></div></div>
           <p class="more"><a href="/articles/Java/2014/10/13/2014-10-13-LinkedHashMap.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. October 2014</span></p>
-          <h2><a href="/articles/CS-Arch/2014/10/13/2014-10-12-Hyper-Threading.html">hardware multithreading - HT</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-cpu/硬件级别支持的多线程类似软件级别的多线程，逻辑上的多个执行流，并且它们共享了一些状态和资源。
-</p>
-<p>
-对于cpu级别的多线程，共享的是如下资源：
-</p><ol>
-<li>执行单元
-</li>
-<li>cache
-</li>
-</ol>
-
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">为什么要采用多线程</a></li>
-<li><a href="#sec-2">多线程的种类</a></li>
-<li><a href="#sec-3">Hyper-Threading</a>
-<ul>
-<li><a href="#sec-3-1">perfermance&nbsp;improve</a></li>
-</ul>
-</li>
-<li><a href="#sec-4">落幕的技术</a></li>
-<li><a href="#sec-5">安全问题</a></li>
-<li></li></ul></div></div>
-          <p class="more"><a href="/articles/CS-Arch/2014/10/13/2014-10-12-Hyper-Threading.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. October 2014</span></p>
-          <h2><a href="/articles/CS-Arch/2014/10/13/2014-10-15-Cpu-Arch.html">Cpu - architecture</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">CPU</span> 组成</a>
-<ul>
-<li><a href="#sec-1-1">执行单元</a></li>
-<li><a href="#sec-1-2">逻辑和运算单元</a></li>
-<li><a href="#sec-1-3">SuperScaler</a></li>
-<li><a href="#sec-1-4">Cache</a></li>
-<li><a href="#sec-1-5">寄存器</a></li>
-<li><a href="#sec-1-6">中断</a></li>
-<li><a href="#sec-1-7"><span class="caps">IO</span></a></li>
-<li><a href="#sec-1-8">时钟</a></li>
-<li><a href="#sec-1-9">频率</a></li>
-<li><a href="#sec-1-10"><span class="caps">BUS</span></a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/CS-Arch/2014/10/13/2014-10-15-Cpu-Arch.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>
