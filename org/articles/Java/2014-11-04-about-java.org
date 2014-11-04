@@ -1,0 +1,55 @@
+#+BEGIN_HTML
+---
+date: 2014-11-04 20:50:53
+template: tech.jade
+title: 关于 Java
+category: Java
+chage_frequency: monthly
+tag: Java
+---
+#+END_HTML
+
+*** Java
+
+Java 语言在应用上，是一个工业应用上成熟的语言，生态系统丰富完善。在技术上，Java 语言是基于虚拟机的语言实现、垃圾自动回收管理的典型而成熟的实现。
+
+分别从应用层和语言/计算机层进行概览Java的重要技术点，可以作为一个学习和深入的列表。
+
+*** 应用层技术
+- 数据库交互 :: JDBC，JTA，JPA
+- 并发编程设计 :: Executors, Concurrent库，内存模型
+- Web服务 :: Servlet规范
+- 模块化设计 :: OSGI，IOC
+- 热部署 :: ClassLoader
+- 消息 :: JMS
+- 连接 :: JCI
+- Network :: NIO
+
+*** CS/语言层技术
+- 外部模块集成/交互 :: JNI
+- RPC :: RMI
+- 序列化 :: ObjectStream
+- 元编程 :: Reflective
+- 泛型 :: Generaic ，Type parameter
+- Probe :: Instrumentation，AttachAPI
+- Debug :: JMTI，JDI
+- LVM :: JVM, stack based VM, byteCode, Heap, Stack
+- JIT :: C2 , OSR
+- 线程 :: Thread
+- 同步 :: Synchronizer, Monitor, ReenterLock, wait, notify, AQS, baise-lock, spin-lock
+- GC :: cms, paraller, mark-sweep, mark-compact, G1, C4, Stop-the-world, Safe Point, Reference, weak-Reference, phatom-Reference, Soft-Reference, GC-Root, tracing-gc
+- Memory Model :: memory visable, voliate, final, memory barrier, happen-befor, re-order, cache-collision
+- ClassLoad :: load-link, classLoader, bootstrap, ext-ClassLoader, AppClassLoader, SystemClassLoader, ContextClassLoader, URLClassLoader, transform, retransform, defineClass, redefineClass
+- Security :: sercurityManager, policy, Permission, Target, Action
+- Agent :: javaagent, agentlib, premain/agentmain, Attach
+- ByteCode :: invokeVirtual, invokeSpecial, invokeDynamic, invokeStatic, Method-signature, Constant-pool, Symbol-table, try-catch
+- proxy :: JDK-dynamic-proxy, cglib-subclass-proxy, aspectj
+- Instrumentation :: javassist, asm
+
+*** 工具链
+- Profile :: jinfo, jmap, jstack, jperf, MAT, BTrace, jstatd, jconsole, jmx
+- Package :: Jar
+- Debug :: jdb, jdi, jmti, BTrace
+
+
+

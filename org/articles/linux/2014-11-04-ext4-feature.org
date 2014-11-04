@@ -3,9 +3,9 @@
 date: 2014-11-04 10:13:47
 template: tech.jade
 title: Ext4 fs feature
-category: linux
+category: Linux
 chage_frequency: monthly
-tag: fs,ext4,linux
+tag: fs,ext4,Linux
 ---
 #+END_HTML
 1. Block 大小可定，但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
