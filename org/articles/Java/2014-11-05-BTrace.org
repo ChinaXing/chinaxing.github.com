@@ -1,0 +1,96 @@
+#+BEGIN_HTML
+---
+date: 2014-11-05 21:10:18
+template: tech.jade
+title: BTrace 运行时诊断工具
+category: Java
+chage_frequency: monthly
+tag: Java,debug,tool
+---
+#+END_HTML
+
+*** BTrace
+
+经常需要对运行中的Java程序进行错误诊断、性能剖析，那么BTrace工具可以说是像一把利器，通过它可以和运行中的Java程序进行交互。
+
+BTrace的实现基于Java语言规范和JVM实现所提供的机制：Instrumentation 和 javaagent/Attach API。
+
+Instrumentation 机制允许对已有类进行Retransform、对未加载类在加载时只需转换，这样BTrace可以将定义的Probe代码植入到目标中。
+
+javaagent/Attach API 机制为Instrumentation提供了切入点。
+
+BTrace在基于以上两点技术之上，实现了灵活性、易用性。灵活性表现在可以自定义Java代码，自定义Probe点等，应用性表现在对一些基本操作的封装上，使得使用非常便捷。
+
+*** BTrace 结构
+
+BTrace的系统结构图如下:
+#+BEGIN_SRC dot :file ~/ChinaXing.org/org/img/btrace-arch.png :cmdline -Kdot -Tpng :eval no-export
+digraph btrace_struct {
+        resolution = 100
+        fixedsize = false
+        node [ shape = record color = grey ]
+        edge [ color = grey penwidth = 1.0 style=dashed ]
+        rankdir = "LR"
+        subgraph cluster_client{
+          node [ shape = box ];
+          label = "btrace-client";
+          compile [ label = "compile" backgroundColor = "red" ];
+          client [ label = "client" ];
+          {rank = same; client compile }
+        }
+        subgraph cluster_jvm{
+            label = "Java vm";
+            subgraph cluster_agent {
+                label = "btrace-agent";
+                server [ label = "{<f0> server|<f1> port=8080}" ];
+            }
+        }
+       
+       server:f1 -> client [ label = "Command" dir = both ];
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:/img/btrace-arch.png]]
+
+btrace-server 和 btrace-client通过 tcp 连接进行通信，交换Command对象。
+
+**** 启动和使用
+btrace-server 的加载方式有2种，一种是随着jvm的启动加载，使用jvm提供的javaagent机制：
+#+BEGIN_EXAMPLE
+java -javaagent:btrace-agent.jar=script={compiled-script-class-file} MainClass ...
+#+END_EXAMPLE
+这种方式启动，需要将BTrace脚本编译为Class文件。这种方式的好处是可以在系统初始化之前将probe点应用起来，对于那些只在系统早期运行的类，这样的方式非常必要。
+
+另一种方式是通过Jvm attach api 将btrace-agent 脚本加载到目标Jvm中，这种方式对于运行中得java程序有效：
+#+BEGIN_EXAMPLE
+bin/btrace {pid} TraceScript.java
+#+END_EXAMPLE
+这种方式下，btrace首先将btrace-agent的jar包通过attach api 加载到目标jvm，接着将BTrace脚本在client端进行编译，然后通过tcp连接请求btrace-server进行加载。
+
+**** BTrace脚本
+BTrace脚本是普通的java程序，BTrace通过注解来解释脚本的用途。
+
+BTrace有安全模式和非安全模式，默认情况是安全模式，在安全模式下，不能直接在BTrace脚本中编写普通的Java代码来实现如访问对象、执行方法等操作，而只能使用BTrace提供的工具和函数，如BTraceUtils类下面的静态方法。
+
+在非安全模式下没有限制，可以写任何java代码。
+
+这一开关在BTrace agent启动的时候通过unsafe参数指定，可以在btrace的shell脚本中修改相应的地方。
+
+设置安全模式的原因是为了减低风险，避免执行没有限制的代码使得被probe系统奔溃或数据异常。
+
+虽然BTrace在实现上的安全模式下对操作做了很多限制，但是如果能很好的使用BTraceUtils类中提供的方法，完全可以实现90%的debug需求。而且非常便捷。
+
+*** 使用场景
+- 跟踪方法调用 :: 通过@OnMethod注解，可以对指定类的方法上进行注入分析代码，通过@Self注解可以拿到$this对象，@Return注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
+
+- 打印调用堆栈 :: BTraceUtils提供了jstack方法，可以打印出调用栈。此方法其实是对Thread重jstack方法的封装。
+- 打印系统信息 :: BTraceUtils中提供的内存相关、cpu相关等Runtime信息可以获得运行中的系统资源使用信息
+- 执行GC  :: BTraceUtils中同样提供了gc函数，主动触发gc
+- 打印对象引用可达图 :: BTraceUtils提供了强大的功能，可以把从一个对象出发可达的所有对象图打印出来，输出成.dot文件或者xml文件等格式
+- 输出对象XML :: 将对象导出成XML各式
+- Profile :: BTrace本身对性能剖析提供了支持，可以很方便实现性能统计。
+- 捕获异常 :: BTrace 可以对异常进行probe，在异常发生时打印异常栈。
+
+*** 注意点
+- BTrace agent只会加载一次，因此如果第一次加载时候未打开unsafe选项，而之后再打开此选项是无效的，只能重启java程序。
