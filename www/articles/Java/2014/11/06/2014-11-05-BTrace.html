@@ -19,8 +19,8 @@
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>7</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -156,7 +156,7 @@ BTrace有安全模式和非安全模式，默认情况是安全模式，在安�
 <div class="outline-text-4" id="text-3">
 
 <dl>
-<dt>跟踪方法调用</dt><dd>通过 <b>@OnMethod</b> 注解，可以对指定类的方法上进行注入分析代码，通过 <b>@Self</b> 注解可以拿到 <b>$this</b> 对象，*@Return*&nbsp;注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
+<dt>跟踪方法调用</dt><dd>通过 <b>@OnMethod</b> 注解，可以对指定类的方法上进行注入分析代码，通过 <b>@Self</b> 注解可以拿到 <b>$this</b> 对象， <b>@Return</b>&nbsp;注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
 </dd>
 <dt>打印调用堆栈</dt><dd>BTraceUtils提供了jstack方法，可以打印出调用栈。此方法其实是对Thread重jstack方法的封装。
 </dd>
