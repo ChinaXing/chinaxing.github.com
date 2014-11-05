@@ -14,11 +14,11 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>7</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
@@ -29,6 +29,41 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. November 2014</span></p>
+          <h2><a href="/articles/Java/2014/11/06/2014-11-05-BTrace.html">BTrace 运行时诊断工具</a></h2>
+        </header>
+        <section class="content">
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">BTrace</a></li>
+<li><a href="#sec-2">BTrace 结构</a>
+<ul>
+<li><a href="#sec-2-1">启动和使用</a></li>
+<li><a href="#sec-2-2">BTrace脚本</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">使用场景</a></li>
+<li><a href="#sec-4">注意点</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">BTrace</h4>
+<div class="outline-text-4" id="text-1">
+
+
+<p>
+经常需要对运行中的Java程序进行错误诊断</p></div></div>
+          <p class="more"><a href="/articles/Java/2014/11/06/2014-11-05-BTrace.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>04. November 2014</span></p>
@@ -89,38 +124,6 @@ Java 语言在应用上，是一个工业应用上成熟的语言，生态系统
 <p>
 分别从应用层和语言/计算机层进行概览Java的重要技术点，</p></div></div>
           <p class="more"><a href="/articles/Java/2014/11/05/2014-11-04-about-java.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>04. November 2014</span></p>
-          <h2><a href="/articles/linux/2014/11/04/2014-11-04-ext4-feature.html">Ext4 fs feature</a></h2>
-        </header>
-        <section class="content">
-<dl>
-<dt>Block&nbsp;大小可定</dt><dd>但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
-</dd>
-<dt>Block&nbsp;组织为BlockGroup</dt><dd>大小128M&nbsp;32768个block。文件系统由多个blockGroup顺序组成
-</dd>
-<dt>每个blockGroup内部是一个类似ext3的文件系统结构</dt><dd>
-<ul>
-<li>SuperBLock
-</li>
-<li>inodeBitMap
-</li>
-<li>Inode Block&nbsp;List
-</li>
-<li>blockBitMap
-</li>
-<li>data Bock&nbsp;List
-</li>
-</ul>
-
-</dd>
-<dt>Fixed&nbsp;Block</dt><dd>多个blockGroup组成一个固定长度的blockGroup的组，组内的第一个BlockGroup&nbsp;携带了除本group外的其余3个blockGroup的元数据信息。这起到了快速访问和冗余的作用。
-</dd>
-<dt>bigAlloce</dt><dd>允许进行大块分配，通过多个block组</dd></dl>
-          <p class="more"><a href="/articles/linux/2014/11/04/2014-11-04-ext4-feature.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>
