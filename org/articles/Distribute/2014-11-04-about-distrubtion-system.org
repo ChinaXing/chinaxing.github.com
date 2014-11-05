@@ -93,6 +93,9 @@ CAP理论中阐述 CAP 的不可调和性，即三者无法达到最佳值，必
 - Consistent hashing
 **** 可用性策略
 - FailOver
+**** 分布式事务
+- 2PC
+- 3PC
 
 *** Reference
 - [[http://www.cs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf][CAP 原作者Keynote]]
