@@ -45,7 +45,7 @@ tag: fs,ext4,Linux
 <li>extent tree，查找快速
 <blockquote>
 
-<p>Extents replace the traditional block mapping scheme used by ext2 and ext3. An extent is a range of contiguous physical blocks, improving large file performance and reducing fragmentation. A single extent in ext4 can map up to 128 MiB of contiguous space with a 4 KiB block size.<sup><a class="footref" name="fnr-.1" href="#fn-.1">1</a></sup> There can be four extents stored in the inode. When there are more than four extents to a file, the rest of the extents are indexed in an HTree.
+<p>Extents replace the traditional block mapping scheme used by ext2 and ext3. An extent is a range of contiguous physical blocks, improving large file performance and reducing fragmentation. A single extent in ext4 can map up to 128 MiB of contiguous space with a 4 KiB block size. There can be four extents stored in the inode. When there are more than four extents to a file, the rest of the extents are indexed in an HTree.
 </p>
 </blockquote>
 
@@ -60,10 +60,3 @@ tag: fs,ext4,Linux
 <p>
 <a href="https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout">Ext4_Disk_Layout</a> <a href="http://en.wikipedia.org/wiki/HTree">HTree</a>
 </p>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-<p class="footnote"><sup><a class="footnum" name="fn-.1" href="#fnr-.1">1</a></sup> DEFINITION NOT FOUND: 1
-</p>
-</div>
-</div>
