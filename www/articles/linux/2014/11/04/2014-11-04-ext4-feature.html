@@ -14,13 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" data-icon="&#xf00a" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>6</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li class="active"><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -35,14 +35,12 @@
         <ol></ol>
       </div>
       <div class="tech">
-<ol>
-<li>Block&nbsp;大小可定，但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
-</li>
-<li>Block 组织为BlockGroup 大小128M&nbsp;32768个block。
-</li>
-<li>文件系统由多个blockGroup顺序组成
-</li>
-<li>每个blockGroup内部是一个类似ext3的文件系统结构：
+<dl>
+<dt>Block&nbsp;大小可定</dt><dd>但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
+</dd>
+<dt>Block&nbsp;组织为BlockGroup</dt><dd>大小128M&nbsp;32768个block。文件系统由多个blockGroup顺序组成
+</dd>
+<dt>每个blockGroup内部是一个类似ext3的文件系统结构</dt><dd>
 <ul>
 <li>SuperBLock
 </li>
@@ -56,34 +54,50 @@
 </li>
 </ul>
 
-</li>
-<li>Fixed Block<br/>
-   多个blockGroup组成一个固定长度的blockGroup的组，组内的第一个BlockGroup&nbsp;携带了除本group外的其余3个blockGroup的元数据信息。这起到了快速访问和冗余的作用。
-</li>
-<li>bigAlloce<br/>&nbsp;允许进行大块分配，通过多个block组成cluster的形式，这样的话一个bitMap就对应了一个cluster，分配和释放都以cluster为单位。目前还支持不是很好。
-</li>
-<li>Multialloce<br/>&nbsp;在分配很大空间的时候可以一次分配多个块，避免重复地调用
-</li>
-<li>inlineData<br/>&nbsp;可以将数据放在inode中，当数据很少的时候
-</li>
-<li>查看文件系统信息（从磁盘读取）工具<br/>&nbsp;dumpe2fs
-
-</li>
-<li>文件寻址快
+</dd>
+<dt>Fixed&nbsp;Block</dt><dd>多个blockGroup组成一个固定长度的blockGroup的组，组内的第一个BlockGroup&nbsp;携带了除本group外的其余3个blockGroup的元数据信息。这起到了快速访问和冗余的作用。
+</dd>
+<dt>bigAlloce</dt><dd>允许进行大块分配，通过多个block组成cluster的形式，这样的话一个bitMap就对应了一个cluster，分配和释放都以cluster为单位。目前还支持不是很好。
+</dd>
+<dt>Multialloce</dt><dd>在分配很大空间的时候可以一次分配多个块，避免重复地调用
+</dd>
+<dt>inlineData</dt><dd>可以将数据放在inode中，当数据很少的时候
+</dd>
+<dt>查看文件系统信息（从磁盘读取）工具</dt><dd>dumpe2fs
+</dd>
+<dt>Hash Tree&nbsp;Direcotry</dt><dd>使用HTree&nbsp;来提高目录操作的性能
+</dd>
+<dt>文件寻址快</dt><dd>
 <ul>
 <li>extent&nbsp;分配128M
 </li>
-<li>extent&nbsp;tree，查找快速
+<li>extent tree，查找快速
+<blockquote>
+
+<p>Extents replace the traditional block mapping scheme used by ext2 and ext3. An extent is a range of contiguous physical blocks, improving large file performance and reducing fragmentation. A single extent in ext4 can map up to 128 MiB of contiguous space with a 4 KiB block size.<sup><a class="footref" name="fnr-.1" href="#fn-.1">1</a></sup> There can be four extents stored in the inode. When there are more than four extents to a file, the rest of the extents are indexed in an&nbsp;HTree.
+</p>
+</blockquote>
+
+
 </li>
 </ul>
 
-</li>
-</ol>
+</dd>
+<dt>???</dt><dd><a href="https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout">Ext4<sub>Disk</sub><sub>Layout</sub></a>
+</dd>
+<dt>???</dt><dd><a href="http://en.wikipedia.org/wiki/HTree">HTree</a>
+</dd>
+</dl>
 
 
-<p>
-<a href="https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout">Link</a>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+<p class="footnote"><sup><a class="footnum" name="fn-.1" href="#fnr-.1">1</a></sup> <span class="caps">DEFINITION</span> NOT FOUND:&nbsp;1
 </p>
+</div>
+</div>
+
       </div>
       <!-- Table of Content-->
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
