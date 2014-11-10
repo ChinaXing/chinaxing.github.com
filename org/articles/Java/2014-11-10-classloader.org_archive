@@ -1,0 +1,38 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /Users/ChinaXing/ChinaXing.org/org/articles/Java/2014-11-10-classloader.org
+
+
+
+* ClassLoader 继承
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2014-11-10 一 21:53
+  :ARCHIVE_FILE: ~/ChinaXing.org/org/articles/Java/2014-11-10-classloader.org
+  :ARCHIVE_CATEGORY: 2014-11-10-classloader
+  :END:
+ClassLoader 在逻辑上被组织为一个 *父-子* 关系，即：每个ClassLoader有个parent。extend ClassLoader的父ClassLoader是bootstrap ClassLoader，但是因为bootstrap ClassLoader并非一个ClassLoader.class对象，extendClassLoader.parent 为null。
+
+因此，无法拿到bootstrapClassLoader的引用。
+
+除了这一点异常外，每个ClassLoader总有一个parent。关系如下图：
+#+BEGIN_SRC dot :file ~/ChinaXing.org/org/img/classLoader-toplogy.png :cmdline -Kdot -Tpng :eval no-export
+digraph cl_top {
+  edge [ color = red , fontcolor = blue ]
+
+  bootstrapClassLoader [ fillcolor = red style = filled fontcolor =white ]
+  extClassLoader [ fillcolor = blue style = filled fontcolor = white ]
+
+  extClassLoader -> bootstrapClassLoader [ label = "parent" style = dashed ]
+  app1ClassLoader -> extClassLoader [ label = "parent" ]
+  app0ClassLoader -> extClassLoader [ label = "parent" comment = ".parent" ]
+
+
+  {rank = same; app0ClassLoader app1ClassLoader} 
+  rankdir = BT
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:~/ChinaXing.org/org/img/classLoader-toplogy.png]]
+
