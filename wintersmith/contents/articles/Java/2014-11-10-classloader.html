@@ -1,0 +1,300 @@
+---
+date: 2014-11-10 20:49:01
+template: tech.jade
+title: ClassLoader
+category: Java
+chage_frequency: monthly
+tag: java,classloader
+---
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">ClassLoader</a></li>
+<li><a href="#sec-2">Class</a></li>
+<li><a href="#sec-3">ClassLoader分类</a></li>
+<li><a href="#sec-4">ClassLoader 继承</a></li>
+<li><a href="#sec-5">类查找策略</a></li>
+<li><a href="#sec-6">类加载过程</a>
+<ul>
+<li><a href="#sec-6-1">defineClass</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">URLClassLoader</a></li>
+<li><a href="#sec-8">安全性</a></li>
+<li><a href="#sec-9">类加载和类链接</a></li>
+<li><a href="#sec-10">Reference</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">ClassLoader</h4>
+<div class="outline-text-4" id="text-1">
+
+<p>Java 将ClassLoader开放给程序开发者，可以区别于静态语言的一个优势就是可以对类加载进行控制（编程），这是非常灵活和可扩展的一个点。
+</p>
+<p>
+ClassLoader提供的可自定义特点，给应用开发者带来方便，将资源查找抽象出来。
+</p>
+<p>
+利用了ClassLoader机制的项目如OSGI、Tomcat等实现同一JVM内部应用隔离，带来的好处是可以一个JVM里面部署多个模块互不影响。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-4">
+<h4 id="sec-2">Class</h4>
+<div class="outline-text-4" id="text-2">
+
+<p>java中，每个Class对象（java.lang.Class）代表了一个类，Class对象被某个ClassLoader加载（getClassLoader）。一个类的标识如下：
+</p><blockquote>
+
+<p>package + class + classLoaderId 
+</p>
+</blockquote>
+
+
+<p>
+因此，虽然是同一类文件，被不同的ClassLoader加载，那么他们就不是同一个Class对象，不是同一个类。如果相互引用，JVM会报类型错。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-4">
+<h4 id="sec-3">ClassLoader分类</h4>
+<div class="outline-text-4" id="text-3">
+
+<p>ClassLoader按照启动顺序或者所处角色（使命）可以分为3类：
+</p><dl>
+<dt>bootstrap ClassLoader</dt><dd>是系统的第一个ClassLoader，用C++实现，用来在初始阶段加载类（包括加载ClassLoader.class和Class.class）
+</dd>
+<dt>extend ClassLoader</dt><dd>是Jvm启动初始化完成后用来加载扩展的ClassLoader，扩展位于${JAVA_HOME}/lib/ext/目录下面
+</dd>
+<dt>System ClassLoader</dt><dd>加载用户指定的classpath下类的ClassLoader。也称作AppClassLoader
+</dd>
+</dl>
+
+
+<p>
+上面三个ClassLoader，第一个比较特殊外，其余的都是ClassLoader.class的子类。都是Java语言编写的，而且都继承于URLClassLoader
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-4">
+<h4 id="sec-4">ClassLoader 继承</h4>
+<div class="outline-text-4" id="text-4">
+
+<p>ClassLoader 在逻辑上被组织为一个 <b>父-子</b> 关系，即：每个ClassLoader有个parent。extend ClassLoader的父ClassLoader是bootstrap ClassLoader，但是因为bootstrap ClassLoader并非一个ClassLoader.class对象，extendClassLoader.parent 为null。
+</p>
+<p>
+因此，无法拿到bootstrapClassLoader的引用。
+</p>
+<p>
+除了这一点异常外，每个ClassLoader总有一个parent。关系如下图：
+</p>
+
+<p>
+<img src="file:///img/classLoader-toplogy.png"  alt="file:///img/classLoader-toplogy.png" />
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-4">
+<h4 id="sec-5">类查找策略</h4>
+<div class="outline-text-4" id="text-5">
+
+<p>ClassLoader的主要作用就是加载类（还可以加载resource），加载类的时候，调用loadClass方法，加载类的时候，按照如下的策略：
+</p><ol>
+<li>如果本ClassLoader已经加载过此类，直接返回Class对象
+</li>
+<li>委托给parent ClassLoader 查找，如果找到返回
+</li>
+<li>调用本ClassLoader的findClass进行查找，查找到后记录到本ClassLoader加载类列表
+</li>
+</ol>
+
+
+<p>
+其中, 记录到已加载类集合的操作是JVM完成的（调用addClass）
+</p>
+<p>
+通过这个顺序，可以保证：
+</p><ol>
+<li>一个类不会被重复加载
+</li>
+<li>一个类如果parent ClassLoader已经加载，child ClassLoader 无法覆盖
+</li>
+<li>同级的（sibling）ClassLoader加载的类不会互相影响（不可见）。
+</li>
+</ol>
+
+
+<p>
+在这个基础上可以保证安全性、隔离性。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-4">
+<h4 id="sec-6">类加载过程</h4>
+<div class="outline-text-4" id="text-6">
+
+
+
+<p>
+<img src="file:///img/classload_procedure.png"  alt="file:///img/classload_procedure.png" />
+</p>
+<p>
+其中ClassLoader种的findClass方法是一个未被实现的方法:
+</p>
+
+
+<pre class="example">protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException {
+    throw new ClassNotFoundException(name);
+}
+</pre>
+
+<p>
+对于ClassLoader的实现者，只要实现此方法，将类的字节码读入byte[]，然后调用ClassLoader提供的defineClass方法即可生成出class对象。
+</p>
+<p>
+可见，类定义的关键是实现根据类名找到类字节码。
+</p>
+
+</div>
+
+<div id="outline-container-6-1" class="outline-5">
+<h5 id="sec-6-1">defineClass</h5>
+<div class="outline-text-5" id="text-6-1">
+
+<p>defineClass的目标很简单，就是通过字节码将Class对象创建出来，下面是流程图：
+</p>
+
+<p>
+<img src="file:///img/classloader-defineClass.png"  alt="file:///img/classloader-defineClass.png" />
+</p>
+<p>
+其中，
+</p><dl>
+<dt>defineClass0</dt><dd>用于定义没有源文件的类（动态生成代码）
+</dd>
+<dt>defineClass1</dt><dd>用于从byte[] 定义类
+</dd>
+<dt>defineClass2</dt><dd>用于从ByteBuffer 定义类
+</dd>
+<dt>defineTransformedClass</dt><dd>通过调用注册的ClassFileTransform链条，对字节码进行变换，然后再执行defineClass1进行尝试
+</dd>
+</dl>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-4">
+<h4 id="sec-7">URLClassLoader</h4>
+<div class="outline-text-4" id="text-7">
+
+<p>URLClassLoader是 默认提供的CLassLoader的实现，也被JVM用作默认的类加载器，它可以从一簇URL中加载类字节码。
+</p>
+<p>
+URL可以是:
+</p><dl>
+<dt>指向class文件</dt><dd>一个指向class文件的url
+</dd>
+<dt>指向jar包</dt><dd>一个包含了class文件的jar包
+</dd>
+</dl>
+
+
+<p>
+因此我们可以把jar包或者class文件放入classpath。
+</p>
+<p>
+但是要注意的是，URLClassLoader并不能识别jar包中的jar，它只能识别jar包中的class 文件，因此，企图让java加载jar包中jar中的类是不支持的。
+必须自己实现ClassLoader（可以参考OneJar项目）
+</p>
+<p>
+还要注意的一点是，对于通过 <i>-jar</i> 参数指定jar包运行的方式，命令行设置的classpath（-cp选项）被忽略，只能通过jar包中MANIFEST.MF中得Class-path属性设置。
+</p>
+<p>
+这里的潜在含义是，jar包作为一个完整的整体，是不需要（不应该）依赖外部类（除jvm本身）而可以独立运行的。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-4">
+<h4 id="sec-8">安全性</h4>
+<div class="outline-text-4" id="text-8">
+
+<p>对于定义classLoader，java security有一个permission控制是否有权限进行ClassLoader的创建: <i>checkCreateClassLoader</i> 
+</p>
+<p>
+每个class还会关联一个ProtectDomain，定义了一个Domain，并赋予相应的权限。
+</p>
+<p>
+定义类的时候，JVM还会检查调用者是否有对对应package的权限，如果没有也不能创建类。
+</p>
+<p>
+此外还可以通过签名验证来保证更强的安全性（未深入了解）。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-4">
+<h4 id="sec-9">类加载和类链接</h4>
+<div class="outline-text-4" id="text-9">
+
+<p>loadClass 完成类的加载，具体来说就是根据类名找到类字节码，然后返回一个Class对象代表这个类。
+</p>
+<p>
+此时的类，JVM并没有做深入的剖析，如分析继承和依赖等。
+</p>
+<p>
+对类进行深度解析的过程叫做类链接，link，发生在load之后，类被证实实例化之前。
+</p>
+<p>
+在loadClass的调用中，有一个选项可以指定是否在类加载完成后进行一下link。
+</p>
+<p>
+类的link涉及到对类内部的分析，对于一些依赖要进行关联加载，保证接下来的实例化可以进行。
+</p>
+<p>
+如果没有让loadClass进行link类，那么类的link发生在代码运行中类被使用的时候（这里不一定是执行到某一处）。
+</p>
+<p>
+比如，一个类A被使用，那么在链接的时候，会触发他的所有父类、接口的的链接（如果没有加载要加载）。
+</p>
+<p>
+关于这个过程，还没有深入、系统的了解。
+</p></div>
+
+</div>
+
+<div id="outline-container-10" class="outline-4">
+<h4 id="sec-10">Reference</h4>
+<div class="outline-text-4" id="text-10">
+
+<ul>
+<li>JDK ClassLoader.java
+</li>
+<li>JDK URLClassLoader.java
+</li>
+<li><a href="http://one-jar.sourceforge.net">OneJar project</a>
+</li>
+</ul>
+
+</div>
+</div>
