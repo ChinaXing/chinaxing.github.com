@@ -87,7 +87,7 @@ change_frequency: monthly
 
     查询语句的构建和转换是在DBIx::Class::Storage::DBI中进行，转换使用DBIx::Class::SQLMaker,该类是对SQL::Abstract的扩展和增强。
 *** dbicadmin
-    这个类提供一个工具=dbicadmin=。\\
+    这个类提供一个工具 =dbicadmin= \\
     这个类不是DBIC的核心部分，它只是一个辅助工具。可以完成：
     - Schema部署到数据库 -- deploy
     - 生成Schema对应的SQL语句 -- create
@@ -101,7 +101,6 @@ change_frequency: monthly
    2. 使用比较底层的Class::C3类模块进行辅助性构建（加载component，mix对象），使得对象不清晰，错综复杂，底层技术使得代码阅读起来晦涩。\\
       原因猜测是Class::C3模块是作者所写，作者对perl老式的编程方式比较熟悉，开发人员应该是比较老派的Perl程序员。
    3. Result,ResultSet,ResultSource,Storge等基本概念比较清晰，关联关系也容易找到。
-=未完待续=
 
     
 
