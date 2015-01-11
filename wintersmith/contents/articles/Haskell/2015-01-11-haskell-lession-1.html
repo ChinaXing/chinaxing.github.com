@@ -31,6 +31,8 @@ tag: Haskell
 </dd>
 <dt>lazy evaluate</dt><dd>延迟计算，计算和求值会推迟到需要的时候才进行，好处是可以减少不必要的运算等。
 </dd>
+<dt>lazy IO Action</dt><dd>IO 动作只有在需要的时候才触发，而且是按需触发。
+</dd>
 <dt>curry / partial</dt><dd>每个haskell函数只有一个参数，多参数的函数可以通过curry化，转换为新的单参数函数，curry 化是partial applicate函数的部分参数来获得。
 </dd>
 <dt>partern match</dt><dd>根据模式匹配来进行函数的路由，是实现分支和递归的利器。这也几乎是所有函数语言的特点之一。
