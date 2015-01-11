@@ -16,12 +16,13 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
+          <li><a href="/Hashell/index.html">Hashell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -32,66 +33,63 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>30. March 2013</span></p>
-          <h2><a href="/articles/linux/2013/03/30/2013-03-30-emacs-org-misc.html">emacs org-mode 使用杂记</a></h2>
+          <p class="date"><span>19. April 2013</span></p>
+          <h2><a href="/articles/linux/2013/04/19/2013-04-19-limits.html">Linux中系统资源limit</a></h2>
         </header>
         <section class="content">
 
 <p>
-Emacs org-mode 用来写blog,然后export&nbsp;出<span class="caps">HTML</span>,最后再使用jekyll生成静态blog,发布在github上.
-</p>
-<p>
-这是我写blog的方法,刚刚接触emacs&nbsp;org-mode,所以遇到了不少初级麻烦,折腾之后,记录在这里,
+linux&nbsp;系统通过进程的rlimit字段，限制进程的资源使用，包括：文件打开数,core文件大小等，可以通过ulimit命令查看当前进程的设置:
 </p>
 
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">导出project配置</a></li>
-<li><a href="#sec-2">使用org-bable 插入Source&nbsp;Code</a></li>
-<li><a href="#sec-3">导出语法高亮的Source&nbsp;Code</a></li>
-<li><a href="#sec-4">导出时不执行代码</a></li>
-<li><a href="#sec-5">导出代码和代码执行结果</a></li>
-<li><a href="#sec-6">org-mode&nbsp;s</a></li></ul></div></div>
-          <p class="more"><a href="/articles/linux/2013/03/30/2013-03-30-emacs-org-misc.html">more</a></p>
+
+<pre class="example">ulimit -a
+</pre>
+
+
+
+<pre class="example">time(seconds)        unlimited
+file(blocks)         unlimited
+data(kbytes)         unlimited
+stack(kbytes)        8515
+coredump(blocks)     0
+memory(kbytes)       unlimited
+locked memory(kbytes) 64
+process              31366
+nofiles              1024
+vmemory(kbytes)      unlimited
+locks                unlimited
+</pre>
+
+
+
+<p>
+在程序中通过getrlimt和setrlimit</p>
+          <p class="more"><a href="/articles/linux/2013/04/19/2013-04-19-limits.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>18. March 2013</span></p>
-          <h2><a href="/articles/Perl/2013/03/18/2013-03-18-use-require-do-eval.html">认识Perl 中use，require，do，eval</a></h2>
+          <p class="date"><span>18. April 2013</span></p>
+          <h2><a href="/articles/linux/2013/04/18/2013-04-18-incrond-and-csync2.html">使用incrond和csync2实现集群文件同步</a></h2>
         </header>
         <section class="content">
 
 <p>
-use, require, do ,eval&nbsp;是我们经常见到的perl语言关键字。下面我们简洁明要地进行对他们说明。
+在翻看<span class="caps">CPAN</span>上<a href="http://www.cpan.org/misc/how-to-mirror.html">搭建镜像站点</a> 介绍中，<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/"><span class="caps">CPAN</span>镜像同步程序</a> 的作者在介绍其算法的时候，举例到<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/lib/File/Rsync/Mirror/Recent.pm#COMPETITORS">竞争者</a>有 <b>csync2</b>, <b>rsync3</b>&nbsp;(batchmode)。
 </p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">use</a>
-<ul>
-<li><a href="#sec-1-1">作用</a></li>
-<li><a href="#sec-1-2">use&nbsp;发生在什么时候</a></li>
-<li><a href="#sec-1-3">use&nbsp;的实现</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">require</a>
-<ul>
-<li><a href="#sec-2-1">require&nbsp;作用</a></li>
-<li><a href="#sec-2-2">require的执行期</a></li>
-<li><a href="#sec-2-3">require的实现</a></li>
-</ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Perl/2013/03/18/2013-03-18-use-require-do-eval.html">more</a></p>
+<p>
+由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，&nbsp;于是google了rsync3的batchmode，发现其实非常不友好，也没有比rsync高级出多少。
+</p>
+<p>
+再gogole了csync2，发现不少文章，都是介绍使用csync2进行集群文件同</p>
+          <p class="more"><a href="/articles/linux/2013/04/18/2013-04-18-incrond-and-csync2.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>10. March 2013</span></p>
-          <h2><a href="/articles/linux/2013/03/10/2013-03-10-Fuse-implementing-filesystem-in-user-space.html">Fuse - 用户空间的文件系统实现</a></h2>
+          <p class="date"><span>10. April 2013</span></p>
+          <h2><a href="/articles/Perl/2013/04/10/2013-04-10-Perl-module-load-modules.html">Perl加载模块的模块比较</a></h2>
         </header>
         <section class="content">
 
@@ -100,25 +98,27 @@ use, require, do ,eval&nbsp;是我们经常见到的perl语言关键字。下面
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Fuse&nbsp;介绍</a></li>
-<li><a href="#sec-2">Fuse的实现原理</a>
-<ul>
-<li><a href="#sec-2-1">libfuse</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">参考资料</a></li>
+<li><a href="#sec-1">模块分类</a></li>
+<li><a href="#sec-2">模块推荐</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Fuse&nbsp;介绍</h3>
-<div class="outline-text-3" id="text-1">
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">模块分类</h4>
+<div class="outline-text-4" id="text-1">
 
-<p>Fuse&nbsp;是指用户空间的文件系统，是文件系统的一种实现方式。目前<span class="caps">BSD</span>，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
-</p><ul>
-<li>易于调</li></ul></div></div>
-          <p class="more"><a href="/articles/linux/2013/03/10/2013-03-10-Fuse-implementing-filesystem-in-user-space.html">more</a></p>
+<p>加载模块，<span class="caps">CPAN</span>上有许多模块可以完成。下面是这些模块的对比，以及各种情况下的推荐模块。
+</p>
+<p>
+<img src="/img/perl-loading-module-map.png"  alt="file:///img/perl-loading-module-map.png" />
+</p>
+</div>
+
+</div>
+
+
+          <p class="more"><a href="/articles/Perl/2013/04/10/2013-04-10-Perl-module-load-modules.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/14/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/16/" class="nav-next">Next page »</a>

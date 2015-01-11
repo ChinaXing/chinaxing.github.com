@@ -1,0 +1,64 @@
+#+BEGIN_HTML
+---
+date: 2015-01-11 20:39:10
+template: tech.jade
+title: Haskell 第二课 —— 类型
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+#+END_HTML
+
+** Type
+   #+BEGIN_SRC haskell
+      data Maybe a = Nothing | Just a
+   #+END_SRC
+   + Maybe :: type constructor
+   + Nothing :: variable constructor
+   + Just a :: variable constructor
+   + a :: type varaible
+
+** Type partial
+   #+BEGIN_SRC haskell
+     type MaybeInt = Maybe Int
+     type EitherInt = Either Int
+     type EitherIntString = EitherInt String
+   #+END_SRC
+
+** TypeClass
+   #+BEGIN_SRC haskell
+     class YesNo a where
+          yesno :: a -> Bool
+   #+END_SRC
+   
+   + YesNo :: typeClass
+   + a :: type variable
+   + yesno :: typeClass function
+** Functor
+   #+BEGIN_SRC  haskell
+     class  Functor f where 
+        fmap :: (a -> b) -> f a -> f b
+   #+END_SRC
+   
+   + f :: type constructor
+   + a :: type varaible a
+   + b :: type variable b
+   + f a :: type construct by : f a (eg. Maybe Int)
+   + f b :: same
+** Kind
+   类型有Kind，即类型本身的类型，通过使用ghci 的:k 功能，可以查阅到某个类型的Kind:
+   #+BEGIN_SRC haskell
+    :k Maybe
+    Maybe :: * -> *
+    :k Int
+    Int :: *
+    :k Maybe Int
+    Maybe Int :: *
+    :k Either
+    Either :: * -> * -> *
+    :k Either Int
+    Either Int :: * -> *
+   #+END_SRC
+   + '*' 代表一concrete（明确）的类型，只有明确的类型才能用作变量的类型，其它类型是抽象类型或者说类型的模板
+   + * -> * 代表一一个类型构造器，或者说参数化的类型，它接收一个明确类型为参数，然后构造出一个明确类型
+   类型的构造器如果有多个参数（Either），那么就可以curry化，即部分应用明确类型后，生成出一个新的类型构造器

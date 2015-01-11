@@ -1,0 +1,12 @@
+#+BEGIN_HTML
+---
+date: 2015-01-12 00:39:18
+template: tech.jade
+title: Haskell 第四课 —— Monad
+category: Hashell
+chage_frequency: monthly
+tag: Haskell
+---
+#+END_HTML
+** TODO Monad 
+   Monad是变换为一种智能的处理链条抽象 。。

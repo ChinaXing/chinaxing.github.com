@@ -1,0 +1,27 @@
+#+BEGIN_HTML
+---
+date: 2015-01-12 00:26:23
+template: tech.jade
+title: Haskell 第三课 —— 输入输出
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+#+END_HTML
+
+** IO Action
+** do
+** return
+** ByteString
+** ByteString.Lazy
+** System.IO
+** System.Enviorment
+** System.Radom
+** Exception
+*** throw exception   
+    IO Action can throw exceptions. 
+
+    pure function code can also (but not encourage, use Maybe/Either). 
+*** exception cagutch
+    only in IO Action
+*** System.IO.Error
