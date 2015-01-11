@@ -17,12 +17,13 @@ tag: Haskell
 + partern match :: 根据模式匹配来进行函数的路由，是实现分支和递归的利器。这也几乎是所有函数语言的特点之一。
 + TypeClass :: 类型的类型，若干类型可以具有某种特点（类型），这个类型的类型就是TypeClass，类比于Java的Interface。
 + Type varaible :: 一种抽象类型可以具有类型变量，类似于java generic和c++ template。
-+ composite function :: 复合函数，多个函数可以复合，实现函数链条 (f . g) x = f(g x) 。 
++ composition function :: 复合函数，多个函数可以复合，实现函数链条 (f . g) x = f(g x) 。 
 + Recursion :: 使用递归思想取代使用循环的命令式思想，将问题的求解转换为递归到边界条件的运算。
 + Guard :: guard 是模式匹配的增强版本，guard对参数进行路由，实现了分支。
 + fold :: fold 代替递归，fold 本质是一种迭代，使用foldr。
 + flip :: 将参数对换: flip f x y = f y x 或 flip f = \x y -> f y x
 + lambda :: 一种匿名函数，便捷函数
++ syntax :: 变量小写开头，类型大写开头
 
 ** haskell 模块
 + module定义 :: 使用module Ma (expors...) where ... 开始来定义一个文件内容为模块。
@@ -30,19 +31,20 @@ tag: Haskell
 
 ** haskell 类型
 + 定义类型 
-#+BEGIN_SRC haskell
- data T1 a b = Constructor1 a | Consutructor2 a b -- with type varaible
- data Circle = Circle r -- normal
- data Rectangle = Rectangle { width :: Int , height :: Int } -- record style
-#+END_SRC
+  #+BEGIN_SRC haskell
+    data T1 a b = Constructor1 a | Consutructor2 a b -- with type varaible
+    data Circle = Circle r -- normal
+    data Rectangle = Rectangle { width :: Int , height :: Int } -- record style
+  #+END_SRC
   * 类型构造器是一个函数或者是一个类型常量（如果没有参数）
   * 类型定义支持递归定义，递归数据结构
   * 对于复杂类型，最好使用record模式，这样，访问器自动生成。
-#+BEGIN_SRC haskell
-  type UserName = String -- simple
-  type StringArray = [String] -- yet another
-  type IntMap = Map.Map Int -- from abstract Type
-#+END_SRC
++ 类型别名
+  #+BEGIN_SRC haskell
+     type UserName = String -- simple
+     type StringArray = [String] -- yet another
+     type IntMap = Map.Map Int -- from abstract Type
+  #+END_SRC
 
 ** To be haskellism
 + 使用Maybe返回函数的结果，避免抛出异常

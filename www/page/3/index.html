@@ -15,13 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>2</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -29,6 +30,62 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>04. November 2014</span></p>
+          <h2><a href="/articles/linux/2014/11/04/2014-11-04-ext4-feature.html">Ext4 fs feature</a></h2>
+        </header>
+        <section class="content">
+<dl>
+<dt>Block&nbsp;大小可定</dt><dd>但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
+</dd>
+<dt>Block&nbsp;组织为BlockGroup</dt><dd>大小128M&nbsp;32768个block。文件系统由多个blockGroup顺序组成
+</dd>
+<dt>每个blockGroup内部是一个类似ext3的文件系统结构</dt><dd>
+<ul>
+<li>SuperBLock
+</li>
+<li>inodeBitMap
+</li>
+<li>Inode Block&nbsp;List
+</li>
+<li>blockBitMap
+</li>
+<li>data Bock&nbsp;List
+</li>
+</ul>
+
+</dd>
+<dt>Fixed&nbsp;Block</dt><dd>多个blockGroup组成一个固定长度的blockGroup的组，组内的第一个BlockGroup&nbsp;携带了除本group外的其余3个blockGroup的元数据信息。这起到了快速访问和冗余的作用。
+</dd>
+<dt>bigAlloce</dt><dd>允许进行大块分配，通过多个block组</dd></dl>
+          <p class="more"><a href="/articles/linux/2014/11/04/2014-11-04-ext4-feature.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>22. October 2014</span></p>
+          <h2><a href="/articles/Java/2014/10/22/2014-10-22-about-debug-skill.html">谈下程序问题定位 - debug</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+最近几天，被ClassLoader折磨的够呛，在整整2天的各种问题中，有不少感触，这些感触，并不是技术上面的一些能力与技巧，而是说关于如何进行问题解决的一个思维问题。
+</p>
+<p>
+当一个程序并不如你所预期的状态时，一项debug的工作就开始了。对于一个未知的错误或者说是状态，有的人会开始就犯愁，有的人也许抱着好奇和不信邪的心态非要找出个所以然。
+</p>
+<p>
+从实际上说，遇到问题是好事情，一个问题如果深究而不是google，会让你搞明白很多道理，这些道理和技术也许平时是不会浮出水面的，在你的整个技术生涯中，都没能见到他们。
+</p>
+<p>
+但是，一旦你面对这个问题，你决定要去解决它，并且是彻底解决的时候，你就开始了一段接近真相和赤裸裸事实世界的旅程。
+</p>
+<p>
+这个过程是孤独的，直到你z
+</p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>14. October 2014</span></p>
@@ -71,69 +128,6 @@
 </div>
 
           <p class="more"><a href="/articles/DS-Alg/2014/10/15/CLH-QueueLock.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>14. October 2014</span></p>
-          <h2><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">Concurrency support - LL/SC</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-本文介绍<span class="caps">CPU</span>/硬件对并发的支持之LL/SC&nbsp;(Load-Link/Store-Conditional).
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">LL</span>/SC</a>
-<ul>
-<li><a href="#sec-1-1">vs&nbsp;<span class="caps">CAS</span></a></li>
-<li><a href="#sec-1-2">Implementation</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">refrence</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="caps">LL</span>/SC</h3>
-<div class="outline-text-3" id="text-1">
-
-
-<p>
-<span class="caps">LL</span>/SC&nbsp;可以实现Lock-Free的同步原</p></div></div>
-          <p class="more"><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>13. October 2014</span></p>
-          <h2><a href="/articles/Java/2014/10/13/2014-10-13-LinkedHashMap.html">LinkedHashMap 特性和用途</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-无意中在Netty代码中看到一个函数，testOrderMap，里面提到LinkedHashMap有序性，这个真心不知道，所以转头去看LinkedHashMap的代码，看到一些不错的点记录下来。
-</p>
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">内部实现</a></li>
-<li><a href="#sec-2">LinkedHashMap 的特点</a>
-<ul>
-<li><a href="#sec-2-1">有序性</a></li>
-<li><a href="#sec-2-2">非线程安全</a></li>
-<li><a href="#sec-2-3">ConcurrentModifyException</a></li>
-<li><a href="#sec-2-4">removeEldestEntry</a></li>
-</ul>
-</li>
-<li></li></ul></div></div>
-          <p class="more"><a href="/articles/Java/2014/10/13/2014-10-13-LinkedHashMap.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/2/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/4/" class="nav-next">Next page »</a>

@@ -15,13 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>2</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -29,6 +30,61 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>19. April 2013</span></p>
+          <h2><a href="/articles/linux/2013/04/19/2013-04-19-limits.html">Linux中系统资源limit</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+linux&nbsp;系统通过进程的rlimit字段，限制进程的资源使用，包括：文件打开数,core文件大小等，可以通过ulimit命令查看当前进程的设置:
+</p>
+
+
+<pre class="example">ulimit -a
+</pre>
+
+
+
+<pre class="example">time(seconds)        unlimited
+file(blocks)         unlimited
+data(kbytes)         unlimited
+stack(kbytes)        8515
+coredump(blocks)     0
+memory(kbytes)       unlimited
+locked memory(kbytes) 64
+process              31366
+nofiles              1024
+vmemory(kbytes)      unlimited
+locks                unlimited
+</pre>
+
+
+
+<p>
+在程序中通过getrlimt和setrlimit</p>
+          <p class="more"><a href="/articles/linux/2013/04/19/2013-04-19-limits.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>18. April 2013</span></p>
+          <h2><a href="/articles/linux/2013/04/18/2013-04-18-incrond-and-csync2.html">使用incrond和csync2实现集群文件同步</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+在翻看<span class="caps">CPAN</span>上<a href="http://www.cpan.org/misc/how-to-mirror.html">搭建镜像站点</a> 介绍中，<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/"><span class="caps">CPAN</span>镜像同步程序</a> 的作者在介绍其算法的时候，举例到<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/lib/File/Rsync/Mirror/Recent.pm#COMPETITORS">竞争者</a>有 <b>csync2</b>, <b>rsync3</b>&nbsp;(batchmode)。
+</p>
+<p>
+由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，&nbsp;于是google了rsync3的batchmode，发现其实非常不友好，也没有比rsync高级出多少。
+</p>
+<p>
+再gogole了csync2，发现不少文章，都是介绍使用csync2进行集群文件同</p>
+          <p class="more"><a href="/articles/linux/2013/04/18/2013-04-18-incrond-and-csync2.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>10. April 2013</span></p>
@@ -62,68 +118,6 @@
 
 
           <p class="more"><a href="/articles/Perl/2013/04/10/2013-04-10-Perl-module-load-modules.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>06. April 2013</span></p>
-          <h2><a href="/articles/Perl/2013/04/06/2013-04-06-summary-perl-module.html">Perl module 介绍</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-本文总结和介绍Perl语言的”模块“，知识来源于<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">纲目与理念</a></li>
-<li><a href="#sec-2">Perl&nbsp;语言由模块构成</a></li>
-<li><a href="#sec-3">模块的构成</a></li>
-<li><a href="#sec-4">加载模块和导入模块变量和子过程</a></li>
-<li><a href="#sec-5">模块/类/包</a></li>
-<li><a href="#sec-6">其它</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-4">
-</div>
-          <p class="more"><a href="/articles/Perl/2013/04/06/2013-04-06-summary-perl-module.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>04. April 2013</span></p>
-          <h2><a href="/articles/linux/2013/04/04/2013-04-04-use-hid-replace-jekyll-to-blog.html">使用perl模块HiD取代jekyll编写blog</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-jekyll&nbsp;是一个非常好用的静态站点生成器，支持插件，可以用来增强它。
-</p>
-<p>
-如今，许多技术人员的blog开始放在github上面，github同时支持jekyll的基本功能。
-</p>
-<p>
-经过一些配置，就可以使用org+jekyll+github完成blog的编写到发布。
-</p>
-<p>
-jekyll使用ruby开发，因为我没有学过ruby，也不打算学，所以一直希望能够有个Perl的类似程序，以便代替jekyll。
-</p>
-<p>
-于是，在<span class="caps">CPAN</span>上面发现了这个模块：<a href="https://github.com/genehack/HiD"><span class="caps">HID</span></a>, 类似的模块当然很多，而且灵感都起于jekyll，之所以选这个模块是因为它和&nbsp;jekyll的相似度非常高。
-</p>
-<p>
-美中不足的是，它还有待完善，因为还不能支持全局的分类和tag之类的功能，虽然为它添加这个功能非常简单（我已经添加）。
-</p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-</div>
-          <p class="more"><a href="/articles/linux/2013/04/04/2013-04-04-use-hid-replace-jekyll-to-blog.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/12/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/14/" class="nav-next">Next page »</a>

@@ -7,6 +7,11 @@ if [ $# -eq 1 ]
 then
     echo "--- build static ---"
     (cd wintersmith && node_modules/wintersmith/bin/wintersmith build)
+    if [ $? -ne 0 ]
+    then
+        echo "Error -- build static site failed, please check wintersmith"
+        exit -1
+    fi
     echo "--- build Done --"
 fi
 

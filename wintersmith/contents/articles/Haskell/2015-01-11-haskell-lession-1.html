@@ -39,7 +39,7 @@ tag: Haskell
 </dd>
 <dt>Type varaible</dt><dd>一种抽象类型可以具有类型变量，类似于java generic和c++ template。
 </dd>
-<dt>composite function</dt><dd>复合函数，多个函数可以复合，实现函数链条 (f . g) x = f(g x) 。 
+<dt>composition function</dt><dd>复合函数，多个函数可以复合，实现函数链条 (f . g) x = f(g x) 。 
 </dd>
 <dt>Recursion</dt><dd>使用递归思想取代使用循环的命令式思想，将问题的求解转换为递归到边界条件的运算。
 </dd>
@@ -50,6 +50,8 @@ tag: Haskell
 <dt>flip</dt><dd>将参数对换: flip f x y = f y x 或 flip f = \x y -&gt; f y x
 </dd>
 <dt>lambda</dt><dd>一种匿名函数，便捷函数
+</dd>
+<dt>syntax</dt><dd>变量小写开头，类型大写开头
 </dd>
 </dl>
 
@@ -80,9 +82,6 @@ tag: Haskell
 
 <ul>
 <li>定义类型 
-</li>
-</ul>
-
 
 
 
@@ -100,6 +99,8 @@ data Rectangle = Rectangle { width :: Int , height :: Int } -- record style
 </li>
 </ul>
 
+</li>
+<li>类型别名
 
 
 
@@ -107,6 +108,9 @@ data Rectangle = Rectangle { width :: Int , height :: Int } -- record style
 type StringArray = [String] -- yet another
 type IntMap = Map.Map Int -- from abstract Type
 </pre>
+
+</li>
+</ul>
 
 
 </div>
