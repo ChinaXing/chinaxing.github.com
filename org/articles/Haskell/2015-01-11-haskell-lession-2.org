@@ -44,7 +44,7 @@ tag:
    + a :: type varaible a
    + b :: type variable b
    + f a :: type construct by : f a (eg. Maybe Int)
-   + fb :: same
+   + f b :: same
 ** Kind
    类型有Kind，即类型本身的类型，通过使用ghci 的:k 功能，可以查阅到某个类型的Kind:
    #+BEGIN_SRC haskell
