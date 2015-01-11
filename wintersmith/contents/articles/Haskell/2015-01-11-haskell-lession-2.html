@@ -16,6 +16,7 @@ tag:
 <li><a href="#sec-2">Type partial</a></li>
 <li><a href="#sec-3">TypeClass</a></li>
 <li><a href="#sec-4">Functor</a></li>
+<li><a href="#sec-5">Kind</a></li>
 </ul>
 </div>
 </div>
@@ -113,6 +114,37 @@ type EitherIntString = EitherInt String
 </dd>
 </dl>
 
+</div>
 
 </div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5">Kind</h3>
+<div class="outline-text-3" id="text-5">
+
+<p>   类型有Kind，即类型本身的类型，通过使用ghci 的:k 功能，可以查阅到某个类型的Kind:
+</p>
+
+
+<pre class="example">:k Maybe
+Maybe :: * -&gt; *
+:k Int
+Int :: *
+:k Maybe Int
+Maybe Int :: *
+:k Either
+Either :: * -&gt; * -&gt; *
+:k Either Int
+Either Int :: * -&gt; *
+</pre>
+
+<ul>
+<li>'*' 代表一concrete（明确）的类型，只有明确的类型才能用作变量的类型，其它类型是抽象类型或者说类型的模板
+</li>
+<li>* -&gt; * 代表一一个类型构造器，或者说参数化的类型，它接收一个明确类型为参数，然后构造出一个明确类型
+</li>
+</ul>
+
+<p>   类型的构造器如果有多个参数（Either），那么就可以curry化，即部分应用明确类型后，生成出一个新的类型构造器
+</p></div>
 </div>
