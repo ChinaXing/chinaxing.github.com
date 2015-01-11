@@ -3,7 +3,7 @@
 date: 2015-01-12 00:39:18
 template: tech.jade
 title: Haskell 第四课 —— Monad
-category: Hashell
+category: Haskell
 chage_frequency: monthly
 tag: Haskell
 ---
