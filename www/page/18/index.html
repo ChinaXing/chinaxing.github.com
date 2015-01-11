@@ -18,7 +18,7 @@
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>4</sup></a></li>
           <li><a href="/Hashell/index.html">Hashell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
@@ -33,107 +33,92 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>16. February 2013</span></p>
-          <h2><a href="/articles/Perl/2013/02/16/2013-02-16-Alien.html">Perl Alien 介绍</a></h2>
+          <p class="date"><span>14. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/14/2013-01-14-AnyEvent-Filesys-Notify.html">用Anyevent监控目录/文件变动</a></h2>
         </header>
         <section class="content">
-
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Alien是什么</a></li>
-<li><a href="#sec-2">Alien的目标</a></li>
-<li><a href="#sec-3">Alien模块的约定/保证</a></li>
-<li><a href="#sec-4">编写Alien模块</a></li>
-<li><a href="#sec-5">实例</a></li>
+<li><a href="#sec-1">Module介绍</a></li>
+<li><a href="#sec-2">后端</a></li>
+<li><a href="#sec-3">类似模块</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Alien是什么</h3>
+<h3 id="sec-1">Module介绍</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>本文介绍Perl中的Alien。
-</p>
-<p>
-Alien 是一个名字空间或者一系列Module/Perl&nbsp;package</p></div></div>
-          <p class="more"><a href="/articles/Perl/2013/02/16/2013-02-16-Alien.html">more</a></p>
+<p>    <a href="http://search.cpan.org/~mgrimes/AnyEvent-Filesys-Notify-0.18/lib/AnyEvent/Filesys/Notify.pm">AnyEvent::Filesys::Notify</a><br/>
+    这个模块可以监</br/></p></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/14/2013-01-14-AnyEvent-Filesys-Notify.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>16. February 2013</span></p>
-          <h2><a href="/articles/life/2013/02/16/2013-02-16-mark-2012.html">2012记</a></h2>
+          <p class="date"><span>09. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">去重perl数组</a></h2>
         </header>
         <section class="content">
 
-<p>
-  以此文纪念2012.
-</p>
-<p>
-  最近越发感觉人生短暂，那么做点记录吧。
-</p>
-<p>
-  现在的我，处在青年。工作近3年。
-</p>
-<p>
-  对现在的工作，自己感觉对自己的成长不是适合的，需要赶快回到原来的轨迹上。然而，又有担心自己不能完全胜任。也难以信息十足的争取。
-</p>
-<p>
-  对现在的生活，认为太过单调和封闭，平淡，没有精彩，原因在于自己对于社交的不自信，对自己不自信。难于突破，不知如何改善。
-</p>
-<p>
-  总之，自己对自己的评价：没有处于自己期望的状态。
-</p>
+<pre class="example">my @new_a = keys %{ {map {$_ =&gt; } @a} };
+</pre>
+
 
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">2012记之家里</a>
-<ul>
-<li><a href="#sec-1-1">姥姥去世</a></li>
-<li><a href="#sec-1-2">四爷去世</a></li>
-<li><a href="#sec-1-3">青兰</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/life/2013/02/16/2013-02-16-mark-2012.html">more</a></p>
+<li><a href="#sec-1">例子:</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-4">
+<h4 id="sec-1">例子:</h4>
+<div class="outline-text-4" id="text-1">
+
+
+
+
+<pre class="example"><span class="linenr"> 1:  </span>use Modern::Perl;
+<span class="linenr"> 2:  </span>use Data::Dumper;
+<span class="linenr"> 3:  </span></pre></div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>16. January 2013</span></p>
-          <h2><a href="/articles/linux/2013/01/16/2013-01-16-bash-variable.html">有用的bash内置变量</a></h2>
+          <p class="date"><span>09. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">从DBIx::Class的Schema类生成SQL语句</a></h2>
         </header>
         <section class="content">
 
 <p>
-Bash&nbsp;内置变量可以帮助我们更好的编程。下面是一些比较powerful的bash变量，他们自动被bash设置和使用。
+<a href="http://search.cpan.org/perldoc?DBIx::Class::Admin">DBIx::Class::Admin</a>&nbsp;模块提供了数据库管理的一些功能，如：部署,升级版本，更新数据，插入数据，删除，查询和生成数据库<span class="caps">SQL</span>表。
+</p>
+<p>
+这个模块还附带了一个命令行的工具： <b>dbicadmin</b>&nbsp;，帮助我们不必写perl脚本就可以使用它的功能。
 </p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">有用的内置变量</a></li>
+<li><a href="#sec-1">从Schema生成<span class="caps">SQL</span>语句</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">有用的内置变量</h3>
-<div class="outline-text-3" id="text-1">
-
-<ul>
-<li><b>$PROMPT_COMMAND</b> 
-</li>
-<li><b>$<span class="caps">PIPESTATUS</span></b>       <span style="text-decoration:underline;">(is an&nbsp;array)</span>
-</li>
-<li><b>$<span class="caps">IFS</span></b>
-</li></ul></div></div>
-          <p class="more"><a href="/articles/linux/2013/01/16/2013-01-16-bash-variable.html">more</a></p>
+<h3 id="sec-1">从Schema生成<span class="caps">SQL</span>语句</h3>
+</div>
+          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/17/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/19/" class="nav-next">Next page »</a>

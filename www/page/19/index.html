@@ -18,7 +18,7 @@
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>4</sup></a></li>
           <li><a href="/Hashell/index.html">Hashell<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
@@ -33,92 +33,116 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>14. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/14/2013-01-14-AnyEvent-Filesys-Notify.html">用Anyevent监控目录/文件变动</a></h2>
+          <p class="date"><span>08. January 2013</span></p>
+          <h2><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">列出你安装的Perl模块</a></h2>
         </header>
         <section class="content">
+
+<p>
+有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
+</p>
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Module介绍</a></li>
-<li><a href="#sec-2">后端</a></li>
-<li><a href="#sec-3">类似模块</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Module介绍</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>    <a href="http://search.cpan.org/~mgrimes/AnyEvent-Filesys-Notify-0.18/lib/AnyEvent/Filesys/Notify.pm">AnyEvent::Filesys::Notify</a><br/>
-    这个模块可以监</br/></p></div></div>
-          <p class="more"><a href="/articles/Perl/2013/01/14/2013-01-14-AnyEvent-Filesys-Notify.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>09. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">去重perl数组</a></h2>
-        </header>
-        <section class="content">
-
-<pre class="example">my @new_a = keys %{ {map {$_ =&gt; } @a} };
-</pre>
-
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">例子:</a></li>
+<li><a href="#sec-1">perllocal</a></li>
+<li><a href="#sec-2">instmodsh</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">例子:</h4>
+<h4 id="sec-1">perllocal</h4>
 <div class="outline-text-4" id="text-1">
 
 
 
 
-<pre class="example"><span class="linenr"> 1:  </span>use Modern::Perl;
-<span class="linenr"> 2:  </span>use Data::Dumper;
-<span class="linenr"> 3:  </span></pre></div></div>
-          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-perl-array-unique.html">more</a></p>
+
+<pre class="example">perldoc perllocal
+</pre>
+
+
+<p>
+这条命令是perl自带的，它会列出每个安装的模块，包括安装时间和具体信息。
+</p>
+<p>
+我们可以通过grep方便找出这个模块列表：
+</p>
+
+
+
+</div></div>
+          <p class="more"><a href="/articles/Perl/2013/01/08/2013-01-08-list-module-you-have-installed.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>09. January 2013</span></p>
-          <h2><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">从DBIx::Class的Schema类生成SQL语句</a></h2>
+          <p class="date"><span>06. January 2013</span></p>
+          <h2><a href="/articles/linux/2013/01/06/2013-01-06-raspberry-pi.html">Raspberry Pi 试玩</a></h2>
         </header>
         <section class="content">
 
 <p>
-<a href="http://search.cpan.org/perldoc?DBIx::Class::Admin">DBIx::Class::Admin</a>&nbsp;模块提供了数据库管理的一些功能，如：部署,升级版本，更新数据，插入数据，删除，查询和生成数据库<span class="caps">SQL</span>表。
+<a href="http://www.raspberrypi.org/">Raspberry Pi</a> 是<span class="caps">ARM</span> 处理器搭载Gnu/Debian&nbsp;Linux的单片电脑。它的发行目标是促进青少年学习计算机技术。
+</p>
+<p> 
+<img src="/img/Raspberry-Pi.jpg"  alt="file:///img/Raspberry-Pi.jpg" />
 </p>
 <p>
-这个模块还附带了一个命令行的工具： <b>dbicadmin</b>&nbsp;，帮助我们不必写perl脚本就可以使用它的功能。
+Raspberry Pi&nbsp;有早些发布的256M内存/不带网卡的A版本和迟些时候发布的512M内存/带100M网卡的B版本，多数人应该买B版。
 </p>
+<p>
+B版本35$，<span class="caps">RMB325</span>￥。
+</p>
+
 
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">从Schema生成<span class="caps">SQL</span>语句</a></li>
+<li><a href="#sec-1">Raspberry Pi&nbsp;构成</a></li>
+<li><a href="#sec-2">Raspberry Pi ssh&nbsp;登陆</a></li>
+</ul></div></div>
+          <p class="more"><a href="/articles/linux/2013/01/06/2013-01-06-raspberry-pi.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>04. January 2013</span></p>
+          <h2><a href="/articles/linux/2013/01/04/2013-01-04-linux-internationalization.html">Linux 下使用gettext完成程序国际化/本地化</a></h2>
+        </header>
+        <section class="content">
+
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">国际化</a></li>
+<li><a href="#sec-2">工具</a></li>
+<li><a href="#sec-3">使用gettext进行本地化的步骤</a></li>
+<li><a href="#sec-4">实例</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">从Schema生成<span class="caps">SQL</span>语句</h3>
-</div>
-          <p class="more"><a href="/articles/Perl/2013/01/09/2013-01-09-create-sql-from-schema.html">more</a></p>
+<h3 id="sec-1">国际化</h3>
+<div class="outline-text-3" id="text-1">
+
+
+<p>
+程序的国际化/本地化是指根据用户语言和区域的不同程序可以使用针对用户的交互信息。
+</p>
+<p>
+如，中文用户，则语言会变成中文，时间会显示北京时间，货币会显示<span class="caps">RMB</span>。
+</p>
+<p>
+Linux 下 <b>Gnu/ge</b></p></div></div>
+          <p class="more"><a href="/articles/linux/2013/01/04/2013-01-04-linux-internationalization.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/18/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/20/" class="nav-next">Next page »</a>
