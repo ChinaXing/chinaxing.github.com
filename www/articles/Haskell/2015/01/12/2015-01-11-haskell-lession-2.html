@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>jekyll markdown中文列表无法解析的问题 - The Chinaxing's blog
+    <title>Haskell 第二课 —— 类型 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -23,14 +23,14 @@
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>4</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">jekyll markdown中文列表无法解析的问题
+      <h2 style="text-align:center">Haskell 第二课 —— 类型
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -42,30 +42,109 @@
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">解决方法</a></li>
+<li><a href="#sec-1">Type</a></li>
+<li><a href="#sec-2">Type&nbsp;partial</a></li>
+<li><a href="#sec-3">TypeClass</a></li>
+<li><a href="#sec-4">Functor</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">解决方法</h3>
+<h3 id="sec-1">Type</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>默认的markdown解析引擎有问题
-</p>
-<p>
-配置_config.yml,将markdown解析引擎换为rdiscount:
-</p>
 
 
 
-<pre class="example">markdown: rdiscount
+<pre class="example">data Maybe a = Nothing | Just a
+</pre>
+
+<dl>
+<dt>Maybe</dt><dd>type&nbsp;constructor
+</dd>
+<dt>Nothing</dt><dd>variable&nbsp;constructor
+</dd>
+<dt>Just&nbsp;a</dt><dd>variable&nbsp;constructor
+</dd>
+<dt>a</dt><dd>type&nbsp;varaible
+</dd>
+</dl>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">Type&nbsp;partial</h3>
+<div class="outline-text-3" id="text-2">
+
+
+
+
+<pre class="example">type MaybeInt = Maybe Int
+type EitherInt = Either Int
+type EitherIntString = EitherInt String
 </pre>
 
 
-<p>
-问题解决:)
-</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">TypeClass</h3>
+<div class="outline-text-3" id="text-3">
+
+
+
+
+<pre class="example">class YesNo a where
+     yesno :: a -&gt; Bool
+</pre>
+
+
+<dl>
+<dt>YesNo</dt><dd>typeClass
+</dd>
+<dt>a</dt><dd>type&nbsp;variable
+</dd>
+<dt>yesno</dt><dd>typeClass&nbsp;function
+</dd>
+</dl>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">Functor</h3>
+<div class="outline-text-3" id="text-4">
+
+
+
+
+<pre class="example">class  Functor f where 
+   fmap :: (a -&gt; b) -&gt; f a -&gt; f b
+</pre>
+
+
+<dl>
+<dt>f</dt><dd>type&nbsp;constructor
+</dd>
+<dt>a</dt><dd>type varaible&nbsp;a
+</dd>
+<dt>b</dt><dd>type variable&nbsp;b
+</dd>
+<dt>f&nbsp;a</dt><dd>type construct by : f a (eg. Maybe&nbsp;Int)
+</dd>
+<dt>fb</dt><dd>same
+</dd>
+</dl>
+
+
+</div>
 </div>
 
       </div>

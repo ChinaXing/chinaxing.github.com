@@ -1,0 +1,118 @@
+---
+date: 2015-01-11 20:39:10
+template: tech.jade
+title: Haskell 第二课 —— 类型
+category: 
+chage_frequency: monthly
+tag: 
+---
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Type</a></li>
+<li><a href="#sec-2">Type partial</a></li>
+<li><a href="#sec-3">TypeClass</a></li>
+<li><a href="#sec-4">Functor</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1">Type</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+
+<pre class="example">data Maybe a = Nothing | Just a
+</pre>
+
+<dl>
+<dt>Maybe</dt><dd>type constructor
+</dd>
+<dt>Nothing</dt><dd>variable constructor
+</dd>
+<dt>Just a</dt><dd>variable constructor
+</dd>
+<dt>a</dt><dd>type varaible
+</dd>
+</dl>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">Type partial</h3>
+<div class="outline-text-3" id="text-2">
+
+
+
+
+<pre class="example">type MaybeInt = Maybe Int
+type EitherInt = Either Int
+type EitherIntString = EitherInt String
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3">TypeClass</h3>
+<div class="outline-text-3" id="text-3">
+
+
+
+
+<pre class="example">class YesNo a where
+     yesno :: a -&gt; Bool
+</pre>
+
+
+<dl>
+<dt>YesNo</dt><dd>typeClass
+</dd>
+<dt>a</dt><dd>type variable
+</dd>
+<dt>yesno</dt><dd>typeClass function
+</dd>
+</dl>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4">Functor</h3>
+<div class="outline-text-3" id="text-4">
+
+
+
+
+<pre class="example">class  Functor f where 
+   fmap :: (a -&gt; b) -&gt; f a -&gt; f b
+</pre>
+
+
+<dl>
+<dt>f</dt><dd>type constructor
+</dd>
+<dt>a</dt><dd>type varaible a
+</dd>
+<dt>b</dt><dd>type variable b
+</dd>
+<dt>f a</dt><dd>type construct by : f a (eg. Maybe Int)
+</dd>
+<dt>fb</dt><dd>same
+</dd>
+</dl>
+
+
+</div>
+</div>
