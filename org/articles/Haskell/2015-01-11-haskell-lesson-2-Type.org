@@ -34,6 +34,13 @@ tag: Haskell
    + YesNo :: typeClass
    + a :: type variable
    + yesno :: typeClass function
+** newType
+   #+BEGIN_SRC haskell
+     newtype CoolBool = CoolBool { getCoolBool :: Bool}
+   #+END_SRC
+  
+   + 定义一种已有类型的wrap或者具化
+   + haskell 不会真正创建类型，开销小
 ** Functor
    #+BEGIN_SRC  haskell
      class  Functor f where 
@@ -62,3 +69,30 @@ tag: Haskell
    + '*' 代表一concrete（明确）的类型，只有明确的类型才能用作变量的类型，其它类型是抽象类型或者说类型的模板
    + * -> * 代表一一个类型构造器，或者说参数化的类型，它接收一个明确类型为参数，然后构造出一个明确类型
    类型的构造器如果有多个参数（Either），那么就可以curry化，即部分应用明确类型后，生成出一个新的类型构造器
+** (->) r
+   #+BEGIN_SRC haskell
+     instance Functor ((->) r) where
+       fmap :: (a->b) -> (r -> a) -> (r -> b)
+       # fmap = .
+   #+END_SRC
+** Applicative
+   *Control.Applicative*
+   #+BEGIN_SRC haskell
+     class Functor f => Applicative (f :: * -> *) where
+       pure a = f a
+       <*> :: f (a -> b) -> f a -> f b
+       <$> :: (a -> b) -> f a -> f b
+   #+END_SRC
+** liftA2
+   #+BEGIN_SRC haskell
+     liftA2 :: f (a -> b -> c) -> f a -> f b -> f c
+   #+END_SRC
+** Monoid
+   *Data.Monoid*
+   #+BEGIN_SRC haskell
+     class Monoid m where
+       mempty  :: m
+       mappend :: m -> m -> m
+       mconcat :: [m] -> m
+       mconcat :: foldr mappend mempty
+   #+END_SRC

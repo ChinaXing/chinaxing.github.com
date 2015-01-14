@@ -15,8 +15,13 @@ tag: Haskell
 <li><a href="#sec-1">Type</a></li>
 <li><a href="#sec-2">Type partial</a></li>
 <li><a href="#sec-3">TypeClass</a></li>
-<li><a href="#sec-4">Functor</a></li>
-<li><a href="#sec-5">Kind</a></li>
+<li><a href="#sec-4">newType</a></li>
+<li><a href="#sec-5">Functor</a></li>
+<li><a href="#sec-6">Kind</a></li>
+<li><a href="#sec-7">(-&gt;) r</a></li>
+<li><a href="#sec-8">Applicative</a></li>
+<li><a href="#sec-9">liftA2</a></li>
+<li><a href="#sec-10">Monoid</a></li>
 </ul>
 </div>
 </div>
@@ -90,8 +95,30 @@ type EitherIntString = EitherInt String
 </div>
 
 <div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">Functor</h3>
+<h3 id="sec-4">newType</h3>
 <div class="outline-text-3" id="text-4">
+
+
+
+
+<pre class="example">newtype CoolBool = CoolBool { getCoolBool :: Bool}
+</pre>
+
+
+<ul>
+<li>定义一种已有类型的wrap或者具化
+</li>
+<li>haskell 不会真正创建类型，开销小
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-3">
+<h3 id="sec-5">Functor</h3>
+<div class="outline-text-3" id="text-5">
 
 
 
@@ -118,9 +145,9 @@ type EitherIntString = EitherInt String
 
 </div>
 
-<div id="outline-container-5" class="outline-3">
-<h3 id="sec-5">Kind</h3>
-<div class="outline-text-3" id="text-5">
+<div id="outline-container-6" class="outline-3">
+<h3 id="sec-6">Kind</h3>
+<div class="outline-text-3" id="text-6">
 
 <p>   类型有Kind，即类型本身的类型，通过使用ghci 的:k 功能，可以查阅到某个类型的Kind:
 </p>
@@ -147,4 +174,71 @@ Either Int :: * -&gt; *
 
 <p>   类型的构造器如果有多个参数（Either），那么就可以curry化，即部分应用明确类型后，生成出一个新的类型构造器
 </p></div>
+
+</div>
+
+<div id="outline-container-7" class="outline-3">
+<h3 id="sec-7">(-&gt;) r</h3>
+<div class="outline-text-3" id="text-7">
+
+
+
+
+<pre class="example">instance Functor ((-&gt;) r) where
+  fmap :: (a-&gt;b) -&gt; (r -&gt; a) -&gt; (r -&gt; b)
+  # fmap = .
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-3">
+<h3 id="sec-8">Applicative</h3>
+<div class="outline-text-3" id="text-8">
+
+<p>   <b>Control.Applicative</b>
+</p>
+
+
+<pre class="example">class Functor f =&gt; Applicative (f :: * -&gt; *) where
+  pure a = f a
+  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b
+  &lt;$&gt; :: (a -&gt; b) -&gt; f a -&gt; f b
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-9" class="outline-3">
+<h3 id="sec-9">liftA2</h3>
+<div class="outline-text-3" id="text-9">
+
+
+
+
+<pre class="example">liftA2 :: f (a -&gt; b -&gt; c) -&gt; f a -&gt; f b -&gt; f c
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-10" class="outline-3">
+<h3 id="sec-10">Monoid</h3>
+<div class="outline-text-3" id="text-10">
+
+<p>   <b>Data.Monoid</b>
+</p>
+
+
+<pre class="example">class Monoid m where
+  mempty  :: m
+  mappend :: m -&gt; m -&gt; m
+  mconcat :: [m] -&gt; m
+  mconcat :: foldr mappend mempty
+</pre>
+
+</div>
 </div>
