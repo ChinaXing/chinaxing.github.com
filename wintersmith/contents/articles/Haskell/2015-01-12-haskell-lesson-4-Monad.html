@@ -31,7 +31,7 @@ tag: Haskell
   (&gt;&gt;) :: ma -&gt; m b -&gt; m b
   (&gt;&gt;) = (\_ -&gt; x)
   fail :: String -&gt; m a
-  fail _ = error
+  fail string = error string
 </pre>
 
 </div>

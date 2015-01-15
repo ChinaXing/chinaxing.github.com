@@ -17,7 +17,7 @@ tag: Haskell
        (>>) :: ma -> m b -> m b
        (>>) = (\_ -> x)
        fail :: String -> m a
-       fail _ = error
+       fail string = error string
    #+END_SRC
 ** do
   chain *nested* Monad toggether.
