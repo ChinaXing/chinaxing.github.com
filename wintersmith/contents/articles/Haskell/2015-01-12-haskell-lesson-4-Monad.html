@@ -12,14 +12,50 @@ tag: Haskell
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#sec-1">Monad</a></li>
+<li><a href="#sec-2">do</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="todo TODO">TODO</span> Monad</h3>
+<h3 id="sec-1">Monad</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>   Monad是变换为一种智能的处理链条抽象 。。
-</p></div>
+<p>   Monad is an Applicative Functor
+</p>
+
+
+<pre class="example">class Monad m where
+  return = a -&gt; m a
+  (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+  (&gt;&gt;) :: ma -&gt; m b -&gt; m b
+  (&gt;&gt;) = (\_ -&gt; x)
+  fail :: String -&gt; m a
+  fail _ = error
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2">do</h3>
+<div class="outline-text-3" id="text-2">
+
+<p>  chain <b>nested</b> Monad toggether.
+</p>
+
+
+<pre class="example">ret = Just 10 &gt;&gt;= (\x -&gt; Just 20 &gt;&gt;= (\y -&gt; Just 30 &gt;&gt;= (\z -&gt; Just (x + y + z)))))
+ret = do
+   x &lt;- Just 10
+   y &lt;- Just 30
+   z &lt;- Just 20
+   return (x + y + z)
+</pre>
+
+
+
+
+</div>
 </div>

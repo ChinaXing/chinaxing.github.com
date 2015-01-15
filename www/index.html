@@ -42,18 +42,24 @@
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#sec-1">Monad</a></li>
+<li><a href="#sec-2">do</a></li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="todo TODO"><span class="caps">TODO</span></span>&nbsp;Monad</h3>
+<h3 id="sec-1">Monad</h3>
 <div class="outline-text-3" id="text-1">
 
-<p>   Monad是变换为一种智能的处理链条抽象&nbsp;。。
-</p></div>
-</div>
+<p>   Monad is an Applicative&nbsp;Functor
+</p>
 
+
+<pre class="example">class Monad m where
+  return = a -&gt; m a
+  (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+  (&gt;&gt;) :: ma -&gt; m b -&gt; m</pre></div></div>
+          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">more</a></p>
         </section>
       </article>
       <article class="article intro">

@@ -8,5 +8,27 @@ chage_frequency: monthly
 tag: Haskell
 ---
 #+END_HTML
-** TODO Monad 
-   Monad是变换为一种智能的处理链条抽象 。。
+** Monad 
+   Monad is an Applicative Functor
+   #+BEGIN_SRC haskell
+     class Monad m where
+       return = a -> m a
+       (>>=) :: m a -> (a -> m b) -> m b
+       (>>) :: ma -> m b -> m b
+       (>>) = (\_ -> x)
+       fail :: String -> m a
+       fail _ = error
+   #+END_SRC
+** do
+  chain *nested* Monad toggether.
+  #+BEGIN_SRC haskell
+    ret = Just 10 >>= (\x -> Just 20 >>= (\y -> Just 30 >>= (\z -> Just (x + y + z)))))
+    ret = do
+       x <- Just 10
+       y <- Just 30
+       z <- Just 20
+       return (x + y + z)
+  #+END_SRC
+
+  
+  
