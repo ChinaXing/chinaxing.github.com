@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>The Chinaxing's blog
+    <title>望故乡 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -22,7 +22,7 @@
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li class="active"><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -30,12 +30,12 @@
       </div>
     </header>
     <section id="content">
-      <article class="article intro">
-        <header>
-          <p class="date"><span>16. January 2015</span></p>
-          <h2><a href="/articles/life/2015/01/17/2015-01-16-miss-marther-lang.html">望故乡</a></h2>
-        </header>
-        <section class="content">
+      <h2 style="text-align:center">望故乡
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <div class="article">
 <pre style="text-align:center;font-size:1.5em;">
 望故乡
 
@@ -58,68 +58,55 @@
 <p style="text-align:right">—— 于右任&nbsp;1962.1.24&nbsp;&nbsp;</p>
 
 
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">Haskell 第四课 —— Monad</a></h2>
-        </header>
-        <section class="content">
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Monad</a></li>
-<li><a href="#sec-2">do</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Monad</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   Monad is an Applicative&nbsp;Functor
-</p>
-
-
-<pre class="example">class Monad m where
-  return = a -&gt; m a
-  (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
-  (&gt;&gt;) :: ma -&gt; m b -&gt; m</pre></div></div>
-          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">Haskell 第三课 —— 输入输出</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">IO</span>&nbsp;Action</a></li>
-<li><a href="#sec-2">do</a></li>
-<li><a href="#sec-3">return</a></li>
-<li><a href="#sec-4">ByteString</a></li>
-<li><a href="#sec-5">ByteString.Lazy</a></li>
-<li><a href="#sec-6">System.<span class="caps">IO</span></a></li>
-<li><a href="#sec-7">System.Enviorment</a></li>
-<li><a href="#sec-8">System.Radom</a></li>
-<li><a href="#sec-9">Exception</a>
-<ul>
-<li><a href="#sec-9-1">throw&nbsp;excep</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">more</a></p>
-        </section>
-      </article>
-      <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>
       </div>
+      <!-- Table of Content-->
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
+      <script src="/js/tableofcontents.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+             topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
     </section>
     <footer>
     </footer>

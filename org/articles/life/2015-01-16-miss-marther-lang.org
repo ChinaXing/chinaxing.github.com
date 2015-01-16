@@ -1,0 +1,32 @@
+#+BEGIN_HTML
+---
+date: 2015-01-16 22:07:30
+template: article.jade
+title: 望故乡
+category: Life
+chage_frequency: monthly
+---
+#+END_HTML
+#+BEGIN_HTML
+<pre style="text-align:center;font-size:1.5em;">
+望故乡
+
+葬我于高山之上兮，
+望我故乡；
+故乡不可见兮，
+永不能忘。
+
+葬我于高山之上兮，
+望我大陆；
+大陆不可见兮，
+只有痛哭。
+
+天苍苍，
+野茫茫；
+
+山之上，
+国有殇！
+</pre>
+<p style="text-align:right">—— 于右任 1962.1.24&nbsp;&nbsp;</p>
+#+END_HTML
+
