@@ -1,0 +1,22 @@
+#+BEGIN_HTML
+---
+date: 2015-01-17 01:57:22
+template: tech.jade
+title: Erlang 开发环境
+category: Erlang
+chage_frequency: monthly
+tag: Erlang
+---
+#+END_HTML
+
+Erlang 程序开发环境包括了：
+- 代码编辑器 —— Emacs erlang-mode
+- 编译器 —— erlc/hipe（native代码）
+- 交互式解释器 —— erl
+- 执行器 —— erl ， escript
+- 项目管理器 —— rebar，reltool
+- 调试器 —— debugger:start()
+- 性能诊断器 —— fprof，eprof，cover，cprof
+- 错误诊断器 —— dialyzer
+
+我的Erlang UDP发送器 : [[https://github.com/ChinaXing/udp-broker]]

@@ -16,20 +16,51 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>5</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>21. June 2013</span></p>
+          <h2><a href="/articles/Perl/2013/06/21/2013-06-21-PSGI.html">PSGI 协议杂记</a></h2>
+        </header>
+        <section class="content">
+
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="caps">PSGI</span>&nbsp;是什么</a></li>
+<li><a href="#sec-2">相关术语</a>
+<ul>
+<li><a href="#sec-2-1">WebServer</a></li>
+<li><a href="#sec-2-2"><span class="caps">PSGI</span>&nbsp;Server</a></li>
+<li><a href="#sec-2-3">Web Application/<span class="caps">PSGI</span>&nbsp;Application</a></li>
+<li><a href="#sec-2-4">Middleware</a></li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="caps">PSGI</span>资料</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+</div>
+          <p class="more"><a href="/articles/Perl/2013/06/21/2013-06-21-PSGI.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>20. June 2013</span></p>
@@ -65,38 +96,6 @@
 <p>
 Mojolicious&nbsp;请求在App内的处理。。。.
 </p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. June 2013</span></p>
-          <h2><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse-2.html">Mojolicious Web框架实现分析 -- 请求处理过程</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-Mojolicious&nbsp;是基于事件的web框架，那么如何知道请求这个事件发生了呢？
-</p>
-<p>
-由于请求是通过网络上达到，通过Client对server监听的端口发起链接而产生，这一事件是accept事件，Mojolicious得知这一事件的方法有两种:
-</p><ul>
-<li>使用<span class="caps">IO</span>::Poll 模块，隔一段时间进行一次轮询，问内核:是否有链接了？&nbsp;这个轮询是被ioloop-&gt;start所启动
-</li>
-<li>使用<span class="caps">EV</span>模块，&nbsp;注册一个回调函数，在链接到达的时候，这个回调函数会被EV模块调用．
-</li>
-</ul>
-
-
-<p>
-不论哪种方式(主动查询还是被动通告)，当一个socket上的accept事件发生的时候，Mojolicious被唤醒
-</p><ul>
-<li><span class="caps">IO</span>::Pool模式
-  此模式下轮询函数是Mojo::Reactor::one_tick方法，可以看到当可读/写发生时候，调用:
-
-
-
-<pre class="example">++$i and $self-&gt;_sandbox('Write'， $self-&gt;{io}{fi</pre></li></ul>
-          <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse-2.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/11/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/13/" class="nav-next">Next page »</a>

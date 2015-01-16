@@ -16,20 +16,52 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>5</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>04. April 2013</span></p>
+          <h2><a href="/articles/linux/2013/04/04/2013-04-04-use-hid-replace-jekyll-to-blog.html">使用perl模块HiD取代jekyll编写blog</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+jekyll&nbsp;是一个非常好用的静态站点生成器，支持插件，可以用来增强它。
+</p>
+<p>
+如今，许多技术人员的blog开始放在github上面，github同时支持jekyll的基本功能。
+</p>
+<p>
+经过一些配置，就可以使用org+jekyll+github完成blog的编写到发布。
+</p>
+<p>
+jekyll使用ruby开发，因为我没有学过ruby，也不打算学，所以一直希望能够有个Perl的类似程序，以便代替jekyll。
+</p>
+<p>
+于是，在<span class="caps">CPAN</span>上面发现了这个模块：<a href="https://github.com/genehack/HiD"><span class="caps">HID</span></a>, 类似的模块当然很多，而且灵感都起于jekyll，之所以选这个模块是因为它和&nbsp;jekyll的相似度非常高。
+</p>
+<p>
+美中不足的是，它还有待完善，因为还不能支持全局的分类和tag之类的功能，虽然为它添加这个功能非常简单（我已经添加）。
+</p>
+
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+</div>
+          <p class="more"><a href="/articles/linux/2013/04/04/2013-04-04-use-hid-replace-jekyll-to-blog.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>30. March 2013</span></p>
@@ -86,39 +118,6 @@ use, require, do ,eval&nbsp;是我们经常见到的perl语言关键字。下面
 <li><a href="#sec-2-3">require的实现</a></li>
 </ul></li></ul></div></div>
           <p class="more"><a href="/articles/Perl/2013/03/18/2013-03-18-use-require-do-eval.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>10. March 2013</span></p>
-          <h2><a href="/articles/linux/2013/03/10/2013-03-10-Fuse-implementing-filesystem-in-user-space.html">Fuse - 用户空间的文件系统实现</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Fuse&nbsp;介绍</a></li>
-<li><a href="#sec-2">Fuse的实现原理</a>
-<ul>
-<li><a href="#sec-2-1">libfuse</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">参考资料</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Fuse&nbsp;介绍</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>Fuse&nbsp;是指用户空间的文件系统，是文件系统的一种实现方式。目前<span class="caps">BSD</span>，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
-</p><ul>
-<li>易于调</li></ul></div></div>
-          <p class="more"><a href="/articles/linux/2013/03/10/2013-03-10-Fuse-implementing-filesystem-in-user-space.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/15/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/17/" class="nav-next">Next page »</a>

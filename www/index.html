@@ -16,20 +16,54 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>5</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>17. January 2015</span></p>
+          <h2><a href="/articles/Erlang/2015/01/17/2015-01-17-erlang-development.html">Erlang 开发环境</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+Erlang&nbsp;程序开发环境包括了：
+</p><ul>
+<li>代码编辑器 —— Emacs&nbsp;erlang-mode
+</li>
+<li>编译器 ——&nbsp;erlc/hipe（native代码）
+</li>
+<li>交互式解释器 ——&nbsp;erl
+</li>
+<li>执行器 —— erl ，&nbsp;escript
+</li>
+<li>项目管理器 ——&nbsp;rebar，reltool
+</li>
+<li>调试器 ——&nbsp;debugger:start()
+</li>
+<li>性能诊断器 ——&nbsp;fprof，eprof，cover，cprof
+</li>
+<li>错误诊断器 ——&nbsp;dialyzer
+</li>
+</ul>
+
+
+<p>
+我的Erlang <span class="caps">UDP</span>发送器 : <a href="https://github.com/ChinaXing/udp-broker">https://github.com/ChinaXing/udp-broker</a>
+</p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>16. January 2015</span></p>
@@ -90,32 +124,6 @@
   (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
   (&gt;&gt;) :: ma -&gt; m b -&gt; m</pre></div></div>
           <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">Haskell 第三课 —— 输入输出</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">IO</span>&nbsp;Action</a></li>
-<li><a href="#sec-2">do</a></li>
-<li><a href="#sec-3">return</a></li>
-<li><a href="#sec-4">ByteString</a></li>
-<li><a href="#sec-5">ByteString.Lazy</a></li>
-<li><a href="#sec-6">System.<span class="caps">IO</span></a></li>
-<li><a href="#sec-7">System.Enviorment</a></li>
-<li><a href="#sec-8">System.Radom</a></li>
-<li><a href="#sec-9">Exception</a>
-<ul>
-<li><a href="#sec-9-1">throw&nbsp;excep</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>
