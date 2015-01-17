@@ -80,9 +80,22 @@ tag: Haskell
    #+BEGIN_SRC haskell
      class Functor f => Applicative (f :: * -> *) where
        pure a = f a
-       <*> :: f (a -> b) -> f a -> f b
+       <*> :: f (a -> b) -> f a -> f b 
        <$> :: (a -> b) -> f a -> f b
    #+END_SRC
+   #+BEGIN_SRC haskell
+     instance Applicative ((->) r) where 
+        pure a x = \_ -> x
+        (f <*> g) x = f (g x) x
+        f <$> g = f . g 
+    -- prove
+    f (a->b) = \x -> \a -> b = \x -> \a -> (h a) x -- h (a,x)
+    f a = \x' -> a = \x' -> k x'
+    f (a->b) <*> f a = \x' -> \a -> (h a) (k x') = \x' -> (h x')(k x') = ( h . k $ x ) $ x
+    (a->b) = \x -> b = h x
+    f a = \x' -> a = g x'
+    (a->b) <$> f a = \x' -> h (g x') = \x' -> h . g $ x'
+    #+END_SRC
 ** liftA2
    #+BEGIN_SRC haskell
      liftA2 :: f (a -> b -> c) -> f a -> f b -> f c

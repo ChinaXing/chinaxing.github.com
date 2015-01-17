@@ -203,8 +203,22 @@ Either Int :: * -&gt; *
 
 <pre class="example">class Functor f =&gt; Applicative (f :: * -&gt; *) where
   pure a = f a
-  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b
+  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b 
   &lt;$&gt; :: (a -&gt; b) -&gt; f a -&gt; f b
+</pre>
+
+
+<pre class="example"> instance Applicative ((-&gt;) r) where 
+    pure a x = \_ -&gt; x
+    (f &lt;*&gt; g) x = f (g x) x
+    f &lt;$&gt; g = f . g 
+-- prove
+f (a-&gt;b) = \x -&gt; \a -&gt; b = \x -&gt; \a -&gt; (h a) x -- h (a,x)
+f a = \x' -&gt; a = \x' -&gt; k x'
+f (a-&gt;b) &lt;*&gt; f a = \x' -&gt; \a -&gt; (h a) (k x') = \x' -&gt; (h x')(k x') = ( h . k $ x ) $ x
+(a-&gt;b) = \x -&gt; b = h x
+f a = \x' -&gt; a = g x'
+(a-&gt;b) &lt;$&gt; f a = \x' -&gt; h (g x') = \x' -&gt; h . g $ x'
 </pre>
 
 </div>
