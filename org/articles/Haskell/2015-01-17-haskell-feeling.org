@@ -41,3 +41,5 @@ Monad 在学习之前一直听说是Haskell一个非常闪亮的点，这次学�
 - 实践能力提升 :: 如何优雅的haskell编程
 
 *目标* 要成为一个熟练掌握的FP语言！
+
+Keep hunting !
