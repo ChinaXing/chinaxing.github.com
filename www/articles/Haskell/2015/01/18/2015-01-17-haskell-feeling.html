@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>SIG{__DIE__} 和 SIG{__WARN__} - The Chinaxing's blog
+    <title>学习Haskell感想 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -18,10 +18,10 @@
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
+          <li class="active"><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -30,7 +30,7 @@
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">SIG{__DIE__} 和 SIG{__WARN__}
+      <h2 style="text-align:center">学习Haskell感想
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -38,164 +38,64 @@
       <div class="tech">
 
 <p>
-__DIE__ 和 __WARN__ 两个特殊的信号，分别在<a href="http://perldoc.perl.org/functions/die.html">die</a> 和 <a href="http://perldoc.perl.org/functions/warn.html">warn</a> 被执行的时候触发，
-perldoc中称这两个信号的注册函数为<a href="http://perldoc.perl.org/perlvar.html#%SIG">hook</a>。
+这几天在坚持学习Haskell，书是先看了《Real World&nbsp;Haskell》，感觉实践的东西较多，基础涉及的较少，于是决定找个从基础来学习的书，毕竟基础的东西才是这个语言的要义所在，不容忽略。
 </p>
 <p>
-两者的触发和处理方式不同。
+其实最好的方式是看官网的Document或者Toturial等，全面而且原滋原味，可惜担心太多内容，没有经理坚持下去。
+</p>
+<p>
+在知呼上面提问，几个Haskell大牛说有一本很基础的《Haskell&nbsp;趣学指南》已经有中文版，但是我找到了英文版，就坚持看完！
+</p>
+<p>
+全书14章，每章几个主题，每个主题一个大Page，每次看一个主题，就咬牙看完它，有时真的一个Page的内容很多，要看很久，于是常常就看到深夜了！
+</p>
+<p>
+Haskell的学习不像别的语言，新的东西非常多，可以说是全新的，而且遇到很多类似数学的感觉，有时还需要手动推导一下，才能理解！
+</p>
+<p>
+里面的东西，能理解的最好理解，要记忆的东西的却不多，尽量不要靠记忆，如果是记忆，说明你还没有理解它。
+</p>
+<dl>
+<dt>静态类型</dt><dd>类型是确定的，在编译器即可由编译器进行check，确保类型错误都能发现
+</dd>
+<dt>类型推导</dt><dd>可以进行自动类型推导，几乎是不需要明确标注类型的，这有非常大的优势
+</dd>
+<dt>Lazy&nbsp;eval</dt><dd>惰性求值，将求值推迟到最后，不得不做的时候，这有很多好处（自己想），据说Haskell不会stackOverflow。
+</dd>
+<dt><span class="caps">IO</span>&nbsp;Action</dt><dd><span class="caps">IO</span>&nbsp;操作和纯函数分离，haskell坚持函数的无side-effect，所以对于产生副作用的函数和操作，有专门的typeclass来标注
+</dd>
+<dt>typeclass</dt><dd>类似其它语言的interface吧，定义一种通用的抽象操作
+</dd>
+<dt>Functor</dt><dd>定义了fmap操作，进行变换
+</dd>
+<dt>Applicative</dt><dd>在Functor的基础上定义 typeClass 之间的操作，unpack 和&nbsp;pack
+</dd>
+<dt>Monad</dt><dd>在Functor的基础上定义 typeClass&nbsp;之间的链式处理
+</dd>
+</dl>
+
+
+<p>
+Monad&nbsp;在学习之前一直听说是Haskell一个非常闪亮的点，这次学习下来，发现一些编程方式在Monad的规则下会变得简单和简洁，少些冗长的代码，然后能将逻辑串接起来。其它的高级特点还有待慢慢了解！
 </p>
 
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">$<span class="caps">SIG</span>{__DIE__}</a>
-<ul>
-<li><a href="#sec-1-1">die&nbsp;发生在非eval语句块内</a></li>
-<li><a href="#sec-1-2">die&nbsp;发生在eval语句块内</a></li>
-<li><a href="#sec-1-3">子过程的处理</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">$<span class="caps">SIG</span>{__WARN__}</a>
-<ul>
-<li><a href="#sec-2-1">warn执行流程</a></li>
-<li><a href="#sec-2-2">子过程处理</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">异常捕获</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">$<span class="caps">SIG</span>{__DIE__}</h3>
-<div class="outline-text-3" id="text-1">
+<p>
+在差不多学习完成后，打算找一些实际的例子进行学习解决实际问题的方式，并打算用一个无论大小的应用去应用在工作上！
+</p>
+<p>
+然后，还有几个主题需要去了解：
+</p>
+<dl>
+<dt>并发程序设计</dt><dd>使用haskell进行并发编程，还有一本书是专门将这个的
+</dd>
+<dt>实践能力提升</dt><dd>如何优雅的haskell编程
+</dd>
+</dl>
 
 
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1">die&nbsp;发生在非eval语句块内</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<p>   在die执行的时候，错误信息会被收集到&#8221;$@&#8221;变量中，错误信息可以是多数情况下的字符串，也可以是一个对象的引用，如果是对象的引用，
-perl还会查找其名为 <a href="http://perldoc.perl.org/functions/die.html"><span class="caps">PROPAGATE</span></a> 的方法，然后用方法执行的结果替换&#8221;$@&#8221;,然后，错误信息和行号、文件会被打印出到<span class="caps">STDERR</span>，&nbsp;接着检查$SIG{__DIE__}是否有函数注册，如果有，执行此函数，然后退出程序。
-</p></div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2">die&nbsp;发生在eval语句块内</h4>
-<div class="outline-text-4" id="text-1-2">
-
-<p>   如果die 发生在eval 语句块内，向<span class="caps">STDERR</span>打印错误信息这一步不会发生，也不会退出程序而是终止eval 块内语句的执行，然后eval&nbsp;返回undefined。
-</p></div>
-
-</div>
-
-<div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3">子过程的处理</h4>
-<div class="outline-text-4" id="text-1-3">
-
-<p>   在注册的信号处理函数内，第一个参数即为die抛出的错误信息/对象引用，注册的处理函数可以做如下的事情:
-</p><ul>
-<li>重新die，抛出异常<br/>
-     这会重新设置&#8221;$@&#8221;(不能通过赋值给$@来修改$@,这样做无效,不会对 eval&nbsp;捕获后的后续程序有效)
-</li>
-<li>做任何事情，不抛出异常
-</li>
-</ul>
-
-
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">$<span class="caps">SIG</span>{__WARN__}</h3>
-<div class="outline-text-3" id="text-2">
-
-
-</div>
-
-<div id="outline-container-2-1" class="outline-4">
-<h4 id="sec-2-1">warn执行流程</h4>
-<div class="outline-text-4" id="text-2-1">
-
-<p>   在warn执行的时候，将警告信息收集到&#8221;$@&#8221;变量中，同die的过程，信息设置完成后，查找$<span class="caps">SIG</span>{__WARN__}的注册函数，如果有，执行这个函数后完成。&nbsp;如果没有，向STDERR输出警告信息和行号、文件后完成。
-</p></div>
-
-</div>
-
-<div id="outline-container-2-2" class="outline-4">
-<h4 id="sec-2-2">子过程处理</h4>
-<div class="outline-text-4" id="text-2-2">
-
-<p>   在注册的信号处理函数内，可以进行如下的操作:
-</p><ul>
-<li>执行warn、die抛出警告和异常
-</li>
-<li>做其他事情，不执行warn和die
-</li>
-</ul>
-
-
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">异常捕获</h3>
-<div class="outline-text-3" id="text-3">
-
-<ul>
-<li>通过定义$<span class="caps">SIG</span>{__DIE__}来进行异常发生时的捕获处理：
-
-
-
-<pre class="example">  # 定义处理函数
-local $SIG{__DIE__} = sub {
-      my $err = shift;
-      # ... process error
-      # you can generate exception obj and thorw it
-      die $err; # re-throw error;
-};
- # 执行可能抛出异常的代码
- # .... code may thrown exception ;
-</pre>
-
-</li>
-<li>通过eval捕获异常:
-
-
-
-<pre class="example">eval {
-  # 执行可能抛出异常的代码
-  # .... code may thrown exception ;
-}
-# 异常发生，处理
-if($@){
-  # 处理异常 ...
-}
-</pre>
-
-</li>
-</ul>
-
-
-
-
-
-
-
-
-
-
-</div>
-</div>
-
+<p>
+<b>目标</b>&nbsp;要成为一个熟练掌握的<span class="caps">FP</span>语言！
+</p>
       </div>
       <!-- Table of Content-->
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>

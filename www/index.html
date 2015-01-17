@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>5</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -30,6 +30,36 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>17. January 2015</span></p>
+          <h2><a href="/articles/Haskell/2015/01/18/2015-01-17-haskell-feeling.html">学习Haskell感想</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+这几天在坚持学习Haskell，书是先看了《Real World&nbsp;Haskell》，感觉实践的东西较多，基础涉及的较少，于是决定找个从基础来学习的书，毕竟基础的东西才是这个语言的要义所在，不容忽略。
+</p>
+<p>
+其实最好的方式是看官网的Document或者Toturial等，全面而且原滋原味，可惜担心太多内容，没有经理坚持下去。
+</p>
+<p>
+在知呼上面提问，几个Haskell大牛说有一本很基础的《Haskell&nbsp;趣学指南》已经有中文版，但是我找到了英文版，就坚持看完！
+</p>
+<p>
+全书14章，每章几个主题，每个主题一个大Page，每次看一个主题，就咬牙看完它，有时真的一个Page的内容很多，要看很久，于是常常就看到深夜了！
+</p>
+<p>
+Haskell的学习不像别的语言，新的东西非常多，可以说是全新的，而且遇到很多类似数学的感觉，有时还需要手动推导一下，才能理解！
+</p>
+<p>
+里面的东西，能理解的最好理解，要记忆的东西的却不多，尽量不要靠记忆，如果是记忆，说明你还没有理解它。
+</p>
+<dl>
+<dt>静态类型</dt><dd>类型是确定的，在</dd></dl>
+          <p class="more"><a href="/articles/Haskell/2015/01/18/2015-01-17-haskell-feeling.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>17. January 2015</span></p>
@@ -92,38 +122,6 @@ Erlang&nbsp;程序开发环境包括了：
 <p style="text-align:right">—— 于右任&nbsp;1962.1.24&nbsp;&nbsp;</p>
 
 
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>12. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">Haskell 第四课 —— Monad</a></h2>
-        </header>
-        <section class="content">
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Monad</a></li>
-<li><a href="#sec-2">do</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Monad</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   Monad is an Applicative&nbsp;Functor
-</p>
-
-
-<pre class="example">class Monad m where
-  return = a -&gt; m a
-  (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
-  (&gt;&gt;) :: ma -&gt; m b -&gt; m</pre></div></div>
-          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

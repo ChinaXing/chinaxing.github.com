@@ -8,6 +8,14 @@ chage_frequency: monthly
 tag: Haskell
 ---
 #+END_HTML
+** Monad用途**
+个人觉得：
+
+- 实现链式的调用传递，这样保持了数据的状态沿着函数链条传递
+- 在链式传递的过程中，可以短路求值，借助monad的封装所附加的语义
+- Monad是一种Inbox的动作，将基本状态进行封装，可以提供高层的语义
+- 实际是设计的抽象，通过抽象实现了代码的简洁，分层，多态
+
 ** Monad 
    Monad is an Applicative Functor
    #+BEGIN_SRC haskell
@@ -29,6 +37,107 @@ tag: Haskell
        z <- Just 20
        return (x + y + z)
   #+END_SRC
+** (->) r 
+  #+BEGIN_SRC haskell
+    instance Monad ((->) r) where
+      return x = \_ -> x
+      h >>= f = \w -> f (h w) w
+  -- 
+      f <*> h = \w -> f (h w) w
+      -- so
+      flip <*> == >>=
+  #+END_SRC
+** State Monad
+   #+BEGIN_SRC haskell
+   -- import Control.Monad.State
+   newtype State s a = State { runState :: s -> (a, s) }
+   instance Monad (State s) where
+     return x = State $ \s -> (x,s)
+     (State h) >>= f = State $ \s -> 
+                               let (a, newSate) = h s -- get a, produce newState
+                                   (State g) = f a -- (f a, state')
+                               in g newState -- store newState in g
+   #+END_SRC
 
-  
-  
+   #+BEGIN_SRC haskell
+     get = State $ \s -> (s,s) -- where s == a, extract will be s
+     put newState = State $ \s -> ((), newState)
+   #+END_SRC
+** Either
+   #+BEGIN_SRC haskell
+    instance Error e => Monad (Either e) where 
+       return x = Right x
+       Left err >>= f = Left err -- shortcut
+       Right x >> f = f x -- just pass value
+       fail msg = Left (strMsg msg)
+   --
+   Left "Error" -- throw fail
+   fail "Error" -- context is Either
+   Left (strMsg "Error") -- parttern matched
+   #+END_SRC
+** liftM
+   #+BEGIN_SRC haskell
+   liftM :: (Monad m) => (a->b) -> m a -> m b
+   --
+   liftM f m = m >> (\x -> return (f x))
+   #+END_SRC
+   #+BEGIN_SRC haskell
+   liftM (*3) (Just 8) -- return (8 * 3) :: Maybe Int
+   fmap (*3) (Just 8) -- pure (8 * 3) :: Maybe Int
+   #+END_SRC
+** ap
+   #+BEGIN_SRC haskell
+   -- Contro.Monad::ap
+   ap :: (Monad m) => m (a->b) -> m a -> m b
+   --
+   ap = <*>
+   Just (+4) `ap` Just 10
+   #+END_SRC
+** liftM2
+   #+BEGIN_SRC haskell
+   liftM2 :: (Monad f) => (a->b->c) -> f a -> f b -> f c
+   --
+   liftM2 f x y = f <$> x <*> y
+   -- f <$> x = (a->b->c) <$> f a = (a -> (b->c) <$> f a = f (b->c)
+   -- f (b->c) <*> f b = f c
+   #+END_SRC
+   liftM3, liftM4, liftM5
+** join
+   #+BEGIN_SRC haskell
+   join :: Monad m => m (m a) -> m a
+   join mm = do -- smart
+        m <- mm
+        m
+   -- 
+   join [[1,2,3],[4,5,6]] -- [1,2,3,4,5,6]
+   #+END_SRC
+** liftM
+   #+BEGIN_SRC haskell
+   liftM :: (Monad m) => (a -> m Bool) -> [a] -> m [a]
+   #+END_SRC
+   #+BEGIN_SRC haskell
+   powerset :: [a] -> [[a]]
+   powerset xs = liftM (\x -> [True, False]) xs
+   -- x maybe any part of xs
+   -- m Bool maybe True, False strip from the [True, False]
+   #+END_SRC
+** foldM
+   #+BEGIN_SRC haskell
+   foldl :: (a -> b ->a) -> a -> [b] -> a
+   foldM :: (Monad m) => (a -> b -> m a) -> a -> [b] -> m a
+   -- 
+   foldl (\cc x -> cc + x) 0 [2,3,4,5]
+   foldM (\cc x -> return cc + x) 0 [2,3,4,5]
+   #+END_SRC
+** <=<
+   #+BEGIN_SRC haskell
+   -- Monad function composition ,
+   -- like . normal function composition
+   let f = (+1) . (*100) -- normal function composition
+   let g = (\x -> return (x+1)) <=< (\x -> return (x * 100)) -- Monad chain
+   -- 
+   Just 4 >>= g
+   -- (4 + 1) * 100
+   let f = foldr (.) id [(+1), (*100), (+1)]
+   #+END_SRC
+** Make Monad
