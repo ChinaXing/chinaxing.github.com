@@ -86,15 +86,18 @@ tag: Haskell
    #+BEGIN_SRC haskell
      instance Applicative ((->) r) where 
         pure a x = \_ -> x
-        (f <*> g) x = f (g x) x
+        (f <*> g) x = (f x)(g x)
         f <$> g = f . g 
     -- prove
     f (a->b) = \x -> \a -> b = \x -> \a -> (h a) x -- h (a,x)
     f a = \x' -> a = \x' -> k x'
-    f (a->b) <*> f a = \x' -> \a -> (h a) (k x') = \x' -> (h x')(k x') = ( h . k $ x ) $ x
+    f (a->b) <*> f a = \x' -> \a -> (h a) (k x') = \x' -> (h x')(k x')
     (a->b) = \x -> b = h x
     f a = \x' -> a = g x'
     (a->b) <$> f a = \x' -> h (g x') = \x' -> h . g $ x'
+    -- example
+    (+) <$> (*2) <*> (+10) 3= ((+) . (*2)) 3)(+10 3) = ((+) . (*2) $ 3)(+10 3)
+                            = ((+) . 6) 13 = (+6) 13 = 19
     #+END_SRC
 ** liftA2
    #+BEGIN_SRC haskell
