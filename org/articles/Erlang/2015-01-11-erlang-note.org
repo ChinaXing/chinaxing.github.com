@@ -30,3 +30,7 @@ Erlang语言，时间上不算新，1987与Perl同岁。为大并发设计，支
 ** 应用场景
 + 网络通信 :: 网络高并发的通信场景下，Erlang有天然优势，毕竟它就是为此设计的。此外，Erlang对于网络数据包的处理非常方便，解包和封包都通过模式匹配很轻松的完成。
 + 网络应用服务器 :: 如web游戏，网络应用在线聊天服务器等
+
+** 学习参考
++ [[http://blog.yufeng.info/archives/category/erlang][余峰的erlang研究]]
++ github
