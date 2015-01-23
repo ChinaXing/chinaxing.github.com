@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Erlang 语言 - The Chinaxing's blog
+    <title>理想与现实 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -16,12 +16,12 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li class="active"><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
+          <li class="active"><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -30,107 +30,55 @@
       </div>
     </header>
     <section id="content">
-      <h2 style="text-align:center">Erlang 语言
+      <h2 style="text-align:center">理想与现实
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
       </div>
-      <div class="tech">
+      <div class="article">
 
 <p>
-Erlang语言，时间上不算新，1987与Perl同岁。为大并发设计，支持热升级，分布式。用于电信系统。
+理想与现实哪个重要？
 </p>
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">核心概念</a></li>
-<li><a href="#sec-2">工具和支持</a></li>
-<li><a href="#sec-3">应用场景</a></li>
-<li><a href="#sec-4">学习参考</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">核心概念</h3>
-<div class="outline-text-3" id="text-1">
-
-<dl>
-<dt>进程</dt><dd>进程代表一个执行体，进程比较轻量，可以创建非常非常多。每个进程是一个erlang虚拟机。
-</dd>
-<dt>消息</dt><dd>进程通信和交互通过传递消息，除此之外几乎没有共享状态的途径。
-</dd>
-<dt>函数式</dt><dd><span class="caps">FP</span>的特性，如递归、不可变变量，绑定、模式匹配等。
-</dd>
-<dt>行为与策略分离</dt><dd><span class="caps">OTP</span>主张设计原则是行为与策略分离，一个行为可以服务无数多的策略，行为负责那些通用的与业务逻辑无关的部分。
-</dd>
-<dt>crash</dt><dd>如果进程出错，那么让它Crash推出，而不是捕获异常。其它进程会收到消息，进行响应异常。
-</dd>
-<dt><span class="caps">ETS</span>/DETS</dt><dd>基于内存和基于磁盘的映射存储。他们可以用来实现数据的存放。
-</dd>
-<dt>Node</dt><dd>每个Node代表一个Erlang虚拟机集，多个Node实现分布式。
-</dd>
-<dt><span class="caps">OTP</span></dt><dd>不是Erlang语言的部分。它定义一个设计规范，以及一些成熟的框架，方便开发稳定健壮的Erlang应用和系统。
-</dd>
-<dt>变量</dt><dd>变量名大写开头
-</dd>
-<dt>atom</dt><dd>atom&nbsp;代表了一种类似其它语言常量的东西
-</dd>
-<dt>port</dt><dd>erlang与其它语言的程序对接，使用port的概念，将其它程序映射为一个进程。通过port进行交互。
-</dd>
-</dl>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">工具和支持</h3>
-<div class="outline-text-3" id="text-2">
-
-<dl>
-<dt>rebar</dt><dd>项目管理，类似maven。
-</dd>
-</dl>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">应用场景</h3>
-<div class="outline-text-3" id="text-3">
-
-<dl>
-<dt>网络通信</dt><dd>网络高并发的通信场景下，Erlang有天然优势，毕竟它就是为此设计的。此外，Erlang对于网络数据包的处理非常方便，解包和封包都通过模式匹配很轻松的完成。
-</dd>
-<dt>网络应用服务器</dt><dd>如web游戏，网络应用在线聊天服务器等
-</dd>
-</dl>
-
-
-</div>
-
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">学习参考</h3>
-<div class="outline-text-3" id="text-4">
-
-<ul>
-<li><a href="http://blog.yufeng.info/archives/category/erlang">余峰的erlang研究</a>
-</li>
-<li>github
-</li>
-</ul>
-
-</div>
-</div>
-
+<p>
+你也许会说理想，因为什么？&nbsp;”没有理想的人没有希望“。
+</p>
+<p>
+可是没有现实的人还谈理想有什么用？反而是更大的失败和没有价值。
+</p>
+<p>
+关于二者的关系，我感觉应该是这样的：
+</p>
+<p>
+先有现实，再有理想。
+</p>
+<p>
+与现实中追求理想，方为有追求。
+</p>
+<p>
+心中一腔理想，饱度诗书，却现实中失败的一塌糊涂，不能干成一件事，然后终日恨不得志，怎么能和那些虽然不懂那么多理想，却现实生活里生活的多姿多彩，幸福快了的人？
+</p>
+<p>
+与现实相比，理想太轻了，它来的容易，你只要空白纸一张，受别人洗脑马上就激动的说我有理想，我想这不叫理想。
+</p>
+<p>
+理想应该来于现实，从你的现实生活中生出来，这才是你的理想，而不是听来和看来的意淫的理想，那个理想你并不知道它真正是什么。
+</p>
+<p>
+打个比方，理想就是一个旅游的目的地，不要把它当作生活的重要部分，它仅仅是美好而已，却不是非的追求到不可！
+</p>
+<p>
+真正的理想，真正的热爱，真正的追求，都应该源于当下的生活。
+</p>
+<p>
+当别人说我没有理想的时候，我并不在乎，我知道那不重要，我不需要一个妄念，若偶尔我有一点点理想，那么就随便想想，也许他们并不值得我为之改变生活的轨迹
+</p>
+<p>
+直到真的有这么一个理想，让我愿意为之奋斗，到那时候，我才是有理想了，不过理不理想重要吗？无非一个值得我去追求的地方罢了！
+</p>
+<p>
+不要为了不值得的东西坚持，哪怕后悔遗憾，踌躇满志等等，保持清醒。
+</p>
       </div>
       <!-- Table of Content-->
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
