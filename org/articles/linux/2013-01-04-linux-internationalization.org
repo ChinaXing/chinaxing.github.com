@@ -8,7 +8,8 @@ change_frequency: monthly
 tag: gettext
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 ** 国际化
 

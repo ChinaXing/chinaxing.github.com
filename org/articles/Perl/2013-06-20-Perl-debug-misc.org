@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** Debug tricks
 *** Readline - 设置Readline处理
     默认的perl5db 如果没有安装Term::ReadLine模块，不支持历史命令、行编辑等类似bash命令行的功能。\\

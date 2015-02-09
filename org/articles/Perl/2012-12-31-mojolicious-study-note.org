@@ -8,7 +8,8 @@ change_frequency: monthly
 tag: Mojolicious
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 *[[<http://mojolicio.us/>][Mojolicious]]* 是一个Perl 语言开发的Web框架。
 
 ** feature

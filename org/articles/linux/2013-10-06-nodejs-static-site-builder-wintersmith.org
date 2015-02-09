@@ -6,7 +6,8 @@ date: 2013-10-06 15:39:01
 category: Linux
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 静态站点常用来写blog，比如最近做技术的都将blog放在了github网站上，在文章写好后由一个工具将文章内容结合模板编译一下，加入blog中。
 
 这样的工具非常多了，比较有名的比如：jekyll，是ruby开发的，然后有各种效仿者，前段时间我转向使用HiD这个工具来替代jekyll，主要是出于自己熟悉Perl语言稍微多些，一来支持一下Perl语言，二来出问题比较容易解决。

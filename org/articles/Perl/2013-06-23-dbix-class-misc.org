@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 使用用[[http://search.cpan.org/perldoc?DBIx%3A%3AClass][DBIx::Class]] (又称为DBIC)做ORM一段时间，这里做些备忘。
 
 ** 基本概念

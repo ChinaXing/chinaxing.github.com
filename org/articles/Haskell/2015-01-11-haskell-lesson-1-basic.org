@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: Haskell
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** Haskell 特点
 + static Type :: 静态类型，类型可在编译时候明确，不存在运行时器的类型确定。带来的好处是类型安全，不会出现运行期的类型错误。
 + type infer :: 类型推导，编译器和运行系统自己可以根据上下文明确每个变量和函数的类型，不需要每处都显式的书写类型。带来的好处是可以减少输入。

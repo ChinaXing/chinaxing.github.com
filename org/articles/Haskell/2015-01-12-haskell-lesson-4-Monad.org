@@ -8,6 +8,8 @@ chage_frequency: monthly
 tag: Haskell
 ---
 #+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** Monad用途**
 个人觉得：
 

@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: java,classloader
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 *** ClassLoader
 Java 将ClassLoader开放给程序开发者，可以区别于静态语言的一个优势就是可以对类加载进行控制（编程），这是非常灵活和可扩展的一个点。
 

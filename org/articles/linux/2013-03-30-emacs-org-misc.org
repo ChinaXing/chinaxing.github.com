@@ -8,7 +8,8 @@ tag: emacs,org-mode
 change_frequency: monthly
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 Emacs org-mode 用来写blog,然后export 出HTML,最后再使用jekyll生成静态blog,发布在github上.
 
 这是我写blog的方法,刚刚接触emacs org-mode,所以遇到了不少初级麻烦,折腾之后,记录在这里,

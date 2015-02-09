@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 jekyll 是一个非常好用的静态站点生成器，支持插件，可以用来增强它。
 
 如今，许多技术人员的blog开始放在github上面，github同时支持jekyll的基本功能。

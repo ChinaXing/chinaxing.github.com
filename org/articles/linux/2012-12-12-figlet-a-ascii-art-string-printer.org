@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 ** figlet 介绍
 

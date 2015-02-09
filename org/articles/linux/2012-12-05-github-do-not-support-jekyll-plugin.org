@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** 问题描述
 
 为了能够利用jekyll生成blog的文章分类列表.经过网上搜索，得知需要使用插件，使用方法是在jekyll的目录

@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: cs,concurrency
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 本文介绍CPU/硬件对并发的支持之LL/SC (Load-Link/Store-Conditional).
 
 ** LL/SC

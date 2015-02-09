@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: haskell
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** why Haskell
 决定要学习一门函数式编程语言，希望能纯粹函数式，于是选择了Haskell，因为它的几个理念让我喜欢：\\
 1. 纯函数式

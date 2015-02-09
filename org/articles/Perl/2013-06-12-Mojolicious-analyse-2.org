@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 Mojolicious 是基于事件的web框架，那么如何知道请求这个事件发生了呢？
 
 由于请求是通过网络上达到，通过Client对server监听的端口发起链接而产生，这一事件是accept事件，Mojolicious得知这一事件的方法有两种:

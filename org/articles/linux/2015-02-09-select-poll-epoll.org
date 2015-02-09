@@ -8,6 +8,8 @@ chage_frequency: monthly
 tag: Linux
 ---
 #+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 select, poll 和 epoll 是Linux系统支持的多路复用io的系统调用，在高性能的网络编程中，都会涉及到基于事件的处理。
 事件的处理机制，得力与底层OS的机制，使得这一实现变的容易。
 

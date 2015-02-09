@@ -8,7 +8,8 @@ change_frequency: monthly
 tag: ca,digtal-sign
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 *[[http://en.wikipedia.org/wiki/Public_key_infrastructure][Public Key Infrastructure]]* 目的是进行数字认证
 

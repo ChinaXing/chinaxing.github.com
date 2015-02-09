@@ -8,7 +8,8 @@ change_frequency: monthly
 tag: DBIx::Class
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 *Perl* 的ORM模块中，DBIx::Class比较强大和完善，文档丰富，容易使用。
 

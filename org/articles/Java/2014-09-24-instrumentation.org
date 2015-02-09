@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: Java
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** 是什么
 
 Instrumentation, 是Java提供在字节码/jvm层面进行类增强的机制，Instrumentation可以对类加载进行拦截，对已加载类进行转换以及对类进行重新定义。

@@ -15,13 +15,13 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -36,8 +36,6 @@
         <ol></ol>
       </div>
       <div class="tech">
-
-
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
@@ -54,141 +52,134 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">BTrace</h4>
-<div class="outline-text-4" id="text-1">
-
-
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">BTrace</h2>
+<div class="outline-text-2" id="text-1">
 <p>
 经常需要对运行中的Java程序进行错误诊断、性能剖析，那么BTrace工具可以说是像一把利器，通过它可以和运行中的Java程序进行交互。
 </p>
+
 <p>
 BTrace的实现基于Java语言规范和<span class="caps">JVM</span>实现所提供的机制：Instrumentation 和 javaagent/Attach&nbsp;API。
 </p>
+
 <p>
 Instrumentation&nbsp;机制允许对已有类进行Retransform、对未加载类在加载时只需转换，这样BTrace可以将定义的Probe代码植入到目标中。
 </p>
+
 <p>
 javaagent/Attach <span class="caps">API</span>&nbsp;机制为Instrumentation提供了切入点。
 </p>
+
 <p>
 BTrace在基于以上两点技术之上，实现了灵活性、易用性。灵活性表现在可以自定义Java代码，自定义Probe点等，应用性表现在对一些基本操作的封装上，使得使用非常便捷。
 </p>
 </div>
-
 </div>
 
-<div id="outline-container-2" class="outline-4">
-<h4 id="sec-2">BTrace&nbsp;结构</h4>
-<div class="outline-text-4" id="text-2">
-
-
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">BTrace&nbsp;结构</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 BTrace的系统结构图如下:
 </p>
 
-<p>
-<img src="/img/btrace-arch.png"  alt="file:///img/btrace-arch.png" />
+<div class="figure">
+<p><img src="/img/btrace-arch.png" alt="btrace-arch.png" />
 </p>
+</div>
+
 <p>
 btrace-server 和 btrace-client通过 tcp&nbsp;连接进行通信，交换Command对象。
 </p>
-
 </div>
 
-<div id="outline-container-2-1" class="outline-5">
-<h5 id="sec-2-1">启动和使用</h5>
-<div class="outline-text-5" id="text-2-1">
-
-<p>btrace-server&nbsp;的加载方式有2种，一种是随着jvm的启动加载，使用jvm提供的javaagent机制：
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">启动和使用</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+btrace-server&nbsp;的加载方式有2种，一种是随着jvm的启动加载，使用jvm提供的javaagent机制：
 </p>
-
-
-<pre class="example">java -javaagent:btrace-agent.jar=script={compiled-script-class-file} MainClass ...
+<pre class="example">
+java -javaagent:btrace-agent.jar=script={compiled-script-class-file} MainClass ...
 </pre>
-
 <p>
 这种方式启动，需要将BTrace脚本编译为Class文件。这种方式的好处是可以在系统初始化之前将probe点应用起来，对于那些只在系统早期运行的类，这样的方式非常必要。
 </p>
+
 <p>
 另一种方式是通过Jvm attach api 将btrace-agent&nbsp;脚本加载到目标Jvm中，这种方式对于运行中得java程序有效：
 </p>
-
-
-<pre class="example">bin/btrace {pid} TraceScript.java
+<pre class="example">
+bin/btrace {pid} TraceScript.java
 </pre>
-
 <p>
 这种方式下，btrace首先将btrace-agent的jar包通过attach api&nbsp;加载到目标jvm，接着将BTrace脚本在client端进行编译，然后通过tcp连接请求btrace-server进行加载。
 </p>
 </div>
-
 </div>
 
-<div id="outline-container-2-2" class="outline-5">
-<h5 id="sec-2-2">BTrace脚本</h5>
-<div class="outline-text-5" id="text-2-2">
-
-<p>BTrace脚本是普通的java程序，BTrace通过注解来解释脚本的用途。
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">BTrace脚本</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+BTrace脚本是普通的java程序，BTrace通过注解来解释脚本的用途。
 </p>
+
 <p>
 BTrace有安全模式和非安全模式，默认情况是安全模式，在安全模式下，不能直接在BTrace脚本中编写普通的Java代码来实现如访问对象、执行方法等操作，而只能使用BTrace提供的工具和函数，如BTraceUtils类下面的静态方法。
 </p>
+
 <p>
 在非安全模式下没有限制，可以写任何java代码。
 </p>
+
 <p>
 这一开关在BTrace&nbsp;agent启动的时候通过unsafe参数指定，可以在btrace的shell脚本中修改相应的地方。
 </p>
+
 <p>
 设置安全模式的原因是为了减低风险，避免执行没有限制的代码使得被probe系统奔溃或数据异常。
 </p>
+
 <p>
 虽然BTrace在实现上的安全模式下对操作做了很多限制，但是如果能很好的使用BTraceUtils类中提供的方法，完全可以实现90%的debug需求。而且非常便捷。
 </p>
 </div>
 </div>
-
 </div>
 
-<div id="outline-container-3" class="outline-4">
-<h4 id="sec-3">使用场景</h4>
-<div class="outline-text-4" id="text-3">
-
-<dl>
-<dt>跟踪方法调用</dt><dd>通过 <b>@OnMethod</b> 注解，可以对指定类的方法上进行注入分析代码，通过 <b>@Self</b> 注解可以拿到 <b>$this</b> 对象， <b>@Return</b>&nbsp;注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">使用场景</h2>
+<div class="outline-text-2" id="text-3">
+<dl class="org-dl">
+<dt> 跟踪方法调用 </dt><dd>通过 <b>@OnMethod</b> 注解，可以对指定类的方法上进行注入分析代码，通过 <b>@Self</b> 注解可以拿到 <b>$this</b> 对象， <b>@Return</b>&nbsp;注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
 </dd>
-<dt>打印调用堆栈</dt><dd>BTraceUtils提供了jstack方法，可以打印出调用栈。此方法其实是对Thread重jstack方法的封装。
+<dt> 打印调用堆栈 </dt><dd>BTraceUtils提供了jstack方法，可以打印出调用栈。此方法其实是对Thread重jstack方法的封装。
 </dd>
-<dt>打印系统信息</dt><dd>BTraceUtils中提供的内存相关、cpu相关等Runtime信息可以获得运行中的系统资源使用信息
+<dt> 打印系统信息 </dt><dd>BTraceUtils中提供的内存相关、cpu相关等Runtime信息可以获得运行中的系统资源使用信息
 </dd>
-<dt>执行<span class="caps">GC</span> </dt><dd>BTraceUtils中同样提供了gc函数，主动触发gc
+<dt> 执行<span class="caps">GC</span>  </dt><dd>BTraceUtils中同样提供了gc函数，主动触发gc
 </dd>
-<dt>打印对象引用可达图</dt><dd>BTraceUtils提供了强大的功能，可以把从一个对象出发可达的所有对象图打印出来，输出成.dot文件或者xml文件等格式
+<dt> 打印对象引用可达图 </dt><dd>BTraceUtils提供了强大的功能，可以把从一个对象出发可达的所有对象图打印出来，输出成.dot文件或者xml文件等格式
 </dd>
-<dt>输出对象<span class="caps">XML</span></dt><dd>将对象导出成<span class="caps">XML</span>各式
+<dt> 输出对象<span class="caps">XML</span> </dt><dd>将对象导出成<span class="caps">XML</span>各式
 </dd>
-<dt>Profile</dt><dd>BTrace本身对性能剖析提供了支持，可以很方便实现性能统计。
+<dt> Profile </dt><dd>BTrace本身对性能剖析提供了支持，可以很方便实现性能统计。
 </dd>
-<dt>捕获异常</dt><dd>BTrace&nbsp;可以对异常进行probe，在异常发生时打印异常栈。
+<dt> 捕获异常 </dt><dd>BTrace&nbsp;可以对异常进行probe，在异常发生时打印异常栈。
 </dd>
 </dl>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-4" class="outline-4">
-<h4 id="sec-4">注意点</h4>
-<div class="outline-text-4" id="text-4">
-
-<ul>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">注意点</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
 <li>BTrace&nbsp;agent只会加载一次，因此如果第一次加载时候未打开unsafe选项，而之后再打开此选项是无效的，只能重启java程序。
 </li>
 </ul>
-
 </div>
 </div>
 

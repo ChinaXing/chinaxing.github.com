@@ -15,13 +15,13 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -36,8 +36,6 @@
         <ol></ol>
       </div>
       <div class="tech">
-
-
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
@@ -45,7 +43,7 @@
 <li><a href="#sec-1">前言</a></li>
 <li><a href="#sec-2">启动Mojolicious App</a>
 <ul>
-<li><a href="#sec-2-1">通过 script/my_app daemon&nbsp;启动应用</a></li>
+<li><a href="#sec-2-1">通过 script/my\<sub>app</sub> daemon&nbsp;启动应用</a></li>
 <li><a href="#sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
 <li><a href="#sec-2-3">创建Mojo::Server实例，加载App，启动App</a></li>
 <li><a href="#sec-2-4">App创建完毕，调用其start方法</a></li>
@@ -53,7 +51,7 @@
 <li><a href="#sec-2-6">调用Mojolicious::Command::daemon的run方法</a></li>
 <li><a href="#sec-2-7">Mojo::Server::Daemon执行run方法</a></li>
 <li><a href="#sec-2-8">Mojo::Server::Daemon的start方法</a></li>
-<li><a href="#sec-2-9">调用_listen方法创建监听的server</a></li>
+<li><a href="#sec-2-9">调用\<sub>listen方法创建监听的server</sub></a></li>
 <li><a href="#sec-2-10">ioloop被启动</a></li>
 </ul>
 </li>
@@ -61,24 +59,22 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">前言</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   由于我对Web框架的理解不是很清晰，所以希望能借着阅读代码进行全面的了解，加之自己对Perl相对熟悉，所以就选择Perl的web框架来分析，Mojolicious特点是实时，基于事件，&nbsp;比较拟合当前的趋势，加之其代码精简，也可以从中学习到Perl编程的一些经验和技巧.
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">前言</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+   由于我对Web框架的理解不是很清晰，所以希望能借着阅读代码进行全面的了解，加之自己对Perl相对熟悉，所以就选择Perl的web框架来分析，Mojolicious特点是实时，基于事件，&nbsp;比较拟合当前的趋势，加之其代码精简，也可以从中学习到Perl编程的一些经验和技巧.
 </p>
+
 <p>
 由于Mojolicious.pm&nbsp;是编写App时候继承的类，所以我们从这里开始，分析流程是从程序被启动到一个请求被处理完毕，只会分析<span class="caps">HTTP</span>协议.
 </p>
+
 <p>
 假设我们编写了MyApp，目录结构如下:
 </p>
-
-
-
-
-<pre class="example">/home/chinaxing/tmp/my_app
+<pre class="example">
+/home/chinaxing/tmp/my_app
 ├── lib
 │   ├── MyApp
 │   │   └── Example.pm
@@ -96,29 +92,19 @@
     └── layouts
         └── default.html.ep
 </pre>
-
-
-
+</div>
 </div>
 
-</div>
 
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">启动Mojolicious&nbsp;App</h3>
-<div class="outline-text-3" id="text-2">
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">启动Mojolicious&nbsp;App</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">通过 script/my\<sub>app</sub> daemon&nbsp;启动应用</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
 
-
-
-</div>
-
-<div id="outline-container-2-1" class="outline-4">
-<h4 id="sec-2-1">通过 script/my_app daemon&nbsp;启动应用</h4>
-<div class="outline-text-4" id="text-2-1">
-
-
-
-
-<pre class="example">#!/usr/bin/env perl
+<pre class="src src-perl">#!/usr/bin/env perl
 
 use strict;
 use warnings;
@@ -130,49 +116,40 @@ BEGIN { unshift @INC， "$FindBin::Bin/../lib" }
 require Mojolicious::Commands;
 Mojolicious::Commands-&gt;start_app('MyApp');
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
 
-<div id="outline-container-2-2" class="outline-4">
-<h4 id="sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</h4>
-<div class="outline-text-4" id="text-2-2">
-
-
-
-
-<pre class="example">sub start_app {
+<pre class="src src-perl">sub start_app {
   my $self = shift;
   return Mojo::Server-&gt;new-&gt;build_app(shift)-&gt;start(@_);
 }
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">创建Mojo::Server实例，加载App，启动App</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
 
-<div id="outline-container-2-3" class="outline-4">
-<h4 id="sec-2-3">创建Mojo::Server实例，加载App，启动App</h4>
-<div class="outline-text-4" id="text-2-3">
-
-
-
-
-<pre class="example">sub build_app {
+<pre class="src src-perl">sub build_app {
   my ($self， $app) = @_;
   local $ENV{MOJO_EXE};
   return $app-&gt;new unless my $e = Mojo::Loader-&gt;new-&gt;load($app);
   die ref $e ? $e : qq{Couldn't find application class "$app".\n};
 }
 </pre>
-
-<ul>
+</div>
+<ul class="org-ul">
 <li>使用Mojo::Loader模块加载器加载App，然后调用$app-&gt;new来实例化一个App类:
+<div class="org-src-container">
 
-
-
-<pre class="example"> package MyApp;
+<pre class="src src-perl"> package MyApp;
  use Mojo::Base 'Mojolicious';
 
  # This method will run once at server start
@@ -191,25 +168,23 @@ Mojolicious::Commands-&gt;start_app('MyApp');
 
 1;
 </pre>
-
+</div>
 <p>
-    从MyApp代码可以看出，集成了Mojolicious类，所以此处的new方法是调用了父类的方法创建了一个实例.
-</p></li>
-</ul>
-
-</div>
-
-</div>
-
-<div id="outline-container-2-4" class="outline-4">
-<h4 id="sec-2-4">App创建完毕，调用其start方法</h4>
-<div class="outline-text-4" id="text-2-4">
-
-<p>    mojolicious.pm中
+从MyApp代码可以看出，集成了Mojolicious类，所以此处的new方法是调用了父类的方法创建了一个实例.
 </p>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">App创建完毕，调用其start方法</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+mojolicious.pm中
+</p>
+<div class="org-src-container">
 
-
-<pre class="example">has commands =&gt; sub {
+<pre class="src src-perl">has commands =&gt; sub {
    my $commands = Mojolicious::Commands-&gt;new(app =&gt; shift);
    weaken $commands-&gt;{app};
    return $commands;
@@ -217,20 +192,18 @@ Mojolicious::Commands-&gt;start_app('MyApp');
 ...
 sub start { shift-&gt;commands-&gt;run(@_ ? @_ : @ARGV) }
 </pre>
-
 </div>
-
 </div>
-
-<div id="outline-container-2-5" class="outline-4">
-<h4 id="sec-2-5">使用Mojolicious::Commands类的run方法执行</h4>
-<div class="outline-text-4" id="text-2-5">
-
-<p>   commands现在的app属性已经设置为MyApp.
+</div>
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">使用Mojolicious::Commands类的run方法执行</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+commands现在的app属性已经设置为MyApp.
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">sub run {
+<pre class="src src-perl">sub run {
   my ($self， $name， @args) = @_;
 
   ...
@@ -254,21 +227,18 @@ sub start { shift-&gt;commands-&gt;run(@_ ? @_ : @ARGV) }
   }
   ...
 </pre>
-
-<p>
-    调用_command加载对应的command模块，我们传的是&#8221;daemon&#8221;命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
-</p></div>
-
 </div>
+<p>
+调用\<sub>command加载对应的command模块，我们传的是</sub>&#8220;daemon&#8221;命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">调用Mojolicious::Command::daemon的run方法</h3>
+<div class="outline-text-3" id="text-2-6">
+<div class="org-src-container">
 
-<div id="outline-container-2-6" class="outline-4">
-<h4 id="sec-2-6">调用Mojolicious::Command::daemon的run方法</h4>
-<div class="outline-text-4" id="text-2-6">
-
-
-
-
-<pre class="example">sub run {
+<pre class="src src-perl">sub run {
   my ($self， @args) = @_;
 
   my $daemon = Mojo::Server::Daemon-&gt;new(app =&gt; $self-&gt;app);
@@ -286,41 +256,35 @@ sub start { shift-&gt;commands-&gt;run(@_ ? @_ : @ARGV) }
   $daemon-&gt;run;
 }
 </pre>
-
-<p>
-   可以看到实例化了一个Mojo::Server::Daemon类，然后从参数中设置实例的一些属性，设置实例的listen属性.执行run方法启动server.
-</p></div>
-
 </div>
+<p>
+可以看到实例化了一个Mojo::Server::Daemon类，然后从参数中设置实例的一些属性，设置实例的listen属性.执行run方法启动server.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">Mojo::Server::Daemon执行run方法</h3>
+<div class="outline-text-3" id="text-2-7">
+<div class="org-src-container">
 
-<div id="outline-container-2-7" class="outline-4">
-<h4 id="sec-2-7">Mojo::Server::Daemon执行run方法</h4>
-<div class="outline-text-4" id="text-2-7">
-
-
-
-
-<pre class="example">sub run {
+<pre class="src src-perl">sub run {
   my $self = shift;
   local $SIG{INT} = local $SIG{TERM} = sub { $self-&gt;ioloop-&gt;stop };
   $self-&gt;start-&gt;setuidgid-&gt;ioloop-&gt;start;
 }
 </pre>
-
-<p>
-    注册了一些信号处理后，调用start方法，调用setuidgid创建新session，然后启动ioloop.
-</p></div>
-
 </div>
+<p>
+注册了一些信号处理后，调用start方法，调用setuidgid创建新session，然后启动ioloop.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8">Mojo::Server::Daemon的start方法</h3>
+<div class="outline-text-3" id="text-2-8">
+<div class="org-src-container">
 
-<div id="outline-container-2-8" class="outline-4">
-<h4 id="sec-2-8">Mojo::Server::Daemon的start方法</h4>
-<div class="outline-text-4" id="text-2-8">
-
-
-
-
-<pre class="example">sub start {
+<pre class="src src-perl">sub start {
   my $self = shift;
 
   # Resume accepting connections
@@ -337,28 +301,24 @@ sub start { shift-&gt;commands-&gt;run(@_ ? @_ : @ARGV) }
   return $self;
 }
 </pre>
-
+</div>
 <p>
-    分两种情况:
-</p><ul>
+分两种情况:
+</p>
+<ul class="org-ul">
 <li>已经打开了监听socket，&nbsp;每个acceptor对应一个Mojo::IOLoop::Server实例
 </li>
 <li>还没有监听，则调用<sub>listen方法在每个要监听的端口上面开启监听，这样每个端口上启动了一个Mojo</sub>::IOLoop::Server实例
 </li>
 </ul>
-
 </div>
-
 </div>
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9">调用\<sub>listen方法创建监听的server</sub></h3>
+<div class="outline-text-3" id="text-2-9">
+<div class="org-src-container">
 
-<div id="outline-container-2-9" class="outline-4">
-<h4 id="sec-2-9">调用_listen方法创建监听的server</h4>
-<div class="outline-text-4" id="text-2-9">
-
-
-
-
-<pre class="example">sub _listen {
+<pre class="src src-perl">sub _listen {
   my ($self， $listen) = @_;
   ...
   my $id = $self-&gt;ioloop-&gt;server(
@@ -371,15 +331,15 @@ sub start { shift-&gt;commands-&gt;run(@_ ? @_ : @ARGV) }
 
       $stream-&gt;on(close =&gt; sub { $self-&gt;_close($id) });
       $stream-&gt;on(
-        error =&gt; sub {
-          return unless $self;
-          $self-&gt;app-&gt;log-&gt;error(pop);
-          $self-&gt;_close($id);
-        }
+	error =&gt; sub {
+	  return unless $self;
+	  $self-&gt;app-&gt;log-&gt;error(pop);
+	  $self-&gt;_close($id);
+	}
       );
       $stream-&gt;on(read =&gt; sub { $self-&gt;_read($id =&gt; pop) });
       $stream-&gt;on(timeout =&gt;
-          sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout.') if $c-&gt;{tx} });
+	  sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout.') if $c-&gt;{tx} });
     }
   );
   push @{$self-&gt;{acceptors} ||= []}， $id;
@@ -390,33 +350,30 @@ sub start { shift-&gt;commands-&gt;run(@_ ? @_ : @ARGV) }
   say "Server available at $listen.";
 }
 </pre>
-
-<p>
-    可以看到是通过实例化Mojo::IOLoop::Server来创建一个监听端口的server，并且将创建的server记录在$self-&gt;{acceptors}数组.
-</p></div>
-
 </div>
+<p>
+可以看到是通过实例化Mojo::IOLoop::Server来创建一个监听端口的server，并且将创建的server记录在$self-&gt;{acceptors}数组.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10">ioloop被启动</h3>
+<div class="outline-text-3" id="text-2-10">
+<div class="org-src-container">
 
-<div id="outline-container-2-10" class="outline-4">
-<h4 id="sec-2-10">ioloop被启动</h4>
-<div class="outline-text-4" id="text-2-10">
-
-
-
-
-<pre class="example">sub start {
+<pre class="src src-perl">sub start {
    my $self = shift;
    croak 'Mojo::IOLoop already running' if $self-&gt;is_running;
    (ref $self ? $self : $self-&gt;singleton)-&gt;reactor-&gt;start;
 }
 </pre>
-
+</div>
 <p>
-    执行reactor的start方法:
+执行reactor的start方法:
 </p>
+<div class="org-src-container">
 
-
-<pre class="example"># 如果Reactor是Mojo::Reactor::EV
+<pre class="src src-perl"># 如果Reactor是Mojo::Reactor::EV
 sub start {EV::run}
 # 如果是Mojo::Reactor::Poll
 sub start {
@@ -425,23 +382,22 @@ sub start {
     $self-&gt;one_tick while $self-&gt;{running};
 }
 </pre>
-
+</div>
 <p>
-    注意到如果是<span class="caps">EV</span>，执行run方法会被阻塞，进入了事件循环.如果是Poll，进入了轮询，也是一个循环.
+注意到如果是<span class="caps">EV</span>，执行run方法会被阻塞，进入了事件循环.如果是Poll，进入了轮询，也是一个循环.
 </p>
+
 <p>
 自此server启动完毕
 </p>
 </div>
 </div>
-
 </div>
 
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">总结</h3>
-<div class="outline-text-3" id="text-3">
-
-<ul>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">总结</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
 <li>App的start方法启动app
 </li>
 <li>App由commands启动，commands对应于各个server类型(如daemon对应与Mojo::Server::Daemon)
@@ -475,7 +431,6 @@ sub start {
 <li>请求<span class="caps">URL</span>为Mojo::URL，请求的路径部分:Mojo::Path，请求的参数部分:Mojo::Parameters
 </li>
 </ul>
-
 </div>
 </div>
 

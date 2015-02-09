@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 *** 模块分类
 加载模块，CPAN上有许多模块可以完成。下面是这些模块的对比，以及各种情况下的推荐模块。
 

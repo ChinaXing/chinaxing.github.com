@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 在翻看CPAN上[[http://www.cpan.org/misc/how-to-mirror.html][搭建镜像站点]] 介绍中，[[http://search.cpan.org/dist/File-Rsync-Mirror-Recent/][CPAN镜像同步程序]] 的作者在介绍其算法的时候，举例到[[http://search.cpan.org/dist/File-Rsync-Mirror-Recent/lib/File/Rsync/Mirror/Recent.pm#COMPETITORS][竞争者]]有 *csync2*, *rsync3* (batchmode)。
 
 由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，

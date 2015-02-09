@@ -15,13 +15,13 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li class="active"><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
@@ -36,11 +36,6 @@
         <ol></ol>
       </div>
       <div class="tech">
-
-<p>
-git reflog&nbsp;命令用来列出reflog，reflog记录了每次当前commit的变化（描述可能不准确）。
-</p>
-
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
@@ -52,48 +47,47 @@ git reflog&nbsp;命令用来列出reflog，reflog记录了每次当前commit的�
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">reflog</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>   reflog在commit、merge、switch&nbsp;branch等的时候都会记录一条日志。这些日志纤细的记录了每次操作。从中可以找到许多操作信息。
-</p>
 <p>
-   reflog存储在 <code>.git/logs/</code> 目录下。
+git reflog&nbsp;命令用来列出reflog，reflog记录了每次当前commit的变化（描述可能不准确）。
 </p>
-<p>
-   每个本地分支都有自己的reflog，<span class="caps">HEAD</span>和stash也有。
-</p></div>
 
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">reflog</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+reflog在commit、merge、switch&nbsp;branch等的时候都会记录一条日志。这些日志纤细的记录了每次操作。从中可以找到许多操作信息。
+</p>
+
+<p>
+reflog存储在 <code>.git/logs/</code> 目录下。
+</p>
+
+<p>
+每个本地分支都有自己的reflog，<span class="caps">HEAD</span>和stash也有。
+</p>
 </div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">查看reflog</h3>
-<div class="outline-text-3" id="text-2">
-
-<p>   查看reflog通过如下命令：
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">查看reflog</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+查看reflog通过如下命令：
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">git reflog show #查看HEAD的reflog
+<pre class="src src-sh">git reflog show #查看HEAD的reflog
 git reflog show master #查看master分支的
 git reflog show stash #查看stash的，可能没有stash log,如果没有执行过git stash操作
 git reflog HEAD@{now} show -10 #查看head的最近10条reflog日志
 </pre>
-
 </div>
-
 </div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">reflog的格式</h3>
-<div class="outline-text-3" id="text-3">
-
-
-
-
-<pre class="example">#commit reflog名@{序号或时间}                  操作                          
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">reflog的格式</h2>
+<div class="outline-text-2" id="text-3">
+<pre class="example">
+#commit reflog名@{序号或时间}                  操作                          
 ed3da99 HEAD@{Tue Jul 16 17:51:41 2013 +0800}: checkout: moving from master to dev
 433e815 HEAD@{Tue Jul 16 17:10:51 2013 +0800}: checkout: moving from dev to master
 ed3da99 HEAD@{Tue Jul 16 17:06:33 2013 +0800}: pull: Fast-forward
@@ -101,30 +95,28 @@ ed3da99 HEAD@{Tue Jul 16 17:06:33 2013 +0800}: pull: Fast-forward
 433e815 HEAD@{Thu Jul 11 11:15:10 2013 +0800}: checkout: moving from dev to master
 2bd32c8 HEAD@{Thu Jul 11 11:14:57 2013 +0800}: commit: 'add a new article'
 </pre>
-
 <p>
-   每个reflog对应唯一的commit，虽然有些commit不会出现在git log中（如进行了git commit&nbsp;&ndash;amend的commit），但会被记录于reflog，即reflog是线性随时间增长的。
-</p></div>
-
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">引用reflog</h3>
-<div class="outline-text-3" id="text-4">
-
-<p>   在使用commit&nbsp;hash的地方也可以使用reflog代替，如：
+每个reflog对应唯一的commit，虽然有些commit不会出现在git log中（如进行了git commit&nbsp;&#x2013;amend的commit），但会被记录于reflog，即reflog是线性随时间增长的。
 </p>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">引用reflog</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+在使用commit&nbsp;hash的地方也可以使用reflog代替，如：
+</p>
+<div class="org-src-container">
 
-
-<pre class="example">git reset --hard ed3da99
+<pre class="src src-sh">git reset --hard ed3da99
 git reset --hard HEAD^
 # 可以用如下代替
 git reset --hard HEAD@{2}
 git reset --hard HEAD@{1}
 </pre>
-
+</div>
 <p>
-   即，在这里 <code>HEAD@{2}</code> 对应于reflog中的倒数第二个记录的commit hash: <code>ed3da99...</code>
+即，在这里 <code>HEAD@{2}</code> 对应于reflog中的倒数第二个记录的commit hash: <code>ed3da99...</code>
 </p>
 </div>
 </div>

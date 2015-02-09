@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 在计算QPS和RT的时候，我们一般使用grep 。但是当日志文件很大的时候，grep会很耗时。
 
 监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。

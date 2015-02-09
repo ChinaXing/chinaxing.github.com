@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** 前言
    由于我对Web框架的理解不是很清晰，所以希望能借着阅读代码进行全面的了解，加之自己对Perl相对熟悉，所以就选择Perl的web框架来分析，Mojolicious特点是实时，基于事件，
 比较拟合当前的趋势，加之其代码精简，也可以从中学习到Perl编程的一些经验和技巧.

@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: hardware,cpu
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 cpu/硬件级别支持的多线程类似软件级别的多线程，逻辑上的多个执行流，并且它们共享了一些状态和资源。
 
 对于cpu级别的多线程，共享的是如下资源：

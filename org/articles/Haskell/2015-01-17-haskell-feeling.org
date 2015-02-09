@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: Haskell
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 这几天在坚持学习Haskell，书是先看了《Real World Haskell》，感觉实践的东西较多，基础涉及的较少，于是决定找个从基础来学习的书，毕竟基础的东西才是这个语言的要义所在，不容忽略。
 
 其实最好的方式是看官网的Document或者Toturial等，全面而且原滋原味，可惜担心太多内容，没有经理坚持下去。

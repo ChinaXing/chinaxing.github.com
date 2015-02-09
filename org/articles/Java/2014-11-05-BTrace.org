@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: Java,debug,tool
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 *** BTrace
 
 经常需要对运行中的Java程序进行错误诊断、性能剖析，那么BTrace工具可以说是像一把利器，通过它可以和运行中的Java程序进行交互。

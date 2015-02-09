@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: java
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 无意中在Netty代码中看到一个函数，testOrderMap，里面提到LinkedHashMap有序性，这个真心不知道，所以转头去看LinkedHashMap的代码，看到一些不错的点记录下来。
 *** 内部实现
 LinkedHashMap内部实现是在原有HashMap之上添加了一个Double Linked List。

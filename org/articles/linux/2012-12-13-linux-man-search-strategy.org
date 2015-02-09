@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 本文的知识是从 *man man* 命令得到。在这里记录只为了备忘和方便，可以使用 *man man* 来获得纤细的说明。
 
 man 命令是我们经常使用的一个命令，那么当你执行:man [command] 的时候，

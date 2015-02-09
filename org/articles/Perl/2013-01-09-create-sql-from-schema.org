@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 [[http://search.cpan.org/perldoc?DBIx%3A%3AClass%3A%3AAdmin][DBIx::Class::Admin]] 模块提供了数据库管理的一些功能，如：部署,升级版本，更新数据，插入数据，删除，查询和生成数据库SQL表。
 
 这个模块还附带了一个命令行的工具： *dbicadmin* ，帮助我们不必写perl脚本就可以使用它的功能。

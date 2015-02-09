@@ -7,6 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 #+begin_src perl
     my @new_a = keys %{ {map {$_ => } @a} };
 #+end_src

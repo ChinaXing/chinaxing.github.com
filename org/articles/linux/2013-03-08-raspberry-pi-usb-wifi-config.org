@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 这几天，为了能够无线连接Raspberry-Pi，这样可以方便的使用和配置它，也免的拿来拿去导致损伤。
 
 于是，先在淘宝上搜索了USB无线网卡，结果选了一款最便宜最小巧的USB无线网卡，MERCURY MV150US（25￥）。

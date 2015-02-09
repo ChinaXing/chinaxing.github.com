@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 Windows 下cygwin可以模拟Linux环境.于是打算用cygwin+jekyll 来作写博客的环境.
 

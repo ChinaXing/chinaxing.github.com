@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 有时候，我们想知道自己的机器上安装了哪些Perl模块，可以通过下面的方式:
 
 *** perllocal

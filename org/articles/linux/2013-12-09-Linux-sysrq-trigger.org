@@ -6,6 +6,8 @@ date: 2013-12-09 15:39:01
 category: Linux
 ---
 #+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 More detail can be found at Documents/sysrq.txt
 
 'b'     - Will immediately reboot the system without syncing or unmounting

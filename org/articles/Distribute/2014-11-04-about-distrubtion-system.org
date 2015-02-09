@@ -8,8 +8,8 @@ chage_frequency: monthly
 tag: distribute
 ---
 #+END_HTML
-
-(_个人理解仅供参考_)
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 *** distribution system
 

@@ -8,7 +8,8 @@ tag: linux,limits
 change_frequency: monthly
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 linux 系统通过进程的rlimit字段，限制进程的资源使用，包括：文件打开数,core文件大小等，可以通过ulimit命令查看当前进程的设置:
 #+BEGIN_SRC sh :exports both :results output replace scalar :eval no-export
 ulimit -a

@@ -8,7 +8,8 @@ change_frequency: monthly
 tag: DBIx::Class
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 如果数据库和表已经存在，我们不需要手动创建Schema，可以使用 [[http://search.cpan.org/~rkitover/DBIx-Class-Schema-Loader-0.07033/lib/DBIx/Class/Schema/Loader.pm][DBIx::Class::Schema::Loader]] 这个模块自动生成.
 

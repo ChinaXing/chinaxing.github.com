@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: hardware,cpu,cache
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 关于Cpu Cache 我们发现如果要考虑到程序的性能，不可避免地要涉及到这一块的内容，那么就把它了解清楚吧。
 
 *** TODO What Cache for

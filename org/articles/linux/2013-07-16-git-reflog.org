@@ -8,7 +8,8 @@ tag: linux,git
 change_frequency: monthly
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 git reflog 命令用来列出reflog，reflog记录了每次当前commit的变化（描述可能不准确）。
 
 ** reflog

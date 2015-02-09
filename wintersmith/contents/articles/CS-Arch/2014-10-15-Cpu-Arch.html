@@ -1,3 +1,11 @@
+---
+date: 2014-10-12 22:56:29
+template: tech.jade
+title: Cpu - architecture
+category: CS-Arch
+chage_frequency: monthly
+tag: hardware,cpu
+---
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -9,13 +17,7 @@
 <li><a href="#sec-1-3">SuperScaler</a></li>
 <li><a href="#sec-1-4">Cache</a></li>
 <li><a href="#sec-1-5">寄存器</a></li>
-<li><a href="#sec-1-6">中断</a>
-<ul>
-<li><a href="#sec-1-6-1">中断处理过程</a></li>
-<li><a href="#sec-1-6-2">处理器间中断</a></li>
-<li><a href="#sec-1-6-3">本地中断</a></li>
-</ul>
-</li>
+<li><a href="#sec-1-6">中断</a></li>
 <li><a href="#sec-1-7">IO</a></li>
 <li><a href="#sec-1-8">时钟</a></li>
 <li><a href="#sec-1-9">频率</a></li>
@@ -24,13 +26,7 @@
 <li><a href="#sec-1-12">内存控制器</a></li>
 <li><a href="#sec-1-13">停机</a></li>
 <li><a href="#sec-1-14">idle</a></li>
-<li><a href="#sec-1-15">内存映射和访问</a>
-<ul>
-<li><a href="#sec-1-15-1">TLB</a></li>
-<li><a href="#sec-1-15-2">CR0, CR3</a></li>
-<li><a href="#sec-1-15-3">Memory barray</a></li>
-</ul>
-</li>
+<li><a href="#sec-1-15">内存映射和访问</a></li>
 <li><a href="#sec-1-16">PMC - 性能监视计数器</a></li>
 </ul>
 </li>
@@ -38,12 +34,7 @@
 <ul>
 <li><a href="#sec-2-1">计算型</a></li>
 <li><a href="#sec-2-2">数据存取型</a></li>
-<li><a href="#sec-2-3">IO型</a>
-<ul>
-<li><a href="#sec-2-3-1">文件系统型</a></li>
-<li><a href="#sec-2-3-2">网络型</a></li>
-</ul>
-</li>
+<li><a href="#sec-2-3">IO型</a></li>
 </ul>
 </li>
 <li><a href="#sec-3"><span class="todo TODO">TODO</span> NUMA</a></li>
@@ -60,15 +51,6 @@
 </ul>
 </div>
 </div>
----
-date: 2014-10-12 22:56:29
-template: tech.jade
-title: Cpu - architecture
-category: CS-Arch
-chage_frequency: monthly
-tag: hardware,cpu
----
-
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="todo TODO">TODO</span> CPU 组成</h2>
 <div class="outline-text-2" id="text-1">

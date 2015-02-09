@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: Java
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 *** Java
 
 Java 语言在应用上，是一个工业应用上成熟的语言，生态系统丰富完善。在技术上，Java 语言是基于虚拟机的语言实现、垃圾自动回收管理的典型而成熟的实现。

@@ -7,7 +7,8 @@ category: Perl
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 #+BEGIN_HTML
 <div>
 <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>

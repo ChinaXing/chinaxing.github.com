@@ -7,7 +7,8 @@ category: Linux
 change_frequency: monthly
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** Fuse 介绍
 Fuse 是指用户空间的文件系统，是文件系统的一种实现方式。目前BSD，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
 - 易于调试和开发。

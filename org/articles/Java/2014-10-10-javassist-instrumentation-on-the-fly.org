@@ -8,7 +8,8 @@ chage_frequency: monthly
 tag: Java,instrument
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 ** Jvm Instrumentation
 
 Jvm 提供了Instrumentation机制，允许在类加载时进行对类的增强，以及在运行时对已经加载的类进行增强。

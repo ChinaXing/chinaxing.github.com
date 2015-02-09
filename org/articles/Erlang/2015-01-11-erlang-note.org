@@ -8,6 +8,8 @@ chage_frequency: monthly
 tag: Erlang
 ---
 #+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 Erlang语言，时间上不算新，1987与Perl同岁。为大并发设计，支持热升级，分布式。用于电信系统。
 
