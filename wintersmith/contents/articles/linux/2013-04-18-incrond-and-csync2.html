@@ -1,29 +1,3 @@
----
-date: 2013-04-18
-template: tech.jade
-title: 使用incrond和csync2实现集群文件同步
-category: Linux
-change_frequency: monthly
----
-
-<p>
-在翻看CPAN上<a href="http://www.cpan.org/misc/how-to-mirror.html">搭建镜像站点</a> 介绍中，<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/">CPAN镜像同步程序</a> 的作者在介绍其算法的时候，举例到<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/lib/File/Rsync/Mirror/Recent.pm#COMPETITORS">竞争者</a>有 <b>csync2</b>, <b>rsync3</b> (batchmode)。
-</p>
-<p>
-由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，
-于是google了rsync3的batchmode，发现其实非常不友好，也没有比rsync高级出多少。
-</p>
-<p>
-再gogole了csync2，发现不少文章，都是介绍使用csync2进行集群文件同步，其中不少是将lscynd和csync2结合起来使用。
-</p>
-<p>
-于是这几天小小调研了下这几款程序，仔细了解了一下。
-</p>
-<p>
-通过了解发现lsyncd视乎比较令人满意，可惜我的机器上编译lua后怎么也不被lsyncd的configure程序识别为满意，
-故而提了一个issue给作者后，转向使用csync2+incrond来完成任务,于是有了本文。
-</p>
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -55,24 +29,52 @@ change_frequency: monthly
 </ul>
 </div>
 </div>
+---
+date: 2013-04-18
+template: tech.jade
+title: 使用incrond和csync2实现集群文件同步
+category: Linux
+change_frequency: monthly
+---
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">csync2 介绍</h3>
-<div class="outline-text-3" id="text-1">
-
-<p><a href="http://oss.linbit.com/csync2/">Csync2</a> 类似于<a href="http://www.cis.upenn.edu/~bcpierce/unison/">unison</a> 是一个学院派的程序，主要解决的目的是进行集群间的文件/目录同步，可以发现/解决冲突，友好的处理删除情况，纤细介绍可以在其官网上了解。
+<p>
+在翻看CPAN上<a href="http://www.cpan.org/misc/how-to-mirror.html">搭建镜像站点</a> 介绍中，<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/">CPAN镜像同步程序</a> 的作者在介绍其算法的时候，举例到<a href="http://search.cpan.org/dist/File-Rsync-Mirror-Recent/lib/File/Rsync/Mirror/Recent.pm#COMPETITORS">竞争者</a>有 <b>csync2</b>, <b>rsync3</b> (batchmode)。
 </p>
+
+<p>
+由于之前我写过一个同步两个机器的某个目录保持一致的程序，遇到许多不满意之处，所以对这个技术点比较感兴趣，
+于是google了rsync3的batchmode，发现其实非常不友好，也没有比rsync高级出多少。
+</p>
+
+<p>
+再gogole了csync2，发现不少文章，都是介绍使用csync2进行集群文件同步，其中不少是将lscynd和csync2结合起来使用。
+</p>
+
+<p>
+于是这几天小小调研了下这几款程序，仔细了解了一下。
+</p>
+
+<p>
+通过了解发现lsyncd视乎比较令人满意，可惜我的机器上编译lua后怎么也不被lsyncd的configure程序识别为满意，
+故而提了一个issue给作者后，转向使用csync2+incrond来完成任务,于是有了本文。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">csync2 介绍</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="http://oss.linbit.com/csync2/">Csync2</a> 类似于<a href="http://www.cis.upenn.edu/~bcpierce/unison/">unison</a> 是一个学院派的程序，主要解决的目的是进行集群间的文件/目录同步，可以发现/解决冲突，友好的处理删除情况，纤细介绍可以在其官网上了解。
+</p>
+
 <p>
 csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支持的是集群内服务器的文件/目录同步，并不仅仅局限于2台。
 </p>
-
 </div>
 
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1">csync2特点</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<ul>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">csync2特点</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
 <li>使用sqlite（可以编译支持pgsql、mysql等）数据库记录跟踪文件变化，可以查看和diff远端和自己的差别，可以查看哪些文件发生了变化
 </li>
 <li>使用rsync算法进行数据同步，rsync算法是高效的
@@ -90,18 +92,14 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <li>丰富的客户端命令选项，便于查看同步和手动执行同步
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2">安装</h4>
-<div class="outline-text-4" id="text-1-2">
-
-<ul>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">安装</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
 <li>依赖
-<ul>
+<ul class="org-ul">
 <li>sqlite（可以使用其它数据库），目前支持的sqlite版本为sqlite2（有点老）。
 </li>
 <li><a href="http://librsync.sourceforge.net/">librsync</a> （使用rsync算法进行数据同步）
@@ -109,98 +107,84 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <li><a href="http://www.gnutls.org/">gnutls</a> （进行加密传输使用），可选。
 </li>
 </ul>
-
 </li>
 <li>安装依赖
-<ul>
-<li>gnutls<br/>
+<ul class="org-ul">
+<li>gnutls<br  />
     在这里下载 <a href="ftp://ftp.gnutls.org/pub/gnutls/libtasn1/libtasn1-2.1.tar.gz">ftp://ftp.gnutls.org/pub/gnutls/libtasn1/libtasn1-2.1.tar.gz</a>, 然后安装
 </li>
-<li>librsync<br/>
+<li>librsync<br  />
     在这里下载 <a href="http://internode.dl.sourceforge.net/sourceforge/librsync/librsync-0.9.7.tar.gz">http://internode.dl.sourceforge.net/sourceforge/librsync/librsync-0.9.7.tar.gz</a>, 然后安装
 </li>
-<li>sqlite2<br/>
-    在这里下载 <a href="http://www.sqlite.org/sqlite-2.8.17.tar.gz">http://www.sqlite.org/sqlite-2.8.17.tar.gz</a>, 然后安装<br/>
+<li>sqlite2<br  />
+    在这里下载 <a href="http://www.sqlite.org/sqlite-2.8.17.tar.gz">http://www.sqlite.org/sqlite-2.8.17.tar.gz</a>, 然后安装<br  />
     注意: sqlite2 编译安装在了/usr/loca/lib下，需要添加/usr/local/lib到ld程序的搜索路径:
+<div class="org-src-container">
 
-
-
-<pre class="example">echo /usr/loca/lib | sudo tee -a /etc/ld.so.conf    
+<pre class="src src-sh">echo /usr/loca/lib | sudo tee -a /etc/ld.so.conf
 </pre>
-
+</div>
 </li>
 </ul>
-
 </li>
 <li>编译安装
-    从<a href="http://oss.linbit.com/csync2/">http://oss.linbit.com/csync2/</a> 左侧下载代码,比如csync2-1.34.tar.gz，解压编译：
+从<a href="http://oss.linbit.com/csync2/">http://oss.linbit.com/csync2/</a> 左侧下载代码,比如csync2-1.34.tar.gz，解压编译：
+<div class="org-src-container">
 
-
-
-<pre class="example">./autogen.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install
+<pre class="src src-sh">./autogen.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install
 </pre>
-
+</div>
 <p>
-    如果不编译TLS支持， <b>./configure</b> 选项中添加 <i>&ndash;disable-gnutls</i>
-</p></li>
+如果不编译TLS支持， <b>./configure</b> 选项中添加 <i>&#x2013;disable-gnutls</i>
+</p>
+</li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3">配置</h4>
-<div class="outline-text-4" id="text-1-3">
-
-<ul>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">配置</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
 <li>csync2 的配置文件在 <b>/etc/csync2.cfg</b>,编辑，修改为自己想要的。配置方法可以查看其<a href="http://oss.linbit.com/csync2/paper.pdf">文档</a>。
 </li>
 <li>生成的使用 对称密钥
+<div class="org-src-container">
 
-
-
-<pre class="example">sudo csync2 -k /etc/csync2.key_mygroup
+<pre class="src src-sh">sudo csync2 -k /etc/csync2.key_mygroup
 </pre>
-
+</div>
 </li>
 <li>csync2 的数据库存放于/var/lib/csync2/
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-1-4" class="outline-4">
-<h4 id="sec-1-4">启动</h4>
-<div class="outline-text-4" id="text-1-4">
-
-<p>csync2的启动方式有3种
-</p><ol>
-<li>inetd/xinetd<br/>
-       <b>csync2 -i</b><br/>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">启动</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+csync2的启动方式有3种
+</p>
+<ol class="org-ol">
+<li>inetd/xinetd<br  />
+       <b>csync2 -i</b><br  />
        通过配置xinetd服务，当连接到来时由xinetd启动csync2，处理完请求，csync2会马上退出。
 </li>
-<li>daemon<br/>
-       <b>csync2 -ii</b><br/>
+<li>daemon<br  />
+       <b>csync2 -ii</b><br  />
        csync2 以daemon方式运行，不停的处理到来的请求。不自动退出，可以通过执行 <b>csync2 -k</b> 让其退出。
 </li>
-<li>执行一次即退出<br/>
-       <b>csync2 -iii</b><br/>
+<li>执行一次即退出<br  />
+       <b>csync2 -iii</b><br  />
        这种模式下，csync2 启动后，处理完一个请求后便退出。
 </li>
 </ol>
-
 </div>
-
 </div>
-
-<div id="outline-container-1-5" class="outline-4">
-<h4 id="sec-1-5">用csync2进行同步</h4>
-<div class="outline-text-4" id="text-1-5">
-
-<ol>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">用csync2进行同步</h3>
+<div class="outline-text-3" id="text-1-5">
+<ol class="org-ol">
 <li>csync2 -x 执行同步，连接group内机器，进行同步，group内机器需要启动或配置好csync2的server模式,以便连接。
 </li>
 <li>csync2 -M 查看dirty的文件，dirty的文件为发生变动的文件，需要被push到远端。
@@ -208,143 +192,123 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
 <li>其它，通过man csync2 可以查到。
 </li>
 </ol>
-
 </div>
 </div>
-
 </div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">incrond 介绍</h3>
-<div class="outline-text-3" id="text-2">
-
-<p>    incrond 是以crontab类似的方式提供的一个工具, 实际上是对Linux内核api的inotify功能的封装。<br/>
-    注意：inotify无法递归监控子目录。<br/>
-    incrond 模仿了crontab,使用习惯与crontab一样:<br/>
-    incrond = crond, incrontab = crontab <br/>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">incrond 介绍</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+incrond 是以crontab类似的方式提供的一个工具, 实际上是对Linux内核api的inotify功能的封装。<br  />
+    注意：inotify无法递归监控子目录。<br  />
+    incrond 模仿了crontab,使用习惯与crontab一样:<br  />
+    incrond = crond, incrontab = crontab <br  />
     incrontab 的格式如下:
 </p>
-
-
-<pre class="example"># path          mask               action
+<pre class="example">
+# path          mask               action
 /path/to/dir EVENTS,EVENTS,EVENTS  /home/admin/tt.sh $%/$#
 </pre>
+<p>
+action 是EVENT发生后执行的程序，可以将一些事件关联的属性传给程序，如上例中的$%/$#
+</p>
 
 <p>
-    action 是EVENT发生后执行的程序，可以将一些事件关联的属性传给程序，如上例中的$%/$#
-</p>
-<p>
-    mask中可添加的一个选项 <code>IN_NO_LOOP</code> 用来指定执行程序的过程中不进行事件的触发，即暂时屏蔽了事件，这个特性可以防止多个action实例同时运行。
-</p>
-<p>    
-    如果是监控整个目录树的事件，那么需要将 <code>mask</code> 设置为包含 <code>IN_ALL_EVENTS</code> ，以便捕获所有的事件，这是因为intofiy工具是无法递归地对子目录进行监控的，我们只能通过顶层目录的 <code>OPEN</code> 和 <code>CLOSE</code> 事件来间接的监控子目录树的事件。
+mask中可添加的一个选项 <code>IN_NO_LOOP</code> 用来指定执行程序的过程中不进行事件的触发，即暂时屏蔽了事件，这个特性可以防止多个action实例同时运行。
 </p>
 
+<p>
+如果是监控整个目录树的事件，那么需要将 <code>mask</code> 设置为包含 <code>IN_ALL_EVENTS</code> ，以便捕获所有的事件，这是因为intofiy工具是无法递归地对子目录进行监控的，我们只能通过顶层目录的 <code>OPEN</code> 和 <code>CLOSE</code> 事件来间接的监控子目录树的事件。
+</p>
 </div>
 
-<div id="outline-container-2-1" class="outline-4">
-<h4 id="sec-2-1">安装</h4>
-<div class="outline-text-4" id="text-2-1">
-
-<p>     incrond 要求内核支持inotify（内核版本要在2.6.13之上）。因为它实质是对inotify的api的包装。
-</p><ul>
-<li>下载代码：<a href="http://inotify.aiken.cz/?section=incron&amp;page=download&amp;lang=en">http://inotify.aiken.cz/?section=incron&amp;page=download&amp;lang=en</a>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">安装</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+incrond 要求内核支持inotify（内核版本要在2.6.13之上）。因为它实质是对inotify的api的包装。
+</p>
+<ul class="org-ul">
+<li>下载代码：<a href="http://inotify.aiken.cz/?section=incron&page=download&lang=en">http://inotify.aiken.cz/?section=incron&page=download&lang=en</a>
 </li>
 <li>编译 
+<div class="org-src-container">
 
-
-
-<pre class="example">make &amp;&amp; sudo make install
+<pre class="src src-sh">make &amp;&amp; sudo make install
 </pre>
-
+</div>
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-2-2" class="outline-4">
-<h4 id="sec-2-2">配置</h4>
-<div class="outline-text-4" id="text-2-2">
-
-<p>     安装完成后incrond与incrontab两个程序可用，incrond的配置文件位于/etc/incron.conf, 此外/etc/incrond.d/目录下可以存放incrontab配置，类似于crontab的布局。<br/>
-     incron.conf 配置比较简单，其中一项是editor配置，我们需要设置为vi、vim或者emacs，之后才能使用incrontab来编辑incrontab。
-</p></div>
-
-</div>
-
-<div id="outline-container-2-3" class="outline-4">
-<h4 id="sec-2-3">启动</h4>
-<div class="outline-text-4" id="text-2-3">
-
-
-
-
-<pre class="example">sudo incrond
-</pre>
-
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">配置</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
-     incrond 以daemon进程的形式（类似于crond）存在<br/>
+安装完成后incrond与incrontab两个程序可用，incrond的配置文件位于/etc/incron.conf, 此外/etc/incrond.d/目录下可以存放incrontab配置，类似于crontab的布局。<br  />
+     incron.conf 配置比较简单，其中一项是editor配置，我们需要设置为vi、vim或者emacs，之后才能使用incrontab来编辑incrontab。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">启动</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo incrond
+</pre>
+</div>
+<p>
+incrond 以daemon进程的形式（类似于crond）存在<br  />
      如果要添加配置，通过 incrontab -e 来添加
-</p></div>
+</p>
 </div>
-
 </div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">incrond+csync2配置集群同步</h3>
-<div class="outline-text-3" id="text-3">
-
-
 </div>
-
-<div id="outline-container-3-1" class="outline-4">
-<h4 id="sec-3-1">搭配原因</h4>
-<div class="outline-text-4" id="text-3-1">
-
-<p>     csync2 解决了集群内机器将同步问题，但是csync2需要通过手动来触发，它本身是不会自动监控变化的。<br/>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">incrond+csync2配置集群同步</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">搭配原因</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+csync2 解决了集群内机器将同步问题，但是csync2需要通过手动来触发，它本身是不会自动监控变化的。<br  />
      所以我们结合使用incrond来监控文件/目录的变化，然后触发csync2来进行同步，这就是思路。
-</p></div>
-
+</p>
 </div>
-
-<div id="outline-container-3-2" class="outline-4">
-<h4 id="sec-3-2">搭配方法</h4>
-<div class="outline-text-4" id="text-3-2">
-
-<ul>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">搭配方法</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
 <li>首先配置好csync2，以xinetd或者daemon方式运行起来。
 </li>
 <li>配置好incrond，运行起来
 </li>
-<li>添加incrontab项，使incrond事件监控和csync2文件同步关联起来<br/>
+<li>添加incrontab项，使incrond事件监控和csync2文件同步关联起来<br  />
        如：
+<div class="org-src-container">
 
-
-
-<pre class="example">/home/admin/resource IN_ALL_EVENTS,IN_NO_LOOP /home/admin/tt.sh $%/$#
+<pre class="src src-sh">/home/admin/resource IN_ALL_EVENTS,IN_NO_LOOP /home/admin/tt.sh $%/$#
 </pre>
-
+</div>
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-3-3" class="outline-4">
-<h4 id="sec-3-3">存在的问题</h4>
-<div class="outline-text-4" id="text-3-3">
-
-<p>    通过incrond进行触发csync2同步的时候，存在一个问题，那就是csync2进行同步的时候，又会触发incrond的执行（因为incrond监控了 <code>IN_ALL_EVENTS</code> ），所以就会造成无休止的循环和csync2进程被频繁的创建出来，进而导致系统load上升。
-</p>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">存在的问题</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
-    解决方法是对incrond触发的脚本，在脚本内通过锁机制保证同一时刻只有一份同步进行在运行，同时在执行同步前后增加一定的暂停时间：
+通过incrond进行触发csync2同步的时候，存在一个问题，那就是csync2进行同步的时候，又会触发incrond的执行（因为incrond监控了 <code>IN_ALL_EVENTS</code> ），所以就会造成无休止的循环和csync2进程被频繁的创建出来，进而导致系统load上升。
 </p>
 
+<p>
+解决方法是对incrond触发的脚本，在脚本内通过锁机制保证同一时刻只有一份同步进行在运行，同时在执行同步前后增加一定的暂停时间：
+</p>
+<div class="org-src-container">
 
-<pre class="example">(
+<pre class="src src-sh">(
   flock -n 100 || exit 
   sleep 1 
   echo [$(date +'%y-%m-%d %h:%M:%S')] "${1:-crontab}" &gt;&gt;/home/admin/logs/resource_sync.log
@@ -352,44 +316,40 @@ csync2 中的 <b>C</b> 应该是代表cluster，集群的意思，即；它支�
   sleep 1
 ) 100&gt;/tmp/csync.lock
 </pre>
-
+</div>
 <p>
-    这样一来，可能有的事件因为互斥锁的原因二没有进行同步，所以需要增加一份额外的定时同步（添加于crontab）:
+这样一来，可能有的事件因为互斥锁的原因二没有进行同步，所以需要增加一份额外的定时同步（添加于crontab）:
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">#Run script every 15 seconds : 
+<pre class="src src-sh">#Run script every 15 seconds : 
 * * * * * /foo/bar/your_script
 * * * * * sleep 15; /foo/bar/your_script
 * * * * * sleep 30; /foo/bar/your_script
 * * * * * sleep 45; /foo/bar/your_script
 </pre>
-
-
+</div>
+</div>
 </div>
 </div>
 
-</div>
-
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">其它</h3>
-<div class="outline-text-3" id="text-4">
-
-<p>除了csync2还有类似的工具，比如：
-</p><ul>
-<li>unison<br/>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">其它</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+除了csync2还有类似的工具，比如：
+</p>
+<ul class="org-ul">
+<li>unison<br  />
   可以完成两台服务器间目录的同步
 </li>
-<li>lsyncd<br/>
+<li>lsyncd<br  />
   <a href="https://github.com/axkibe/lsyncd">lsyncd</a> 是一个很好的方案，对inotify事件进行了聚合，避免事件的爆发式到来。它使用了intofiy进行监控，并可以配置action（默认的是rsync），一个程序便可以搞定。
 </li>
-<li>DRBD<br/>
+<li>DRBD<br  />
   <a href="http://www.drbd.org/">drdb</a>(Distributed Replicated Block Device) 与上面的工具不同的是，它是基于块设备的，处于文件系统之下的块设备，它通过hack内核的方式，为上层文件系统提供了一个逻辑上的块设备，这个块设备其实是一组镜像：
-  包括远端与本机。drdb提供了管理工具来进行主备的切换，并提供了同步的方式（同步、异步、内存同步），注意，它的slave设备是不可读写的。使用的时候mount这个设备即可。
+包括远端与本机。drdb提供了管理工具来进行主备的切换，并提供了同步的方式（同步、异步、内存同步），注意，它的slave设备是不可读写的。使用的时候mount这个设备即可。
 </li>
 </ul>
-
-
-
 </div>
 </div>

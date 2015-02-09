@@ -1,18 +1,3 @@
----
-date: 2013-07-16
-template: tech.jade
-title: git 使用小记
-category: Linux
-tag: linux,git
-change_frequency: monthly
----
-<p>
-【未完成】
-</p>
-<p>
-git已经成为非常流行的版本管理工具，在这里记录一些git使用过程中的知识与技术点。
-</p>
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -33,8 +18,8 @@ git已经成为非常流行的版本管理工具，在这里记录一些git使�
 <li><a href="#sec-1-7">index</a></li>
 <li><a href="#sec-1-8">submodule</a></li>
 <li><a href="#sec-1-9">HEAD</a></li>
-<li><a href="#sec-1-10">ORIG_HEAD</a></li>
-<li><a href="#sec-1-11">FETCH_HEAD</a></li>
+<li><a href="#sec-1-10">ORIG\<sub>HEAD</sub></a></li>
+<li><a href="#sec-1-11">FETCH\<sub>HEAD</sub></a></li>
 <li><a href="#sec-1-12">git clone</a></li>
 <li><a href="#sec-1-13">git pull</a></li>
 <li><a href="#sec-1-14">git fetch</a></li>
@@ -56,46 +41,59 @@ git已经成为非常流行的版本管理工具，在这里记录一些git使�
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">一些概念</h3>
-<div class="outline-text-3" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1">repository</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<p>    仓库是受git管理的一个目录，如你放在github上面的一个project。
-</p>
-<p>    
-    仓库分为远程仓库和本地仓库，一份working copy可以track一个远程仓库，在执行git pull的时候会自动从远程仓库拉取新提交。
-</p>
+---
+date: 2013-07-16
+template: tech.jade
+title: git 使用小记
+category: Linux
+tag: linux,git
+change_frequency: monthly
+---
 <p>
-    远程仓库和本地仓库是没有区别的。
+【未完成】
 </p>
 
+<p>
+git已经成为非常流行的版本管理工具，在这里记录一些git使用过程中的知识与技术点。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">一些概念</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">repository</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+仓库是受git管理的一个目录，如你放在github上面的一个project。
+</p>
+
+<p>
+仓库分为远程仓库和本地仓库，一份working copy可以track一个远程仓库，在执行git pull的时候会自动从远程仓库拉取新提交。
+</p>
+
+<p>
+远程仓库和本地仓库是没有区别的。
+</p>
 </div>
 
-<div id="outline-container-1-1-1" class="outline-5">
-<h5 id="sec-1-1-1">create repository</h5>
-<div class="outline-text-5" id="text-1-1-1">
-
-<p>     使用 git init 命令
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">create repository</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+使用 git init 命令
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">git init --bare #加了--bare 选项，表示创建一个裸仓库，而不是附带有working copy的仓库
+<pre class="src src-sh">git init --bare #加了--bare 选项，表示创建一个裸仓库，而不是附带有working copy的仓库
 </pre>
+</div>
+<div class="org-src-container">
 
-
-<pre class="example">cd /home/admin/tmp/tt &amp;&amp; tree .
+<pre class="src src-sh">cd /home/admin/tmp/tt &amp;&amp; tree .
 </pre>
-
-
-<pre class="example">.
+</div>
+<pre class="example">
+.
 ├── branches
 ├── config
 ├── description
@@ -118,238 +116,105 @@ git已经成为非常流行的版本管理工具，在这里记录一些git使�
     ├── heads
     └── tags
 
-9 directories, 12 files     
+9 directories, 12 files
 </pre>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-1-1-2" class="outline-5">
-<h5 id="sec-1-1-2">clone repository</h5>
-<div class="outline-text-5" id="text-1-1-2">
-
-<p>     克隆仓库，在本地生成一份copy。类似于 <code>svn</code> 的 <code>checkout</code> 。克隆的仓库不是裸仓库，包含了working copy。
-</p>
-
-
-<pre class="example">git clone git@github.com:Chinaxing/chinaxing.github.com ChinaXing.org
-</pre>
-
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2">clone repository</h4>
+<div class="outline-text-4" id="text-1-1-2">
 <p>
-     将会克隆一份远程仓库到本地的 <code>ChinaXing.org</code> 目录
-</p></div>
+克隆仓库，在本地生成一份copy。类似于 <code>svn</code> 的 <code>checkout</code> 。克隆的仓库不是裸仓库，包含了working copy。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">git clone git@github.com:Chinaxing/chinaxing.github.com ChinaXing.org
+</pre>
 </div>
-
+<p>
+将会克隆一份远程仓库到本地的 <code>ChinaXing.org</code> 目录
+</p>
 </div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2">working copy</h4>
-<div class="outline-text-4" id="text-1-2">
-
 </div>
-
 </div>
-
-<div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3">blob</h4>
-<div class="outline-text-4" id="text-1-3">
-
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">working copy</h3>
 </div>
-
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">blob</h3>
 </div>
-
-<div id="outline-container-1-4" class="outline-4">
-<h4 id="sec-1-4">tree</h4>
-<div class="outline-text-4" id="text-1-4">
-
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">tree</h3>
 </div>
-
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">commit</h3>
 </div>
-
-<div id="outline-container-1-5" class="outline-4">
-<h4 id="sec-1-5">commit</h4>
-<div class="outline-text-4" id="text-1-5">
-
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">branch</h3>
 </div>
-
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">index</h3>
 </div>
-
-<div id="outline-container-1-6" class="outline-4">
-<h4 id="sec-1-6">branch</h4>
-<div class="outline-text-4" id="text-1-6">
-
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">submodule</h3>
 </div>
-
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">HEAD</h3>
 </div>
-
-<div id="outline-container-1-7" class="outline-4">
-<h4 id="sec-1-7">index</h4>
-<div class="outline-text-4" id="text-1-7">
-
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10">ORIG\<sub>HEAD</sub></h3>
 </div>
-
+<div id="outline-container-sec-1-11" class="outline-3">
+<h3 id="sec-1-11">FETCH\<sub>HEAD</sub></h3>
 </div>
-
-<div id="outline-container-1-8" class="outline-4">
-<h4 id="sec-1-8">submodule</h4>
-<div class="outline-text-4" id="text-1-8">
-
+<div id="outline-container-sec-1-12" class="outline-3">
+<h3 id="sec-1-12">git clone</h3>
 </div>
-
+<div id="outline-container-sec-1-13" class="outline-3">
+<h3 id="sec-1-13">git pull</h3>
 </div>
-
-<div id="outline-container-1-9" class="outline-4">
-<h4 id="sec-1-9">HEAD</h4>
-<div class="outline-text-4" id="text-1-9">
-
+<div id="outline-container-sec-1-14" class="outline-3">
+<h3 id="sec-1-14">git fetch</h3>
 </div>
-
+<div id="outline-container-sec-1-15" class="outline-3">
+<h3 id="sec-1-15">git merge</h3>
 </div>
-
-<div id="outline-container-1-10" class="outline-4">
-<h4 id="sec-1-10">ORIG_HEAD</h4>
-<div class="outline-text-4" id="text-1-10">
-
+<div id="outline-container-sec-1-16" class="outline-3">
+<h3 id="sec-1-16">git push</h3>
 </div>
-
+<div id="outline-container-sec-1-17" class="outline-3">
+<h3 id="sec-1-17">git add</h3>
 </div>
-
-<div id="outline-container-1-11" class="outline-4">
-<h4 id="sec-1-11">FETCH_HEAD</h4>
-<div class="outline-text-4" id="text-1-11">
-
+<div id="outline-container-sec-1-18" class="outline-3">
+<h3 id="sec-1-18">git rm</h3>
 </div>
-
+<div id="outline-container-sec-1-19" class="outline-3">
+<h3 id="sec-1-19">git clean</h3>
 </div>
-
-<div id="outline-container-1-12" class="outline-4">
-<h4 id="sec-1-12">git clone</h4>
-<div class="outline-text-4" id="text-1-12">
-
+<div id="outline-container-sec-1-20" class="outline-3">
+<h3 id="sec-1-20">git revert</h3>
 </div>
-
+<div id="outline-container-sec-1-21" class="outline-3">
+<h3 id="sec-1-21">git stash</h3>
 </div>
-
-<div id="outline-container-1-13" class="outline-4">
-<h4 id="sec-1-13">git pull</h4>
-<div class="outline-text-4" id="text-1-13">
-
+<div id="outline-container-sec-1-22" class="outline-3">
+<h3 id="sec-1-22">git reset</h3>
 </div>
-
+<div id="outline-container-sec-1-23" class="outline-3">
+<h3 id="sec-1-23">git rebase</h3>
 </div>
-
-<div id="outline-container-1-14" class="outline-4">
-<h4 id="sec-1-14">git fetch</h4>
-<div class="outline-text-4" id="text-1-14">
-
+<div id="outline-container-sec-1-24" class="outline-3">
+<h3 id="sec-1-24">git log</h3>
 </div>
-
+<div id="outline-container-sec-1-25" class="outline-3">
+<h3 id="sec-1-25">git diff</h3>
 </div>
-
-<div id="outline-container-1-15" class="outline-4">
-<h4 id="sec-1-15">git merge</h4>
-<div class="outline-text-4" id="text-1-15">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-16" class="outline-4">
-<h4 id="sec-1-16">git push</h4>
-<div class="outline-text-4" id="text-1-16">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-17" class="outline-4">
-<h4 id="sec-1-17">git add</h4>
-<div class="outline-text-4" id="text-1-17">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-18" class="outline-4">
-<h4 id="sec-1-18">git rm</h4>
-<div class="outline-text-4" id="text-1-18">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-19" class="outline-4">
-<h4 id="sec-1-19">git clean</h4>
-<div class="outline-text-4" id="text-1-19">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-20" class="outline-4">
-<h4 id="sec-1-20">git revert</h4>
-<div class="outline-text-4" id="text-1-20">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-21" class="outline-4">
-<h4 id="sec-1-21">git stash</h4>
-<div class="outline-text-4" id="text-1-21">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-22" class="outline-4">
-<h4 id="sec-1-22">git reset</h4>
-<div class="outline-text-4" id="text-1-22">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-23" class="outline-4">
-<h4 id="sec-1-23">git rebase</h4>
-<div class="outline-text-4" id="text-1-23">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-24" class="outline-4">
-<h4 id="sec-1-24">git log</h4>
-<div class="outline-text-4" id="text-1-24">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-25" class="outline-4">
-<h4 id="sec-1-25">git diff</h4>
-<div class="outline-text-4" id="text-1-25">
-
-</div>
-
-</div>
-
-<div id="outline-container-1-26" class="outline-4">
-<h4 id="sec-1-26">git status</h4>
-<div class="outline-text-4" id="text-1-26">
-
-
+<div id="outline-container-sec-1-26" class="outline-3">
+<h3 id="sec-1-26">git status</h3>
 </div>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">书籍与资料</h3>
-<div class="outline-text-3" id="text-2">
-
-
-</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">书籍与资料</h2>
 </div>

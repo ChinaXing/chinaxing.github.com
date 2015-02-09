@@ -14,16 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>2</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>3</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -32,88 +29,124 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>12. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">Haskell 第三课 —— 输入输出</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">IO</span>&nbsp;Action</a></li>
-<li><a href="#sec-2">do</a></li>
-<li><a href="#sec-3">return</a></li>
-<li><a href="#sec-4">ByteString</a></li>
-<li><a href="#sec-5">ByteString.Lazy</a></li>
-<li><a href="#sec-6">System.<span class="caps">IO</span></a></li>
-<li><a href="#sec-7">System.Enviorment</a></li>
-<li><a href="#sec-8">System.Radom</a></li>
-<li><a href="#sec-9">Exception</a>
-<ul>
-<li><a href="#sec-9-1">throw&nbsp;excep</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>11. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/12/2015-01-11-haskell-lesson-2-Type.html">Haskell 第二课 —— 类型</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Type</a></li>
-<li><a href="#sec-2">Type&nbsp;partial</a></li>
-<li><a href="#sec-3">TypeClass</a></li>
-<li><a href="#sec-4">newType</a></li>
-<li><a href="#sec-5">Functor</a></li>
-<li><a href="#sec-6">Kind</a></li>
-<li><a href="#sec-7">(-&gt;)&nbsp;r</a></li>
-<li><a href="#sec-8">Applicative</a></li>
-<li><a href="#sec-9">liftA2</a></li>
-<li><a href="#sec-10">Monoid</a></li>
-</ul>
-</div>
-</div>
-          <p class="more"><a href="/articles/Haskell/2015/01/12/2015-01-11-haskell-lesson-2-Type.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>11. January 2015</span></p>
-          <h2><a href="/articles/Erlang/2015/01/12/2015-01-11-erlang-note.html">Erlang 语言</a></h2>
+          <p class="date"><span>22. October 2014</span></p>
+          <h2><a href="/articles/Java/2014/10/22/2014-10-22-about-debug-skill.html">谈下程序问题定位 - debug</a></h2>
         </header>
         <section class="content">
 
 <p>
-Erlang语言，时间上不算新，1987与Perl同岁。为大并发设计，支持热升级，分布式。用于电信系统。
+最近几天，被ClassLoader折磨的够呛，在整整2天的各种问题中，有不少感触，这些感触，并不是技术上面的一些能力与技巧，而是说关于如何进行问题解决的一个思维问题。
 </p>
 
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">核心概念</a></li>
-<li><a href="#sec-2">工具和支持</a></li>
-<li><a href="#sec-3">应用场景</a></li>
-<li><a href="#sec-4">学习参考</a></li>
-</ul>
-</div>
-</div>
+<p>
+当一个程序并不如你所预期的状态时，一项debug的工作就开始了。对于一个未知的错误或者说是状态，有的人会开始就犯愁，有的人也许抱着好奇和不信邪的心态非要找出个所以然。
+</p>
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">核心概念</h3>
-<div class="outline-text-3" id="text-1">
+<p>
+从实际上说，遇到问题是好事情，一个问题如果深究而不是google，会让你搞明白很多道理，这些道理和技术也许平时是不会浮出水面的，在你的整个技术生涯中，都没能见到他们。
+</p>
 
-<dl>
-<dt>进程</dt><dd>进程代表一个执行体，进程比较轻量，可以创建非常非常多。每个进程是一个erlang虚拟</dd></dl></div></div>
-          <p class="more"><a href="/articles/Erlang/2015/01/12/2015-01-11-erlang-note.html">more</a></p>
+<p>
+但是，一旦你面对这个问题，你决定要去解决它，并且是彻底解决的时候，你就开始了一段接近真相和赤裸裸事实世界的旅程。
+</p>
+
+<p>
+这个过程是孤独的，直到你z
+</p>
+
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>30. December 2013</span></p>
+          <h2><a href="/articles/life/2013/12/30/2013-12-30-mark-2013.html">2013记</a></h2>
+        </header>
+        <section class="content">
+<p>
+以此纪念2013。
+</p>
+
+<p>
+2013年给我的感觉是过的非常快，咋眼间，春夏秋冬。
+</p>
+
+<p>
+2013年非常平淡，也充满点点滴滴的收获和幸福。让我明白了许多道理，让自己渐渐想清楚了一些事情，虽然，也许，并不多，并不足够。
+</p>
+
+<p>
+但是，感悟人生，每个人的步伐都不一样，接受自己，在自己的路上，走下去。
+</p>
+
+<p>
+我不希望平淡的生活，而如今我也不再喜欢太激进的人生，我只想那种温暖平淡占多数偶尔激昂热烈的人生。
+</p>
+
+<p>
+今年，问问自己，对自己的现在满意吗？
+</p>
+
+<p>
+仔细去想，去看看自己，发现我收获了什么？
+</p>
+
+<p>
+客观地说，朋友、爱情、事业、生活————是几个大的方面。
+</p>
+
+
+<p>
+在这几个方面，自己都存有遗憾吧：
+</p>
+
+<p>
+朋友寥寥，联系的少，能彼此无话不说而且愿意推心至腹的基本没有。而一般朋友也基本没有。
+</p>
+
+<p>
+爱情，并没有如自己所愿地找到那么一个人，能够互相懂得，互相不自觉地疼爱对方，互相激励，红袖添香！
+</p>
+
+<p>
+事业，工作多次地想放弃，无数次地感到自己</p>
+          <p class="more"><a href="/articles/life/2013/12/30/2013-12-30-mark-2013.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>09. December 2013</span></p>
+          <h2><a href="/articles/linux/2013/12/09/2013-12-09-Linux-sysrq-trigger.html">Linux /proc/sysrq-trigger Magic Key</a></h2>
+        </header>
+        <section class="content">
+<p>
+More detail can be found at&nbsp;Documents/sysrq.txt
+</p>
+
+<p>
+<span class="quo">&#8216;</span>b&#8216;     - Will immediately reboot the system without syncing or unmounting
+          your&nbsp;disks.
+</p>
+
+<p>
+&#8216;c&#8217;- Will perform a system crash by a <span class="caps">NULL</span> pointer dereference.
+A crashdump will be taken if&nbsp;configured.
+</p>
+
+<p>
+&#8216;d&#8217;- Shows all locks that are&nbsp;held.
+</p>
+
+<p>
+&#8216;e&#8216;     - Send a <span class="caps">SIGTERM</span> to all processes, except for&nbsp;init.
+</p>
+
+<p>
+&#8216;f&#8217;- Will call oom<sub>kill</sub> to kill a memory hog&nbsp;process.
+</p>
+
+<p>
+&#8216;g&#8217;- Used by kgdb&nbsp;(kernel</p>
+          <p class="more"><a href="/articles/linux/2013/12/09/2013-12-09-Linux-sysrq-trigger.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/2/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/4/" class="nav-next">Next page »</a>

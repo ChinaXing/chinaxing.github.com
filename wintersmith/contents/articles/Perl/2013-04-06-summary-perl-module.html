@@ -1,15 +1,3 @@
----
-date: 2013-04-06
-template: tech.jade
-title: Perl module 介绍
-category: Perl
-change_frequency: monthly
----
-
-<p>
-本文总结和介绍Perl语言的”模块“，知识来源于<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
-</p>
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -23,12 +11,22 @@ change_frequency: monthly
 </ul>
 </div>
 </div>
+---
+date: 2013-04-06
+template: tech.jade
+title: Perl module 介绍
+category: Perl
+change_frequency: monthly
+---
 
-<div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">纲目与理念</h4>
-<div class="outline-text-4" id="text-1">
+<p>
+本文总结和介绍Perl语言的”模块“，知识来源于<a href="http://perldoc.perl.org/perlmod.html">perldoc</a>.
+</p>
 
-<ul>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">纲目与理念</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
 <li>Perl 用模块来组织代码，一切程序都是模块。默认的模块是 <b>main</b>.
 </li>
 <li>模块等于namespace，全局变量和subrutine都存在于“某个”模块中，没有完全全局的变量。
@@ -36,31 +34,23 @@ change_frequency: monthly
 <li>使用别的模块内的变量和subroutine，需要将其 <b>导入</b> 到 <b>符号表</b>,被perl程序 <b>知道</b> 与可访问。
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-2" class="outline-4">
-<h4 id="sec-2">Perl 语言由模块构成</h4>
-<div class="outline-text-4" id="text-2">
-
-<ul>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Perl 语言由模块构成</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
 <li>模块构成了Perl程序，入口点在main模块（是默认的模块）。
 </li>
 <li>模块存放于文件中，结尾以pm,al,so等代表不同的类型。
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-3" class="outline-4">
-<h4 id="sec-3">模块的构成</h4>
-<div class="outline-text-4" id="text-3">
-
-<ul>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">模块的构成</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
 <li>模块的全局变量和子过程存放在符号表中模块名为key的空间中
 </li>
 <li>全局变量： <code>our $var</code>
@@ -68,43 +58,39 @@ change_frequency: monthly
 <li>子过程： <code>sub {}</code>
 </li>
 <li>导出变量和子过程
+<div class="org-src-container">
 
-
-
-<pre class="example">use Exporter;
+<pre class="src src-perl">use Exporter;
 our @EXPORT = (...) # 默认导出
 our @EXPORT_OK = ( ... ) #可以显式导出，默认不导出。
 our %EXPORT_TAGS =( T1 =&gt; ( ... ),) #按照tag导出一组。
 </pre>
+</div>
+<p>
+导出的变量和子过程被引入了导出者的名字空间，可以直接访问。
+</p>
 
 <p>
-      导出的变量和子过程被引入了导出者的名字空间，可以直接访问。
+访问未导出的全局变量和子过程： <code>$PACKAGE::var</code> , <code>&amp;PACKAGE::suba</code> ,因为它们存在于模块的名字空间内。
 </p>
-<p>      
-      访问未导出的全局变量和子过程： <code>$PACKAGE::var</code> , <code>&amp;PACKAGE::suba</code> ,因为它们存在于模块的名字空间内。
-</p></li>
+</li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-4" class="outline-4">
-<h4 id="sec-4">加载模块和导入模块变量和子过程</h4>
-<div class="outline-text-4" id="text-4">
-
-<ul>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">加载模块和导入模块变量和子过程</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
 <li>加载模块
-<ul>
+<ul class="org-ul">
 <li>运行期： <code>require "module";</code>
 </li>
 <li>编译期： <code>use module ();</code>
 </li>
 </ul>
-
 </li>
 <li>加载模块并导入XX
-<ul>
+<ul class="org-ul">
 <li>导入默认导出的变量： <code>use moduleA;</code>
 </li>
 <li>并导入指定的量： <code>use moduleA qw/A b/;</code>
@@ -114,26 +100,21 @@ our %EXPORT_TAGS =( T1 =&gt; ( ... ),) #按照tag导出一组。
 <li>不导入量只加载模块： <code>use module ();</code>
 </li>
 </ul>
-
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-5" class="outline-4">
-<h4 id="sec-5">模块/类/包</h4>
-<div class="outline-text-4" id="text-5">
-
-<ul>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">模块/类/包</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
 <li>模块是一个逻辑上的概念，代表一个可以服用的功能上独立的代码单元。
 </li>
 <li>类是OOP中的一个概念，用来抽象某一个特征的事务群体为单一的代表。
 </li>
 <li>包是从代码层面来将编程组件集合在一起的概念，包中包含了变量，子过程。
-
 </li>
+
 <li>模块和类的实现都是通过包（package 语法）这种机制实现的。
 </li>
 <li>package 申明包
@@ -143,16 +124,12 @@ our %EXPORT_TAGS =( T1 =&gt; ( ... ),) #按照tag导出一组。
 <li>包内的@ISA数组实现了类的继承，并通过继承UNIVERSUAL基类，包实现了类的功能。
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-6" class="outline-4">
-<h4 id="sec-6">其它</h4>
-<div class="outline-text-4" id="text-6">
-
-<ul>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">其它</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
 <li>use 在编译期执行。加载模块并执行导入。
 </li>
 <li>require 在运行期执行。加载模块。
@@ -170,6 +147,5 @@ our %EXPORT_TAGS =( T1 =&gt; ( ... ),) #按照tag导出一组。
 <li>require，do，eval 都会导致在运行期执行编译。
 </li>
 </ul>
-
 </div>
 </div>

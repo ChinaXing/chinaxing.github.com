@@ -5,29 +5,28 @@ title: Copy table from another table
 category: Postgres
 change_frequency: monthly
 ---
+<div class="org-src-container">
 
-<pre class="example">create table table2 ( 
+<pre class="src src-sql">create table table2 ( 
        like table1 
-        INCLUDING DEFAULTS 
-        INCLUDING CONSTRAINTS 
-        INCLUDING INDEXES 
+	INCLUDING DEFAULTS 
+	INCLUDING CONSTRAINTS 
+	INCLUDING INDEXES 
 );
 </pre>
-
+</div>
 
 <p>
 this will create table2 which is clone of table1.
 </p>
 
+<div class="org-src-container">
 
-
-<pre class="example">select * into table2 from table1 where 1=2;
+<pre class="src src-sql">select * into table2 from table1 where 1=2;
 create table table2 as select * from table1 where 1=2;
 </pre>
-
+</div>
 
 <p>
-these will create table2 like table1 , but missing the <b>modifers</b> (default,not null &hellip; attribute)in table1.
+these will create table2 like table1 , but missing the <b>modifers</b> (default,not null &#x2026; attribute)in table1.
 </p>
-
-

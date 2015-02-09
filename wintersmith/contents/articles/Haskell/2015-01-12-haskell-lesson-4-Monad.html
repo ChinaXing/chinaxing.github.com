@@ -1,12 +1,3 @@
----
-date: 2015-01-12 00:39:18
-template: tech.jade
-title: Haskell 第四课 —— Monad
-category: Haskell
-chage_frequency: monthly
-tag: Haskell
----
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -28,14 +19,22 @@ tag: Haskell
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Monad用途**</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>个人觉得：
+---
+date: 2015-01-12 00:39:18
+template: tech.jade
+title: Haskell 第四课 —— Monad
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Monad用途**</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+个人觉得：
 </p>
-<ul>
+
+<ul class="org-ul">
 <li>实现链式的调用传递，这样保持了数据的状态沿着函数链条传递
 </li>
 <li>在链式传递的过程中，可以短路求值，借助monad的封装所附加的语义
@@ -45,21 +44,18 @@ tag: Haskell
 <li>实际是设计的抽象，通过抽象实现了代码的简洁，分层，多态
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">Monad</h3>
-<div class="outline-text-3" id="text-2">
-
-<p>   Monad is an Applicative Functor
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Monad</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Monad is an Applicative Functor
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">class Monad m where
+<pre class="src src-haskell">class Monad m where
   return = a -&gt; m a
   (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
   (&gt;&gt;) :: ma -&gt; m b -&gt; m b
@@ -67,39 +63,33 @@ tag: Haskell
   fail :: String -&gt; m a
   fail string = error string
 </pre>
-
 </div>
-
 </div>
-
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">do</h3>
-<div class="outline-text-3" id="text-3">
-
-<p>  chain <b>nested</b> Monad toggether.
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">do</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+chain <b>nested</b> Monad toggether.
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">ret = Just 10 &gt;&gt;= (\x -&gt; Just 20 &gt;&gt;= (\y -&gt; Just 30 &gt;&gt;= (\z -&gt; Just (x + y + z)))))
+<pre class="src src-haskell">ret = Just 10 &gt;&gt;= (\x -&gt; Just 20 &gt;&gt;= (\y -&gt; Just 30 &gt;&gt;= (\z -&gt; Just (x + y + z)))))
 ret = do
    x &lt;- Just 10
    y &lt;- Just 30
    z &lt;- Just 20
    return (x + y + z)
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">(-&gt;) r</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
 
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">(-&gt;) r</h3>
-<div class="outline-text-3" id="text-4">
-
-
-
-
-<pre class="example">  instance Monad ((-&gt;) r) where
+<pre class="src src-haskell">  instance Monad ((-&gt;) r) where
     return x = \_ -&gt; x
     h &gt;&gt;= f = \w -&gt; f (h w) w
 -- 
@@ -107,46 +97,39 @@ ret = do
     -- so
     flip &lt;*&gt; == &gt;&gt;=
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">State Monad</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
 
-<div id="outline-container-5" class="outline-3">
-<h3 id="sec-5">State Monad</h3>
-<div class="outline-text-3" id="text-5">
-
-
-
-
-<pre class="example">-- import Control.Monad.State
+<pre class="src src-haskell">-- import Control.Monad.State
 newtype State s a = State { runState :: s -&gt; (a, s) }
 instance Monad (State s) where
   return x = State $ \s -&gt; (x,s)
   (State h) &gt;&gt;= f = State $ \s -&gt; 
-                            let (a, newSate) = h s -- get a, produce newState
-                                (State g) = f a -- (f a, state')
-                            in g newState -- store newState in g
+			    let (a, newSate) = h s -- get a, produce newState
+				(State g) = f a -- (f a, state')
+			    in g newState -- store newState in g
 </pre>
+</div>
 
+<div class="org-src-container">
 
-
-<pre class="example">get = State $ \s -&gt; (s,s) -- where s == a, extract will be s
+<pre class="src src-haskell">get = State $ \s -&gt; (s,s) -- where s == a, extract will be s
 put newState = State $ \s -&gt; ((), newState)
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Either</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
 
-<div id="outline-container-6" class="outline-3">
-<h3 id="sec-6">Either</h3>
-<div class="outline-text-3" id="text-6">
-
-
-
-
-<pre class="example"> instance Error e =&gt; Monad (Either e) where 
+<pre class="src src-haskell"> instance Error e =&gt; Monad (Either e) where 
     return x = Right x
     Left err &gt;&gt;= f = Left err -- shortcut
     Right x &gt;&gt; f = f x -- just pass value
@@ -156,136 +139,111 @@ Left "Error" -- throw fail
 fail "Error" -- context is Either
 Left (strMsg "Error") -- parttern matched
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">liftM</h2>
+<div class="outline-text-2" id="text-7">
+<div class="org-src-container">
 
-<div id="outline-container-7" class="outline-3">
-<h3 id="sec-7">liftM</h3>
-<div class="outline-text-3" id="text-7">
-
-
-
-
-<pre class="example">liftM :: (Monad m) =&gt; (a-&gt;b) -&gt; m a -&gt; m b
+<pre class="src src-haskell">liftM :: (Monad m) =&gt; (a-&gt;b) -&gt; m a -&gt; m b
 --
 liftM f m = m &gt;&gt; (\x -&gt; return (f x))
 </pre>
+</div>
+<div class="org-src-container">
 
-
-<pre class="example">liftM (*3) (Just 8) -- return (8 * 3) :: Maybe Int
+<pre class="src src-haskell">liftM (*3) (Just 8) -- return (8 * 3) :: Maybe Int
 fmap (*3) (Just 8) -- pure (8 * 3) :: Maybe Int
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">ap</h2>
+<div class="outline-text-2" id="text-8">
+<div class="org-src-container">
 
-<div id="outline-container-8" class="outline-3">
-<h3 id="sec-8">ap</h3>
-<div class="outline-text-3" id="text-8">
-
-
-
-
-<pre class="example">-- Contro.Monad::ap
+<pre class="src src-haskell">-- Contro.Monad::ap
 ap :: (Monad m) =&gt; m (a-&gt;b) -&gt; m a -&gt; m b
 --
 ap = &lt;*&gt;
 Just (+4) `ap` Just 10
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">liftM2</h2>
+<div class="outline-text-2" id="text-9">
+<div class="org-src-container">
 
-<div id="outline-container-9" class="outline-3">
-<h3 id="sec-9">liftM2</h3>
-<div class="outline-text-3" id="text-9">
-
-
-
-
-<pre class="example">liftM2 :: (Monad f) =&gt; (a-&gt;b-&gt;c) -&gt; f a -&gt; f b -&gt; f c
+<pre class="src src-haskell">liftM2 :: (Monad f) =&gt; (a-&gt;b-&gt;c) -&gt; f a -&gt; f b -&gt; f c
 --
 liftM2 f x y = f &lt;$&gt; x &lt;*&gt; y
 -- f &lt;$&gt; x = (a-&gt;b-&gt;c) &lt;$&gt; f a = (a -&gt; (b-&gt;c) &lt;$&gt; f a = f (b-&gt;c)
 -- f (b-&gt;c) &lt;*&gt; f b = f c
 </pre>
-
-<p>
-   liftM3, liftM4, liftM5
-</p></div>
-
 </div>
+<p>
+liftM3, liftM4, liftM5
+</p>
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">join</h2>
+<div class="outline-text-2" id="text-10">
+<div class="org-src-container">
 
-<div id="outline-container-10" class="outline-3">
-<h3 id="sec-10">join</h3>
-<div class="outline-text-3" id="text-10">
-
-
-
-
-<pre class="example">join :: Monad m =&gt; m (m a) -&gt; m a
+<pre class="src src-haskell">join :: Monad m =&gt; m (m a) -&gt; m a
 join mm = do -- smart
      m &lt;- mm
      m
 -- 
 join [[1,2,3],[4,5,6]] -- [1,2,3,4,5,6]
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11">liftM</h2>
+<div class="outline-text-2" id="text-11">
+<div class="org-src-container">
 
-<div id="outline-container-11" class="outline-3">
-<h3 id="sec-11">liftM</h3>
-<div class="outline-text-3" id="text-11">
-
-
-
-
-<pre class="example">liftM :: (Monad m) =&gt; (a -&gt; m Bool) -&gt; [a] -&gt; m [a]
+<pre class="src src-haskell">liftM :: (Monad m) =&gt; (a -&gt; m Bool) -&gt; [a] -&gt; m [a]
 </pre>
+</div>
+<div class="org-src-container">
 
-
-<pre class="example">powerset :: [a] -&gt; [[a]]
+<pre class="src src-haskell">powerset :: [a] -&gt; [[a]]
 powerset xs = liftM (\x -&gt; [True, False]) xs
 -- x maybe any part of xs
 -- m Bool maybe True, False strip from the [True, False]
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12">foldM</h2>
+<div class="outline-text-2" id="text-12">
+<div class="org-src-container">
 
-<div id="outline-container-12" class="outline-3">
-<h3 id="sec-12">foldM</h3>
-<div class="outline-text-3" id="text-12">
-
-
-
-
-<pre class="example">foldl :: (a -&gt; b -&gt;a) -&gt; a -&gt; [b] -&gt; a
+<pre class="src src-haskell">foldl :: (a -&gt; b -&gt;a) -&gt; a -&gt; [b] -&gt; a
 foldM :: (Monad m) =&gt; (a -&gt; b -&gt; m a) -&gt; a -&gt; [b] -&gt; m a
 -- 
 foldl (\cc x -&gt; cc + x) 0 [2,3,4,5]
 foldM (\cc x -&gt; return cc + x) 0 [2,3,4,5]
 </pre>
-
 </div>
-
 </div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13">&lt;=&lt;</h2>
+<div class="outline-text-2" id="text-13">
+<div class="org-src-container">
 
-<div id="outline-container-13" class="outline-3">
-<h3 id="sec-13">&lt;=&lt;</h3>
-<div class="outline-text-3" id="text-13">
-
-
-
-
-<pre class="example">-- Monad function composition ,
+<pre class="src src-haskell">-- Monad function composition ,
 -- like . normal function composition
 let f = (+1) . (*100) -- normal function composition
 let g = (\x -&gt; return (x+1)) &lt;=&lt; (\x -&gt; return (x * 100)) -- Monad chain
@@ -294,14 +252,9 @@ Just 4 &gt;&gt;= g
 -- (4 + 1) * 100
 let f = foldr (.) id [(+1), (*100), (+1)]
 </pre>
-
 </div>
-
 </div>
-
-<div id="outline-container-14" class="outline-3">
-<h3 id="sec-14">Make Monad</h3>
-<div class="outline-text-3" id="text-14">
-
 </div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14">Make Monad</h2>
 </div>

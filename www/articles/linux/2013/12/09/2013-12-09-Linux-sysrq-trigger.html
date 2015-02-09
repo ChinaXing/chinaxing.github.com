@@ -14,16 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>2</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>3</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -39,95 +36,122 @@
 <p>
 More detail can be found at&nbsp;Documents/sysrq.txt
 </p>
+
 <p>
 <span class="quo">&#8216;</span>b&#8216;     - Will immediately reboot the system without syncing or unmounting
           your&nbsp;disks.
 </p>
+
 <p>
-          &#8216;c&#8217;- Will perform a system crash by a <span class="caps">NULL</span> pointer dereference.
-          A crashdump will be taken if&nbsp;configured.
+&#8216;c&#8217;- Will perform a system crash by a <span class="caps">NULL</span> pointer dereference.
+A crashdump will be taken if&nbsp;configured.
 </p>
+
 <p>
-          &#8216;d&#8217;- Shows all locks that are&nbsp;held.
+&#8216;d&#8217;- Shows all locks that are&nbsp;held.
 </p>
+
 <p>
 &#8216;e&#8216;     - Send a <span class="caps">SIGTERM</span> to all processes, except for&nbsp;init.
 </p>
+
 <p>
 &#8216;f&#8217;- Will call oom<sub>kill</sub> to kill a memory hog&nbsp;process.
 </p>
+
 <p>
 &#8216;g&#8217;- Used by kgdb (kernel&nbsp;debugger)
 </p>
+
 <p>
 &#8216;h&#8216;     - Will display help (actually any other key than those listed
           here will display help. but &#8216;h&#8217; is easy to remember&nbsp;:-)
 </p>
+
 <p>
 &#8216;i&#8216;     - Send a <span class="caps">SIGKILL</span> to all processes, except for&nbsp;init.
 </p>
+
 <p>
 &#8216;j&#8216;     - Forcibly &#8220;Just thaw it&#8221; - filesystems frozen by the <span class="caps">FIFREEZE</span>&nbsp;ioctl.
 </p>
+
 <p>
 &#8216;k&#8216;     - Secure Access Key (<span class="caps">SAK</span>) Kills all programs on the current virtual
           console. NOTE: See important comments below in SAK&nbsp;section.
 </p>
+
 <p>
 &#8216;l&#8216;     - Shows a stack backtrace for all active&nbsp;CPUs.
 </p>
+
 <p>
 &#8216;m&#8216;     - Will dump current memory info to your&nbsp;console.
 </p>
+
 <p>
 &#8216;n&#8217;- Used to make <span class="caps">RT</span> tasks&nbsp;nice-able
 </p>
+
 <p>
 &#8216;o&#8216;     - Will shut your system off (if configured and&nbsp;supported).
 </p>
+
 <p>
 &#8216;p&#8216;     - Will dump the current registers and flags to your&nbsp;console.
 </p>
+
 <p>
 &#8216;q&#8216;     - Will dump per <span class="caps">CPU</span> lists of all armed hrtimers (but NOT regular
           timer<sub>list</sub> timers) and detailed information about all
           clockevent&nbsp;devices.
 </p>
+
 <p>
 &#8216;r&#8216;     - Turns off keyboard raw mode and sets it to&nbsp;<span class="caps">XLATE</span>.
 </p>
+
 <p>
 &#8216;s&#8216;     - Will attempt to sync all mounted&nbsp;filesystems.
 </p>
+
 <p>
 &#8216;t&#8216;     - Will dump a list of current tasks and their information to your&nbsp;console.
 </p>
+
 <p>
 &#8216;u&#8216;     - Will attempt to remount all mounted filesystems&nbsp;read-only.
 </p>
+
 <p>
 &#8216;v&#8217;- Forcefully restores framebuffer console
 &#8216;v&#8217;- Causes <span class="caps">ETM</span> buffer dump&nbsp;[ARM-specific]
 </p>
+
 <p>
 &#8216;w&#8217;- Dumps tasks that are in uninterruptable (blocked)&nbsp;state.
 </p>
+
 <p>
 &#8216;x&#8217;- Used by xmon interface on ppc/powerpc platforms.
           Show global <span class="caps">PMU</span> Registers on&nbsp;sparc64.
 </p>
+
 <p>
-          &#8216;y&#8217;- Show global <span class="caps">CPU</span> Registers [SPARC-64&nbsp;specific]
+&#8216;y&#8217;- Show global <span class="caps">CPU</span> Registers [SPARC-64&nbsp;specific]
 </p>
+
 <p>
-          &#8216;z&#8217;- Dump the ftrace&nbsp;buffer
+&#8216;z&#8217;- Dump the ftrace&nbsp;buffer
 </p>
+
 <p>
 &#8216;0&#8217;-&#8216;9&#8217; - Sets the console log level, controlling which kernel messages
           will be printed to your console. ('0&#8217;, for example would make
           it so that only emergency messages like PANICs or OOPSes would
           make it to your&nbsp;console.)
 </p>
+
       </div>
       <!-- Table of Content-->
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>

@@ -14,16 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>2</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>3</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -32,106 +29,90 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>22. October 2014</span></p>
-          <h2><a href="/articles/Java/2014/10/22/2014-10-22-about-debug-skill.html">谈下程序问题定位 - debug</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/Java/1970/01/01/2014-09-24-instrumentation.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-<p>
-最近几天，被ClassLoader折磨的够呛，在整整2天的各种问题中，有不少感触，这些感触，并不是技术上面的一些能力与技巧，而是说关于如何进行问题解决的一个思维问题。
-</p>
-<p>
-当一个程序并不如你所预期的状态时，一项debug的工作就开始了。对于一个未知的错误或者说是状态，有的人会开始就犯愁，有的人也许抱着好奇和不信邪的心态非要找出个所以然。
-</p>
-<p>
-从实际上说，遇到问题是好事情，一个问题如果深究而不是google，会让你搞明白很多道理，这些道理和技术也许平时是不会浮出水面的，在你的整个技术生涯中，都没能见到他们。
-</p>
-<p>
-但是，一旦你面对这个问题，你决定要去解决它，并且是彻底解决的时候，你就开始了一段接近真相和赤裸裸事实世界的旅程。
-</p>
-<p>
-这个过程是孤独的，直到你z
-</p>
+        <section class="content"><div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">是什么</a></li>
+<li><a href="#sec-2">如何操作</a>
+<ul>
+<li><a href="#sec-2-1">运作机制</a></li>
+<li><a href="#sec-2-2">限制性条件</a></li>
+<li><a href="#sec-2-3">替换发生时</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">编程接口</a></li>
+<li><a href="#sec-4">字节码增强</a></li>
+<li><a href="#sec-5">deep&nbsp;in</a></li>
+</ul>
+</div>
+</div>
+&#8212;
+date: 2014-09-24 20:13:47
+template: tech.jade
+title: java instrumentation&nbsp;cate
+          <p class="more"><a href="/articles/Java/1970/01/01/2014-09-24-instrumentation.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>14. October 2014</span></p>
-          <h2><a href="/articles/DS-Alg/2014/10/15/CLH-QueueLock.html">CLH 队列锁</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/Java/1970/01/01/2014-10-10-javassist-instrumentation-on-the-fly.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-<p>
-<span class="caps">CLH</span>队列锁有很多优势，Java的ASQ同步器就基于CLH锁。
-</p>
-
-<div id="table-of-contents">
+        <section class="content"><div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">优势/特点</a></li>
-<li><a href="#sec-2">实现原理</a></li>
+<li><a href="#sec-1">Jvm&nbsp;Instrumentation</a></li>
+<li><a href="#sec-2">字节码增强</a></li>
+<li><a href="#sec-3">方法体增强</a></li>
+<li><a href="#sec-4">运行时方法增强工具</a></li>
+<li><a href="#sec-5">Reference</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">优势/特点</h3>
-<div class="outline-text-3" id="text-1">
-
-<ul>
-<li>实现公平调度 - <span class="caps">FIFO</span>,&nbsp;fair
-</li>
-<li>无饥饿 -&nbsp;starvation-free
-</li>
-<li>无竞争情况下，内存占用少
-</li>
-<li>spin在单一内存地址上，cache miss&nbsp;hit少
-</li>
-</ul>
+&#8212;
+date : 2014-10-10 21:05:33
+template: tech.jade
+title: 使用javassist和Jvm Instrumentation运行时增强Java类
+category: Java
+chage_frequency: monthly
+tag: Java,instrument&nbsp;&#8212;
 
 
-</div>
-
-</div>
-
-          <p class="more"><a href="/articles/DS-Alg/2014/10/15/CLH-QueueLock.html">more</a></p>
+          <p class="more"><a href="/articles/Java/1970/01/01/2014-10-10-javassist-instrumentation-on-the-fly.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>14. October 2014</span></p>
-          <h2><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">Concurrency support - LL/SC</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/Java/1970/01/01/2014-10-13-LinkedHashMap.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-<p>
-本文介绍<span class="caps">CPU</span>/硬件对并发的支持之LL/SC&nbsp;(Load-Link/Store-Conditional).
-</p>
-
-<div id="table-of-contents">
+        <section class="content"><div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1"><span class="caps">LL</span>/SC</a>
+<li><a href="#sec-1">内部实现</a></li>
+<li><a href="#sec-2">LinkedHashMap 的特点</a>
 <ul>
-<li><a href="#sec-1-1">vs&nbsp;<span class="caps">CAS</span></a></li>
-<li><a href="#sec-1-2">Implementation</a></li>
+<li><a href="#sec-2-1">有序性</a></li>
+<li><a href="#sec-2-2">非线程安全</a></li>
+<li><a href="#sec-2-3">ConcurrentModifyException</a></li>
+<li><a href="#sec-2-4">removeEldestEntry</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">refrence</a></li>
+<li><a href="#sec-3">Reference</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1"><span class="caps">LL</span>/SC</h3>
-<div class="outline-text-3" id="text-1">
-
-
-<p>
-<span class="caps">LL</span>/SC&nbsp;可以实现Lock-Free的同步原</p></div></div>
-          <p class="more"><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">more</a></p>
+&#8212;
+date: 2014-10-13 15:18:00
+template: tech.jade
+title:&nbsp;LinkedHashM
+          <p class="more"><a href="/articles/Java/1970/01/01/2014-10-13-LinkedHashMap.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/5/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/7/" class="nav-next">Next page »</a>

@@ -14,16 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>2</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>3</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -32,98 +29,91 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>10. March 2013</span></p>
-          <h2><a href="/articles/linux/2013/03/10/2013-03-10-Fuse-implementing-filesystem-in-user-space.html">Fuse - 用户空间的文件系统实现</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/Perl/1970/01/01/2013-06-23-HTML-formhandler.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
+        <section class="content"><div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Fuse&nbsp;介绍</a></li>
-<li><a href="#sec-2">Fuse的实现原理</a>
+<li><a href="#sec-1"><span class="caps">HTML</span>-FormHandler</a>
 <ul>
-<li><a href="#sec-2-1">libfuse</a></li>
+<li><a href="#sec-1-1">主要功能</a>
+<ul>
+<li><a href="#sec-1-1-1">Validate</a></li>
+<li><a href="#sec-1-1-2">Process&nbsp;form</a></li>
+<li><a href="#sec-1-1-3">render&nbsp;form</a></li>
+<li><a href="#sec-1-1-4">Update&nbsp;Model</a></li>
 </ul>
 </li>
-<li><a href="#sec-3">参考资料</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Fuse&nbsp;介绍</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>Fuse&nbsp;是指用户空间的文件系统，是文件系统的一种实现方式。目前<span class="caps">BSD</span>，MAC，Linux均已经支持这样的文件系统开发。用户空间文件系统有许多好处，比如：
-</p><ul>
-<li>易于调</li></ul></div></div>
-          <p class="more"><a href="/articles/linux/2013/03/10/2013-03-10-Fuse-implementing-filesystem-in-user-space.html">more</a></p>
+<li><a href="#sec-1-2">体系结构</a>
+<ul>
+<li><a href="#sec-1-2-1">Form</a></li>
+<li><a href="#sec-1-2-2">Field</a></li>
+<li></li></ul></li></ul></li></ul></div></div>
+          <p class="more"><a href="/articles/Perl/1970/01/01/2013-06-23-HTML-formhandler.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>08. March 2013</span></p>
-          <h2><a href="/articles/linux/2013/03/08/2013-03-08-raspberry-pi-usb-wifi-config.html">Raspberry Pi usb 无线网卡安装配置</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/Perl/1970/01/01/2013-06-23-dbix-class-misc.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-<p>
-这几天，为了能够无线连接Raspberry-Pi，这样可以方便的使用和配置它，也免的拿来拿去导致损伤。
-</p>
-<p>
-于是，先在淘宝上搜索了<span class="caps">USB</span>无线网卡，结果选了一款最便宜最小巧的USB无线网卡，MERCURY MV150US（25￥）。&nbsp;150M足够用了。
-</p>
-<p>
-接下来就是配置无线，让它工作起来：
-</p>
-
-<div id="table-of-contents">
+        <section class="content"><div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">配置wap_supplicant</a></li>
-<li><a href="#sec-2">配置网卡wlan0</a></li>
-<li><a href="#sec-3">启动</a></li>
-<li><a href="#sec-4">其它</a>
+<li><a href="#sec-1">基本概念</a>
 <ul>
-<li><a href="#sec-4-1">无法识别网卡</a></li>
-<li><a href="#sec-4-2">wap_supplicant</a></li></ul></li></ul></div></div>
-          <p class="more"><a href="/articles/linux/2013/03/08/2013-03-08-raspberry-pi-usb-wifi-config.html">more</a></p>
+<li><a href="#sec-1-1">Schema</a></li>
+<li><a href="#sec-1-2">ResultSource</a></li>
+<li><a href="#sec-1-3">ResultSet</a></li>
+<li><a href="#sec-1-4">ResultClass</a></li>
+<li><a href="#sec-1-5">Storage</a></li>
+<li><a href="#sec-1-6">Namespace</a></li>
+<li><a href="#sec-1-7">Relationship</a></li>
+<li><a href="#sec-1-8">deploy</a></li>
+<li><a href="#sec-1-9">load</a></li></ul></li></ul></div></div>
+          <p class="more"><a href="/articles/Perl/1970/01/01/2013-06-23-dbix-class-misc.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>16. February 2013</span></p>
-          <h2><a href="/articles/Perl/2013/02/16/2013-02-16-Alien.html">Perl Alien 介绍</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/linux/1970/01/01/2012-11-10-quick-calculate-qps_rt.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
+        <section class="content"><div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Alien是什么</a></li>
-<li><a href="#sec-2">Alien的目标</a></li>
-<li><a href="#sec-3">Alien模块的约定/保证</a></li>
-<li><a href="#sec-4">编写Alien模块</a></li>
-<li><a href="#sec-5">实例</a></li>
+<li><a href="#sec-1">脚本</a></li>
+<li><a href="#sec-2">说明</a></li>
 </ul>
 </div>
 </div>
+&#8212;
+date: 2012-11-10
+template: tech.jade
+title: 快速取得apache/nginx的qps和rt
+category: Linux
+change_frequency: monthly
+&#8212;
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">Alien是什么</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>本文介绍Perl中的Alien。
-</p>
 <p>
-Alien 是一个名字空间或者一系列Module/Perl&nbsp;package</p></div></div>
-          <p class="more"><a href="/articles/Perl/2013/02/16/2013-02-16-Alien.html">more</a></p>
+在计算<span class="caps">QPS</span>和RT的时候，我们一般使用grep&nbsp;。但是当日志文件很大的时候，grep会很耗时。
+</p>
+
+<p>
+监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。
+</p>
+
+<p>
+但是如果我们仅仅希望链接到服务器，执行一条命令就快速的计算出qps和rt。则需要考虑如何快速读取需要的行的问题：
+</p>
+
+<p>
+经过我这几天的考虑，总结出了</p>
+          <p class="more"><a href="/articles/linux/1970/01/01/2012-11-10-quick-calculate-qps_rt.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/17/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/19/" class="nav-next">Next page »</a>

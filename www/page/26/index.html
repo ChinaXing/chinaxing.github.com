@@ -14,16 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>7</sup></a></li>
-          <li><a href="/Postgres/index.html">Postgres<sup>2</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>1</sup></a></li>
+          <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>5</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>2</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>3</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -32,116 +29,107 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>05. December 2012</span></p>
-          <h2><a href="/articles/linux/2012/12/05/2012-12-05-cygwin-install-jekyll.html">cygwin 下安装jekyll</a></h2>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/linux/1970/01/01/2013-08-06-proactor-vs-reactor.html">Untitled</a></h2>
         </header>
-        <section class="content">
-
-
-<p>
-Windows 下cygwin可以模拟Linux环境.于是打算用cygwin+jekyll&nbsp;来作写博客的环境.
-</p>
-<p>
-安装jekyll在cygwin下面没有在linux下那样顺利，下面记录下我的安装过程:
-</p>
-<ol>
-<li>从cygwin安装基础软件
-
-<p>
-   cygwin安装时候选择安装ruby,rake,gcc4,gcc4-g++,make,git,openssh等开发工具安上.
-</p>
-<p>
-   安装上工具之后,gem&nbsp;工具就安装好了.
-</p></li>
-<li>通过gem 安装jekyll环境  
-   首先安装 rake-compiler:
-
-
-
-<pre class="example">gem install rake-compiler   
-</pre>
-
-
-<p>
-   安装posix-spawn这个库，gem自带的有问题，需要从github上安装:
-</p>
-
-
-<pre class="example">git clone git://github.com/rtomayko/posix-spawn.git
-cd pos</pre></li></ol>
-          <p class="more"><a href="/articles/linux/2012/12/05/2012-12-05-cygwin-install-jekyll.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>04. December 2012</span></p>
-          <h2><a href="/articles/linux/2012/12/04/2012-12-04-jekyll-chinese-list-problem.html">jekyll markdown中文列表无法解析的问题</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
+        <section class="content"><div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">解决方法</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">解决方法</h3>
-<div class="outline-text-3" id="text-1">
-
-<p>默认的markdown解析引擎有问题
-</p>
-<p>
-配置_config.yml,将markdown解析引擎换为rdiscount:
-</p>
-
-
-
-<pre class="example">markdown: rdiscount
-</pre>
-
-
-<p>
-问题解决:)
-</p></div>
-</div>
-
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>04. December 2012</span></p>
-          <h2><a href="/articles/linux/2012/12/04/2012-12-04-use-github-blogging.html">use github pages to write blog</a></h2>
-        </header>
-        <section class="content">
-
-
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
+<li><a href="#sec-1">处理过程</a>
 <ul>
-<li><a href="#sec-1">jekyll：从标记语言生成<span class="caps">HTML</span>页面</a>
-<ul>
-<li><a href="#sec-1-1">目录结构:</a></li>
+<li><a href="#sec-1-1">Proactor</a></li>
+<li><a href="#sec-1-2">Reactor</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">Mardown :&nbsp;标记语言</a></li>
+<li><a href="#sec-2">区别和联系</a>
+<ul>
+<li><a href="#sec-2-1">区别</a></li>
+<li><a href="#sec-2-2">联系</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">参考材料</a></li>
 </ul>
 </div>
 </div>
+&#8212;
+date: 2013-08-06
+template: tech.jade
+title: 两种<span class="caps">IO</span>模式：Proactor与Reactor模式
+category: Linux
+tag:&nbsp;linux,io
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">jekyll：从标记语言生成<span class="caps">HTML</span>页面</h3>
-<div class="outline-text-3" id="text-1">
-
+          <p class="more"><a href="/articles/linux/1970/01/01/2013-08-06-proactor-vs-reactor.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/linux/1970/01/01/2013-10-06-nodejs-static-site-builder-wintersmith.html">Untitled</a></h2>
+        </header>
+        <section class="content"><div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">安装与使用</a>
+<ul>
+<li><a href="#sec-1-1">新建站点</a></li>
+<li><a href="#sec-1-2">预览与生成站点</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">扩展wintersmith</a>
+<ul>
+<li><a href="#sec-2-1">待增强</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">使用感受</a></li>
+</ul>
+</div>
+</div>
+&#8212;
+title: wintersmith静态站点生成器
+template: tech.jade
+date: 2013-10-06 15:39:01
+category: Linux
+&#8212;
 
 <p>
-Jekyll: <a href="https://github.com/mojombo/jekyll/wiki">https://github.com/mojombo/jekyll/wiki</a></p></div></div>
-          <p class="more"><a href="/articles/linux/2012/12/04/2012-12-04-use-github-blogging.html">more</a></p>
+静态站点常用来写blog，比如最近做技术的都将blog放在了gi</p>
+          <p class="more"><a href="/articles/linux/1970/01/01/2013-10-06-nodejs-static-site-builder-wintersmith.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/CS-Arch/1970/01/01/2014-10-14-concurrency-support-LL-SC.html">Untitled</a></h2>
+        </header>
+        <section class="content"><div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="caps">LL</span>/SC</a>
+<ul>
+<li><a href="#sec-1-1">vs&nbsp;<span class="caps">CAS</span></a></li>
+<li><a href="#sec-1-2">Implementation</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">refrence</a></li>
+</ul>
+</div>
+</div>
+&#8212;
+date: 2014-10-14 20:36:02
+template: tech.jade
+title: Concurrency support - <span class="caps">LL</span>/SC
+category: CS-Arch
+chage_frequency: monthly
+tag: cs,concurrency
+&#8212;
+
+<p>
+本文介绍<span class="caps">CPU</span>/硬件对并发的支持之LL/SC&nbsp;(Load-Link/Store-Conditional).
+</p>
+          <p class="more"><a href="/articles/CS-Arch/1970/01/01/2014-10-14-concurrency-support-LL-SC.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/25/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/27/" class="nav-next">Next page »</a>

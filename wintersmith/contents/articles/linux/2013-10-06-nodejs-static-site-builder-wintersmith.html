@@ -1,24 +1,3 @@
----
-title: wintersmith静态站点生成器
-template: tech.jade
-date: 2013-10-06 15:39:01
-category: Linux
----
-
-<p>
-静态站点常用来写blog，比如最近做技术的都将blog放在了github网站上，在文章写好后由一个工具将文章内容结合模板编译一下，加入blog中。
-</p>
-<p>
-这样的工具非常多了，比较有名的比如：jekyll，是ruby开发的，然后有各种效仿者，前段时间我转向使用HiD这个工具来替代jekyll，主要是出于自己熟悉Perl语言稍微多些，一来支持一下Perl语言，二来出问题比较容易解决。
-</p>
-<p>
-在windows下Perl的这个工具不容易安装，然后最近几天看了下node.js，发现一款这方面的工具，安装和使用比较方便，所以切换到使用这款工具来生成blog。
-</p>
-<p>
-这款工具是: <a href="http://wintersmith.io/">wintersmith</a> (感觉像人名？)
-</p>
-
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -38,32 +17,51 @@ category: Linux
 </ul>
 </div>
 </div>
-
-<div id="outline-container-1" class="outline-4">
-<h4 id="sec-1">安装与使用</h4>
-<div class="outline-text-4" id="text-1">
-
-<p>安装比较容易，通过npm 我们就可以安装，缺少什么库也通过npm进行安装：<a href="https://github.com/jnordberg/wintersmith#quick-start">quick-start</a>
-</p>
-
-</div>
-
-<div id="outline-container-1-1" class="outline-5">
-<h5 id="sec-1-1">新建站点</h5>
-<div class="outline-text-5" id="text-1-1">
-
-
-
-
-<pre class="example">wintersmith new myBlog
-</pre>
+---
+title: wintersmith静态站点生成器
+template: tech.jade
+date: 2013-10-06 15:39:01
+category: Linux
+---
 
 <p>
-     执行此命令后，在myBlog下就生成了一个静态站点的目录结构:
+静态站点常用来写blog，比如最近做技术的都将blog放在了github网站上，在文章写好后由一个工具将文章内容结合模板编译一下，加入blog中。
+</p>
+
+<p>
+这样的工具非常多了，比较有名的比如：jekyll，是ruby开发的，然后有各种效仿者，前段时间我转向使用HiD这个工具来替代jekyll，主要是出于自己熟悉Perl语言稍微多些，一来支持一下Perl语言，二来出问题比较容易解决。
+</p>
+
+<p>
+在windows下Perl的这个工具不容易安装，然后最近几天看了下node.js，发现一款这方面的工具，安装和使用比较方便，所以切换到使用这款工具来生成blog。
+</p>
+
+<p>
+这款工具是: <a href="http://wintersmith.io/">wintersmith</a> (感觉像人名？)
 </p>
 
 
-<pre class="example">config.json       --&gt; 站点配置
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">安装与使用</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+安装比较容易，通过npm 我们就可以安装，缺少什么库也通过npm进行安装：<a href="https://github.com/jnordberg/wintersmith#quick-start">quick-start</a>
+</p>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">新建站点</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-sh">wintersmith new myBlog
+</pre>
+</div>
+<p>
+执行此命令后，在myBlog下就生成了一个静态站点的目录结构:
+</p>
+<pre class="example">
+config.json       --&gt; 站点配置
 contents/         --&gt; 站点内容(文章，css，js，img等)
 node_modules/     --&gt; 插件活wintersmith依赖的模块
 package.json      --&gt; npm包的配置
@@ -71,85 +69,85 @@ plugins/          --&gt; 插件目录，自动加载
 readme.md         
 templates/        --&gt; 站点模板
 </pre>
+<p>
+<code>node_modules/</code> 目录，放通过npm安装的模块，如果使用 <code>npm --global</code> 选项进行安装了，则此目录中可以没有
+</p>
 
 <p>
-     <code>node_modules/</code> 目录，放通过npm安装的模块，如果使用 <code>npm --global</code> 选项进行安装了，则此目录中可以没有
+wintersmith 默认支持的模板是<a href="http://jade-lang.com/">jade</a>。语法清爽。当然可以自己写(应该别人已写)插件支持其他模板。
 </p>
+
 <p>
-     wintersmith 默认支持的模板是<a href="http://jade-lang.com/">jade</a>。语法清爽。当然可以自己写(应该别人已写)插件支持其他模板。
+wintersmith 默认支持markdown与json格式的原文章的转换。其它的格式通过插件支持。
 </p>
-<p>     
-     wintersmith 默认支持markdown与json格式的原文章的转换。其它的格式通过插件支持。
-</p>
+
 <p>
-     <a href="https://github.com/jnordberg/wintersmith/wiki/Plugins">这里是一些插件</a> ，包括模板插件与文章格式插件，以及其它辅助插件。
+<a href="https://github.com/jnordberg/wintersmith/wiki/Plugins">这里是一些插件</a> ，包括模板插件与文章格式插件，以及其它辅助插件。
 </p>
+
 <p>
-     <a href="https://github.com/jnordberg/wintersmith/wiki/Writing-plugins">这里可以了解到如何写插件</a> 。不过不太详细，可以在从<a href="https://github.com/jnordberg/wintersmith/tree/master/src/plugins">例子</a>中参考着写。
+<a href="https://github.com/jnordberg/wintersmith/wiki/Writing-plugins">这里可以了解到如何写插件</a> 。不过不太详细，可以在从<a href="https://github.com/jnordberg/wintersmith/tree/master/src/plugins">例子</a>中参考着写。
 </p>
 </div>
-
 </div>
 
-<div id="outline-container-1-2" class="outline-5">
-<h5 id="sec-1-2">预览与生成站点</h5>
-<div class="outline-text-5" id="text-1-2">
-
-<p>     然后我们可以在contents目录中放入markdown格式的文章、css、js等，在templates中放入模板，一切准备就绪后，回到myBlog目录执行:
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">预览与生成站点</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+然后我们可以在contents目录中放入markdown格式的文章、css、js等，在templates中放入模板，一切准备就绪后，回到myBlog目录执行:
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">wintersmith preview
+<pre class="src src-sh">wintersmith preview
 </pre>
-
+</div>
 <p>
-     在本地8080端口会启动站点，通过浏览器即可访问查看生成的站点。preview下的站点是自动热部署的，即：你的改动会马上在浏览器中看到。所以不需要手动重启wintersmith。
-</p>
-<p>
-     站点生成调试没问题后，通过如下命令将站点生成出来，然后就可以放于github上了。
+在本地8080端口会启动站点，通过浏览器即可访问查看生成的站点。preview下的站点是自动热部署的，即：你的改动会马上在浏览器中看到。所以不需要手动重启wintersmith。
 </p>
 
+<p>
+站点生成调试没问题后，通过如下命令将站点生成出来，然后就可以放于github上了。
+</p>
+<div class="org-src-container">
 
-<pre class="example">wintersmith build # 在myBlog/build目录下生成站点，config.json里配置
+<pre class="src src-sh">wintersmith build # 在myBlog/build目录下生成站点，config.json里配置
 </pre>
-
-
+</div>
+</div>
 </div>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-4">
-<h4 id="sec-2">扩展wintersmith</h4>
-<div class="outline-text-4" id="text-2">
-
-<p>    默认的wintersmith支持markdown，对于html的格式是不支持的，由于我使用Emacs org mode来将org文档编译为html文档，然后再进行构建静态站点，所以写了一个插件，让wintersmith可以识别。
-</p>
-<p>    
-    默认没发现category的生成插件，我也写了一个。
-</p>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">扩展wintersmith</h2>
+<div class="outline-text-2" id="text-2">
 <p>
-    <a href="https://github.com/ChinaXing/chinaxing.github.com/tree/dev/wintersmith/plugins">我写的插件</a>。
+默认的wintersmith支持markdown，对于html的格式是不支持的，由于我使用Emacs org mode来将org文档编译为html文档，然后再进行构建静态站点，所以写了一个插件，让wintersmith可以识别。
 </p>
 
+<p>
+默认没发现category的生成插件，我也写了一个。
+</p>
+
+<p>
+<a href="https://github.com/ChinaXing/chinaxing.github.com/tree/dev/wintersmith/plugins">我写的插件</a>。
+</p>
 </div>
 
-<div id="outline-container-2-1" class="outline-5">
-<h5 id="sec-2-1">待增强</h5>
-<div class="outline-text-5" id="text-2-1">
-
-<p>     文章内相对链接的修改，目前写死的，需要自动根据目录深度变化进行。
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">待增强</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+文章内相对链接的修改，目前写死的，需要自动根据目录深度变化进行。
 </p>
 </div>
 </div>
-
 </div>
 
-<div id="outline-container-3" class="outline-4">
-<h4 id="sec-3">使用感受</h4>
-<div class="outline-text-4" id="text-3">
-
-<ul>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">使用感受</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
 <li>模板语言比较好，清爽
 </li>
 <li>插件使用coffescript进行开发，看起来比较简洁，需要熟悉coffescript
@@ -159,6 +157,5 @@ templates/        --&gt; 站点模板
 <li>各种依赖很方便的通过npm进行安装
 </li>
 </ul>
-
 </div>
 </div>

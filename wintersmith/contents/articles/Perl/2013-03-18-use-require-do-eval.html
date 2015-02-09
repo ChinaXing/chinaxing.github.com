@@ -1,16 +1,3 @@
----
-date: 2013-03-18
-template: tech.jade
-title: 认识Perl 中use，require，do，eval
-category: Perl
-change_frequency: monthly
-tag: Perl
----
-
-<p>
-use, require, do ,eval 是我们经常见到的perl语言关键字。下面我们简洁明要地进行对他们说明。
-</p>
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -43,236 +30,223 @@ use, require, do ,eval 是我们经常见到的perl语言关键字。下面我�
 </ul>
 </div>
 </div>
+---
+date: 2013-03-18
+template: tech.jade
+title: 认识Perl 中use，require，do，eval
+category: Perl
+change_frequency: monthly
+tag: Perl
+---
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">use</h3>
-<div class="outline-text-3" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-4">
-<h4 id="sec-1-1">作用</h4>
-<div class="outline-text-4" id="text-1-1">
-
-<p>use 用在导入模块，使用模块中功能的时候，如：
+<p>
+use, require, do ,eval 是我们经常见到的perl语言关键字。下面我们简洁明要地进行对他们说明。
 </p>
 
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">use</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">作用</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+use 用在导入模块，使用模块中功能的时候，如：
+</p>
+<div class="org-src-container">
 
-<pre class="example">use Data::Dumper;
+<pre class="src src-perl">use Data::Dumper;
 </pre>
-
+</div>
 
 <p>
 use 的作用是：
-</p><ul>
+</p>
+<ul class="org-ul">
 <li>加载模块
 </li>
 <li>导入模块export的东西（包括变量，常量，子过程）到本命令空间
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-1-2" class="outline-4">
-<h4 id="sec-1-2">use 发生在什么时候</h4>
-<div class="outline-text-4" id="text-1-2">
-
-<p>  在编译（compile）期
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">use 发生在什么时候</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+在编译（compile）期
 </p>
 </div>
-
 </div>
 
-<div id="outline-container-1-3" class="outline-4">
-<h4 id="sec-1-3">use 的实现</h4>
-<div class="outline-text-4" id="text-1-3">
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">use 的实现</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
 
-
-
-
-<pre class="example">use Data::Dumper; 
+<pre class="src src-perl">use Data::Dumper;
 </pre>
-
+</div>
 <p>
 等效于：
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import; }
+<pre class="src src-perl">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import; }
 </pre>
+</div>
 
 
+<div class="org-src-container">
 
-
-<pre class="example">use Data::Dumper qw(Dumper);
+<pre class="src src-perl">use Data::Dumper qw(Dumper);
 </pre>
-
+</div>
 <p>
 等效于：
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import(qw(Dumper)); }
+<pre class="src src-perl">BEGIN { require "Data::Dumper.pm"; 'Data::Dumper'-&gt;import(qw(Dumper)); }
 </pre>
+</div>
 
+<div class="org-src-container">
 
-
-<pre class="example">use Data::Dumper ();
+<pre class="src src-perl">use Data::Dumper ();
 </pre>
-
+</div>
 <p>
 等效于：
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">BEGIN { require "Data::Dumper.pm"; }
+<pre class="src src-perl">BEGIN { require "Data::Dumper.pm"; }
 </pre>
-
+</div>
 
 <p>
 通过将require放在 BEGINE BLOCK里面，加载模块在编译器进行，加载完成后，会调用模块的import函数，将模块导出的变量和子过程导入到本模块的名字空间。
 </p>
 </div>
 </div>
-
 </div>
 
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">require</h3>
-<div class="outline-text-3" id="text-2">
-
-
-</div>
-
-<div id="outline-container-2-1" class="outline-4">
-<h4 id="sec-2-1">require 作用</h4>
-<div class="outline-text-4" id="text-2-1">
-
-<p><a href="http://perldoc.perl.org/functions/require.html">require</a> 进行模块的加载，它是perl的原生功能之一，显然它运行在运行期（runtime）。
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">require</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">require 作用</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+<a href="http://perldoc.perl.org/functions/require.html">require</a> 进行模块的加载，它是perl的原生功能之一，显然它运行在运行期（runtime）。
 </p>
+
 <p>
 require 的作用是加载模块，注意他不会重复加载，加载后模块名会出现在%INC哈希表中。
 </p>
+
 <p>
 require 加载后，模块的命名空间被建立，就可以通过其命名空间访问其中的内容。
 </p>
 
+<div class="org-src-container">
 
-
-<pre class="example">require Data::Dumper;
+<pre class="src src-perl">require Data::Dumper;
 print Data::Dumper { a =&gt; 1 , b =&gt; 2 };
 </pre>
-
-
+</div>
+</div>
 </div>
 
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">require的执行期</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+require在运行期执行
+</p>
 </div>
-
-<div id="outline-container-2-2" class="outline-4">
-<h4 id="sec-2-2">require的执行期</h4>
-<div class="outline-text-4" id="text-2-2">
-
-<p>require在运行期执行
-</p></div>
-
 </div>
-
-<div id="outline-container-2-3" class="outline-4">
-<h4 id="sec-2-3">require的实现</h4>
-<div class="outline-text-4" id="text-2-3">
-
-
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">require的实现</h3>
+<div class="outline-text-3" id="text-2-3">
 <p>
 require实现依赖于 <a href="http://perldoc.perl.org/functions/do.html">do</a> ，在do的基础上，进行检查加载与否，避免重复加载. 参见这里：<a href="http://perldoc.perl.org/functions/require.html#require">perldoc#require</a>
 </p>
 </div>
 </div>
-
 </div>
 
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">do</h3>
-<div class="outline-text-3" id="text-3">
-
-
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">do</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 <a href="http://perldoc.perl.org/functions/do.html">do</a> 有2种形式
 do BLOCK
 do EXPR
 </p>
+
 <p>
 我们只看第二种形式，也正是require使用到的。
 </p>
+
 <p>
 EXPR 会被当做文件名进行查找。查找@INC数组，找到后，将文件和文件全路径记录于%INC哈希表。
 </p>
-
 </div>
 
-<div id="outline-container-3-1" class="outline-4">
-<h4 id="sec-3-1">do作用</h4>
-<div class="outline-text-4" id="text-3-1">
-
-<p>do的作用是执行文件中的perl脚本，do会把文件当做perl脚本来执行，编译，执行，然后返回脚本执行的结果（脚本最后一个表达式的结果）。
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">do作用</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+do的作用是执行文件中的perl脚本，do会把文件当做perl脚本来执行，编译，执行，然后返回脚本执行的结果（脚本最后一个表达式的结果）。
 </p>
+
 <p>
 作用上类似eval，与eval不同的是，do 无法看到 do 语句所在环境的词法变量。
 </p>
 
+<div class="org-src-container">
 
-
-<pre class="example">do 'stat.pl'
+<pre class="src src-perl">do 'stat.pl'
 </pre>
-
+</div>
 
 <p>
 功能上类似于
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">eval `cat stat.pl`
+<pre class="src src-perl">eval `cat stat.pl`
 </pre>
-
-
-
+</div>
+</div>
 </div>
 </div>
 
-</div>
 
-<div id="outline-container-4" class="outline-3">
-<h3 id="sec-4">eval</h3>
-<div class="outline-text-3" id="text-4">
-
-
-
-</div>
-
-<div id="outline-container-4-1" class="outline-4">
-<h4 id="sec-4-1">eval作用</h4>
-<div class="outline-text-4" id="text-4-1">
-
-<p><a href="http://perldoc.perl.org/functions/eval.html">eval</a> 实现运行期动态生成代码的能力，与其他语言的eval能力和概念上是一致的。
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">eval</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">eval作用</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<a href="http://perldoc.perl.org/functions/eval.html">eval</a> 实现运行期动态生成代码的能力，与其他语言的eval能力和概念上是一致的。
 eval 比较复杂，关于eval介绍，参见其perldoc。
 </p>
+
 <p>
 eval执行的代码，出现的异常会被eval 捕获，设置于$@变量中。
 </p>
 </div>
 </div>
-
 </div>
 
-<div id="outline-container-5" class="outline-3">
-<h3 id="sec-5">总结</h3>
-<div class="outline-text-3" id="text-5">
-
-
-<ul>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">总结</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
 <li>eval 是do的基础
 </li>
 <li>do 是require的基础
@@ -280,7 +254,6 @@ eval执行的代码，出现的异常会被eval 捕获，设置于$@变量中。
 <li>require 是 use的基础
 </li>
 </ul>
-
 
 
 <p>

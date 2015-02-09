@@ -1,12 +1,3 @@
----
-date: 2013-06-21
-template: tech.jade
-title: PSGI 协议杂记
-category: Perl
-change_frequency: monthly
----
-
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -24,27 +15,39 @@ change_frequency: monthly
 </ul>
 </div>
 </div>
+---
+date: 2013-06-21
+template: tech.jade
+title: PSGI 协议杂记
+category: Perl
+change_frequency: monthly
+---
 
-<div id="outline-container-1" class="outline-3">
-<h3 id="sec-1">PSGI 是什么</h3>
-<div class="outline-text-3" id="text-1">
-
-<p><a href="http://search.cpan.org/perldoc?PSGI">PSGI</a> -  Perl Web Server Gateway Interface Specification
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">PSGI 是什么</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<a href="http://search.cpan.org/perldoc?PSGI">PSGI</a> -  Perl Web Server Gateway Interface Specification
 </p>
+
 <p>
 PSGI 是受WSGI(python)、Rack(ruby)、JSGI(javascript)启发而开发，然而可以说是几乎完全一样，只是语言领域是Perl（这一点可以通过各个协议的细节对比发现）
 </p>
+
 <p>
 PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web应用程序/web框架</b> 间的协定：
 </p>
 
-<p>
-<img src="file:///img/pgsi-instructure.png"  alt="file:///img/pgsi-instructure.png" />
+<div class="figure">
+<p><img src="file:///img/pgsi-instructure.png" alt="pgsi-instructure.png" />
 </p>
+</div>
+
 
 <p>
 那么有什么好处呢？
-</p><ul>
+</p>
+<ul class="org-ul">
 <li>便于移植
 </li>
 <li>便于减少重复开发
@@ -52,86 +55,78 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 <li>便于web框架开发
 </li>
 </ul>
-
-
+</div>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-3">
-<h3 id="sec-2">相关术语</h3>
-<div class="outline-text-3" id="text-2">
-
-
-</div>
-
-<div id="outline-container-2-1" class="outline-4">
-<h4 id="sec-2-1">WebServer</h4>
-<div class="outline-text-4" id="text-2-1">
-
-<p>    web服务器，如apache/nginx, FastCGI, SCGI
-</p></div>
-
-</div>
-
-<div id="outline-container-2-2" class="outline-4">
-<h4 id="sec-2-2">PSGI Server</h4>
-<div class="outline-text-4" id="text-2-2">
-
-<p>    PSGI Server处于WebServer与Web Application之间，它的作用是为Web Application提供一个环境（一个PSGI协议的环境），应用程序遵循这个环境的协定来与PSGI Server
-    交互。PSGI Server被称作Web Application的容器，类似Java语言中的Serverlet容器是Java Web应用程序的容器。
-</p>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">相关术语</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">WebServer</h3>
+<div class="outline-text-3" id="text-2-1">
 <p>
-    实现上，PSGI Server可能作为Web服务器的一部分，通过协议连接到WebServer或者被WebServer调用。
+web服务器，如apache/nginx, FastCGI, SCGI
 </p>
-<p>
-    Plack 是PSGI Server的一个实现，并且提供了额外的功能。
-</p></div>
-
 </div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">PSGI Server</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+PSGI Server处于WebServer与Web Application之间，它的作用是为Web Application提供一个环境（一个PSGI协议的环境），应用程序遵循这个环境的协定来与PSGI Server
+交互。PSGI Server被称作Web Application的容器，类似Java语言中的Serverlet容器是Java Web应用程序的容器。
+</p>
 
-<div id="outline-container-2-3" class="outline-4">
-<h4 id="sec-2-3">Web Application/PSGI Application</h4>
-<div class="outline-text-4" id="text-2-3">
+<p>
+实现上，PSGI Server可能作为Web服务器的一部分，通过协议连接到WebServer或者被WebServer调用。
+</p>
 
-<p>    遵守PSGI约定的Web应用程序称为PSGI Application：
-</p><ul>
+<p>
+Plack 是PSGI Server的一个实现，并且提供了额外的功能。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Web Application/PSGI Application</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+遵守PSGI约定的Web应用程序称为PSGI Application：
+</p>
+<ul class="org-ul">
 <li>它是一个code reference
 </li>
 <li>接受一个hash reference 作为输入，其中是PSGI Server为应用准备好的环境
 </li>
 <li>返回一个array reference或者code reference，代表了请求处理结果
-<ul>
+<ul class="org-ul">
 <li>array reference
+<div class="org-src-container">
 
-
-
-<pre class="example">my $app = sub {
+<pre class="src src-perl">my $app = sub {
     my $env = shift;
     # ....
     return [ 200, [ 'Content-Type', 'text/plain' ], [ 'Hello,World!' ] ];
 };
 </pre>
-
+</div>
 <p>
-        格式如：=[status, [ http-headers ], http-content ]=<br/>
+格式如：=[status, [ http-headers ], http-content ]=<br  />
         其中http-content可以为array refrence，也可以为 Filehandler, 表示一个文件句柄:
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">my $app = sub {
+<pre class="src src-perl">my $app = sub {
     my $env = shift;
     # ...
     return [ 200, [ 'Content-Type', 'application/data' ], $fh ] ];
 };
 </pre>
-
+</div>
 </li>
 <li>code reference
+<div class="org-src-container">
 
-
-
-<pre class="example">my $app = sub {
+<pre class="src src-perl">my $app = sub {
     my $env = shift;
     # ...
     return sub {
@@ -141,14 +136,14 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
     };
 };
 </pre>
-
+</div>
 <p>
-        这种情况用在延迟的响应和流式的响应，此匿名函数在被PSGI server调用的时候传递一个responder，此匿名函数应该以调用responder，传递给其请求结果<br/>
+这种情况用在延迟的响应和流式的响应，此匿名函数在被PSGI server调用的时候传递一个responder，此匿名函数应该以调用responder，传递给其请求结果<br  />
         对于流式响应，一般是这样的：
 </p>
+<div class="org-src-container">
 
-
-<pre class="example">my $app = sub {
+<pre class="src src-perl">my $app = sub {
     my $env = shift;
     # ...
     return sub {
@@ -157,29 +152,29 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
        my $writer = $responder-&gt;( [200, [ 'Content-Type', 'text/plain' ], ]);
        # ...
        wait_for_events(sub {
-             my $ev = shift;
-             if($ev-&gt;last){
-                   $writer-&gt;close;
-              }else{
-                   $writer-&gt;write($ev-&gt;content);
-              }
+	     my $ev = shift;
+	     if($ev-&gt;last){
+		   $writer-&gt;close;
+	      }else{
+		   $writer-&gt;write($ev-&gt;content);
+	      }
        });
   };
 };
 </pre>
-
+</div>
 <p>
-        如果调用responder未发生body内容，responder返回一个可以读写的IO::Handler对象，可以操作此对象。
-</p></li>
+如果调用responder未发生body内容，responder返回一个可以读写的IO::Handler对象，可以操作此对象。
+</p>
+</li>
 </ul>
-
 </li>
 </ul>
 
-
 <p>
-    PSGI application可以仅仅是一个简单的函数引用，也可以是一个Web Framework，支持PSGI的<a href="http://en.wikipedia.org/wiki/PSGI">Web FrameWork</a>有:
-</p><ul>
+PSGI application可以仅仅是一个简单的函数引用，也可以是一个Web Framework，支持PSGI的<a href="http://en.wikipedia.org/wiki/PSGI">Web FrameWork</a>有:
+</p>
+<ul class="org-ul">
 <li>Catalyst
 </li>
 <li>Dancer
@@ -187,27 +182,26 @@ PSGI和CGI、FastCGI类似，他们定义的是 <b>Web服务器</b> 与 <b>web�
 <li>Mojolicious
 </li>
 </ul>
-
 </div>
-
 </div>
-
-<div id="outline-container-2-4" class="outline-4">
-<h4 id="sec-2-4">Middleware</h4>
-<div class="outline-text-4" id="text-2-4">
-
-<p>    中间件，即处于 <b>PSGI Server</b> 与 <b>PSGI Application</b> 之间的层，类似nginx的链式处理中的模块(filter), 这些中间件可以方便进行业务之外的处理、统计、分析等操作。<br/>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Middleware</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+中间件，即处于 <b>PSGI Server</b> 与 <b>PSGI Application</b> 之间的层，类似nginx的链式处理中的模块(filter), 这些中间件可以方便进行业务之外的处理、统计、分析等操作。<br  />
     比如，AccessLog中间件可以进行日志记录，Content-Length中间件可以进行长度的计算和修正等，认证中间件可以进行认证
 </p>
+
 <p>
-    中间件在PSGI server看来是一个PSGI Application，在PSGI Application看来是一个PSGI Server。
-</p>
-<p>
-    实现上中间件对PSGI Application 进行封装（wrapper），然后提供一个 PSGI Application的接口给PSGI server，封装后，得到了新的PSGI Application。
+中间件在PSGI server看来是一个PSGI Application，在PSGI Application看来是一个PSGI Server。
 </p>
 
+<p>
+实现上中间件对PSGI Application 进行封装（wrapper），然后提供一个 PSGI Application的接口给PSGI server，封装后，得到了新的PSGI Application。
+</p>
+<div class="org-src-container">
 
-<pre class="example">my $app = sub {
+<pre class="src src-perl">my $app = sub {
     my $env = shift;
     return [ '200', [ 'Content-Type', 'text/plain' ], [ "Hello,World!" ] ];
 };
@@ -219,50 +213,43 @@ my $mymiddleware = sub {
     return $res;
 };
 </pre>
-
+</div>
 <p>
-    中间件可以作用于request chain也可以作用于response chain，也可以都作用于两者:
+中间件可以作用于request chain也可以作用于response chain，也可以都作用于两者:
 </p>
 
-<p>
-    <img src="file:///img/PSGI-middleware.png"  alt="file:///img/PSGI-middleware.png" />
+<div class="figure">
+<p><img src="file:///img/PSGI-middleware.png" alt="PSGI-middleware.png" />
 </p>
 </div>
 </div>
-
+</div>
 </div>
 
-<div id="outline-container-3" class="outline-3">
-<h3 id="sec-3">PSGI资料</h3>
-<div class="outline-text-3" id="text-3">
-
-<ul>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">PSGI资料</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
 <li>PSGI作者YAPC上的Plack介绍
-      <div>
-      <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
-      </div>
-      <div class="mask" onclick="javascript: hide_ppt(this)"></div>
-      <div class="mask_container">
-      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pISmtrNnNSRHRrX3c/preview" width="100%" height="100%">
-      </iframe>
-      </div>
+<div>
+<button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+</div>
+<div class="mask" onclick="javascript: hide_ppt(this)"></div>
+<div class="mask_container">
+<iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pISmtrNnNSRHRrX3c/preview" width="100%" height="100%">
+</iframe>
+</div>
 </li>
 <li>YAPC上另一份关于Plack/PSGI的介绍
-      <div>
-      <button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
-      </div>
-      <div class="mask" onclick="javascript: hide_ppt(this)"></div>
-      <div class="mask_container">
-      <iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIWTN6T0RhRFhUdU0/preview" width="100%" height="100%">
-      </iframe>
-      </div>
+<div>
+<button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+</div>
+<div class="mask" onclick="javascript: hide_ppt(this)"></div>
+<div class="mask_container">
+<iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIWTN6T0RhRFhUdU0/preview" width="100%" height="100%">
+</iframe>
+</div>
 </li>
 </ul>
-
-
-
-
-
-
 </div>
 </div>

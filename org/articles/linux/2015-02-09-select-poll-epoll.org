@@ -1,0 +1,156 @@
+#+BEGIN_HTML
+---
+date: 2015-02-09 15:10:51
+template: tech.jade
+title: select vs poll vs epoll
+category: Linux
+chage_frequency: monthly
+tag: Linux
+---
+#+END_HTML
+select, poll 和 epoll 是Linux系统支持的多路复用io的系统调用，在高性能的网络编程中，都会涉及到基于事件的处理。
+事件的处理机制，得力与底层OS的机制，使得这一实现变的容易。
+
+那么select，poll 和 epoll 分别是什么呢，它们的区别在什么地方？
+*** select
+select（1983） 是最早提供的多路复用机制，大体思路是将若干fd加入到称为fdSet的集合中，传递给select函数，然后select函数就会将这些fd上面的io事件标注出来，程序可以检查这些标注，来得知是否有关心的事件发生，然后执行对应的业务逻辑。
+
+其中，select函数采用bitMap的方式来标注fdSet上面的事件发生情况，然后程序需要遍历这个bitMap来获得事件状态。
+
+select 有一些缺点：
+- 固定尺寸的fdSet :: fdSet是kernel编译时候的一个常量，因此在使用时候是固定的
+- 全量返回bitMap :: 这种方式的弊端是必须遍历来得到信息，如果fdSet非常大，而且事件发生频率很低的话，这种遍历就相对很低效。
+- 不支持并发 :: 它会将传入的fdSet进行修改状态，而修改状态在并发下是存在同步问题的
+- 支持的事件有限 :: 对于一些比较常用的事件，如socket的close事件，从而需要用户态做多余的工作。
+#+BEGIN_SRC c
+fd_set fd_in, fd_out;
+struct timeval tv;
+ 
+// Reset the sets
+FD_ZERO( &fd_in );
+FD_ZERO( &fd_out );
+ 
+// Monitor sock1 for input events
+FD_SET( sock1, &fd_in );
+ 
+// Monitor sock2 for output events
+FD_SET( sock1, &fd_out );
+ 
+// Find out which socket has the largest numeric value as select requires it
+int largest_sock = sock1 > sock2 ? sock1 : sock2;
+ 
+// Wait up to 10 seconds
+tv.tv_sec = 10;
+tv.tv_usec = 0;
+ 
+// Call the select
+int ret = select( largest_sock, &fd_in, &fd_out, NULL, &tv );
+ 
+// Check if select actually succeed
+if ( ret == -1 )
+    // report error and abort
+else if ( ret == 0 )
+    // timeout; no event detected
+else
+{
+    if ( FD_ISSET( sock1, &fd_in ) )
+        // input event on sock1
+ 
+    if ( FD_ISSET( sock2, &fd_out ) )
+        // output event on sock2
+}
+#+END_SRC
+*** poll
+poll （1986）为了改进select的若干问题，在不久后提出，poll 和select的使用方式非常类似，即对外接口是一致的
+
+它的改进点是：
+- fdSet更大，不受限制
+- 不修改传入的fdSet，支持并发
+－支持更多的事件
+#+BEGIN_SRC c
+// The structure for two events
+struct pollfd fds[2];
+ 
+// Monitor sock1 for input
+fds[0].fd = sock1;
+fds[0].events = POLLIN;
+ 
+// Monitor sock2 for output
+fds[1].fd = sock2;
+fds[1].events = POLLOUT;
+ 
+// Wait 10 seconds
+int ret = poll( &fds, 2, 10000 );
+// Check if poll actually succeed
+if ( ret == -1 )
+    // report error and abort
+else if ( ret == 0 )
+    // timeout; no event detected
+else
+{
+    // If we detect the event, zero it out so we can reuse the structure
+    if ( pfd[0].revents & POLLIN )
+        pfd[0].revents = 0;
+        // input event on sock1
+
+    if ( pfd[1].revents & POLLOUT )
+        pfd[1].revents = 0;
+        // output event on sock2
+}
+#+END_SRC
+*** epoll
+很明显，这些问题被发现的时候，很快有了改进版本，epoll（2002）被实现进入linux内核。
+epoll的改进点有：
+- 可以在注册fd的时候attach一个对象（context）指针，在事件发生的时候，这个对象指针会被传回来，方便编程。
+- 只返回发生了事件的fd的集合，和select／poll比，这降低了遍历的开销。
+#+BEGIN_SRC c
+// Create the epoll descriptor. Only one is needed per app, and is used to monitor all sockets.
+// The function argument is ignored (it was not before, but now it is), so put your favorite number here
+int pollingfd = epoll_create( 0xCAFE ); 
+
+if ( pollingfd < 0 )
+ // report error
+
+// Initialize the epoll structure in case more members are added in future
+struct epoll_event ev = { 0 };
+
+// Associate the connection class instance with the event. You can associate anything
+// you want, epoll does not use this information. We store a connection class pointer, pConnection1
+ev.data.ptr = pConnection1;
+
+// Monitor for input, and do not automatically rearm the descriptor after the event
+ev.events = EPOLLIN | EPOLLONESHOT;
+// Add the descriptor into the monitoring list. We can do it even if another thread is 
+// waiting in epoll_wait - the descriptor will be properly added
+if ( epoll_ctl( epollfd, EPOLL_CTL_ADD, pConnection1->getSocket(), &ev ) != 0 )
+    // report error
+
+// Wait for up to 20 events (assuming we have added maybe 200 sockets before that it may happen)
+struct epoll_event pevents[ 20 ];
+
+// Wait for 10 seconds
+int ready = epoll_wait( pollingfd, pevents, 20, 10000 );
+// Check if epoll actually succeed
+if ( ret == -1 )
+    // report error and abort
+else if ( ret == 0 )
+    // timeout; no event detected
+else
+{
+    // Check if any events detected
+    for ( int i = 0; i < ret; i++ )
+    {
+        if ( pevents[i].events & EPOLLIN )
+        {
+            // Get back our connection pointer
+            Connection * c = (Connection*) pevents[i].data.ptr;
+            c->handleReadEvent();
+         }
+    }
+}
+#+END_SRC
+
+*** 参考
+- [[http://www.ulduzsoft.com/2014/01/select-poll-epoll-practical-difference-for-system-architects/][select, poll and epoll ]]
+- kqueue - BSD / Darwin
+
