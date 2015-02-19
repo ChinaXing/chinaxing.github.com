@@ -1,0 +1,48 @@
+#+BEGIN_HTML
+---
+date: 2015-02-19 21:05:45
+template: tech.jade
+title: Erlang Socket编程
+category: Erlang
+chage_frequency: monthly
+tag: Erlang
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Erlang 提供了 =gen_tcp= 和 =gen_udp= 模块，方便进行网络编程。
+
+*** TCP Socket
+**** 主动消息模式（active ＝ true）
+Socket接收消息非阻塞，不等上层应用fetch，就送达，接收端不可控制发送方的发送。
+#+BEGIN_SRC erlang
+{ok, Listen} = gen_tcp:listen(Port, [...,{active, true}]), %% active设置为true
+....
+receive %% 使用receive来接收Socket数据
+  {tcp,Socket,Data} ->
+    ....
+end.
+#+END_SRC 
+**** 被动消息模式（active ＝ false）
+消息不会直接投递到mailbox，接收方主动receive，若不receive，发送方会进入阻塞。
+#+BEGIN_SRC erlang
+{ok, Listen} = gen_tcp:listen(Port, [...,{active, false}]), %% active设置为false
+....
+case gen_tcp:recv(Socket,N) of  %% 使用gen_tcp:recv获取数据
+     {ok, B} ->
+       ...
+end
+#+END_SRC
+**** 混合消息模式（active ＝ once）
+开始时为主动模式，receive一个消息后，自动进入被动模式。
+#+BEGIN_SRC erlang
+{ok, Listen} = gen_tcp:listen(Port, [...,{active, once}]), %% active设置为once，为主动模式
+....
+receive %% 使用receive来接收Socket数据
+  {tcp,Socket,Data} -> %% 获取到数据之后，Socket进入被动模式
+    ....
+  inet:setopts(Socket, [{active, once}]) %% 在此处可以改变模式为主动模式，然后继续接收
+end.
+#+END_SRC
+*** UDP Socket
