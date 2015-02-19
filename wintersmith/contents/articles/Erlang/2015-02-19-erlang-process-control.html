@@ -11,12 +11,13 @@ tag: Erlang
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#sec-1">进程</a></li>
-<li><a href="#sec-2">创建进程</a></li>
-<li><a href="#sec-3">监控进程</a></li>
-<li><a href="#sec-4">进程链接</a></li>
-<li><a href="#sec-5">系统进程</a></li>
-<li><a href="#sec-6">进程信息</a></li>
-<li><a href="#sec-7">退出进程</a></li>
+<li><a href="#sec-2">mailbox</a></li>
+<li><a href="#sec-3">创建进程</a></li>
+<li><a href="#sec-4">监控进程</a></li>
+<li><a href="#sec-5">进程链接</a></li>
+<li><a href="#sec-6">系统进程</a></li>
+<li><a href="#sec-7">进程信息</a></li>
+<li><a href="#sec-8">退出进程</a></li>
 </ul>
 </div>
 </div>
@@ -55,8 +56,25 @@ Erlang 并发模型是进程以及进程之间的消息传递。进程之间的�
 </div>
 
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">创建进程</h2>
+<h2 id="sec-2">mailbox</h2>
 <div class="outline-text-2" id="text-2">
+<p>
+进程有一个mailbox，用来存放接收到的消息，mailbox在进程创建的时候被创建，在进程销毁的时候被丢弃。
+</p>
+
+<p>
+可以将mailbox理解为一个队列（FIFO）。消息投递给进程后放入mailbox，进程在receive的时候会从中拿走。
+</p>
+
+<p>
+消费失败的消息会进入“保存队列”，保存队列中的消息只有在新的匹配发生后，才会被重新加入mailbox队列（这是因为新的匹配可能导致新的模式匹配逻辑发生）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">创建进程</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 创建进程，返回Pid，可以创建远程Node上的进程
 </p>
@@ -68,17 +86,30 @@ Pid = spawn(Node,Func).
 Pid = spawn(Node,Mod,Func,Args).
 </pre>
 </div>
+
+<p>
+创建的进程数对于erlang虚拟机有一个默认的最大值：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">erlang:system_info(process_limit).
+processes:max(N). % set processes limits.
+</pre>
+</div>
+<p>
+或者通过命令行选项 <code>+P N</code> 指定最大进程数。
+</p>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">监控进程</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">监控进程</h2>
+<div class="outline-text-2" id="text-4">
 <p>
 被监控的进程在结束的时候，会发送消息：={'DOWN',MonitorRef,process,Pid,Why}= 给监听进程
 </p>
 <div class="org-src-container">
 
-<pre class="src src-erlang">MonitorRef = monitor(Pid).
+<pre class="src src-erlang">MonitorRef = erlang:monitor(Pid).
 {MonitorRef,Pid} = spawn_monitor(...). %% spawn and monitor, atomic.
 demonitor(MonitorRef). %% remove monitor
 </pre>
@@ -88,9 +119,9 @@ demonitor(MonitorRef). %% remove monitor
 </p>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">进程链接</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">进程链接</h2>
+<div class="outline-text-2" id="text-5">
 <p>
 链接是相互的，bidirectional。一个进程退出，与之相连的进程会收到退出信号（注意不是消息）。退出信号包含退出原因，如果是正常退出，原因为 =normal=。
 </p>
@@ -106,9 +137,9 @@ demonitor(MonitorRef). %% remove monitor
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">系统进程</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">系统进程</h2>
+<div class="outline-text-2" id="text-6">
 <p>
 系统进程在收到相连进程的退出信号后，会转换为一个消息：={'EXIT',Pid,Why}= 发到自己消息邮箱，可以被自己消费。
 </p>
@@ -128,9 +159,9 @@ demonitor(MonitorRef). %% remove monitor
 </div>
 </div>
 
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6">进程信息</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">进程信息</h2>
+<div class="outline-text-2" id="text-7">
 <p>
 进程通过Pid或者注册名来标识，查询进程信息通过 <code>process_info</code> 函数获取：
 </p>
@@ -142,9 +173,9 @@ demonitor(MonitorRef). %% remove monitor
 </div>
 </div>
 
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7">退出进程</h2>
-<div class="outline-text-2" id="text-7">
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">退出进程</h2>
+<div class="outline-text-2" id="text-8">
 <p>
 向进程发送退出信号可以迫使进程退出：
 </p>

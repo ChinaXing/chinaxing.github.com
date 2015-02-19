@@ -26,6 +26,13 @@ Erlang 并发模型是进程以及进程之间的消息传递。进程之间的�
 
 智能的调度器能够充分使用cpu资源，减少IO操作带来的阻塞导致cpu的空闲，保持cpu运转，可以提高程序的性能，吞吐量。
 
+*** mailbox
+进程有一个mailbox，用来存放接收到的消息，mailbox在进程创建的时候被创建，在进程销毁的时候被丢弃。
+
+可以将mailbox理解为一个队列（FIFO）。消息投递给进程后放入mailbox，进程在receive的时候会从中拿走。
+
+消费失败的消息会进入“保存队列”，保存队列中的消息只有在新的匹配发生后，才会被重新加入mailbox队列（这是因为新的匹配可能导致新的模式匹配逻辑发生）。
+
 *** 创建进程
 创建进程，返回Pid，可以创建远程Node上的进程
 #+BEGIN_SRC erlang
@@ -34,10 +41,17 @@ Pid = spawn(Func).
 Pid = spawn(Node,Func).
 Pid = spawn(Node,Mod,Func,Args).
 #+END_SRC
+
+创建的进程数对于erlang虚拟机有一个默认的最大值：
+#+BEGIN_SRC erlang
+erlang:system_info(process_limit).
+processes:max(N). % set processes limits.
+#+END_SRC
+或者通过命令行选项 =+P N= 指定最大进程数。
 *** 监控进程
 被监控的进程在结束的时候，会发送消息：={'DOWN',MonitorRef,process,Pid,Why}= 给监听进程
 #+BEGIN_SRC erlang
-MonitorRef = monitor(Pid).
+MonitorRef = erlang:monitor(Pid).
 {MonitorRef,Pid} = spawn_monitor(...). %% spawn and monitor, atomic.
 demonitor(MonitorRef). %% remove monitor
 #+END_SRC
