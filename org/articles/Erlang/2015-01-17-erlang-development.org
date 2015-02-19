@@ -19,5 +19,7 @@ Erlang 程序开发环境包括了：
 - 调试器 —— debugger:start()
 - 性能诊断器 —— fprof，eprof，cover，cprof
 - 错误诊断器 —— dialyzer
+- crash 分析 —— erl -s crashdump\_viewer start
+- 运行时监控 —— observer:start()
 
 我的Erlang UDP发送器 : [[https://github.com/ChinaXing/udp-broker]]

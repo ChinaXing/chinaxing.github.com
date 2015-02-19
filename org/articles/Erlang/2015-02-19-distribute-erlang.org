@@ -1,0 +1,63 @@
+#+BEGIN_HTML
+---
+date: 2015-02-19 16:37:13
+template: tech.jade
+title: erlang 分布式
+category: Erlang
+chage_frequency: monthly
+tag: Erlang
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Erlang 天然支持分布式，因此帮助我们免去实现分布式的一些工作，如RPC调用，消息投递，节点通信。
+
+*** 启动分布式节点
+在分布式下，erlang将每个独立运行的vm叫做node，多个node构成了分布式系统，node之间通过cookie来进行识别，只有相同cookie的node才能加入到同一个组中。
+
+默认情况下在命令行执行 =erl= 启动的erlang vm是非分布式的，其节点名是 =nonode@nohost=，要启动分布式模式，需要指定参数：
+#+BEGIN_SRC erlang
+erl -sname node1 %% 启动本地节点 ：node1@localhost
+erl -name node2 -setcookie abc %% 启动节点，可以被外界链接：node2@hostname，远程节点模式，需要设置cookie来进行集群识别
+#+END_SRC
+
+*** cookie
+cookie 是用来将一组node联系起来的一个代号，node之间的通信需要connect，而建立connect的时候需要提供彼此的cookie，如果cookie相同，则可以成功建立链接。
+
+**** cookie 设置
+cookie可以通过三种方式来指定：
+- $HOME/.erlang.cookie ::
+     在这个文件中指定cookie的内容
+- -setcookie abc :: 
+     启动erlang运行时系统的时候，在命令行指定此选项，cookie被设置为 =abc=
+- erlang:set_cookie(abc) ::
+     在erl虚拟机启动后，执行此函数，将cookie设置为abc
+*** 节点通信
+节点之间虽然启动，但是并不会自动寻找组内的其它节点，只有在需要通信的时候，它们才会联系要通信的对象，第一次通信的时候，一个connection建立起来，这时：
+#+BEGIN_SRC erlang
+ nodes(). %% 获取已经建立链接的节点
+ node(). %% 获取本节点的名称
+ monitor_node(Node,Flag). %% 打开／关闭对目标节点的监控，目标节点到本节点的链接建立与断开时候可以收到'{nodeup,Node}'和'{nodedown,Node}'的消息
+ node(Arg). %% 返回Arg所在的节点，Arg可以是Pid，Ref，Port
+ spawn(Node,Fun). %% 在Node上创建进程
+ spawn(Node,Mode,Fun,Args).
+ spawn_link(Node,Fun). 
+ spawn_link(Node,Mode,Fun,Args). %% 同上
+#+END_SRC
+节点的通信包括发送异步消息与执行远程同步调用两种：
+**** 执行RPC
+=rpc= 模块提供了远程执行调用的许多方法，方便了远程调用（erl -man rpc)。
+#+BEGIN_SRC erlang
+  rpc:call(Node,Mode,Func,Args). %% 执行远程过程调用
+  rpc:multicall(NodeList,Mode,Func,Args). %% 批量执行
+  rpc:async_call(...). %% 异步调用,返回一个Promise Key
+  rpc:yield(Key). %% 获取Promise Key的Resul
+#+END_SRC
+**** 发送消息
+#+BEGIN_SRC erlang
+  Pid ! {self(), Message}. %% 与本地发送没有区别，Pid是一个远程Node上的Pid
+#+END_SRC
+
+
+

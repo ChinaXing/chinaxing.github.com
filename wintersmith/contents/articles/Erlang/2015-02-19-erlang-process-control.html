@@ -1,0 +1,165 @@
+---
+date: 2015-02-19 17:16:57
+template: tech.jade
+title: erlang进程控制
+category: Erlang
+chage_frequency: monthly
+tag: Erlang
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">进程</a></li>
+<li><a href="#sec-2">创建进程</a></li>
+<li><a href="#sec-3">监控进程</a></li>
+<li><a href="#sec-4">进程链接</a></li>
+<li><a href="#sec-5">系统进程</a></li>
+<li><a href="#sec-6">进程信息</a></li>
+<li><a href="#sec-7">退出进程</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+Erlang 并发模型是进程以及进程之间的消息传递。进程之间的唯一耦合就是消息，没有共享变量，没有锁等同步工具。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">进程</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+进程很轻量，创建与销毁非常快速，占用的资源非常少，鼓励创建大量的进程，不用担心性能问题。
+</p>
+
+<p>
+进程是erlang虚拟机模拟出来的执行过程的抽象，与OS的进程不同的是，它们轻量，调度由Erlang的调度器调度（每个OS进程启动一个调度器），对于OS的进程来说，erlang的进程调度发生在用户态，意味着不会进行系统调用以及上下文切换，系统调用和上下文切换需要保存和恢复程序的上下文状态，这带来了额外的消耗。
+</p>
+
+<p>
+若干个Erlang进程映射到一个OS提供的进程，为了减少上下文切换，Erlang进程尽量少进行迁移，我们如果把这些OS进程看作一个可以供Erlang进程执行的Cpu的话，就可以清晰看到这种映射关系。
+</p>
+
+<p>
+进程提供了隔离性，每个进程有自己的进程字典，你可以put和get一些kv数据进去，虽然这违背了函数式程序涉及的不变性原则。
+</p>
+
+<p>
+进程如果需要协作，就通过发送消息来进行，否则就执行自己的顺序代码。
+</p>
+
+<p>
+智能的调度器能够充分使用cpu资源，减少IO操作带来的阻塞导致cpu的空闲，保持cpu运转，可以提高程序的性能，吞吐量。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">创建进程</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+创建进程，返回Pid，可以创建远程Node上的进程
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">Pid = spawn(Mod,Func,Args). 
+Pid = spawn(Func).
+Pid = spawn(Node,Func).
+Pid = spawn(Node,Mod,Func,Args).
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">监控进程</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+被监控的进程在结束的时候，会发送消息：={'DOWN',MonitorRef,process,Pid,Why}= 给监听进程
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">MonitorRef = monitor(Pid).
+{MonitorRef,Pid} = spawn_monitor(...). %% spawn and monitor, atomic.
+demonitor(MonitorRef). %% remove monitor
+</pre>
+</div>
+<p>
+如果创建监控的时候，进程已经不存在，消息中的 <code>Why</code> 为noprocess或者noconnection。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">进程链接</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+链接是相互的，bidirectional。一个进程退出，与之相连的进程会收到退出信号（注意不是消息）。退出信号包含退出原因，如果是正常退出，原因为 =normal=。
+</p>
+
+<p>
+根据退出原因是否为normal，相连进程的反应会不同：
+</p>
+<ol class="org-ol">
+<li>原因是normal，相连进程传播此消息，但是不退出。
+</li>
+<li>原因非normal，相连进程也会退出，并且传播此消息到相连进程。
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">系统进程</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+系统进程在收到相连进程的退出信号后，会转换为一个消息：={'EXIT',Pid,Why}= 发到自己消息邮箱，可以被自己消费。
+</p>
+
+<p>
+由于系统进程在收到信号后，并没有退出，因此它不会传播退出信号给相连进程。
+</p>
+
+<p>
+系统进程可以看作是一种用户来处理退出的进程。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">process_flag(trap_exit,true). %%设置进程为系统进程
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">进程信息</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+进程通过Pid或者注册名来标识，查询进程信息通过 <code>process_info</code> 函数获取：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">process_info(Pid). %% 返回进程的信息，一个元组
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">退出进程</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+向进程发送退出信号可以迫使进程退出：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">exit(Pid,Why). %% 迫使进程Pid退出，同时Why为退出原因的信号会传递给与之相连的进程，监控其的进程也会收到DOWN类型的消息。
+</pre>
+</div>
+<p>
+进程可以主动退出：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">exit(Why). %% 退出自身，发出Why为退出原因的信号...
+</pre>
+</div>
+</div>
+</div>
