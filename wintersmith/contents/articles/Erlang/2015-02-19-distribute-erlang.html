@@ -43,7 +43,8 @@ Erlang 天然支持分布式，因此帮助我们免去实现分布式的一些�
 <div class="org-src-container">
 
 <pre class="src src-erlang">erl -sname node1 %% 启动本地节点 ：node1@localhost
-erl -name node2 -setcookie abc %% 启动节点，可以被外界链接：node2@hostname，远程节点模式，需要设置cookie来进行集群识别
+erl -name node2 -setcookie abc %% 启动节点，可以被外界链接：node2@hostname，
+			       %% 远程节点模式，需要设置cookie来进行集群识别
 </pre>
 </div>
 </div>
@@ -84,7 +85,9 @@ cookie可以通过三种方式来指定：
 
 <pre class="src src-erlang">nodes(). %% 获取已经建立链接的节点
 node(). %% 获取本节点的名称
-monitor_node(Node,Flag). %% 打开／关闭对目标节点的监控，目标节点到本节点的链接建立与断开时候可以收到'{nodeup,Node}'和'{nodedown,Node}'的消息
+monitor_node(Node,Flag). %% 打开／关闭对目标节点的监控，
+			 %% 目标节点到本节点的链接建立与断开时候可以收到'{nodeup,Node}'
+			 %% 和'{nodedown,Node}'的消息
 node(Arg). %% 返回Arg所在的节点，Arg可以是Pid，Ref，Port
 spawn(Node,Fun). %% 在Node上创建进程
 spawn(Node,Mode,Fun,Args).
