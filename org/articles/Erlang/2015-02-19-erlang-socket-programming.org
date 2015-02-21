@@ -14,6 +14,19 @@ tag: Erlang
 Erlang 提供了 =gen_tcp= 和 =gen_udp= 模块，方便进行网络编程。
 
 *** TCP Socket
+*TCP* ：Transmission Control Protocol
+
+Tcp的特点是传输 *可靠性* ：有序性，完整性。此外为了保证效率，tcp支持流量控制。
+
+Tcp传输是面向 *字节流* 的，最小传输单元是字节，由于是流，所以到达socket的一个片段可能包含的字节数是不确定的，如果采用TCP进行报文传输，需要应用层去判断数据是否全部到达，如果未全部到达，需要缓冲与等候。
+**** 控制进程
+创建Socket的方法有：gen_tcp:accept和gen_tcp:connect，创建Socket的进程叫做该Socket的控制进程，所有发送给Socket的消息都发送到控制进程：
+#+BEGIN_SRC erlang
+gen_tcp:controlling_process(Socket,NewPid). %% 修改控制进程为NewPid
+#+END_SRC
+控制进程退出，则Socket自动被关闭，这让错误处理变得简单。Socket关闭会发送 ={tcp_closed, Socket}= 给对方，使对方关闭Socket。
+
+Erlang 允许多个进程同时accept一个Socket。
 **** 主动消息模式（active ＝ true）
 Socket接收消息非阻塞，不等上层应用fetch，就送达，接收端不可控制发送方的发送。
 #+BEGIN_SRC erlang
@@ -46,3 +59,37 @@ receive %% 使用receive来接收Socket数据
 end.
 #+END_SRC
 *** UDP Socket
+*UDP* ： User Datagram Protocol
+
+Udp的特点是数据报：数据封装为一个报文，写上目标地址，然后投递出去。
+
+Udp不关心是否准确投递成功，存在几种可能的情况：
+- 未投递成功 :: 这种情况原因很多，如报文的大小超过路由器的MTU，而被路由器丢弃。
+- 重复投递 :: 网络路由存在短暂的路由调整带来的环路，因此最好在发送的Pakcet中包含一个唯一序列号来区别重复，可以使用 =make_ref= 来生成唯一ID。
+
+**** UDP 多播
+UDP多播需要特殊的UDP地址，UDP多播通常无法跨越局域网，因为绝多数的路由器不会路由UDP多播包。
+
+#+BEGIN_SRC erlang
+send(Data) ->
+    case inet:ifget("en0", [broadaddr]) of %% 获取多播Ip
+         {ok, [{broadaddr, Ip}]} ->
+            {ok, S} = gen_udp:open(5019, [{broadcast, true}]), %% 多播设置为true
+            gen_udp:send(S,Ip,6000,Data), %% Ip，端口
+            gen_udp:close(S);
+          _ ->
+            io:format("Bad interface name, or\n"
+                      "broadcasting not supported\n")
+    end.
+listen() ->
+    {ok, _} = gen_udp:open(6000),
+    loop().
+
+loop() ->
+    receive
+      Any ->
+          io:format("received : ~p~n", [Any]),
+          loop()
+    end.
+#+END_SRC
+
