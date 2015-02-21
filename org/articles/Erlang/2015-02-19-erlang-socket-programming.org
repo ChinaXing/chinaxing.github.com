@@ -20,7 +20,7 @@ Tcp的特点是传输 *可靠性* ：有序性，完整性。此外为了保证�
 
 Tcp传输是面向 *字节流* 的，最小传输单元是字节，由于是流，所以到达socket的一个片段可能包含的字节数是不确定的，如果采用TCP进行报文传输，需要应用层去判断数据是否全部到达，如果未全部到达，需要缓冲与等候。
 **** 控制进程
-创建Socket的方法有：=gen_tcp:accept= 和 =gen_tcp:connect=，创建Socket的进程叫做该Socket的控制进程，所有发送给Socket的消息都发送到控制进程：
+创建Socket的方法有： =gen_tcp:accept= 和 =gen_tcp:connect= ，创建Socket的进程叫做该Socket的控制进程，所有发送给Socket的消息都发送到控制进程：
 #+BEGIN_SRC erlang
 gen_tcp:controlling_process(Socket,NewPid). %% 修改控制进程为NewPid
 #+END_SRC
