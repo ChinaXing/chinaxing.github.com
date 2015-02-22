@@ -1,0 +1,176 @@
+#+BEGIN_HTML
+---
+date: 2015-02-21 18:19:01
+template: tech.jade
+title: Netty 内部原理
+category: Java
+chage_frequency: monthly
+tag: Java,netty
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Netty系列blog来分析Netty的实现，纪录和整理在阅读学习Netty源码的过程中的收获。
+
+** Bootstrap 
+一段Netty客户端或者服务端的程序总以配置一个Boostrap实例来开始，Boostrap的用意是用来设置后续channel相关的参数（对于ServerBootstrap来说更多的是配置ChildChannel的参数）：
+- eventLoopGroup :: 执行事件处理的执行器和执行异步任务的执行器.
+- ChannelFactory :: 用来为Netty运行时提供新建Channel时候的工厂.
+- Handler :: Channel上事件处理器，多个Handler串起来挂在pipeline上面.
+
+Bootstrap有2种，一种是服务端Socket的Bootstrap，接收链接，然后fork出新的Channel，另一种是普通的：
+- ServerBootstrap :: 
+  主要是对应于tcp服务端程序的Socket，执行bind -> accept 在新链接到达后，会build childChannel，然后初始化childChannel的相关pipeline等参数。
+  对于ServerBootstrap我们不必要配置Handler，因为此类已经帮我们配置好一个接收socket链接后fork出childChannel的Handler，我们需要做的配置ChildChannelHandler，指定新链接的处理链。
+  #+BEGIN_SRC java :eval no
+      p.addLast(new ChannelInitializer<Channel>() {
+         @Override
+         public void initChannel(Channel ch) throws Exception {
+            ch.pipeline().addLast(new ServerBootstrapAcceptor( // 就是这个
+               currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
+         }
+      });
+  #+END_SRC
+  对于ServerBoostrap来说，除了指定ServerChannel的EventLoop——通常称为BoosGroup，还需要指定ChildChannel的EventLoop，通常称为WorkerGroup，否则会使用BoosGroup。
+- Bootstrap :: 其它普通的Socket，如TCP的Client和UDP的server和client，一般执行bind、connect等。
+
+它们都继承自AbstractBootstrap。
+
+根据所处角色不同，可以分为Server端的Bootstrap和Client端的Bootstrap，在配置完成后，对于服务队的Bootstrap执行Bind操作来启动，对于Client端的Bootstrap执行Connect来启动。
+
+*** ServerBootstrap
+只针对TCP的Server端Socket，在配置完成后，执行： =boostrap.bind()= 来启动，下面是bind的执行流程：
+
+#+BEGIN_SRC dot :file ../../img/netty-bootstrap-server-bind.png :cmdline -T png -Gdpi=300 :eval no-export :exports none
+digraph bind {
+	node [shape = box , fontsize = 10]
+        nodesep = 0.1
+        fontsize = 10
+        bootstrap -> bind -> doBind -> initChannel -> registerChannel -> doBind0 -> "channel.bind" -> "pipeline.bind" -> "tail.bind" -> "head.bind" -> "unsafe.bind" -> "javachannel.bind"
+        registerChannel -> "eventLoop.register(channel)" -> "channel.unsafe.register(EventLoop)" -> "javaChannel.register(EventLoop.Selector)" -> doBind0
+        "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelRegistered" -> "pipeline.fireChannelActive"
+}
+#+END_SRC
+
+#+ATTR_HTML: :style max-height:1200px;
+[[/img/netty-bootstrap-server-bind.png]]
+
+
+
+*** ClientBootstrap
+client bootstrap通过执行 =bootstrap.connect()= 启动，下面是connect的执行流程：
+#+BEGIN_SRC dot :file ../../img/netty-bootstrap-client-connect.png :cmdline -T png  -Gdpi=300 :eval no-export :exports results
+digraph connect {
+	node [shape = box ]
+        nodesep = 0.5
+        fontsize = 10
+        connect -> doConnect -> initChannel -> registerChannel
+        registerChannel -> doConnect0 -> "channel.connect" 
+        "channel.connect" -> "pipeline.connect" -> "tail.connect" 
+        "tail.connect" -> "head.connect" -> "unsafe.connect" -> "abstractUnsafe.connect"
+        "abstractUnsafe.connect" -> "javaChannel.connect" -> "register OP_CONNECT event"
+        "processSelectedKeys" -> "unsafe.finishConnect" [ label = "readyOps has OP_CONNECT" ]
+}
+#+END_SRC
+
+#+RESULTS:
+#+ATTR_HTML: :style max-height:1000px
+[[/img/netty-bootstrap-client-connect.png]]
+
+** Channel 
+Channel 抽象为一个客户端和服务端的链接，Channel与其它组件的关系：
+#+BEGIN_SRC dot :file ../../img/netty-channel.png :eval no-export :exports results
+digraph channel {
+       node [shape = box ]
+        nodesep = 1.0
+        compound = true
+        subgraph cluster_x {
+                style = dotted
+                color = red
+                label = "channel"
+                rank = same;
+                channel -> pipeline
+        }
+
+        subgraph cluster_0 {
+                style = dotted
+                color = blue
+                label = "channel pipeline"
+                unsafe [ color = blue, shape = circle ]
+                head -> "channelHandlerContext-list" -> tail
+                { rank = same;
+                        head
+                        "channelHandlerContext-list"
+                        tail
+                }
+
+                head -> unsafe [ style = dashed, color = red ]
+        }
+
+        subgraph cluster_1 {
+                nodesep = 0.5
+                label = "channelHandlerContext"
+                fontsize = 12
+                node [ fontsize = 10, shape = box ]
+                style = dotted
+                color = red
+                size = 0.5
+                {rank = same ;   channelHandlerContext -> ChannelHandler }
+        }
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:/img/netty-channel.png]]
+
+从中可以看出tail 是接近用户层而head是接近网络层（底层socket），head有一个unsafe成员，head将事件处理委托给unsafe完成，而unsafe就是与底层系统衔接的元素。在unsafe中操作javaChannel，注册SelectKey等等Nio相关的操作。
+
+** ChannelHandler
+ChannelHandler是channel事件处理器，用户通过定义自己的处理器来hook进入Channel事件处理，完成业务逻辑。
+
+ChannelHandler的执行可以指定执行器，如果没有指定会使用eventLoop的执行器。因为eventLoop本身也是EventExecutor。
+
+*** channelInboundHandler
+这代表从socket网络层发出的事件，如read、registered、active、inactive、writeablechanged等。
+*** channelOutboundHandler
+这代表从应用层发出的事件，如write、close、bind、connect等。
+** ChannelHandlerContext
+ChannelHandlerContext代表ChannelHandler和Channel的一个活动对象，可以找到channel以及handler，ChannelHandler有executor，来设置执行handler函数时候的执行器，如果没有指定，那么就会使用分配给channel的executor。
+
+** pipeline
+pipeline与一个channel相关联，一一对应的实例，因此一般在channel初始化完成后，pipeline会被创建。
+
+pipeline上面的channelHandler以ChannelHandlerContext的形式存在，是为了可以保存handler相关的上下文，ChannelHandlerContext再以 =prev= 和 =next= 字段来形成双向链接表。
+
+通过 =pipeline.fireXXX= 的形式，触发pipeline上事件传递和处理。
+
+同一pipeline上ChannelHandler的执行有一个特点，那就是会在eventLoopGroup中的同一个线程中执行，这是因为netty在给pipeline上的ChannelHandlerContext分配executor时候，会保证这一点——通过hash和缓存（可以参见addLast等函数）。
+
+** EventLoop
+EventLoop 有2个作用：用来执行异步任务和用来处理IO事件，NIOEventLoop继承于SingleThreadEventLoop，其run方法是一个事件循环，调用javaChannel上的select来查询IO事件，执行IO事件后，执行任务队列里面的异步任务和延迟队列里面的任务，
+这里有一点可以设置：ioRatio，这个参数控制执行执行io事件处理与执行异步任务之间的占比——耗时占比，默认100%，意思是执行全部异步任务和延迟任务。
+
+** Event
+Netty 将围绕channel发生的事件都定义为一系列Event，事件在合适的时候被触发，然后沿着Channel的pipeline进行传递，每个pipeline上面的ChannelHandler可以选择处理、传递、中断等策略。
+
+事件可以分为Netty原生事件与用户定义事件，原生事件有：
+
+- ChannelRegistered
+- ChannelActive
+- ChannelInactive
+- ChannelException
+- ChannelWritableChannged
+- bind
+- connect
+- close
+- write
+- read
+
+这些事件可以分为2类：inbound和outbound，inbound代表从pipeline的head发起，tail结束。outbound刚好相反。可以认为inbound是来自网络的底层事件，而outbound是来自应用层的主动事件。
+
+** read
+分析一次网络数据报达到后，如何传递给上层的应用。
+** write
+分析一次write事件是如何被netty底层处理的，这里可以发现数据报何时被送出socket，发送策略等等。
+
