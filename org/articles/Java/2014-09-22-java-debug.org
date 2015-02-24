@@ -2,7 +2,7 @@
 ---
 date: 2014-09-22 22:02:03
 template: tech.jade
-title: java debug 介绍
+title: Java debug 介绍
 category: Java
 chage_frequency: monthly
 tag: Java,debug
