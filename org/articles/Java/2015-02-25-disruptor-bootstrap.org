@@ -1,0 +1,24 @@
+#+BEGIN_HTML
+---
+date: 2015-02-25 00:29:03
+template: tech.jade
+title: Disruptor 设计分析
+category: Java
+chage_frequency: monthly
+tag: Java,disruptor
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Disruptor 是Java语言编写的非常高性能的并发框架，比Java的原生支持的同步工具更具有并发良好性。
+
+希望在此能够不断积累纪录整个学习此框架代码的收获。
+
+*** RingBuffer
+
+*** Memory Barrier
+
+*** Sequence
+
+*** Cache Line alignment
