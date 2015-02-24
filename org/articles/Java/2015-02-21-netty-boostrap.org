@@ -2,7 +2,7 @@
 ---
 date: 2015-02-21 18:19:01
 template: tech.jade
-title: Netty 内部原理
+title: Netty 内部实现介绍
 category: Java
 chage_frequency: monthly
 tag: Java,netty
@@ -47,12 +47,14 @@ digraph bind {
 	node [shape = box , fontsize = 10]
         nodesep = 0.1
         fontsize = 10
-        bootstrap -> bind -> doBind -> initChannel -> registerChannel -> doBind0 -> "channel.bind" -> "pipeline.bind" -> "tail.bind" -> "head.bind" -> "unsafe.bind" -> "javachannel.bind"
+        bind -> doBind -> initChannel -> registerChannel -> doBind0 -> "channel.bind" -> "pipeline.bind" -> "tail.bind" -> "head.bind" -> "unsafe.bind" -> "javachannel.bind"
         registerChannel -> "eventLoop.register(channel)" -> "channel.unsafe.register(EventLoop)" -> "javaChannel.register(EventLoop.Selector)" -> doBind0
-        "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelRegistered" -> "pipeline.fireChannelActive"
+        "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelRegistered"
+        "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelActive" [ style = dotted, color = blue , label = "if binded" ] 
 }
 #+END_SRC
 
+#+RESULTS:
 #+ATTR_HTML: :style max-height:1200px;
 [[/img/netty-bootstrap-server-bind.png]]
 
@@ -72,11 +74,13 @@ digraph connect {
         "abstractUnsafe.connect" -> "javaChannel.connect" -> "register OP_CONNECT event"
         "processSelectedKeys" -> "unsafe.finishConnect" [ label = "readyOps has OP_CONNECT" ]
         registerChannel -> "eventLoop.register(channel)" -> "channel.unsafe.register(EventLoop)" -> "javaChannel.register(EventLoop.Selector)" -> doConnect0
+        "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelReigstered"
+        "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelActive" [ style = dotted, color = blue, label = "if connected" ]
 }
 #+END_SRC
 
 #+RESULTS:
-#+ATTR_HTML: :style max-height:1000px
+#+ATTR_HTML: :style max-height:1200px
 [[/img/netty-bootstrap-client-connect.png]]
 
 ** Channel 
