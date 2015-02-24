@@ -14,13 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>4</sup></a></li>
+          <li><a href="/CS-Arch/index.html">CS-Arch<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>12</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>6</sup></a></li>
           <li><a href="/Postgres/index.html">Postgres<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>9</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
@@ -32,92 +32,85 @@
     <section id="content">
       <article class="article intro">
         <header>
-          <p class="date"><span>21. February 2015</span></p>
-          <h2><a href="/articles/Java/2015/02/22/2015-02-21-netty-boostrap.html">Netty 内部原理</a></h2>
+          <p class="date"><span>23. February 2015</span></p>
+          <h2><a href="/articles/CS-Arch/2015/02/24/2015-02-23-sicp.html">SICP 笔记</a></h2>
         </header>
         <section class="content">
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Bootstrap</a>
-<ul>
-<li><a href="#sec-1-1">ServerBootstrap</a></li>
-<li><a href="#sec-1-2">ClientBootstrap</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">Channel</a></li>
-<li><a href="#sec-3">ChannelHandler</a>
-<ul>
-<li><a href="#sec-3-1">channelInboundHandler</a></li>
-<li><a href="#sec-3-2">channelOutboundHandler</a></li>
-</ul>
-</li>
-<li><a href="#sec-4">ChannelHandlerContext</a></li>
-</ul></div></div>
-          <p class="more"><a href="/articles/Java/2015/02/22/2015-02-21-netty-boostrap.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>19. February 2015</span></p>
-          <h2><a href="/articles/Erlang/2015/02/20/2015-02-19-erlang-socket-programming.html">Erlang Socket编程</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">TCP</span> Socket</a>
-<ul>
-<li><a href="#sec-1-1">控制进程</a></li>
-<li><a href="#sec-1-2">主动消息模式（active ＝&nbsp;true）</a></li>
-<li><a href="#sec-1-3">被动消息模式（active ＝&nbsp;false）</a></li>
-<li><a href="#sec-1-4">混合消息模式（active ＝&nbsp;once）</a></li>
-</ul>
-</li>
-<li><a href="#sec-2"><span class="caps">UDP</span> Socket</a>
-<ul>
-<li><a href="#sec-2-1"><span class="caps">UDP</span>&nbsp;多播</a></li>
-</ul>
-</li>
+<li><a href="#sec-1">抽象</a></li>
+<li><a href="#sec-2">分层</a></li>
+<li><a href="#sec-3">数据抽象的要点</a></li>
+<li><a href="#sec-4">数据的类型</a></li>
+<li><a href="#sec-5">Lisp&nbsp;的优势</a></li>
+<li><a href="#sec-6">符号数据</a></li>
+<li><a href="#sec-7">过程抽象</a></li>
+<li><a href="#sec-8">递归</a></li>
+<li><a href="#sec-9">有状态的对象和过程</a></li>
 </ul>
 </div>
 </div>
 
 <p>
-Erlang 提供了 <code>gen_tcp</code> 和 </p>
-          <p class="more"><a href="/articles/Erlang/2015/02/20/2015-02-19-erlang-socket-programming.html">more</a></p>
+<span class="caps">SICP</span>&nbsp;分为5章，分别讲解了计算机程序设计的几个方面：
+</p>
+<ul class="org-ul">
+</ul>
+          <p class="more"><a href="/articles/CS-Arch/2015/02/24/2015-02-23-sicp.html">more</a></p>
         </section>
       </article>
       <article class="article intro">
         <header>
-          <p class="date"><span>19. February 2015</span></p>
-          <h2><a href="/articles/Erlang/2015/02/20/2015-02-19-erlang-process-control.html">Erlang进程控制</a></h2>
+          <p class="date"><span>23. February 2015</span></p>
+          <h2><a href="/articles/Java/2015/02/24/2015-02-23-netty-memory-bytebuf.html">Netty 内存管理 —— ByteBuffer</a></h2>
         </header>
         <section class="content">
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">进程</a></li>
-<li><a href="#sec-2">mailbox</a></li>
-<li><a href="#sec-3">创建进程</a></li>
-<li><a href="#sec-4">监控进程</a></li>
-<li><a href="#sec-5">进程链接</a></li>
-<li><a href="#sec-6">系统进程</a></li>
-<li><a href="#sec-7">进程信息</a></li>
-<li><a href="#sec-8">退出进程</a></li>
+<li><a href="#sec-1">ByteBuffer</a>
+<ul>
+<li><a href="#sec-1-1">UnpooledByteBuffer</a></li>
+<li><a href="#sec-1-2">PooledByteBUffer</a></li>
+<li><a href="#sec-1-3">DirectedByteBuffer</a></li>
+<li><a href="#sec-1-4">HeapByteBuffer</a></li>
+<li><a href="#sec-1-5">UnsafeDirectedByteBuffer</a></li>
+<li><a href="#sec-1-6"><span class="todo TODO"><span class="caps">TODO</span></span>&nbsp;PoolChunk</a></li>
+<li><a href="#sec-1-7"></a></li></ul></li></ul></div></div>
+          <p class="more"><a href="/articles/Java/2015/02/24/2015-02-23-netty-memory-bytebuf.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>23. February 2015</span></p>
+          <h2><a href="/articles/Java/2015/02/23/2015-02-23-netty-memory.html">Netty 内存管理 —— Recycler</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Recycler</a></li>
+<li><a href="#sec-2">Stack</a></li>
+<li><a href="#sec-3">Handler</a></li>
+<li><a href="#sec-4">WeakQueue</a></li>
 </ul>
 </div>
 </div>
 
 <p>
-Erlang&nbsp;并发模型是进程以及进程之间的消息传递。进程之间的唯一耦合就是消息，没有共享变量，没有锁等同步工具。
+Netty框架中使用内存的地方非常多，如编码、解码，socket的接收和发送之前的缓冲，为了高效的使用内存，避免频繁申请和释放内存等带来的gc开销，使用了Recycle等机制，下面进行了解。
+</p>
+
+<p>
+<code>Recycler</code> 类提供了Object&nbsp;Pool的机制，整体思想是避免对象释放后马上被<span class="caps">GC</span>回收，将对象放入池中，下次使用此类对象的时候，直接从池中拿来重复利用。
 </p>
 
 
-          <p class="more"><a href="/articles/Erlang/2015/02/20/2015-02-19-erlang-process-control.html">more</a></p>
+          <p class="more"><a href="/articles/Java/2015/02/23/2015-02-23-netty-memory.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

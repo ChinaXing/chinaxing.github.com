@@ -26,7 +26,12 @@ tag: Java,netty
 <li><a href="#sec-4">ChannelHandlerContext</a></li>
 <li><a href="#sec-5">pipeline</a></li>
 <li><a href="#sec-6">EventLoop</a></li>
-<li><a href="#sec-7">Event</a></li>
+<li><a href="#sec-7">Event</a>
+<ul>
+<li><a href="#sec-7-1">inbound事件</a></li>
+<li><a href="#sec-7-2">outbound请求</a></li>
+</ul>
+</li>
 <li><a href="#sec-8">read</a></li>
 <li><a href="#sec-9">write</a></li>
 </ul>
@@ -133,6 +138,38 @@ Channel 抽象为一个客户端和服务端的链接，Channel与其它组件�
 <p>
 从中可以看出tail 是接近用户层而head是接近网络层（底层socket），head有一个unsafe成员，head将事件处理委托给unsafe完成，而unsafe就是与底层系统衔接的元素。在unsafe中操作javaChannel，注册SelectKey等等Nio相关的操作。
 </p>
+
+<p>
+我们可以将常见的channel类型列举如下：
+</p>
+<dl class="org-dl">
+<dt> SocketChannel </dt><dd>tcp类型的客户端或者对等Channel
+</dd>
+<dt> ServerSocketChannel </dt><dd>服务端tcp的channel，特点是accept操作后获得一个socket channel。
+</dd>
+<dt> DataGramChannel </dt><dd>udp数据类型channel
+</dd>
+</dl>
+
+<p>
+channel按照其读取数据的最小单元分，可以分为2类：
+</p>
+<dl class="org-dl">
+<dt> ByteChannel </dt><dd>字节为最小单位，是一个字节流，如socketchannel就是如此。
+</dd>
+<dt> MessageChannel </dt><dd>消息体为单位，是一个消息流，如ServerSocketChannel和DataGramChannel。 
+</dd>
+</dl>
+
+<p>
+根据底层IO类型，可以分为：
+</p>
+<dl class="org-dl">
+<dt> NioChannel </dt><dd>java nio驱动的Channel，支持select io多路复用。
+</dd>
+<dt> OioChannel </dt><dd>Old io 方式的channel。
+</dd>
+</dl>
 </div>
 </div>
 
@@ -152,7 +189,11 @@ ChannelHandler的执行可以指定执行器，如果没有指定会使用eventL
 <h3 id="sec-3-1">channelInboundHandler</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-这代表从socket网络层发出的事件，如read、registered、active、inactive、writeablechanged等。
+这代表从socket网络层发出的事件，如ChannelRead、ChannelRegistered、ChannelActive、ChannelInactive等的处理器。
+</p>
+
+<p>
+典型的处理器如Decoder——解码器，将tcp字节流解码为应用层关心的协议报文对象。
 </p>
 </div>
 </div>
@@ -160,7 +201,11 @@ ChannelHandler的执行可以指定执行器，如果没有指定会使用eventL
 <h3 id="sec-3-2">channelOutboundHandler</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-这代表从应用层发出的事件，如write、close、bind、connect等。
+这代表从应用层发出的事件，如write、close、bind、connect等的处理器。
+</p>
+
+<p>
+典型的处理器如Encoder——编码器，将协议报文对象编码为字节流，供底层网络发送。
 </p>
 </div>
 </div>
@@ -170,6 +215,10 @@ ChannelHandler的执行可以指定执行器，如果没有指定会使用eventL
 <div class="outline-text-2" id="text-4">
 <p>
 ChannelHandlerContext代表ChannelHandler和Channel的一个活动对象，可以找到channel以及handler，ChannelHandler有executor，来设置执行handler函数时候的执行器，如果没有指定，那么就会使用分配给channel的executor。
+</p>
+
+<p>
+channelHandlerContext在添加ChannelHandler到pipeline的时候被创建，它们是与channel——pipeline一一对应的实例对象。
 </p>
 </div>
 </div>
@@ -194,13 +243,85 @@ pipeline上面的channelHandler以ChannelHandlerContext的形式存在，是为�
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-6" class="outline-2">
 <h2 id="sec-6">EventLoop</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 EventLoop 有2个作用：用来执行异步任务和用来处理IO事件，NIOEventLoop继承于SingleThreadEventLoop，其run方法是一个事件循环，调用javaChannel上的select来查询IO事件，执行IO事件后，执行任务队列里面的异步任务和延迟队列里面的任务，
 这里有一点可以设置：ioRatio，这个参数控制执行执行io事件处理与执行异步任务之间的占比——耗时占比，默认100%，意思是执行全部异步任务和延迟任务。
+</p>
+
+<p>
+EventLoop在EventExecutor任务队列被执行任务的时候启动——在execute方法中会判断任务线程是否已经启动，如果没有就启动线程，线程启动的时候，EventLoop的run方法就开始运行了。
+</p>
+
+<p>
+NioEventLoop 的实现如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">protected void run() {
+	for (;;) { //发生在一个channel的selector上面的事件循环，直到channel被关闭才退出
+	    // 清除wakeup，保证后续的wakeup操作可以成功（wakeup采用CAS）
+	    boolean oldWakenUp = wakenUp.getAndSet(false); 
+	    try {
+		// 如果有任务需要执行，则执行no-blocking的select，保证任务及时被执行
+		if (hasTasks()) { 
+		    selectNow();
+		} else {
+	      // 执行select。此处有2种情况，1. 如果在此之前执行了wakeup，则会立即返回，
+	      // 2.执行timeout的select，直到有事件或者设置wakeup标记
+		    select(oldWakenUp); 
+      // 如果select完毕后，wakeup标记被设置，为了保证下次select可以及时返回，需要再次设置selector的wakeup
+      // 主要是可能之前设置的wakeup发生在select之前，那么就会被马上发生的select消费掉，那么后续的CAS都会失败，
+      // 直到下次for循环设置wakenup后的CAS才会成功, 这里是补救这期间的这种情况的唤醒也是成功的。
+		    if (wakenUp.get()) { 
+			selector.wakeup();
+		    }
+		}
+
+		cancelledKeys = 0; // 到这里已经拿到了SelectedKeys，或者是需要被唤醒
+		needsToSelectAgain = false;
+		final int ioRatio = this.ioRatio; // ioRatio代表需要执行IO事件处理与任务之间的比例
+		if (ioRatio == 100) {
+		    processSelectedKeys(); // 先执行io事件处理
+		    runAllTasks(); // 再执行所有任务（包含延迟任务）
+		} else {
+		    final long ioStartTime = System.nanoTime();
+
+		    processSelectedKeys();
+
+		    final long ioTime = System.nanoTime() - ioStartTime;
+		    runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+		}
+
+		if (isShuttingDown()) { 
+		    closeAll();
+		    if (confirmShutdown()) {
+			break;
+		    }
+		}
+	    } catch (Throwable t) {
+		logger.warn("Unexpected exception in the selector loop.", t);
+
+		// Prevent possible consecutive immediate failures that lead to
+		// excessive CPU consumption.
+		try {
+		    Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		    // Ignore.
+		}
+	    }
+	}
+    }
+</pre>
+</div>
+<p>
+其中执行processSelectedKeys 的过程是查看每个selectedKey的readyOps，即ready的事件，可能是： <code>OP_CONNECT</code> , <code>OP_READ</code> , <code>OP_WRITE</code>, <code>OP_ACCEPT</code> 的复合，根据不同的事件执行channel上不同的处理，先交给unsafe执行具体的底层处理后，fire Channel的pipeline上面的hanlder的处理。
+</p>
+
+<p>
+processSelectedKeys函数有两个版本，其中一个是优化版本： <code>processSelectedKeysOptimized</code> 优化的内容是使用固定长度的array（1024）来存放selectedKey，这样是为了避免默认的实现带来的内存release和construct带来的gc负担和碎片。
 </p>
 </div>
 </div>
@@ -213,23 +334,45 @@ Netty 将围绕channel发生的事件都定义为一系列Event，事件在合�
 </p>
 
 <p>
-事件可以分为Netty原生事件与用户定义事件，原生事件有：
+这些事件可以分为2类：inbound和outbound，inbound代表从pipeline的head发起，tail结束。outbound刚好相反。可以认为inbound是来自网络的底层事件，而outbound是来自应用层的主动事件。
 </p>
+</div>
 
+<div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1">inbound事件</h3>
+<div class="outline-text-3" id="text-7-1">
+<dl class="org-dl">
+<dt> ChannelRegistered </dt><dd>channle注册到eventLoop完成，对于Nio的EventLoop，代表底层的javaChannel注册到Selector完成，这时的select已经可以使用。
+</dd>
+<dt> ChannelUnRegistered </dt><dd>channel从eventLoop取消注册完成的事件
+</dd>
+<dt> ChannelActive </dt><dd>channel注册完毕，如果serverSocketChannel，那么bind完成后就发出active事件，如果是普通socketchannel，那么是connect完成后active。同一个channel注册多次只会有一次active事件。
+</dd>
+<dt> ChannelInactive </dt><dd>链接断开（disconnect）或者socket关闭（close），意思是channel不可用。disconnect的socket可以reuse，而close的不行。
+</dd>
+<dt> ChannelExceptionCaught </dt><dd>处理inbound事件的时候异常发生
+</dd>
+<dt> UserEventTriggered </dt><dd>用户事件发生
+</dd>
+<dt> ChannelRead </dt><dd>channel上面有可读数据
+</dd>
+<dt> ChannelReadComplete </dt><dd>channel上的读操作按需完成了
+</dd>
+<dt> ChannelWritabilityChannged </dt><dd>channel的可写状态改变，如：如果outboundBuffer中数据超过水位，就会触发这个事件，提示不要再写入。
+</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2">outbound请求</h3>
+<div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
-<li>ChannelRegistered
-</li>
-<li>ChannelActive
-</li>
-<li>ChannelInactive
-</li>
-<li>ChannelException
-</li>
-<li>ChannelWritableChannged
-</li>
 <li>bind
 </li>
 <li>connect
+</li>
+<li>disconnect
 </li>
 <li>close
 </li>
@@ -237,11 +380,17 @@ Netty 将围绕channel发生的事件都定义为一系列Event，事件在合�
 </li>
 <li>read
 </li>
+<li>deregister
+</li>
+<li>flush
+</li>
+<li>writeAndFlush
+</li>
 </ul>
-
 <p>
-这些事件可以分为2类：inbound和outbound，inbound代表从pipeline的head发起，tail结束。outbound刚好相反。可以认为inbound是来自网络的底层事件，而outbound是来自应用层的主动事件。
+这些outbound请求都是异步的。outbound请求中，可以携带一个Promise，当事件完成的时候，此promise会得到通知。
 </p>
+</div>
 </div>
 </div>
 

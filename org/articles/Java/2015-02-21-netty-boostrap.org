@@ -126,17 +126,36 @@ digraph channel {
 
 从中可以看出tail 是接近用户层而head是接近网络层（底层socket），head有一个unsafe成员，head将事件处理委托给unsafe完成，而unsafe就是与底层系统衔接的元素。在unsafe中操作javaChannel，注册SelectKey等等Nio相关的操作。
 
+我们可以将常见的channel类型列举如下：
+- SocketChannel :: tcp类型的客户端或者对等Channel
+- ServerSocketChannel :: 服务端tcp的channel，特点是accept操作后获得一个socket channel。
+- DataGramChannel :: udp数据类型channel
+
+channel按照其读取数据的最小单元分，可以分为2类：
+- ByteChannel :: 字节为最小单位，是一个字节流，如socketchannel就是如此。
+- MessageChannel :: 消息体为单位，是一个消息流，如ServerSocketChannel和DataGramChannel。 
+
+根据底层IO类型，可以分为：
+- NioChannel :: java nio驱动的Channel，支持select io多路复用。
+- OioChannel :: Old io 方式的channel。
+
 ** ChannelHandler
 ChannelHandler是channel事件处理器，用户通过定义自己的处理器来hook进入Channel事件处理，完成业务逻辑。
 
 ChannelHandler的执行可以指定执行器，如果没有指定会使用eventLoop的执行器。因为eventLoop本身也是EventExecutor。
 
 *** channelInboundHandler
-这代表从socket网络层发出的事件，如read、registered、active、inactive、writeablechanged等。
+这代表从socket网络层发出的事件，如ChannelRead、ChannelRegistered、ChannelActive、ChannelInactive等的处理器。
+
+典型的处理器如Decoder——解码器，将tcp字节流解码为应用层关心的协议报文对象。
 *** channelOutboundHandler
-这代表从应用层发出的事件，如write、close、bind、connect等。
+这代表从应用层发出的事件，如write、close、bind、connect等的处理器。
+
+典型的处理器如Encoder——编码器，将协议报文对象编码为字节流，供底层网络发送。
 ** ChannelHandlerContext
 ChannelHandlerContext代表ChannelHandler和Channel的一个活动对象，可以找到channel以及handler，ChannelHandler有executor，来设置执行handler函数时候的执行器，如果没有指定，那么就会使用分配给channel的executor。
+
+channelHandlerContext在添加ChannelHandler到pipeline的时候被创建，它们是与channel——pipeline一一对应的实例对象。
 
 ** pipeline
 pipeline与一个channel相关联，一一对应的实例，因此一般在channel初始化完成后，pipeline会被创建。
@@ -146,28 +165,100 @@ pipeline上面的channelHandler以ChannelHandlerContext的形式存在，是为�
 通过 =pipeline.fireXXX= 的形式，触发pipeline上事件传递和处理。
 
 同一pipeline上ChannelHandler的执行有一个特点，那就是会在eventLoopGroup中的同一个线程中执行，这是因为netty在给pipeline上的ChannelHandlerContext分配executor时候，会保证这一点——通过hash和缓存（可以参见addLast等函数）。
-
 ** EventLoop
 EventLoop 有2个作用：用来执行异步任务和用来处理IO事件，NIOEventLoop继承于SingleThreadEventLoop，其run方法是一个事件循环，调用javaChannel上的select来查询IO事件，执行IO事件后，执行任务队列里面的异步任务和延迟队列里面的任务，
 这里有一点可以设置：ioRatio，这个参数控制执行执行io事件处理与执行异步任务之间的占比——耗时占比，默认100%，意思是执行全部异步任务和延迟任务。
 
+EventLoop在EventExecutor任务队列被执行任务的时候启动——在execute方法中会判断任务线程是否已经启动，如果没有就启动线程，线程启动的时候，EventLoop的run方法就开始运行了。
+
+NioEventLoop 的实现如下：
+#+BEGIN_SRC java
+protected void run() {
+        for (;;) { //发生在一个channel的selector上面的事件循环，直到channel被关闭才退出
+            // 清除wakeup，保证后续的wakeup操作可以成功（wakeup采用CAS）
+            boolean oldWakenUp = wakenUp.getAndSet(false); 
+            try {
+                // 如果有任务需要执行，则执行no-blocking的select，保证任务及时被执行
+                if (hasTasks()) { 
+                    selectNow();
+                } else {
+              // 执行select。此处有2种情况，1. 如果在此之前执行了wakeup，则会立即返回，
+              // 2.执行timeout的select，直到有事件或者设置wakeup标记
+                    select(oldWakenUp); 
+      // 如果select完毕后，wakeup标记被设置，为了保证下次select可以及时返回，需要再次设置selector的wakeup
+      // 主要是可能之前设置的wakeup发生在select之前，那么就会被马上发生的select消费掉，那么后续的CAS都会失败，
+      // 直到下次for循环设置wakenup后的CAS才会成功, 这里是补救这期间的这种情况的唤醒也是成功的。
+                    if (wakenUp.get()) { 
+                        selector.wakeup();
+                    }
+                }
+
+                cancelledKeys = 0; // 到这里已经拿到了SelectedKeys，或者是需要被唤醒
+                needsToSelectAgain = false;
+                final int ioRatio = this.ioRatio; // ioRatio代表需要执行IO事件处理与任务之间的比例
+                if (ioRatio == 100) {
+                    processSelectedKeys(); // 先执行io事件处理
+                    runAllTasks(); // 再执行所有任务（包含延迟任务）
+                } else {
+                    final long ioStartTime = System.nanoTime();
+
+                    processSelectedKeys();
+
+                    final long ioTime = System.nanoTime() - ioStartTime;
+                    runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+                }
+
+                if (isShuttingDown()) { 
+                    closeAll();
+                    if (confirmShutdown()) {
+                        break;
+                    }
+                }
+            } catch (Throwable t) {
+                logger.warn("Unexpected exception in the selector loop.", t);
+
+                // Prevent possible consecutive immediate failures that lead to
+                // excessive CPU consumption.
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
+            }
+        }
+    }
+#+END_SRC
+其中执行processSelectedKeys 的过程是查看每个selectedKey的readyOps，即ready的事件，可能是： =OP_CONNECT= , =OP_READ= , =OP_WRITE=, =OP_ACCEPT= 的复合，根据不同的事件执行channel上不同的处理，先交给unsafe执行具体的底层处理后，fire Channel的pipeline上面的hanlder的处理。
+
+processSelectedKeys函数有两个版本，其中一个是优化版本： =processSelectedKeysOptimized= 优化的内容是使用固定长度的array（1024）来存放selectedKey，这样是为了避免默认的实现带来的内存release和construct带来的gc负担和碎片。
+
 ** Event
 Netty 将围绕channel发生的事件都定义为一系列Event，事件在合适的时候被触发，然后沿着Channel的pipeline进行传递，每个pipeline上面的ChannelHandler可以选择处理、传递、中断等策略。
 
-事件可以分为Netty原生事件与用户定义事件，原生事件有：
+这些事件可以分为2类：inbound和outbound，inbound代表从pipeline的head发起，tail结束。outbound刚好相反。可以认为inbound是来自网络的底层事件，而outbound是来自应用层的主动事件。
 
-- ChannelRegistered
-- ChannelActive
-- ChannelInactive
-- ChannelException
-- ChannelWritableChannged
+*** inbound事件
+- ChannelRegistered :: channle注册到eventLoop完成，对于Nio的EventLoop，代表底层的javaChannel注册到Selector完成，这时的select已经可以使用。
+- ChannelUnRegistered :: channel从eventLoop取消注册完成的事件
+- ChannelActive :: channel注册完毕，如果serverSocketChannel，那么bind完成后就发出active事件，如果是普通socketchannel，那么是connect完成后active。同一个channel注册多次只会有一次active事件。
+- ChannelInactive :: 链接断开（disconnect）或者socket关闭（close），意思是channel不可用。disconnect的socket可以reuse，而close的不行。
+- ChannelExceptionCaught :: 处理inbound事件的时候异常发生
+- UserEventTriggered :: 用户事件发生
+- ChannelRead :: channel上面有可读数据
+- ChannelReadComplete :: channel上的读操作按需完成了
+- ChannelWritabilityChannged :: channel的可写状态改变，如：如果outboundBuffer中数据超过水位，就会触发这个事件，提示不要再写入。
+
+*** outbound请求
 - bind
 - connect
+- disconnect
 - close
 - write
 - read
-
-这些事件可以分为2类：inbound和outbound，inbound代表从pipeline的head发起，tail结束。outbound刚好相反。可以认为inbound是来自网络的底层事件，而outbound是来自应用层的主动事件。
+- deregister
+- flush
+- writeAndFlush
+这些outbound请求都是异步的。outbound请求中，可以携带一个Promise，当事件完成的时候，此promise会得到通知。
 
 ** read
 分析一次网络数据报达到后，如何传递给上层的应用。

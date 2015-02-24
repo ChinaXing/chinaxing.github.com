@@ -1,0 +1,32 @@
+#+BEGIN_HTML
+---
+date: 2015-02-23 17:12:31
+template: tech.jade
+title: Netty 内存管理 —— ByteBuffer
+category: Java
+chage_frequency: monthly
+tag: Java, Netty
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+网络编程难免会使用ByteBUffer，Netty中对ByteBuffer自己做了封装，独立与Java Nio的byteBuffer，总的来说，ByteBuffer分为几种：
+*** ByteBuffer
+**** UnpooledByteBuffer
+无缓存，使用过后直接可以被回收
+**** PooledByteBUffer
+有缓存，使用Recycler进行缓存
+**** DirectedByteBuffer
+堆外内存。
+
+可以通过使用Jvm参数： =-XXMaxDirectMemorySize=256G= 来设置堆外内存的值，如果未设置，则与堆大小一致。
+**** HeapByteBuffer
+堆内存
+**** UnsafeDirectedByteBuffer
+平台相关的堆外内存
+
+**** TODO PoolChunk
+
+**** TODO PoolArena
+

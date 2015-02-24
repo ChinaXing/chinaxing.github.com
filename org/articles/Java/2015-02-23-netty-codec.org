@@ -1,0 +1,48 @@
+#+BEGIN_HTML
+---
+date: 2015-02-23 15:03:32
+template: tech.jade
+title: Netty 编码与解码
+category: Java
+chage_frequency: monthly
+tag: Java, Netty
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Netty 在提供了基本事件处理框架和Nio处理的基础上，为了方便应用编写，实现了一些通用的处理器，如编码和解码——几乎是网络应用程序不可缺少的一部分，Netty提供的编码和解码类方便了我们进行编码和解码的工作，在使用netty编程的时候，记得使用这些类，可以减少工作量：
+*** Encoder
+=MessageToMessageEncoder= 提供了将对象编码为字节流的接口：
+基于此类，实现了很多现成类：
+- ZlibEncoder
+- LengthFieldPrepender
+- CompatibleObjectEncoder
+- ObjectEncoder 
+- ProtobufVarint32LengthFieldPrepender
+*** Decoder
+=ByteToMessageDecoder= 为将字节流解码为消息对象提供了便捷，下面是实例：
+基于此ByteToMessageDecoder实现的类如：
+- HttpObjectDecoder 
+- HttpResponseDecoder
+- HttpRequestDecoder
+- DelimiterBasedFrameDecoder \\
+  分隔符分割的数据对象
+- FixedLengthFrameDecoder \\
+  固定长度的数据报文
+- LengthFieldBasedFrameDecoder \\
+  以长度字段标记报文长度的报文，此种非常常见——报文本身的某个字段标识了报文的整体长度。
+- LineBasedFrameDecoder \\
+  基于行的，以换行为分割的数据报文
+- ObjectDecoder \\
+  extends from  LengthFieldBasedFrameDecoder
+- ProtobufVarint32FrameDecoder \\
+  Protobuf 协议
+- SpdyFrameCodec \\
+  Spdy 协议
+- SslHandler \\
+  ssl握手协议
+- ZlibDecoder \\
+  Zip压缩报文
+- ReplayingDecoder \\
+  提供一个对上层应用来说已经数据完整到达的抽象接口，上层应用不必关心完整性。

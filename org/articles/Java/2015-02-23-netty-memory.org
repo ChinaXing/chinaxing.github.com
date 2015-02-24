@@ -1,0 +1,140 @@
+#+BEGIN_HTML
+---
+date: 2015-02-23 15:34:25
+template: tech.jade
+title: Netty 内存管理 —— Recycler
+category: Java
+chage_frequency: monthly
+tag: Java, Netty
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Netty框架中使用内存的地方非常多，如编码、解码，socket的接收和发送之前的缓冲，为了高效的使用内存，避免频繁申请和释放内存等带来的gc开销，使用了Recycle等机制，下面进行了解。
+
+=Recycler= 类提供了Object Pool的机制，整体思想是避免对象释放后马上被GC回收，将对象放入池中，下次使用此类对象的时候，直接从池中拿来重复利用。
+
+*** Recycler
+Recycler内部模拟出Stack对象来代表一个线程的对象缓冲，每个Thread一个Stack对象，Stack对象提供push与pop方法来释放和获取对象，push方法在超出Stack最大容量的时候丢弃最后放入的对象。
+
+每个Stack还关联了一个WeakQueue，这个队列存放着别的线程释放的对象（这些对象是其它非此释放线程创建的），如果线程A使用了线程B创建的对象（这些对象在B的Recycler中），那么A释放这些对象的时候，这些对象被放入B的Recycler中的Queue中。
+
+Stack在获取对象的时候调用Pop方法，如果发现本Stack的size为0，表示空了，这时候它从其Queue中寻找空闲对象，移动到stack中填充stack，然后返回给使用者。
+
+recycler 提供get方法，用来获取对象，get方法再调用pop来获取对象。
+
+使用了Recycler的地方很多，可以通过IDE工具来查看引用，我们可以看到下面的例子：
+- PooledDirectByteBuf
+#+BEGIN_SRC java
+final class PooledDirectByteBuf extends PooledByteBuf<ByteBuffer> {
+
+    private static final Recycler<PooledDirectByteBuf> RECYCLER = new Recycler<PooledDirectByteBuf>() {
+        @Override
+        protected PooledDirectByteBuf newObject(Handle handle) {
+            return new PooledDirectByteBuf(handle, 0);
+        }
+    };
+#+END_SRC
+- PooledHeapByteBuf
+#+BEGIN_SRC java
+final class PooledHeapByteBuf extends PooledByteBuf<byte[]> {
+
+    private static final Recycler<PooledHeapByteBuf> RECYCLER = new Recycler<PooledHeapByteBuf>() {
+        @Override
+        protected PooledHeapByteBuf newObject(Handle handle) {
+            return new PooledHeapByteBuf(handle, 0);
+        }
+    };
+#+END_SRC
+- PooledUnsafeDirectByteBuf
+#+BEGIN_SRC java
+final class PooledUnsafeDirectByteBuf extends PooledByteBuf<ByteBuffer> {
+
+    private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
+
+    private static final Recycler<PooledUnsafeDirectByteBuf> RECYCLER = new Recycler<PooledUnsafeDirectByteBuf>() {
+        @Override
+        protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
+            return new PooledUnsafeDirectByteBuf(handle, 0);
+        }
+    };
+#+END_SRC
+*** Stack
+每个Recycler一个Stack，一个Stack和一个线程关联，关联是通过threadLocal变量来实现。
+
+Stack提供了push与pop，pop获取对象，push释放对象到池，如果push的时候池满，那么会丢弃。
+
+池有一个初始容量，以及一个最大容量。
+#+BEGIN_SRC dot :file ../../img/netty-recycler-stack.png :exports results :eval no-export
+digraph stack {
+  rankdir = LR
+  node [ shape = box ]
+  dummy0 [ style = invis ]
+  dummy [ style = invis ]
+  dummy0 -> dummy -> Stack [ style = invis ]
+  Stack [ label = "Stack \nownerThread is X" ]
+  Stack -> { Queue_List , Handler_Array }  
+  Queue_List [ label = "Queue List \n linked List of Queue" ]
+  Handler_Array [ label = "Handlers \nArray of Handler as A stack ", color = blue ]
+  dummy2 [ style = invis ]
+  dummy3 [ style = invis ]
+  Queue_List -> dummy2 [ style = invis ]
+  Handler_Array -> dummy2 [ style = invis ]
+  dummy2 -> dummy3 [ style = invis ]
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:/img/netty-recycler-stack.png]]
+
+*** Handler
+Handler是一个对象的wraper，handler.value 是所关心的对象，Handler提供了recyle方法，此方法会将对象放入池，Handler对象关联了stack，回收handler就是将handler对象放回stack。
+
+如果执行回收的线程与handler的所属池的线程不是一个线程，那么这个对象被放入stack关联的队列中，这样做的原因，可能是为了避免同步问题。
+
+#+BEGIN_SRC dot :file ../../img/netty-recycler-handler.png :exports results :eval no-export
+digraph handler {
+  rankdir = LR
+  node [ shape = box ]
+  dummy0 [ style = invis ]
+  dummy [ style = invis ]
+  dummy1 [ style = invis ]
+  dummy0 -> dummy -> Handler [ style = invis ]
+  Handler -> Object [ label = "handler.value" ]
+  Handler -> Stack [ label = "handler.stack" ]
+  Handler -> recycle [ style = dotted ]
+  recycle [ shape = circle , color = red , label = "recycle()" ]
+  recycle -> dummy1 [ style  = invis ] 
+  Stack -> dummy1 [ style = invis ]
+  Object -> dummy1  [style = invis ]
+}
+#+END_SRC
+
+#+RESULTS:
+[[/img/netty-recycler-handler.png]]
+
+*** WeakQueue
+这个队列是存放那些其它线程释放的对象，这个队列没有容量限制，是一个LinkedList，每个节点有一定容量的数组。
+
+这个队列属于某个Stack，这个stack在自己空的时候，如果请求对象，那么它尝试从队列里面移动这些对象到栈中。
+
+这个队列如果所属线程已经不存在，队列里面的所有对象都会被转移到stack，然后可以被gc回收。
+
+#+BEGIN_SRC dot :file ../../img/netty-recycler-weakQueue.png :exports results :eval no-export
+digraph weakqueue {
+  rankdir = LR
+  node [ shape = box ]
+  QA [ label = "QueueA \n ownerThread is A" ]
+  QB [ label = "QueueB \n ownerThread is B" ]
+  QC [ label = "QueueC \n ownerThread is C" ]
+  Stack [ label = "Stack \n ownerThread is X" ]
+  Stack -> QA [ label = "Stack.head" ]
+  QA -> QB [ label = "queueA.next" ]
+  QB -> QC [ label = "queueB.next" ]
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:/img/netty-recycler-weakQueue.png]]
+
