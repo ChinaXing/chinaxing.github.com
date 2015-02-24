@@ -71,6 +71,7 @@ digraph connect {
         "tail.connect" -> "head.connect" -> "unsafe.connect" -> "abstractUnsafe.connect"
         "abstractUnsafe.connect" -> "javaChannel.connect" -> "register OP_CONNECT event"
         "processSelectedKeys" -> "unsafe.finishConnect" [ label = "readyOps has OP_CONNECT" ]
+        registerChannel -> "eventLoop.register(channel)" -> "channel.unsafe.register(EventLoop)" -> "javaChannel.register(EventLoop.Selector)" -> doConnect0
 }
 #+END_SRC
 
