@@ -1,0 +1,21 @@
+#+BEGIN_HTML
+---
+date: 2015-02-26 23:39:50
+template: tech.jade
+title: Memory barrier —— 内存屏障
+category: CS-Arch
+chage_frequency: monthly
+tag: CS-Arch
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+内存屏障是并发同步的一种措施，保证某种有序性，在barrier的前后事件一定是有序的。。。
+
+*** TODO Store/Store
+*** TODO Store/Load
+*** Q & A
+Intel Cpu上是如何实现Memory Barrier的？
+*** Refer
+- [[http://preshing.com/20120710/memory-barriers-are-like-source-control-operations/][Memory Barriers Are Like Source Control Operations]]

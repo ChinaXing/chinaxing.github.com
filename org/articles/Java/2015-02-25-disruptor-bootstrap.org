@@ -16,9 +16,53 @@ Disruptor 是Java语言编写的非常高性能的并发框架，比Java的原�
 希望在此能够不断积累纪录整个学习此框架代码的收获。
 
 *** RingBuffer
+RingBuffer 是一个有限容量（bufferSize）无限长的环（Sequencer）。内部表示为数组。它的每个元素在初始化的时候被预填充成Event。
 
-*** Memory Barrier
+RingBuffer的实现为了使得高效，做了很多底层技巧，如pad字段来使cacheLine对齐从而减少cache miss。
+
+整个disruptor的核心就是RingBuffer，Disruptor类仅仅是一个配置RingBuffer的界面，初始化RingBuffer包括配置EventHandler，配置EventHandler的执行器，配置Buffer的容量，配置batchSize——一次最大发送的事件数。
+
+RingBuffer有个Sequencer来纪录它的写入光标，以及待读取光标集合，避免覆盖等等。
+
+*** Publisher
+发布者，可以定义多发布者的模型，也可以定义单发布者的模型。这在配置RingBuffer的时候设置。
+
+*** Sequencer
+Sequencer 是实现producer／consumer同步的核心，它维护有个Courser，代表当前可写入位置，以及一组配置进来的gateSequences，代表了多个消费者当前的消费进度。
+
+这样就可以检查可写入的区域。
+
+每次要发布消息的时候，需要调用Sequencer的next方法，目标是申请一段（可能一个）空闲的RingBuffer区域，
+
+next 函数是同步的关键，它使用CAS无锁算法，检查所申请的空间和可申请的空间是否满足匹配，如果满足移动coursor的位置来达到申请，并返回给调用者申请空间的序号：sequence。
+
+拿到sequence的进程就非常轻松，因为这段区域是留给他们的，不存在竞争问题。
+
+*** SequenceBarrier
+
+Barrier 上面用来实现publisher和processor的同步通知，producer在发布后可以notifyAll所有hold在barrier上面的processor，
+而processor在wait其目标sequence的时候，如果没有到达可以选择进行block在barrier上面。
+
+wait策略可以自己选择。
 
 *** Sequence
+RingBuffer 的index就是sequence，内部包装了一个long型的整数，它比较简单，就是代表一个buffer里面的位置。
 
+*** WaitStrategy
+
+event processor 在barrier上面等待的策略，默认有好几种帮你实现了，分别根据不同的业务需求进行选择，都有注释。
+
+*** EventHandler
+事件处理函数的接口，用户定义然后设置给Disruptor。
+
+*** EventProcessor
+processor是内部的事件处理器，每个传入的EventHandler都会被封装成Processor然后管理起来。这个类一般不需要自己设置。
+
+*** Event
+Ringbuffer里面的Event仅仅是占位的，需要我们自己填充具体数据，然后再publish。
 *** Cache Line alignment
+RingBuffer开头有许多古怪的代码，目标是为了填充满Cpu的数据Cache的CacheLine，这样可以非常高效的操作数据，减少内存访问。
+*** Memory Barrier
+Store/Store，Store/Load ...
+*** UNSAFE
+框架里面使用了大量的unsafe操作，值得借鉴和学习。
