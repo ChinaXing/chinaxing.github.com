@@ -38,6 +38,83 @@ next 函数是同步的关键，它使用CAS无锁算法，检查所申请的空
 
 拿到sequence的进程就非常轻松，因为这段区域是留给他们的，不存在竞争问题。
 
+**** MultiProducerSequencer
+下面的代码是申请n个空闲位的操作：
+#+BEGIN_SRC java
+//com.lmax.disruptor.MultiProducerSequencer#next(int)
+public long next(int n)
+    {
+        if (n < 1)
+        {
+            throw new IllegalArgumentException("n must be > 0");
+        }
+
+        long current;
+        long next;
+
+        do
+        {
+            current = cursor.get();
+            next = current + n;
+
+            long wrapPoint = next - bufferSize;
+            long cachedGatingSequence = gatingSequenceCache.get();
+            // 判断是否有覆盖——申请区域不能wrap待消费区域
+            if (wrapPoint > cachedGatingSequence || cachedGatingSequence > current)
+            {
+                long gatingSequence = Util.getMinimumSequence(gatingSequences, current);
+
+                if (wrapPoint > gatingSequence)
+                {
+                    LockSupport.parkNanos(1); 
+                    continue;
+                }
+
+                gatingSequenceCache.set(gatingSequence);
+            } // 使用CAS操作，好处是没有线程切换开销，坏处是需要频繁执行上面的代码
+            else if (cursor.compareAndSet(current, next))
+            {
+                break;
+            }
+        }
+        while (true);
+
+        return next;
+    }
+#+END_SRC
+**** SingleProducerSequencer
+单线程写入者，不存在写入并发，不需要同步
+#+BEGIN_SRC java
+//com.lmax.disruptor.SingleProducerSequencer#next(int)
+public long next(int n)
+    {
+        if (n < 1)
+        {
+            throw new IllegalArgumentException("n must be > 0");
+        }
+
+        long nextValue = this.nextValue;
+
+        long nextSequence = nextValue + n;
+        long wrapPoint = nextSequence - bufferSize;
+        long cachedGatingSequence = this.cachedValue;
+
+        if (wrapPoint > cachedGatingSequence || cachedGatingSequence > nextValue)
+        {
+            long minSequence;
+            while (wrapPoint > (minSequence = Util.getMinimumSequence(gatingSequences, nextValue)))
+            {
+                LockSupport.parkNanos(1L); // TODO: Use waitStrategy to spin?
+            }
+
+            this.cachedValue = minSequence;
+        }
+
+        this.nextValue = nextSequence;
+
+        return nextSequence;
+    }
+#+END_SRC
 *** SequenceBarrier
 
 Barrier 上面用来实现publisher和processor的同步通知，producer在发布后可以notifyAll所有hold在barrier上面的processor，
