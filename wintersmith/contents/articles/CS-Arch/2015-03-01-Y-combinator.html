@@ -1,0 +1,117 @@
+---
+date: 2015-03-01 00:51:49
+template: tech.jade
+title: Y combinator
+category: CS-Arch
+chage_frequency: monthly
+tag: CS-Arch
+---
+<p>
+尝试推导Y组合子：
+</p>
+
+<p>
+Y combinator 可以将伪递归定义的函数转换为递归定义，中间不引入别的函数：
+</p>
+
+<p>
+设递归函数：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">f x = g (f x) -- 1. 这里表示f 内部调用了自身
+</pre>
+</div>
+<p>
+转换为非递归形式：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">f' f x = g(f x) -- 2. 引入参数 f，消除递归调用自身
+</pre>
+</div>
+<p>
+Y组合子是这样一个函数：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">y f' = f -- 3. 满足 将 f' 转换为 f，
+	 -- 即将伪递归函数转换为其原本的递归函数，这样就可以使用了
+</pre>
+</div>
+
+<p>
+下面是尝试寻找Y组合子的过程：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">f' f = f -- 2. 处的f'的定义可知
+y f' = f = f' f = f' (y f') -- 进行等价代换
+</pre>
+</div>
+
+<p>
+这种特性叫做不动点，函数值与其参数值相等。
+</p>
+
+<p>
+所以, [ y f' ]  、 [ f ]  都是  [ f' ]  的不动点
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">g k = l ( k k ) -- 这种函数有意思
+</pre>
+</div>
+
+<p>
+对这种函数，有个特点：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">g g = l ( g g ) -- 注意到，当 k ＝ g
+</pre>
+</div>
+
+<p>
+因此，[ f' ]的不动点可以表示为：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">g' h = f' (h h) -- h 为函数，h h = f
+g' g' = f' (g' g') -- h ＝ g' 的时候，g‘ g' 为f'的不动点
+</pre>
+</div>
+<p>
+所以f'的不动点可以表示为: [ g' g' ]
+因为f'的不动点是： [ y f' ]
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">y f' = g' g' = f' (g' g')
+</pre>
+</div>
+
+<p>
+将这些形式转换为haskell函数定义：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">g' = \h -&gt; f' (h h) -- 根据：g h = f' (h h)
+y = \f' -&gt; -- 根据 ：y f' = g' g'
+       (\h -&gt; f' (h h) ) (\h -&gt; f' (h h))
+</pre>
+</div>
+
+<p>
+转换为scheme lambda形式：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(defn g'
+  (lambda (h) (f' (h h))))
+
+(defn y
+  (lambda (f')
+     (lambda (h) (f' (h h)) (lambda (h) (f' (h h))))))
+</pre>
+</div>
