@@ -56,12 +56,13 @@ recycler 提供get方法，用来获取对象，get方法再调用pop来获取�
 
 <pre class="src src-java">final class PooledDirectByteBuf extends PooledByteBuf&lt;ByteBuffer&gt; {
 
-    private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledDirectByteBuf&gt;() {
-	@Override
-	protected PooledDirectByteBuf newObject(Handle handle) {
-	    return new PooledDirectByteBuf(handle, 0);
-	}
-    };
+private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledDirectByteBuf&gt;()
+{
+     @Override
+     protected PooledDirectByteBuf newObject(Handle handle) {
+	 return new PooledDirectByteBuf(handle, 0);
+     }
+};
 </pre>
 </div>
 <ul class="org-ul">
@@ -72,12 +73,12 @@ recycler 提供get方法，用来获取对象，get方法再调用pop来获取�
 
 <pre class="src src-java">final class PooledHeapByteBuf extends PooledByteBuf&lt;byte[]&gt; {
 
-    private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&lt;PooledHeapByteBuf&gt;() {
-	@Override
-	protected PooledHeapByteBuf newObject(Handle handle) {
-	    return new PooledHeapByteBuf(handle, 0);
-	}
-    };
+private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&lt;PooledHeapByteBuf&gt;() {
+      @Override
+      protected PooledHeapByteBuf newObject(Handle handle) {
+	  return new PooledHeapByteBuf(handle, 0);
+      }
+};
 </pre>
 </div>
 <ul class="org-ul">
@@ -88,14 +89,13 @@ recycler 提供get方法，用来获取对象，get方法再调用pop来获取�
 
 <pre class="src src-java">final class PooledUnsafeDirectByteBuf extends PooledByteBuf&lt;ByteBuffer&gt; {
 
-    private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
-
-    private static final Recycler&lt;PooledUnsafeDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledUnsafeDirectByteBuf&gt;() {
-	@Override
-	protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
-	    return new PooledUnsafeDirectByteBuf(handle, 0);
-	}
-    };
+ private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
+ private static final Recycler&lt;PooledUnsafeDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledUnsafeDirectByteBuf&gt;() {
+      @Override
+      protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
+	  return new PooledUnsafeDirectByteBuf(handle, 0);
+     }
+ };
 </pre>
 </div>
 </div>

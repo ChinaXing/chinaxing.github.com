@@ -171,9 +171,10 @@ a:hover {
 
 .src, .example, code{
     color:black;
-    background-color:gray;
+    background-color:rgb(235,235,235);
     padding: 0.5em;
     font-family: monospace;
+    border: 1px dashed  black;
 }
 
 .toc-top-link {

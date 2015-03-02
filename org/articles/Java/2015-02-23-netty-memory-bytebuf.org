@@ -74,3 +74,120 @@ ThreadPoolLocalCache会监控本Thread的退出，如果退出，要清理掉缓
 直接使用： =ByteBuffer.allocateDirect(initialCapacity)=
 **** UnpooledHeapByteBuf
 直接使用： =new byte[initialCapacity]= 
+*** DirectBuffer的回收
+对于heapBuffer，无需当心内存释放回收的问题，因为有GC线程专门负责回收。那么对于DirectBuffer呢？我们申请的是Heap外的内存，自然是gc份外之事，它无法释放。
+
+但是，如果你使用过java 的 directBuffer，其实你并没有主动free你申请的buffer，引入程序员去负责释放内存的工作，是带来内存泄漏的最大原因，所以，DirectBuffer自身完成了这件事情。
+
+在Java中有Reference类，可以使得GC系统和用户之间建立一种协作，概括起来3种Reference的子类，可以将用户处理逻辑hook进入GC的处理逻辑之中，它们是：
+
+- WeakReference
+- SoftReference
+- PhantomReference
+
+引用类虽然引用了对象，却不会影响对象的回收策略，而仅仅作为旁路逻辑，被GC系统进行通知。
+
+在对象被回收的时候，引用者——referent的Reference们都会被通知到，然后它们被放入一个队列，Reference们有一个线程来监控这个队列，对队列里面的东东进行处理。
+
+拿DirectBuffer来说，它在创建的时候附带了一个Cleaner的类，这个类的操作就是可以free掉这个Buffer对应的内存：
+#+BEGIN_SRC java
+DirectByteBuffer(int cap) {       
+   ...
+   ...
+   cleaner = Cleaner.create(this, new Deallocator(base, size, cap));
+   att = null;
+}
+private static class Deallocator
+        implements Runnable
+    {
+        ...
+        ...
+        public void run() {
+            if (address == 0) {
+                // Paranoia
+                return;
+            }
+            unsafe.freeMemory(address); // free
+            address = 0;
+            Bits.unreserveMemory(size, capacity);
+        }
+
+}
+#+END_SRC
+Deallocator就是我们要注意的对象，因为free动作触发的地方是关键，它是一个PhantomReference的子类：
+#+BEGIN_SRC java
+public class Cleaner extends PhantomReference {
+...
+    private Cleaner(Object var1, Runnable var2) {
+        super(var1, dummyQueue);
+        this.thunk = var2;
+    }
+
+/// PhantomReference
+public class PhantomReference<T> extends Reference<T> {
+...
+    public PhantomReference(T referent, ReferenceQueue<? super T> q) {
+        super(referent, q);
+    }
+#+END_SRC
+这一路走来，可以看到这个Reference的referent字段被设置为DirectBuffer。好了关键就看PhantomReference的机制了：
+#+BEGIN_SRC java
+public abstract class Reference<T> {
+...
+    private static class ReferenceHandler extends Thread {
+
+        ReferenceHandler(ThreadGroup g, String name) {
+            super(g, name);
+        }
+
+        public void run() {
+            for (;;) {
+
+                Reference r;
+                synchronized (lock) {
+                    if (pending != null) {
+                        r = pending;
+                        Reference rn = r.next;
+                        pending = (rn == r) ? null : rn;
+                        r.next = r;
+                    } else {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException x) { }
+                        continue;
+                    }
+                }
+
+                // Fast path for cleaners
+                if (r instanceof Cleaner) { //// <here>
+                    ((Cleaner)r).clean();
+                    continue;
+                }
+
+                ReferenceQueue q = r.queue;
+                if (q != ReferenceQueue.NULL) q.enqueue(r);
+            }
+        }
+    }
+
+    static {
+        ThreadGroup tg = Thread.currentThread().getThreadGroup();
+        for (ThreadGroup tgn = tg;
+             tgn != null;
+             tg = tgn, tgn = tg.getParent());
+        Thread handler = new ReferenceHandler(tg, "Reference Handler");
+        /* If there were a special system-only priority greater than
+         * MAX_PRIORITY, it would be used here
+         */
+        handler.setPriority(Thread.MAX_PRIORITY);
+        handler.setDaemon(true);
+        handler.start();
+    }
+#+END_SRC
+现在明白了，Reference里面有且仅有一个handler线程叫：“Reference Handler“ ：
+- 检查和处理pending的Reference，将它们加入到创建的时候指定的队列，这样监听队列的线程就可以感知。
+- 如果Reference 是Cleaner，则直接执行Cleaner的clean方法，而不放入队列。
+
+由于我们这里使用了Cleaner，所以是第二种情形。
+
+pending 中的Reference是谁放入的 ？ 答案是GC系统——Collector（内部称呼）。这就是bridge ！

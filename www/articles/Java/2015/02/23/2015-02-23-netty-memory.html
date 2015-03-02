@@ -15,8 +15,8 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>12</sup></a></li>
@@ -85,12 +85,13 @@ recycler&nbsp;提供get方法，用来获取对象，get方法再调用pop来获
 
 <pre class="src src-java">final class PooledDirectByteBuf extends PooledByteBuf&lt;ByteBuffer&gt; {
 
-    private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledDirectByteBuf&gt;() {
-	@Override
-	protected PooledDirectByteBuf newObject(Handle handle) {
-	    return new PooledDirectByteBuf(handle, 0);
-	}
-    };
+private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledDirectByteBuf&gt;()
+{
+     @Override
+     protected PooledDirectByteBuf newObject(Handle handle) {
+	 return new PooledDirectByteBuf(handle, 0);
+     }
+};
 </pre>
 </div>
 <ul class="org-ul">
@@ -101,12 +102,12 @@ recycler&nbsp;提供get方法，用来获取对象，get方法再调用pop来获
 
 <pre class="src src-java">final class PooledHeapByteBuf extends PooledByteBuf&lt;byte[]&gt; {
 
-    private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&lt;PooledHeapByteBuf&gt;() {
-	@Override
-	protected PooledHeapByteBuf newObject(Handle handle) {
-	    return new PooledHeapByteBuf(handle, 0);
-	}
-    };
+private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&lt;PooledHeapByteBuf&gt;() {
+      @Override
+      protected PooledHeapByteBuf newObject(Handle handle) {
+	  return new PooledHeapByteBuf(handle, 0);
+      }
+};
 </pre>
 </div>
 <ul class="org-ul">
@@ -117,14 +118,13 @@ recycler&nbsp;提供get方法，用来获取对象，get方法再调用pop来获
 
 <pre class="src src-java">final class PooledUnsafeDirectByteBuf extends PooledByteBuf&lt;ByteBuffer&gt; {
 
-    private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
-
-    private static final Recycler&lt;PooledUnsafeDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledUnsafeDirectByteBuf&gt;() {
-	@Override
-	protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
-	    return new PooledUnsafeDirectByteBuf(handle, 0);
-	}
-    };
+ private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
+ private static final Recycler&lt;PooledUnsafeDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledUnsafeDirectByteBuf&gt;() {
+      @Override
+      protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
+	  return new PooledUnsafeDirectByteBuf(handle, 0);
+     }
+ };
 </pre>
 </div>
 </div>

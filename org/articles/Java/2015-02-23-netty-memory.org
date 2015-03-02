@@ -29,36 +29,36 @@ recycler 提供get方法，用来获取对象，get方法再调用pop来获取�
 #+BEGIN_SRC java
 final class PooledDirectByteBuf extends PooledByteBuf<ByteBuffer> {
 
-    private static final Recycler<PooledDirectByteBuf> RECYCLER = new Recycler<PooledDirectByteBuf>() {
-        @Override
-        protected PooledDirectByteBuf newObject(Handle handle) {
-            return new PooledDirectByteBuf(handle, 0);
-        }
-    };
+private static final Recycler<PooledDirectByteBuf> RECYCLER = new Recycler<PooledDirectByteBuf>()
+{
+     @Override
+     protected PooledDirectByteBuf newObject(Handle handle) {
+         return new PooledDirectByteBuf(handle, 0);
+     }
+};
 #+END_SRC
 - PooledHeapByteBuf
 #+BEGIN_SRC java
 final class PooledHeapByteBuf extends PooledByteBuf<byte[]> {
 
-    private static final Recycler<PooledHeapByteBuf> RECYCLER = new Recycler<PooledHeapByteBuf>() {
-        @Override
-        protected PooledHeapByteBuf newObject(Handle handle) {
-            return new PooledHeapByteBuf(handle, 0);
-        }
-    };
+private static final Recycler<PooledHeapByteBuf> RECYCLER = new Recycler<PooledHeapByteBuf>() {
+      @Override
+      protected PooledHeapByteBuf newObject(Handle handle) {
+          return new PooledHeapByteBuf(handle, 0);
+      }
+};
 #+END_SRC
 - PooledUnsafeDirectByteBuf
 #+BEGIN_SRC java
 final class PooledUnsafeDirectByteBuf extends PooledByteBuf<ByteBuffer> {
 
-    private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
-
-    private static final Recycler<PooledUnsafeDirectByteBuf> RECYCLER = new Recycler<PooledUnsafeDirectByteBuf>() {
-        @Override
-        protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
-            return new PooledUnsafeDirectByteBuf(handle, 0);
-        }
-    };
+ private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
+ private static final Recycler<PooledUnsafeDirectByteBuf> RECYCLER = new Recycler<PooledUnsafeDirectByteBuf>() {
+      @Override
+      protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
+          return new PooledUnsafeDirectByteBuf(handle, 0);
+     }
+ };
 #+END_SRC
 *** Stack
 每个Recycler一个Stack，一个Stack和一个线程关联，关联是通过threadLocal变量来实现。
