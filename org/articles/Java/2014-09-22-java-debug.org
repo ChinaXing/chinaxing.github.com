@@ -25,9 +25,9 @@ jdk 自带的debug工具jdb类似于其他语言如gcc 的 gdb，可以完成命
 对于被调试程序，即目标jvm，要打开debug服务，才能接收jdb发来的debug请求，这通过java的agent功能来加载debug相关的lib来实现：
 #+BEGIN_SRC sh :eval no
   #使用socket连接来进行jdb的交互(remote debug)
-  java -agentlib:jdwp=transport=dt_socket,address=$address 
+  java -agentlib:jdwp=transport=dt_socket,server=y,address=$address 
   #使用共享内存模式来进行通信，本机调试
-  java -agentlib:jdwp=transport=dt_shmem 
+  java -agentlib:jdwp=transport=dt_shmem,server=y 
   #获取jdwp调试选项的帮助
   java -agentlib:jdwp=help 
 #+END_SRC
