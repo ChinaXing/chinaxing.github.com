@@ -15,10 +15,10 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>12</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
@@ -389,6 +389,18 @@ public class PhantomReference&lt;T&gt; extends Reference&lt;T&gt; {
 <p>
 现在明白了，Reference里面有且仅有一个handler线程叫：“Reference Handler“&nbsp;：
 </p>
+<pre class="example">
+<span class="dquo">"</span>Reference Handler" daemon prio=10 tid=0x00000000086ab800 nid=0x1ed0 in Object.wait() [0x00000000423d5000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on &lt;0x00000007d8691258&gt; (a java.lang.ref.Reference$Lock)
+	at java.lang.Object.wait(Object.java:503)
+	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:133)
+	- locked &lt;0x00000007d8691258&gt; (a java.lang.ref.Reference$Lock)
+
+   Locked ownable synchronizers:
+	- None
+</pre>
 <ul class="org-ul">
 <li>检查和处理pending的Reference，将它们加入到创建的时候指定的队列，这样监听队列的线程就可以感知。
 </li>
