@@ -15,11 +15,11 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>12</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
@@ -29,6 +29,36 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>04. November 2014</span></p>
+          <h2><a href="/articles/linux/2014/11/04/2014-11-04-ext4-feature.html">Ext4 fs feature</a></h2>
+        </header>
+        <section class="content">
+<dl class="org-dl">
+<dt> Block&nbsp;大小可定 </dt><dd>但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
+</dd>
+<dt> Block&nbsp;组织为BlockGroup </dt><dd>大小128M&nbsp;32768个block。文件系统由多个blockGroup顺序组成
+</dd>
+<dt> 每个blockGroup内部是一个类似ext3的文件系统结构 </dt><dd><ul class="org-ul">
+<li>SuperBLock
+</li>
+<li>inodeBitMap
+</li>
+<li>Inode Block&nbsp;List
+</li>
+<li>blockBitMap
+</li>
+<li>data Bock&nbsp;List
+</li>
+</ul>
+</dd>
+<dt> Fixed&nbsp;Block </dt><dd>多个blockGroup组成一个固定长度的blockGroup的组，组内的第一个BlockGroup&nbsp;携带了除本group外的其余3个blockGroup的元数据信息。这起到了快速访问和冗余的作用。
+</dd>
+<dt> </dt></dl>
+          <p class="more"><a href="/articles/linux/2014/11/04/2014-11-04-ext4-feature.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>14. October 2014</span></p>
@@ -95,34 +125,6 @@
 <p>
 <span class="caps">LL</span>/SC&nbsp;可以实现Lock-Free的同步原</p></div></div>
           <p class="more"><a href="/articles/CS-Arch/2014/10/15/2014-10-14-concurrency-support-LL-SC.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>13. October 2014</span></p>
-          <h2><a href="/articles/Java/2014/10/13/2014-10-13-LinkedHashMap.html">LinkedHashMap 特性和用途</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">内部实现</a></li>
-<li><a href="#sec-2">LinkedHashMap 的特点</a>
-<ul>
-<li><a href="#sec-2-1">有序性</a></li>
-<li><a href="#sec-2-2">非线程安全</a></li>
-<li><a href="#sec-2-3">ConcurrentModifyException</a></li>
-<li><a href="#sec-2-4">removeEldestEntry</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">Reference</a></li>
-</ul>
-</div>
-</div>
-<p>
-无意中在Netty代码中看到一个函数，testOrderMap，里面提到LinkedHashMap有序性，这个真心不知道，所以</p>
-          <p class="more"><a href="/articles/Java/2014/10/13/2014-10-13-LinkedHashMap.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/10/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/12/" class="nav-next">Next page »</a>

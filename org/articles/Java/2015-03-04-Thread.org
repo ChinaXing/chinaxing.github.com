@@ -1,0 +1,138 @@
+#+BEGIN_HTML
+---
+date: 2015-03-04 11:28:01
+template: tech.jade
+title: Java Thread 状态和stack dump分析
+category: Java
+chage_frequency: monthly
+tag: Java
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+*** Thread 对象
+- stack size :: 如果未设置，取jvm默认值 256k，可以通过参数 -Xss 配置。
+- classLoader :: ContextClassLoader 继承父类。
+- state :: 线程状态起初时候NEW，直到最后的TERMINATE。
+- tid :: 线程Id，这个id与系统/native进程有关系，一般是进制不同，值相同。
+- sequenceNum :: 线程序号，默认的线程名是：Thread-sequenceNum
+- priority :: 优先级，继承父类：0 － 10
+- blocker :: interruptible对象，如果调用了blockOn的操作阻塞在一个可中断的对象（interruptible）上面，则在线程被中断的时候，这个interruptible的对象会被中断通知到——调用其interrupt方法。
+- parkBlocker :: 这个字段供LockSupport使用，保存Blocker的对象。
+- ThreadLoclMap :: 供ThreadLocal使用的ThreadLoclMap
+- deamon :: 是否是后台线程，默认否。后台线程在JVM退出的时候自动杀掉，jvm退出时候，如果有非后台线程，它就不退出。
+- target :: runable 对象，要执行的过程。
+- group :: 线程的线程组，继承父线程。
+*** Thread 状态
+#+BEGIN_SRC java
+    public enum State {
+        /**
+         * Thread state for a thread which has not yet started.
+         */
+        NEW,
+
+        /**
+         * Thread state for a runnable thread.  A thread in the runnable
+         * state is executing in the Java virtual machine but it may
+         * be waiting for other resources from the operating system
+         * such as processor.
+         */
+        RUNNABLE,
+
+        /**
+         * Thread state for a thread blocked waiting for a monitor lock.
+         * A thread in the blocked state is waiting for a monitor lock
+         * to enter a synchronized block/method or
+         * reenter a synchronized block/method after calling
+         * {@link Object#wait() Object.wait}.
+         */
+        BLOCKED,
+
+        /**
+         * Thread state for a waiting thread.
+         * A thread is in the waiting state due to calling one of the
+         * following methods:
+         * <ul>
+         *   <li>{@link Object#wait() Object.wait} with no timeout</li>
+         *   <li>{@link #join() Thread.join} with no timeout</li>
+         *   <li>{@link LockSupport#park() LockSupport.park}</li>
+         * </ul>
+         *
+         * <p>A thread in the waiting state is waiting for another thread to
+         * perform a particular action.
+         *
+         * For example, a thread that has called <tt>Object.wait()</tt>
+         * on an object is waiting for another thread to call
+         * <tt>Object.notify()</tt> or <tt>Object.notifyAll()</tt> on
+         * that object. A thread that has called <tt>Thread.join()</tt>
+         * is waiting for a specified thread to terminate.
+         */
+        WAITING,
+
+        /**
+         * Thread state for a waiting thread with a specified waiting time.
+         * A thread is in the timed waiting state due to calling one of
+         * the following methods with a specified positive waiting time:
+         * <ul>
+         *   <li>{@link #sleep Thread.sleep}</li>
+         *   <li>{@link Object#wait(long) Object.wait} with timeout</li>
+         *   <li>{@link #join(long) Thread.join} with timeout</li>
+         *   <li>{@link LockSupport#parkNanos LockSupport.parkNanos}</li>
+         *   <li>{@link LockSupport#parkUntil LockSupport.parkUntil}</li>
+         * </ul>
+         */
+        TIMED_WAITING,
+
+        /**
+         * Thread state for a terminated thread.
+         * The thread has completed execution.
+         */
+        TERMINATED;
+    }
+#+END_SRC
+*** Thread 操作
+- start() :: 启动线程，NEW －> RUNABLE
+- sleep(..) :: 休息，但是不释放拥有的对象锁——如果在同步区
+- yield() :: 主动放弃执行，提示调度器执行一次调度
+- join(..)  :: 等待线程的执行结束
+- Object.wait(..) :: 将当前线程暂停，进入 =WAITING= 状态或者 =TIMED\_WAITING= 同时释放掉获取的 monitor, 其它线程通过 =Object.notify= 或者 =Object.notifyAll= 来wakeup 它
+- synchronized(..) :: 等待对象 monitor而暂停，进入 =BLOCKED= 状态，在monitor可获取且获取成功后进入 =RUNABLE=
+- LockSupport.park(..) :: 进入暂停状态， =WAITING= 或者 =TIMED\_WAITING= 在被其它线程 =LockSupport.unpark= 后进入 =RUNABLE=
+- isAlive() :: 判断是否已经启动且未结束
+- interrupted() :: 探测是否设置了interrupted标志，并清除它
+- isInterrupted() :: 探测interrupted标志，但不清除
+- interrupt() :: 中断线程，如果线程之前设置了 =Thread.blocker= 则 这个blocker会被 blocker.interrupt 到:
+#+BEGIN_SRC java
+     * <p> If this thread is blocked in an invocation of the {@link
+     * Object#wait() wait()}, {@link Object#wait(long) wait(long)}, or {@link
+     * Object#wait(long, int) wait(long, int)} methods of the {@link Object}
+     * class, or of the {@link #join()}, {@link #join(long)}, {@link
+     * #join(long, int)}, {@link #sleep(long)}, or {@link #sleep(long, int)},
+     * methods of this class, then its interrupt status will be cleared and it
+     * will receive an {@link InterruptedException}.
+     *
+     * <p> If this thread is blocked in an I/O operation upon an {@link
+     * java.nio.channels.InterruptibleChannel </code>interruptible
+     * channel<code>} then the channel will be closed, the thread's interrupt
+     * status will be set, and the thread will receive a {@link
+     * java.nio.channels.ClosedByInterruptException}.
+     *
+     * <p> If this thread is blocked in a {@link java.nio.channels.Selector}
+     * then the thread's interrupt status will be set and it will return
+     * immediately from the selection operation, possibly with a non-zero
+     * value, just as if the selector's {@link
+     * java.nio.channels.Selector#wakeup wakeup} method were invoked.
+     *
+     * <p> If none of the previous conditions hold then this thread's interrupt
+     * status will be set. </p>
+     *
+     * <p> Interrupting a thread that is not alive need not have any effect.
+#+END_SRC 
+*** Thread stack dump
+jstack -l 可以获取Jvm线程的stackTrace列表，其中列出了线程的状态，我们可以参照上面的线程状态，知道线程在干什么，判断死锁和竞争等情况。
+
+获得stack dump的方法很多，比如 =e.printStackTrace= , =Thread.dumpStack= , =Thread.currentThread().getStackTrace= 等， 可以在Thread类中找到它们。
+
+此外System类中也有方法支持。
+
