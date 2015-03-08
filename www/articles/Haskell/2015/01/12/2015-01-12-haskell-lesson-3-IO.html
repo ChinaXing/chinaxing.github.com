@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
+          <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li class="active"><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>26</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -29,11 +29,14 @@
       </div>
     </header>
     <section id="content">
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
       <h2 style="text-align:center">Haskell 第三课 —— 输入输出
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
       </div>
+      <link rel="stylesheet" href="/css/highlight/codepen-embed.css">
+      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
       <div class="tech">
 <div id="table-of-contents">
 <h2>Table of&nbsp;Contents</h2>
@@ -110,8 +113,18 @@ only in <span class="caps">IO</span>&nbsp;Action
 </div>
 
       </div>
+      <script>
+        $(function(){
+         $('pre.src').each(function(i, block){
+            var b = $(block);
+            var m = b.attr('class').match(/src src-(.*)/,1);
+            if (null == m || m.length < 2 ) { return; }
+            b.addClass(m[1]);
+            hljs.highlightBlock(block);
+         });
+        })
+      </script>
       <!-- Table of Content-->
-      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
       <script src="/js/tableofcontents.js" charset="utf-8"></script>
       <script charset="utf-8">
         $(function(){
