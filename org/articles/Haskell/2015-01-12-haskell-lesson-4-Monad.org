@@ -10,7 +10,7 @@ tag: Haskell
 #+END_HTML
 #+OPTIONS: toc:nil
 #+TOC: headlines 2
-** Monad用途**
+** Monad用途
 个人觉得：
 
 - 实现链式的调用传递，这样保持了数据的状态沿着函数链条传递

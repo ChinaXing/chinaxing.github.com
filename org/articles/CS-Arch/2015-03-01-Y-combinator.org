@@ -75,17 +75,15 @@ y = \f' -> -- 根据 ：y f' = g' g'
      (lambda (h) (f' (h h)) (lambda (h) (f' (h h))))))
 #+END_SRC
 
+*** Haskell fix
+haskell中已经包含了fix函数，我们只需要使用：
+#+BEGIN_SRC haskell :exports both :eval no-export
+import Data.Function (fix)
+flip ($) 20 (fix $ \fib' n -> if n < 2 then 1 else fib' (n-1) + fib' (n-2))
+#+END_SRC
 
-
-
-
-
-
-
-
-
-
-
+#+RESULTS:
+: 10946
 
 
 

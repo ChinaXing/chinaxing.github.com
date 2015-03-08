@@ -6,6 +6,15 @@ category: CS-Arch
 chage_frequency: monthly
 tag: CS-Arch
 ---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Haskell fix</a></li>
+</ul>
+</div>
+</div>
+
 <p>
 尝试推导Y组合子：
 </p>
@@ -114,4 +123,23 @@ y = \f' -&gt; -- 根据 ：y f' = g' g'
   (lambda (f')
      (lambda (h) (f' (h h)) (lambda (h) (f' (h h))))))
 </pre>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Haskell fix</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+haskell中已经包含了fix函数，我们只需要使用：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">import Data.Function (fix)
+flip ($) 20 (fix $ \fib' n -&gt; if n &lt; 2 then 1 else fib' (n-1) + fib' (n-2))
+</pre>
+</div>
+
+<pre class="example">
+10946
+</pre>
+</div>
 </div>

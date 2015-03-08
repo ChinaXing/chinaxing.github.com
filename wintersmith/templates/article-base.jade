@@ -4,6 +4,7 @@ block prepend title
   | #{ page.title + " - "}
 
 block content
+  script(src="/js/jquery-1.11.1.min.js", charset="utf-8")
   h2(style="text-align:center")
     = page.title
   #toc
@@ -13,7 +14,6 @@ block content
     != typogr(page.html).typogrify()
 
   // Table of Content
-  script(src="/js/jquery-1.11.1.min.js", charset="utf-8")
   script(src="/js/tableofcontents.js", charset="utf-8")
   script(charset="utf-8").
     $(function(){

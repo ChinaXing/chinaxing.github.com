@@ -1,5 +1,17 @@
 extends article-base
-
+     
 block article-content
+  link(rel="stylesheet", href="/css/highlight/codepen-embed.css")
+  script(src="/js/highlight.pack.js", charset="utf-8")  
   .tech
     != typogr(page.html).typogrify()
+  script.
+      $(function(){
+       $('pre.src').each(function(i, block){
+          var b = $(block);
+          var m = b.attr('class').match(/src src-(.*)/,1);
+          if (null == m || m.length < 2 ) { return; }
+          b.addClass(m[1]);
+          hljs.highlightBlock(block);
+       });
+      })

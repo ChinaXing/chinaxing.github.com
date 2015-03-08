@@ -44,7 +44,7 @@ change_frequency: monthly
       perl5db.ini
     - interactive - 交互\\
       .perldb
-    - PERLDB\_OPTS - 环境变量
+    - =PERLDB_OPTS= - 环境变量
 *** Enbugger - 运行时debug
     注意：使用[[http://search.cpan.org/perldoc?Enbugger][Enbugger]]模块，并不需要以 =-d= 运行选项启动程序
     - 通过在程序中执行:

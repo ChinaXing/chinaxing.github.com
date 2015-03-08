@@ -54,3 +54,5 @@ Java 语言在应用上，是一个工业应用上成熟的语言，生态系统
 
 
 
+*** Link
+- [[http://www.oracle.com/technetwork/java/hotspotfaq-138619.html][Frequently Asked Questions About the Java HotSpot VM]]
