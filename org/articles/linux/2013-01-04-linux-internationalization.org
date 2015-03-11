@@ -48,7 +48,7 @@ gettext套件的工具包括： gettext,xgettext,msgfmt ...
      #+begin_src C :eval no
          printf ("hello,world");     
      #+end_src
-     gettext 调用可以使用define宏定义为\_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
+     gettext 调用可以使用define宏定义为_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
      #+begin_src C :eval no
          printf (_("hello,world"));     
      #+end_src
@@ -56,8 +56,8 @@ gettext套件的工具包括： gettext,xgettext,msgfmt ...
    #+begin_src C :eval no
        xgettext -L c -o zh_CN.po myprogram.c   
    #+end_src
-   假如我想本地化中文: *zh\_CN*
-3. 编辑生成的本地化配置文件(zh\_CN.po),设置转换对应关系，注意设置编码(charset)为 *utf-8* ，否则转换可能有问题:
+   假如我想本地化中文: *zh_CN*
+3. 编辑生成的本地化配置文件(zh_CN.po),设置转换对应关系，注意设置编码(charset)为 *utf-8* ，否则转换可能有问题:
    #+begin_src perl :eval no
        # SOME DESCRIPTIVE TITLE.
        # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -86,7 +86,7 @@ gettext套件的工具包括： gettext,xgettext,msgfmt ...
    #+begin_src sh :eval no
      msgfmt -o /usr/local/share/locale/zh_CN/LC_MESSAGES/myapp.mo zh_CN.po   
    #+end_src
-5. 验证，设置环境变量LC\_MESSAGES或LANG为zh\_CN。然后运行程序即可。
+5. 验证，设置环境变量LC_MESSAGES或LANG为zh_CN。然后运行程序即可。
 
 ** 实例
 shell 使用gettext的示例:

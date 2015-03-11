@@ -69,8 +69,8 @@ git已经成为非常流行的版本管理工具，在这里记录一些git使�
 *** index
 *** submodule
 *** HEAD
-*** ORIG\_HEAD
-*** FETCH\_HEAD
+*** ORIG_HEAD
+*** FETCH_HEAD
 *** git clone
 *** git pull
 *** git fetch

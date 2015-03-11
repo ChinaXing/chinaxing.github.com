@@ -44,7 +44,7 @@ tree ~/tmp/my_app
 
 ** 启动Mojolicious App
 
-*** 通过 script/my\_app daemon 启动应用
+*** 通过 script/my_app daemon 启动应用
     #+BEGIN_SRC perl :eval no
     #!/usr/bin/env perl
     
@@ -134,7 +134,7 @@ tree ~/tmp/my_app
       }
       ...
     #+END_SRC
-    调用\_command加载对应的command模块，我们传的是"daemon"命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
+    调用_command加载对应的command模块，我们传的是"daemon"命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
 *** 调用Mojolicious::Command::daemon的run方法
     #+BEGIN_SRC perl :eval no
     sub run {
@@ -187,7 +187,7 @@ tree ~/tmp/my_app
     分两种情况:
      - 已经打开了监听socket， 每个acceptor对应一个Mojo::IOLoop::Server实例
      - 还没有监听，则调用_listen方法在每个要监听的端口上面开启监听，这样每个端口上启动了一个Mojo::IOLoop::Server实例
-*** 调用\_listen方法创建监听的server
+*** 调用_listen方法创建监听的server
     #+BEGIN_SRC perl :eval no
     sub _listen {
       my ($self， $listen) = @_;

@@ -56,9 +56,9 @@ limit 设置中有Hard和Soft两个值，Hard表示无法超过此值，Soft表�
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li>登录用户<br  />
-   通过pam\_limits模块来设置，pam\_limits模块是PAM认证的一个模块，这一过程在用户登录的时候进行。&lt;br  /&gt;
+   通过pam_limits模块来设置，pam\_limits模块是PAM认证的一个模块，这一过程在用户登录的时候进行。&lt;br  /&gt;
 
-   用户登录的时候pam\_limits读取/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。<br  />
+   用户登录的时候pam_limits读取/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。<br  />
    加载顺序：先读取limits.conf，然后再用limits.d/中的配置覆盖。
 </li>
 <li>系统进程<br  />

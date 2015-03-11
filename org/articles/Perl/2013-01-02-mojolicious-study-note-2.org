@@ -20,26 +20,26 @@ tag: Mojolicious
 *** controller
    - 路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。  
    - controller是Mojolicious::Controller的子类。  
-   - 默认的controller是Mojolicious::Controller,通过$app->controller\_class('PeSystem::Controller') 设定$app的默认controller.  
+   - 默认的controller是Mojolicious::Controller,通过$app->controller_class('PeSystem::Controller') 设定$app的默认controller.  
    - controller获得app: *$self->app*
    - controller获得请求: *$self->req*
    - controller获得路由匹配的参数: *$self->stash('id')*
-   - controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url\_encode等方法方便使用(*$self->stash('a'=>'b')*)
+   - controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url_encode等方法方便使用(*$self->stash('a'=>'b')*)
 
 *** action  
    - action是controller内的子过程。操作都是在action内进行的.  
-   - 渲染页面: *$self->render('...'),$self->render\_exception,$self->redirect\_to(...),$self->render*,如果controller没有显式渲染，controller返回后页面会被自动渲染。
+   - 渲染页面: *$self->render('...'),$self->render_exception,$self->redirect_to(...),$self->render*,如果controller没有显式渲染，controller返回后页面会被自动渲染。
 
 *** template  
   - 模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）  
   - 异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
-  - 404模版:not\_found.$mode.$format.ep,not\_found.$format.ep
+  - 404模版:not_found.$mode.$format.ep,not_found.$format.ep
 
 *** 异常
   - Mojo::Exception 是其异常类  
-  - Mojo是通过local $SIG{\_\_DIE\_\_}来注册自己的异常捕获的。  
+  - Mojo是通过local $SIG{__DIE__}来注册自己的异常捕获的。  
   - 主动抛出异常用die "string",用Mojo::Exception->throw('string')不会携带上下文信息.  
-  - controller的render\_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+  - controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
   - 捕获异常: 
     #+begin_src perl
        eval { code } or do { die "xxx" }  
@@ -161,7 +161,7 @@ tag: Mojolicious
   - 此模块还可以针对目录生成目录索引，类似apache/nginx的目录浏览功能
 
 *** 获取时间
-  Mojo::Util::steady\_time
+  Mojo::Util::steady_time
   - 使用Time::HiRes模块获得的当前高精度时间
   - Mojo自带的,可以方便的计算耗时
 
@@ -169,10 +169,10 @@ tag: Mojolicious
   Mojo::Util模块
   - trim, 删除首尾的空白符
   - squish, 删除首尾的空白符,并且合并行中的连续空白符
-  - md5\_bytes,md5\_sum,sha1\_bytes,sha1\_sum,b64\_decode,b64\_encode,encode,decode
+  - md5_bytes,md5_sum,sha1_bytes,sha1_sum,b64_decode,b64_encode,encode,decode
 
 *** 给类添加方法或者函数
-  Mojo::Util::mokey\_patch
+  Mojo::Util::mokey_patch
   #+BEGIN_SRC perl eval:no
   # 给调用者添加名为del的方法或者函数(见Mojolicious::Lite源码)
   monkey_patch $caller, del => sub { $routes->delete(@_) };

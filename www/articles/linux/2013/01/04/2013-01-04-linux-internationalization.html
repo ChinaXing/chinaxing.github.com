@@ -125,7 +125,7 @@ textdomain('myapp');
 </pre>
 </div>
 <p>
-gettext&nbsp;调用可以使用define宏定义为\_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
+gettext&nbsp;调用可以使用define宏定义为_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
 </p>
 <div class="org-src-container">
 
@@ -142,10 +142,10 @@ gettext&nbsp;调用可以使用define宏定义为\_(),等于使用gettext()，�
 </pre>
 </div>
 <p>
-假如我想本地化中文: <b>zh\_CN</b>
+假如我想本地化中文: <b>zh_CN</b>
 </p>
 </li>
-<li>编辑生成的本地化配置文件(zh\_CN.po),设置转换对应关系，注意设置编码(charset)为 <b>utf-8</b> ，否则转换可能有问题:
+<li>编辑生成的本地化配置文件(zh_CN.po),设置转换对应关系，注意设置编码(charset)为 <b>utf-8</b> ，否则转换可能有问题:
 <div class="org-src-container">
 
 <pre class="src src-perl"># SOME DESCRIPTIVE TITLE.
@@ -181,7 +181,7 @@ msgstr "你好，世界"
 </pre>
 </div>
 </li>
-<li>验证，设置环境变量<span class="caps">LC</span>\_MESSAGES或LANG为zh\_CN。然后运行程序即可。
+<li>验证，设置环境变量LC_MESSAGES或<span class="caps">LANG</span>为zh_CN。然后运行程序即可。
 </li>
 </ol>
 </div>

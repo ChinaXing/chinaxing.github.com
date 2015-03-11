@@ -13,7 +13,7 @@ tag:
 
 Udp 协议 datagram protocol，每个报文作为一个整体在网络上传输和处理，与tcp不同，它不会进行分段，即：你不必关心接收数据不是一个完整报文的情况：要么是完整的，要么丢掉了。
 
-在server端，OS会将接收到的udp包加入缓存区：recieve\_buffer，这个缓存区起到缓冲队列的作用，如果上层应用持续处理不过来，这个队列就会满，然后新到达的包就被丢掉。
+在server端，OS会将接收到的udp包加入缓存区：recieve_buffer，这个缓存区起到缓冲队列的作用，如果上层应用持续处理不过来，这个队列就会满，然后新到达的包就被丢掉。
 
-kernel提供了几个配置来设置recieve\_buffer的大小：
+kernel提供了几个配置来设置recieve_buffer的大小：
 - /proc/sys/net/

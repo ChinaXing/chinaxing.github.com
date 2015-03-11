@@ -76,7 +76,7 @@ tag: Mojolicious
 </li>
 <li>controller是Mojolicious::Controller的子类。  
 </li>
-<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller\_class('PeSystem::Controller') 设定$app的默认controller.  
+<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class('PeSystem::Controller') 设定$app的默认controller.  
 </li>
 <li>controller获得app: <b>$self-&gt;app</b>
 </li>
@@ -84,7 +84,7 @@ tag: Mojolicious
 </li>
 <li>controller获得路由匹配的参数: <b>$self-&gt;stash('id')</b>
 </li>
-<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url\_encode等方法方便使用(<b>$self-&gt;stash('a'=&gt;'b')</b>)
+<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url_encode等方法方便使用(<b>$self-&gt;stash('a'=&gt;'b')</b>)
 </li>
 </ul>
 </div>
@@ -96,7 +96,7 @@ tag: Mojolicious
 <ul class="org-ul">
 <li>action是controller内的子过程。操作都是在action内进行的.  
 </li>
-<li>渲染页面: <b>$self-&gt;render('&#x2026;'),$self-&gt;render\_exception,$self-&gt;redirect\_to(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
+<li>渲染页面: <b>$self-&gt;render('&#x2026;'),$self-&gt;render_exception,$self-&gt;redirect_to(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
 </li>
 </ul>
 </div>
@@ -110,7 +110,7 @@ tag: Mojolicious
 </li>
 <li>异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
 </li>
-<li>404模版:not\_found.$mode.$format.ep,not\_found.$format.ep
+<li>404模版:not_found.$mode.$format.ep,not_found.$format.ep
 </li>
 </ul>
 </div>
@@ -122,11 +122,11 @@ tag: Mojolicious
 <ul class="org-ul">
 <li>Mojo::Exception 是其异常类  
 </li>
-<li>Mojo是通过local $SIG{\_\_DIE\_\_}来注册自己的异常捕获的。  
+<li>Mojo是通过local $SIG{<span class="underline"><span class="underline">DIE</span></span>}来注册自己的异常捕获的。  
 </li>
 <li>主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.  
 </li>
-<li>controller的render\_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+<li>controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
 </li>
 <li>捕获异常: 
 <div class="org-src-container">
@@ -467,7 +467,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload ,一�
 <h3 id="sec-2-11">获取时间</h3>
 <div class="outline-text-3" id="text-2-11">
 <p>
-Mojo::Util::steady\_time
+Mojo::Util::steady_time
 </p>
 <ul class="org-ul">
 <li>使用Time::HiRes模块获得的当前高精度时间
@@ -489,7 +489,7 @@ Mojo::Util模块
 </li>
 <li>squish, 删除首尾的空白符,并且合并行中的连续空白符
 </li>
-<li>md5\_bytes,md5\_sum,sha1\_bytes,sha1\_sum,b64\_decode,b64\_encode,encode,decode
+<li>md5_bytes,md5_sum,sha1_bytes,sha1_sum,b64_decode,b64_encode,encode,decode
 </li>
 </ul>
 </div>
@@ -499,7 +499,7 @@ Mojo::Util模块
 <h3 id="sec-2-13">给类添加方法或者函数</h3>
 <div class="outline-text-3" id="text-2-13">
 <p>
-Mojo::Util::mokey\_patch
+Mojo::Util::mokey_patch
 </p>
 <div class="org-src-container">
 

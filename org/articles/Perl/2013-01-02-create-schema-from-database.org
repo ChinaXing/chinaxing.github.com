@@ -15,7 +15,7 @@ tag: DBIx::Class
 
 *** 从数据库产生Schema方法
 
-**** 使用 make\_schema\_at 方法
+**** 使用 make_schema_at 方法
 #+begin_src sh
        perl -MDBIx::Class::Schema::Loader=make_schema_at <<EOF
        make_schema_at({
@@ -32,7 +32,7 @@ tag: DBIx::Class
        dbicdump -o dump_directory='./' My::Schema 'dbi:Pg:dbname="pesystem"' "pesystem" "pesystem_password"
    #+end_src
 
-**** 使用 dump\_to\_dir 方法
+**** 使用 dump_to_dir 方法
    如果你的Schema模块已经写好，让模块继承DBIx::Class::Schema::Loader,然后执行:
    #+begin_src perl
        ,#My/Schema.pm

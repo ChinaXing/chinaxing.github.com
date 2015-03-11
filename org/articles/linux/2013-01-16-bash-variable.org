@@ -12,7 +12,7 @@ change_frequency: monthly
 Bash 内置变量可以帮助我们更好的编程。下面是一些比较powerful的bash变量，他们自动被bash设置和使用。
 
 ** 有用的内置变量
-  * *$PROMPT\_COMMAND* 
+  * *$PROMPT_COMMAND* 
   * *$PIPESTATUS*       _(is an array)_
   * *$IFS*
   * *$SHELLOPTS*
@@ -32,15 +32,15 @@ Bash 内置变量可以帮助我们更好的编程。下面是一些比较powerf
   * *$HOSTYPE*
   * *$HOSTNAME*
   * *$LINENO*
-  * *$BASH\_VERSION*
-  * *$BASH\_VERSINFO*    _(is an array)_
-  * *$BASH\_PID*
-  * *$BASH\_ENV* 
+  * *$BASH_VERSION*
+  * *$BASH_VERSINFO*    _(is an array)_
+  * *$BASH_PID*
+  * *$BASH_ENV* 
   * *$BASH* 
-  * *$BASH\_SUBSHELL* 
-  * *$\--*
+  * *$BASH_SUBSHELL* 
+  * *$--*
   * *$!*
-  * *$\_*
+  * *$_*
   * *$$*
 
 *From*:[[http://tldp.org/LDP/abs/html/internalvariables.html]]

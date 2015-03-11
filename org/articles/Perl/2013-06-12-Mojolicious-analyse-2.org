@@ -17,12 +17,12 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
 
 不论哪种方式(主动查询还是被动通告)，当一个socket上的accept事件发生的时候，Mojolicious被唤醒
 - IO::Pool模式
-  此模式下轮询函数是Mojo::Reactor::one\_tick方法，可以看到当可读/写发生时候，调用:
+  此模式下轮询函数是Mojo::Reactor::one_tick方法，可以看到当可读/写发生时候，调用:
   #+BEGIN_SRC perl :eval no
    ++$i and $self->_sandbox('Write'， $self->{io}{fileno $_}{cb}， 1)
   #+END_SRC
 - EV模式
-  \_io方法会被调用，进而调用注册的回调:
+  _io方法会被调用，进而调用注册的回调:
   #+BEGIN_SRC perl :eval no
   my $io = $self->{io}{$fd};
   $self->_sandbox('Read'， $io->{cb}， 0) if EV::READ &$revents;
@@ -44,7 +44,7 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
      $self->_not_accepting;
      #+END_SRC
      这里释放accept锁，表示其他进程的server可以进行注册accept处理函数到accept的socket．\\
-     在释放锁的同时，注意到\_not\_accepting函数内首先启动了一个定时器:
+     在释放锁的同时，注意到_not_accepting函数内首先启动了一个定时器:
      #+BEGIN_SRC perl :eval no
      $self->_timers;
      ．．．
@@ -54,7 +54,7 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
            $self->{stop} ||= $self->recurring(1 => \&_stop);
      }
      #+END_SRC
-     启动了定时的执行\_accepting，注意，同一个进程内不会启动多个．
+     启动了定时的执行_accepting，注意，同一个进程内不会启动多个．
      #+BEGIN_SRC perl :eval no
      sub _accepting {
       my $self = shift;
@@ -91,7 +91,7 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
         $self->{handle} => sub { $self->_accept for 1 ．． $self->multi_accept });
      }
      #+END_SRC
-     设置server的handle(是socket的fd)的处理函数为\_accept方法．multi\_accept表示一次可以获取多个可以accept的链接:
+     设置server的handle(是socket的fd)的处理函数为_accept方法．multi_accept表示一次可以获取多个可以accept的链接:
      #+BEGIN_SRC perl :eval no
      sub _accept {
        my $self = shift;
@@ -147,7 +147,7 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
 *** 为链接创建Mojo::IOLoop::Stream
      注册了server上面的accept事件，于是这里注册的处理函数被执行，观察到，他创建了一个Mojo::IOLoop::Stream实例，表示Client和Server的这条链接．然后执行了一个callback．\\
      这个callback是什么呢？\\
-     由于这里的server方法是被Mojo::Server::Daemon的\_listen方法调用用来创建acceptor．在那里可以看到提供了此回调:
+     由于这里的server方法是被Mojo::Server::Daemon的_listen方法调用用来创建acceptor．在那里可以看到提供了此回调:
      #+BEGIN_SRC perl :eval no
      sub _listen {
        my ($self， $listen) = @_;
@@ -199,7 +199,7 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
      #+END_SRC
 *** transaction被创建并处理数据
    此方法创建transaction(如果链接上有tx就复用)，注意调次方法被调用的时候数据已经就绪了，在$chunk中\\
-   调用transacton上面的server\_read方法，这个方法并不会从socket读数据(因为数据已经读上来，在$chunk中)，而是进行分析数据:
+   调用transacton上面的server_read方法，这个方法并不会从socket读数据(因为数据已经读上来，在$chunk中)，而是进行分析数据:
      #+BEGIN_SRC perl :eval no
      # Mojo::Transaction::HTTP
      sub server_read {
@@ -220,7 +220,7 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
      此方法调用$req->parse方法分析数据，先分析HTTP头，然后使用Mojo::Content分析headers和body，如果完整那么一次就可以分析完，状态变为finished，
      于是本函数的最后一行被调用，触发request事件．\\
      事件处理函数是？\\
-     由于tx是在Mojo::Daemon::\_read方法内调用\_build\_tx构建:
+     由于tx是在Mojo::Daemon::_read方法内调用_build_tx构建:
      #+BEGIN_SRC perl :eval no
      sub _build_tx {
        my ($self， $id， $c) = @_;
@@ -279,11 +279,11 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
    #+END_SRC
    唤醒了tx:
 *** tx被唤醒写response数据到链接
-   在Mojo::Server::Daemon::\_build\_tx内:
+   在Mojo::Server::Daemon::_build_tx内:
    #+BEGIN_SRC perl :eval no
    $tx->on(resume => sub { $self->_write($id) });
    #+END_SRC
-   可以看到Mojo::Server::Daemon的\_write方法被执行:
+   可以看到Mojo::Server::Daemon的_write方法被执行:
    #+BEGIN_SRC perl :eval no
    sub _write {
        my ($self， $id) = @_;
@@ -315,8 +315,8 @@ Mojolicious 是基于事件的web框架，那么如何知道请求这个事件�
        $stream->write(''， $cb);
      }
    #+END_SRC
-   此方法的目的是写response给客户端，调用tx->server\_write获得要写的数据，然后在connection绑定的Mojo::IOLoop::Stream实例上面调用write方法写出数据．
-   如果tx数据完整则状态为finished，调用Mojo::Server::Daemon的\_finish方法，结束tx:
+   此方法的目的是写response给客户端，调用tx->server_write获得要写的数据，然后在connection绑定的Mojo::IOLoop::Stream实例上面调用write方法写出数据．
+   如果tx数据完整则状态为finished，调用Mojo::Server::Daemon的_finish方法，结束tx:
 *** 结束tx
    #+BEGIN_SRC perl :eval no
    sub _finish {

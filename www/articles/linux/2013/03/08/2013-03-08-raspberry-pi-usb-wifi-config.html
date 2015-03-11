@@ -42,13 +42,13 @@
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">配置wap\_supplicant</a></li>
+<li><a href="#sec-1">配置wap_supplicant</a></li>
 <li><a href="#sec-2">配置网卡wlan0</a></li>
 <li><a href="#sec-3">启动</a></li>
 <li><a href="#sec-4">其它</a>
 <ul>
 <li><a href="#sec-4-1">无法识别网卡</a></li>
-<li><a href="#sec-4-2">wap\_supplicant</a></li>
+<li><a href="#sec-4-2">wap_supplicant</a></li>
 </ul>
 </li>
 </ul>
@@ -67,10 +67,10 @@
 </p>
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">配置wap\_supplicant</h2>
+<h2 id="sec-1">配置wap_supplicant</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Raspbian基于Debian系统，系统默认附带了wap\_supplicant作为无线链接管理的客户端。&nbsp;wap\_supplicant这个程序很了不起，大家可以在这里了解到它：
+Raspbian基于Debian系统，系统默认附带了wap\_supplicant作为无线链接管理的客户端。&nbsp;wap_supplicant这个程序很了不起，大家可以在这里了解到它：
 </p>
 <ul class="org-ul">
 <li><a href="http://hostap.epitest.fi">官网</a>
@@ -84,7 +84,7 @@ Raspbian基于Debian系统，系统默认附带了wap\_supplicant作为无线链
 </p>
 
 <p>
-wap\_supplicant的配置，位于/etc/wpa\_supplicant/wpa\_supplicant.conf
+wap_supplicant的配置，位于/etc/wpa_supplicant/wpa_supplicant.conf
 </p>
 
 <p>
@@ -114,7 +114,7 @@ network={
 wpa_passphrase [ssid] [password]
 </pre>
 <p>
-这条命令输出一段wpa\_supplicant配置，其中psk=&#8221;&#x2026;&#8221;即为要使用在配置文件中的密码。
+这条命令输出一段wpa_supplicant配置，其中psk=&#8221;&#x2026;&#8221;即为要使用在配置文件中的密码。
 </p>
 </li>
 </ul>
@@ -162,15 +162,15 @@ wap\_supplicant&nbsp;将日志通过syslog输出，因此我们可以在/var/log
 </div>
 </div>
 <div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2">wap\_supplicant</h3>
+<h3 id="sec-4-2">wap_supplicant</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
-这个程序使用客户端服务端的模式，一个叫wap\_supplicant的程序启动起来做daemon进程，然后叫wap\_cli的程序会作为客户端，连接daemon进程，&nbsp;发送命令（如链接具体的<span class="caps">AP</span>）等。 
+这个程序使用客户端服务端的模式，一个叫wap_supplicant的程序启动起来做daemon进程，然后叫wap\_cli的程序会作为客户端，连接daemon进程，&nbsp;发送命令（如链接具体的<span class="caps">AP</span>）等。 
 </p>
 
 <p>
-wap\_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
-如，scan&nbsp;是进行无线网络的扫描，scan\_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
+wap_cli命令直接运行，会进入interactive模式，可以通过它发送指令给daemon程序，
+如，scan&nbsp;是进行无线网络的扫描，scan_result查看扫描结果，status查看当前的链接状态，更多的命令可以通过输入help来得到。
 </p>
 </div>
 </div>
