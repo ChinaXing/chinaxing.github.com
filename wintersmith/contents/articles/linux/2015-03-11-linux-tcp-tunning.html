@@ -19,46 +19,46 @@ tag: Linux
 </li>
 <li><a href="#sec-2">新建链接</a>
 <ul>
-<li><a href="#sec-2-1">tcp<sub>max</sub><sub>syn</sub><sub>backlog</sub></a></li>
+<li><a href="#sec-2-1">tcp_max_syn_backlog</a></li>
 <li><a href="#sec-2-2">somaxconn</a></li>
 </ul>
 </li>
 <li><a href="#sec-3">传输过程中</a>
 <ul>
-<li><a href="#sec-3-1">tcp<sub>window</sub><sub>scaling</sub></a></li>
-<li><a href="#sec-3-2">tcp<sub>congestion</sub><sub>control</sub></a></li>
+<li><a href="#sec-3-1">tcp_window_scaling</a></li>
+<li><a href="#sec-3-2">tcp_congestion_control</a></li>
 </ul>
 </li>
 <li><a href="#sec-4">TimeWait</a>
 <ul>
-<li><a href="#sec-4-1">tcp<sub>fin</sub><sub>timeout</sub></a></li>
-<li><a href="#sec-4-2">tcp<sub>tw</sub><sub>recycle</sub> = 0</a></li>
-<li><a href="#sec-4-3">tcp<sub>tw</sub><sub>reuse</sub> = 0</a></li>
-<li><a href="#sec-4-4">tcp<sub>timestamps</sub> = 0</a></li>
-<li><a href="#sec-4-5">nf<sub>conntrack</sub><sub>tcp</sub><sub>timeout</sub><sub>time</sub><sub>wait</sub></a></li>
-<li><a href="#sec-4-6">tcp<sub>max</sub><sub>tw</sub><sub>buckets</sub></a></li>
+<li><a href="#sec-4-1">tcp_fin_timeout</a></li>
+<li><a href="#sec-4-2">tcp_tw_recycle = 0</a></li>
+<li><a href="#sec-4-3">tcp_tw_reuse = 0</a></li>
+<li><a href="#sec-4-4">tcp_timestamps = 0</a></li>
+<li><a href="#sec-4-5">nf_conntrack_tcp_timeout_time_wait</a></li>
+<li><a href="#sec-4-6">tcp_max_tw_buckets</a></li>
 </ul>
 </li>
 <li><a href="#sec-5">缓冲区</a>
 <ul>
-<li><a href="#sec-5-1">net.core.rmem<sub>default</sub></a></li>
-<li><a href="#sec-5-2">net.core.rmem<sub>max</sub></a></li>
-<li><a href="#sec-5-3">net.core.wmem<sub>default</sub></a></li>
-<li><a href="#sec-5-4">net.core.wmem<sub>max</sub></a></li>
-<li><a href="#sec-5-5">tcp<sub>rmem</sub></a></li>
-<li><a href="#sec-5-6">tcp<sub>wmem</sub></a></li>
+<li><a href="#sec-5-1">net.core.rmem_default</a></li>
+<li><a href="#sec-5-2">net.core.rmem_max</a></li>
+<li><a href="#sec-5-3">net.core.wmem_default</a></li>
+<li><a href="#sec-5-4">net.core.wmem_max</a></li>
+<li><a href="#sec-5-5">tcp_rmem</a></li>
+<li><a href="#sec-5-6">tcp_wmem</a></li>
 </ul>
 </li>
 <li><a href="#sec-6">Keepalive</a>
 <ul>
-<li><a href="#sec-6-1">tcp<sub>keepalive</sub><sub>intvl</sub></a></li>
-<li><a href="#sec-6-2">tcp<sub>keepalive</sub><sub>probes</sub></a></li>
+<li><a href="#sec-6-1">tcp_keepalive_intvl</a></li>
+<li><a href="#sec-6-2">tcp_keepalive_probes</a></li>
 </ul>
 </li>
 <li><a href="#sec-7">port</a>
 <ul>
-<li><a href="#sec-7-1">ip<sub>local</sub><sub>port</sub><sub>range</sub></a></li>
-<li><a href="#sec-7-2">ip<sub>local</sub><sub>reserved</sub><sub>ports</sub></a></li>
+<li><a href="#sec-7-1">ip_local_port_range</a></li>
+<li><a href="#sec-7-2">ip_local_reserved_ports</a></li>
 </ul>
 </li>
 </ul>
@@ -112,7 +112,7 @@ UDP 面向数据报，不会分段。
 <h2 id="sec-2">新建链接</h2>
 <div class="outline-text-2" id="text-2">
 </div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">tcp<sub>max</sub><sub>syn</sub><sub>backlog</sub></h3>
+<h3 id="sec-2-1">tcp_max_syn_backlog</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 半链接缓冲队列长度。
@@ -132,7 +132,7 @@ UDP 面向数据报，不会分段。
 <h2 id="sec-3">传输过程中</h2>
 <div class="outline-text-2" id="text-3">
 </div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">tcp<sub>window</sub><sub>scaling</sub></h3>
+<h3 id="sec-3-1">tcp_window_scaling</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 调整window大小，针对更大的tcp报文——大于64k。
@@ -140,7 +140,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">tcp<sub>congestion</sub><sub>control</sub></h3>
+<h3 id="sec-3-2">tcp_congestion_control</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 拥塞控制算法。默认的算法是慢启动——线性增大，快减少——重传超时指数后退，丢包重传减半。
@@ -152,15 +152,15 @@ UDP 面向数据报，不会分段。
 <h2 id="sec-4">TimeWait</h2>
 <div class="outline-text-2" id="text-4">
 </div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1">tcp<sub>fin</sub><sub>timeout</sub></h3>
+<h3 id="sec-4-1">tcp_fin_timeout</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-处于fin<sub>wait</sub><sub>2状态的tcp等待时间，超过此时间进入closed状态。</sub>
+处于fin_wait_2状态的tcp等待时间，超过此时间进入closed状态。
 </p>
 </div>
 </div>
 <div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2">tcp<sub>tw</sub><sub>recycle</sub> = 0</h3>
+<h3 id="sec-4-2">tcp_tw_recycle = 0</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 启用  <code>TIME_WAIT</code>  状态SOCKET的回收，更激进的重复使用 <code>TIME_WAIT</code> 状态的SOCKET，对于处于NAT和LB等设备后面经过地址转换的链接，不要使用此选项，否则会出现新建链接被RST的情况。
@@ -172,7 +172,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-4-3" class="outline-3">
-<h3 id="sec-4-3">tcp<sub>tw</sub><sub>reuse</sub> = 0</h3>
+<h3 id="sec-4-3">tcp_tw_reuse = 0</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 重新利用 <code>TIME_WAIT</code> 状态的SOCKET，提高socket的使用率，避免耗尽。依赖 <code>tcp_timestamps</code> option来防止冲突，保证正确性。
@@ -180,7 +180,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-4-4" class="outline-3">
-<h3 id="sec-4-4">tcp<sub>timestamps</sub> = 0</h3>
+<h3 id="sec-4-4">tcp_timestamps = 0</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 <code>tcp_tw_recycle</code> 与 <code>tcp_tw_reuse</code> 都依赖此特性，这个选项是让通信双方都加上时间戳，能够避免冲突。
@@ -188,7 +188,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-4-5" class="outline-3">
-<h3 id="sec-4-5">nf<sub>conntrack</sub><sub>tcp</sub><sub>timeout</sub><sub>time</sub><sub>wait</sub></h3>
+<h3 id="sec-4-5">nf_conntrack_tcp_timeout_time_wait</h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 <code>time_wait</code> 时长
@@ -196,7 +196,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-4-6" class="outline-3">
-<h3 id="sec-4-6">tcp<sub>max</sub><sub>tw</sub><sub>buckets</sub></h3>
+<h3 id="sec-4-6">tcp_max_tw_buckets</h3>
 <div class="outline-text-3" id="text-4-6">
 <p>
 最大tw状态的链接数，超过这个数字，tw的状态链接被直接丢弃。设置这个值为了防止攻击造成SOCKET被大量 <code>TIME_WAIT</code> 占用。
@@ -213,7 +213,7 @@ UDP 面向数据报，不会分段。
 </p>
 </div>
 <div id="outline-container-sec-5-1" class="outline-3">
-<h3 id="sec-5-1">net.core.rmem<sub>default</sub></h3>
+<h3 id="sec-5-1">net.core.rmem_default</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 读缓冲的大小
@@ -221,7 +221,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-5-2" class="outline-3">
-<h3 id="sec-5-2">net.core.rmem<sub>max</sub></h3>
+<h3 id="sec-5-2">net.core.rmem_max</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 最大值
@@ -229,7 +229,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-5-3" class="outline-3">
-<h3 id="sec-5-3">net.core.wmem<sub>default</sub></h3>
+<h3 id="sec-5-3">net.core.wmem_default</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 写缓冲的大小
@@ -237,7 +237,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-5-4" class="outline-3">
-<h3 id="sec-5-4">net.core.wmem<sub>max</sub></h3>
+<h3 id="sec-5-4">net.core.wmem_max</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 最大值
@@ -245,7 +245,7 @@ UDP 面向数据报，不会分段。
 </div>
 </div>
 <div id="outline-container-sec-5-5" class="outline-3">
-<h3 id="sec-5-5">tcp<sub>rmem</sub></h3>
+<h3 id="sec-5-5">tcp_rmem</h3>
 <div class="outline-text-3" id="text-5-5">
 <p>
 tcp receive buffer size &#x2013; Per connection.
@@ -253,7 +253,7 @@ tcp receive buffer size &#x2013; Per connection.
 </div>
 </div>
 <div id="outline-container-sec-5-6" class="outline-3">
-<h3 id="sec-5-6">tcp<sub>wmem</sub></h3>
+<h3 id="sec-5-6">tcp_wmem</h3>
 <div class="outline-text-3" id="text-5-6">
 <p>
 tcp send buffer size &#x2013; Per connection.
@@ -265,7 +265,7 @@ tcp send buffer size &#x2013; Per connection.
 <h2 id="sec-6">Keepalive</h2>
 <div class="outline-text-2" id="text-6">
 </div><div id="outline-container-sec-6-1" class="outline-3">
-<h3 id="sec-6-1">tcp<sub>keepalive</sub><sub>intvl</sub></h3>
+<h3 id="sec-6-1">tcp_keepalive_intvl</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 多久没有数据就开始进行probe来探测链接的活跃
@@ -273,7 +273,7 @@ tcp send buffer size &#x2013; Per connection.
 </div>
 </div>
 <div id="outline-container-sec-6-2" class="outline-3">
-<h3 id="sec-6-2">tcp<sub>keepalive</sub><sub>probes</sub></h3>
+<h3 id="sec-6-2">tcp_keepalive_probes</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 连续探测多少次都失败后就认为链接断裂了。
@@ -285,7 +285,7 @@ tcp send buffer size &#x2013; Per connection.
 <h2 id="sec-7">port</h2>
 <div class="outline-text-2" id="text-7">
 </div><div id="outline-container-sec-7-1" class="outline-3">
-<h3 id="sec-7-1">ip<sub>local</sub><sub>port</sub><sub>range</sub></h3>
+<h3 id="sec-7-1">ip_local_port_range</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 本地(local)端口范围，每个主动发起的tcp链接，就会选择一个端口来与远端链接，如果端口都用完了，就建立链接失败。
@@ -293,7 +293,7 @@ tcp send buffer size &#x2013; Per connection.
 </div>
 </div>
 <div id="outline-container-sec-7-2" class="outline-3">
-<h3 id="sec-7-2">ip<sub>local</sub><sub>reserved</sub><sub>ports</sub></h3>
+<h3 id="sec-7-2">ip_local_reserved_ports</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 保留的本地端口，在选择端口的时候，排除这些端口。这些端口一般给本地的服务器程序预留。从而避免被client类型程序占用。

@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -48,13 +48,14 @@
 </li>
 <li><a href="#sec-2">新建链接</a>
 <ul>
-<li><a href="#sec-2-1">tcp<sub>max</sub><sub>syn</sub><sub>backlog</sub></a></li>
+<li><a href="#sec-2-1">tcp_max_syn_backlog</a></li>
 <li><a href="#sec-2-2">somaxconn</a></li>
 </ul>
 </li>
 <li><a href="#sec-3">传输过程中</a>
 <ul>
-<li><a href="#sec-3-1">t</a></li></ul></li></ul></div></div>
+<li><a href="#sec-3-1">tcp_window_scaling</a></li>
+</ul></li></ul></div></div>
           <p class="more"><a href="/articles/linux/2015/03/12/2015-03-11-linux-tcp-tunning.html">more</a></p>
         </section>
       </article>
@@ -96,7 +97,7 @@ server的端口相对固定，而且是知名端口，或者是配置文件中�
 </p>
 
 <dl class="org-dl">
-<dt> ip\<sub>local\</sub><sub>port\</sub><sub>range</sub> </dt></dl>
+<dt> ip_local_port_range </dt><dd>用来指定本地的端口选择范围，如果你需要大量的连接，这</dd></dl>
           <p class="more"><a href="/articles/linux/2015/03/10/2015-03-10-ip-port.html">more</a></p>
         </section>
       </article>

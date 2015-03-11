@@ -51,9 +51,9 @@ CLH队列锁有很多优势，Java的ASQ同步器就基于CLH锁。
 如上图，每个node代表一个阻塞获取的锁进程。
 </p>
 <dl class="org-dl">
-<dt> lock </dt><dd>将自己插入到 <b>tail</b> 所指的队尾，然后不断的检查previous节点的 <i>succ\<sub>must\</sub><sub>wait</sub></i> 字段，判断锁是否被前面进程释放，如果释放，则将previous节点移除，代表自己获取锁成功
+<dt> lock </dt><dd>将自己插入到 <b>tail</b> 所指的队尾，然后不断的检查previous节点的 <i>succ\_must\_wait</i> 字段，判断锁是否被前面进程释放，如果释放，则将previous节点移除，代表自己获取锁成功
 </dd>
-<dt> unlock </dt><dd>将自己节点的 <i>succ\<sub>must\</sub><sub>wait</sub></i> 字段设置为0，表示自己释放对锁的占有
+<dt> unlock </dt><dd>将自己节点的 <i>succ\_must\_wait</i> 字段设置为0，表示自己释放对锁的占有
 </dd>
 </dl>
 </div>

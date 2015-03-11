@@ -12,7 +12,7 @@ change_frequency: monthly
 <li><a href="#sec-1">前言</a></li>
 <li><a href="#sec-2">启动Mojolicious App</a>
 <ul>
-<li><a href="#sec-2-1">通过 script/my\<sub>app</sub> daemon 启动应用</a></li>
+<li><a href="#sec-2-1">通过 script/my\_app daemon 启动应用</a></li>
 <li><a href="#sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
 <li><a href="#sec-2-3">创建Mojo::Server实例，加载App，启动App</a></li>
 <li><a href="#sec-2-4">App创建完毕，调用其start方法</a></li>
@@ -20,7 +20,7 @@ change_frequency: monthly
 <li><a href="#sec-2-6">调用Mojolicious::Command::daemon的run方法</a></li>
 <li><a href="#sec-2-7">Mojo::Server::Daemon执行run方法</a></li>
 <li><a href="#sec-2-8">Mojo::Server::Daemon的start方法</a></li>
-<li><a href="#sec-2-9">调用\<sub>listen方法创建监听的server</sub></a></li>
+<li><a href="#sec-2-9">调用\_listen方法创建监听的server</a></li>
 <li><a href="#sec-2-10">ioloop被启动</a></li>
 </ul>
 </li>
@@ -70,7 +70,7 @@ change_frequency: monthly
 <h2 id="sec-2">启动Mojolicious App</h2>
 <div class="outline-text-2" id="text-2">
 </div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">通过 script/my\<sub>app</sub> daemon 启动应用</h3>
+<h3 id="sec-2-1">通过 script/my\_app daemon 启动应用</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 
@@ -199,7 +199,7 @@ commands现在的app属性已经设置为MyApp.
 </pre>
 </div>
 <p>
-调用\<sub>command加载对应的command模块，我们传的是</sub>"daemon"命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
+调用\_command加载对应的command模块，我们传的是"daemon"命令，所以此处name为daemon，加载Mojolicious::Command::daemon，然后，实例化一个实例，设置app属性为MyApp，调用其run方法
 </p>
 </div>
 </div>
@@ -278,13 +278,13 @@ commands现在的app属性已经设置为MyApp.
 <ul class="org-ul">
 <li>已经打开了监听socket， 每个acceptor对应一个Mojo::IOLoop::Server实例
 </li>
-<li>还没有监听，则调用<sub>listen方法在每个要监听的端口上面开启监听，这样每个端口上启动了一个Mojo</sub>::IOLoop::Server实例
+<li>还没有监听，则调用_listen方法在每个要监听的端口上面开启监听，这样每个端口上启动了一个Mojo::IOLoop::Server实例
 </li>
 </ul>
 </div>
 </div>
 <div id="outline-container-sec-2-9" class="outline-3">
-<h3 id="sec-2-9">调用\<sub>listen方法创建监听的server</sub></h3>
+<h3 id="sec-2-9">调用\_listen方法创建监听的server</h3>
 <div class="outline-text-3" id="text-2-9">
 <div class="org-src-container">
 

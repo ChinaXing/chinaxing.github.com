@@ -69,7 +69,7 @@ tag: Mojolicious
 </li>
 <li>plugins: config plugin, and other third party plugins.
 </li>
-<li>mode: development, production, prepub, defined in MOJO\<sub>MODE</sub> and set to `app-&gt;mode`
+<li>mode: development, production, prepub, defined in MOJO\_MODE and set to `app-&gt;mode`
 </li>
 </ul>
 </div>
@@ -84,11 +84,11 @@ tag: Mojolicious
 </li>
 <li>http-header: $controler-&gt;req-&gt;headers 
 </li>
-<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with `MOJO\<sub>MODE`</sub> configure file.(can read the config-plugin's source code and confirm ).
+<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with `MOJO\_MODE` configure file.(can read the config-plugin's source code and confirm ).
 </li>
 <li>in controller, $self-&gt;app: get the application
 </li>
-<li>$controller-&gt;stash, $controller-&gt;current\<sub>route</sub>, $controller-&gt;url\<sub>for</sub> &#x2026;
+<li>$controller-&gt;stash, $controller-&gt;current\_route, $controller-&gt;url\_for &#x2026;
 </li>
 <li>route: route to Controller#action or to callback
 </li>
@@ -96,7 +96,7 @@ tag: Mojolicious
 </li>
 <li>over: over a condition or call back. condition check is earler than bridge and other route.
 </li>
-<li>use $route-&gt;add\<sub>condition</sub> to add condition in route.
+<li>use $route-&gt;add\_condition to add condition in route.
 </li>
 <li>form validation: Validator::Cutstom or thers you like.
 </li>

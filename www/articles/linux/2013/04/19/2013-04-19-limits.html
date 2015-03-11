@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -88,9 +88,9 @@ limit&nbsp;设置中有Hard和Soft两个值，Hard表示无法超过此值，Sof
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li>登录用户<br  />
-   通过pam\<sub>limits模块来设置，pam\</sub><sub>limits模块是<span class="caps">PAM</span>认证的一个模块，这一过程在用户登录的时候进行。<br  />
-</sub>
-   用户登录的时候pam\<sub>limits读取</sub>/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。<br  />&nbsp;加载顺序：先读取limits.conf，然后再用limits.d/中的配置覆盖。
+   通过pam\_limits模块来设置，pam\_limits模块是<span class="caps">PAM</span>认证的一个模块，这一过程在用户登录的时候进行。&lt;br  /&gt;
+
+   用户登录的时候pam\_limits读取/etc/security/limits.conf 和 /etc/security/limits.d/*.conf 按照其中的配置进行设置。<br  />&nbsp;加载顺序：先读取limits.conf，然后再用limits.d/中的配置覆盖。
 </li>
 <li>系统进程<br  />
    对于通过init启动的进程，如/etc/init.d/下面的进程，由于不是通过登录产生的，所以上面提到的配置文件对其无效，这些进程的limits继承自init进程（它们的父进程）。<br  />

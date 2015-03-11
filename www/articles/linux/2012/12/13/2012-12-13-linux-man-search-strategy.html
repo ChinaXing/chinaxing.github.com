@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -73,9 +73,9 @@ man&nbsp;命令查找命令帮助手册的策略:
 </li>
 <li>查看/etc/man.config，找到其中的 <b><span class="caps">MANPATH</span></b> 配置，加入搜索路径.&nbsp;然后,
 </li>
-<li>查看/etc/man.config, 找到其中的 <b><span class="caps">MANPATH</span><sub><span class="caps">MAP</span></sub></b>&nbsp;配置，加入搜索的&#8221;Map&#8221;路径，然后,
+<li>查看/etc/man.config, 找到其中的 <b>MANPATH_MAP</b>&nbsp;配置，加入搜索的&#8221;Map&#8221;路径，然后,
 </li>
-<li>遍历 <b><span class="caps">PATH</span></b> 变量中的每个路径,对不在 <b><span class="caps">MANPATH</span><sub><span class="caps">MAP</span></sub></b> 中的路径,&nbsp;执行&#8221;nearby&#8221;查找。
+<li>遍历 <b><span class="caps">PATH</span></b> 变量中的每个路径,对不在 <b>MANPATH_MAP</b> 中的路径,&nbsp;执行&#8221;nearby&#8221;查找。
 </li>
 <li>在搜索路径中进行查找.
 </li>
@@ -98,7 +98,7 @@ man&nbsp;命令查找命令帮助手册的策略:
 <b>举例</b>&nbsp;:  
 </p>
 <ol class="org-ol">
-<li>设置: <b><span class="caps">MANPATH</span><sub><span class="caps">MAP</span></sub> <i>home/admin/git/bin /home/admin/git/man</i></b>
+<li>设置: <b>MANPATH_MAP <i>home/admin/git/bin /home/admin/git/man</i></b>
 
 <p>
 当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b><span class="caps">PATH</span></b> 查找 <b>git</b> 这个命令的位置，在 <b>/home/admin/git/bin</b> 下找到了,
@@ -106,11 +106,11 @@ man&nbsp;命令查找命令帮助手册的策略:
 </p>
 </li>
 
-<li>设置: <b><span class="caps">MANPATH</span><sub><span class="caps">MAP</span></sub> /bin /home/admin/git/man</b> 
+<li>设置: <b>MANPATH_MAP /bin /home/admin/git/man</b> 
 
 <p>
 当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b><span class="caps">PATH</span></b> 查找 <b>git</b> 命令的位置，在 <b>/home/admin/git/bin</b> 下面找到了，
-但是根据hash, 没有这个路径对应的man手册搜索路径，所以这条<span class="caps">MANPATH</span><sub><span class="caps">MAP</span>不会被使用</sub>.
+但是根据hash,&nbsp;没有这个路径对应的man手册搜索路径，所以这条MANPATH_MAP不会被使用.
 </p>
 </li>
 </ol>

@@ -76,7 +76,7 @@ tag: Mojolicious
 </li>
 <li>controller是Mojolicious::Controller的子类。  
 </li>
-<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller\<sub>class</sub>('PeSystem::Controller') 设定$app的默认controller.  
+<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller\_class('PeSystem::Controller') 设定$app的默认controller.  
 </li>
 <li>controller获得app: <b>$self-&gt;app</b>
 </li>
@@ -84,7 +84,7 @@ tag: Mojolicious
 </li>
 <li>controller获得路由匹配的参数: <b>$self-&gt;stash('id')</b>
 </li>
-<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url\<sub>encode等方法方便使用</sub>(<b>$self-&gt;stash('a'=&gt;'b')</b>)
+<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url\_encode等方法方便使用(<b>$self-&gt;stash('a'=&gt;'b')</b>)
 </li>
 </ul>
 </div>
@@ -96,7 +96,7 @@ tag: Mojolicious
 <ul class="org-ul">
 <li>action是controller内的子过程。操作都是在action内进行的.  
 </li>
-<li>渲染页面: <b>$self-&gt;render('&#x2026;'),$self-&gt;render\<sub>exception</sub>,$self-&gt;redirect\<sub>to</sub>(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
+<li>渲染页面: <b>$self-&gt;render('&#x2026;'),$self-&gt;render\_exception,$self-&gt;redirect\_to(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
 </li>
 </ul>
 </div>
@@ -110,7 +110,7 @@ tag: Mojolicious
 </li>
 <li>异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
 </li>
-<li>404模版:not\<sub>found</sub>.$mode.$format.ep,not\<sub>found</sub>.$format.ep
+<li>404模版:not\_found.$mode.$format.ep,not\_found.$format.ep
 </li>
 </ul>
 </div>
@@ -122,11 +122,11 @@ tag: Mojolicious
 <ul class="org-ul">
 <li>Mojo::Exception 是其异常类  
 </li>
-<li>Mojo是通过local $SIG{\<sub>\</sub><sub>DIE\</sub><sub>\</sub>_}来注册自己的异常捕获的。  
+<li>Mojo是通过local $SIG{\_\_DIE\_\_}来注册自己的异常捕获的。  
 </li>
 <li>主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.  
 </li>
-<li>controller的render\<sub>exception用来渲染异常页面，它会示例化Mojo</sub>::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+<li>controller的render\_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
 </li>
 <li>捕获异常: 
 <div class="org-src-container">
@@ -135,7 +135,7 @@ tag: Mojolicious
 </pre>
 </div>
 </li>
-<li>返回异常页面: $self-&gt;render<sub>exception</sub>(&#x2026;);
+<li>返回异常页面: $self-&gt;render_exception(&#x2026;);
 </li>
 </ul>
 </div>
@@ -177,19 +177,19 @@ tag: Mojolicious
 Hook点有:
 </p>
 <ul class="org-ul">
-<li>after<sub>build</sub><sub>tx</sub>
+<li>after_build_tx
 </li>
-<li>before<sub>dispatch</sub>
+<li>before_dispatch
 </li>
-<li>after<sub>static</sub>
+<li>after_static
 </li>
-<li>before<sub>routes</sub>
+<li>before_routes
 </li>
-<li>after<sub>render</sub>
+<li>after_render
 </li>
-<li>after<sub>dispatch</sub>
+<li>after_dispatch
 </li>
-<li>around<sub>dispatch</sub>
+<li>around_dispatch
 </li>
 </ul>
 </div>
@@ -365,7 +365,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload ,一�
 使用CoreModule: Time::Piece 和 Time::Seconds
 </p>
 <ul class="org-ul">
-<li>Time::Seconds : ONE<sub>DAY</sub>, ONE<sub>MIN</sub> , $s-&gt;sencods &#x2026; 提供秒到各个单位的转换.
+<li>Time::Seconds : ONE_DAY, ONE_MIN , $s-&gt;sencods &#x2026; 提供秒到各个单位的转换.
 </li>
 <li>Time::Piece   : 提供localetime 函数, 返回本地时间, 2个Time::Piece对象的差结果是Time::Seconds对象.
 </li>
@@ -390,7 +390,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload ,一�
 使用插件Mojolicious::Plugin::Human
 </p>
 <ul class="org-ul">
-<li>导出很多helper:human<sub>datetime</sub>,human<sub>date</sub>&#x2026; 方便进行变量的本地化和人性化查看的转换. 如: human<sub>datetime</sub> $now
+<li>导出很多helper:human_datetime,human_date&#x2026; 方便进行变量的本地化和人性化查看的转换. 如: human_datetime $now
 </li>
 </ul>
 </div>
@@ -467,7 +467,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload ,一�
 <h3 id="sec-2-11">获取时间</h3>
 <div class="outline-text-3" id="text-2-11">
 <p>
-Mojo::Util::steady\<sub>time</sub>
+Mojo::Util::steady\_time
 </p>
 <ul class="org-ul">
 <li>使用Time::HiRes模块获得的当前高精度时间
@@ -489,7 +489,7 @@ Mojo::Util模块
 </li>
 <li>squish, 删除首尾的空白符,并且合并行中的连续空白符
 </li>
-<li>md5\<sub>bytes</sub>,md5\<sub>sum</sub>,sha1\<sub>bytes</sub>,sha1\<sub>sum</sub>,b64\<sub>decode</sub>,b64\<sub>encode</sub>,encode,decode
+<li>md5\_bytes,md5\_sum,sha1\_bytes,sha1\_sum,b64\_decode,b64\_encode,encode,decode
 </li>
 </ul>
 </div>
@@ -499,7 +499,7 @@ Mojo::Util模块
 <h3 id="sec-2-13">给类添加方法或者函数</h3>
 <div class="outline-text-3" id="text-2-13">
 <p>
-Mojo::Util::mokey\<sub>patch</sub>
+Mojo::Util::mokey\_patch
 </p>
 <div class="org-src-container">
 

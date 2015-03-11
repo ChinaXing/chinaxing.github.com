@@ -41,9 +41,9 @@ man 命令查找命令帮助手册的策略:
 </li>
 <li>查看/etc/man.config，找到其中的 <b>MANPATH</b> 配置，加入搜索路径. 然后,
 </li>
-<li>查看/etc/man.config, 找到其中的 <b>MANPATH<sub>MAP</sub></b> 配置，加入搜索的"Map"路径，然后,
+<li>查看/etc/man.config, 找到其中的 <b>MANPATH_MAP</b> 配置，加入搜索的"Map"路径，然后,
 </li>
-<li>遍历 <b>PATH</b> 变量中的每个路径,对不在 <b>MANPATH<sub>MAP</sub></b> 中的路径, 执行"nearby"查找。
+<li>遍历 <b>PATH</b> 变量中的每个路径,对不在 <b>MANPATH_MAP</b> 中的路径, 执行"nearby"查找。
 </li>
 <li>在搜索路径中进行查找.
 </li>
@@ -66,7 +66,7 @@ man 命令查找命令帮助手册的策略:
 <b>举例</b> :  
 </p>
 <ol class="org-ol">
-<li>设置: <b>MANPATH<sub>MAP</sub> <i>home/admin/git/bin /home/admin/git/man</i></b>
+<li>设置: <b>MANPATH_MAP <i>home/admin/git/bin /home/admin/git/man</i></b>
 
 <p>
 当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 这个命令的位置，在 <b>/home/admin/git/bin</b> 下找到了,
@@ -74,11 +74,11 @@ man 命令查找命令帮助手册的策略:
 </p>
 </li>
 
-<li>设置: <b>MANPATH<sub>MAP</sub> /bin /home/admin/git/man</b> 
+<li>设置: <b>MANPATH_MAP /bin /home/admin/git/man</b> 
 
 <p>
 当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 命令的位置，在 <b>/home/admin/git/bin</b> 下面找到了，
-但是根据hash, 没有这个路径对应的man手册搜索路径，所以这条MANPATH<sub>MAP不会被使用</sub>.
+但是根据hash, 没有这个路径对应的man手册搜索路径，所以这条MANPATH_MAP不会被使用.
 </p>
 </li>
 </ol>

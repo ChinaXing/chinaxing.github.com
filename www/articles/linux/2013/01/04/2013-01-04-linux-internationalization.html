@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -82,7 +82,7 @@ Linux 下 <b>Gnu/gettext</b>&nbsp;工具套件可以完成语言(message)的本�
 gettext套件的工具包括： gettext,xgettext,msgfmt&nbsp;&#x2026; 
 </p>
 <ul class="org-ul">
-<li>gettext : 进行translate，根据<span class="caps">LC</span>\<sub><span class="caps">MESSAGES</span>环境变量的值和TEXTDOMAIN查找字串对应的本地表示。</sub>
+<li>gettext :&nbsp;进行translate，根据<span class="caps">LC</span>\_MESSAGES环境变量的值和TEXTDOMAIN查找字串对应的本地表示。
 </li>
 <li>xgettext :&nbsp;从程序中抽取调用gettext进行本地化的字符串，生成一份.po结尾的配置文件。
 </li>
@@ -125,7 +125,7 @@ textdomain('myapp');
 </pre>
 </div>
 <p>
-gettext 调用可以使用define宏定义为\<sub>()</sub>,等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
+gettext&nbsp;调用可以使用define宏定义为\_(),等于使用gettext()，因而可以简写为(几乎所有程序都这么做):
 </p>
 <div class="org-src-container">
 
@@ -142,10 +142,10 @@ gettext 调用可以使用define宏定义为\<sub>()</sub>,等于使用gettext()
 </pre>
 </div>
 <p>
-假如我想本地化中文: <b>zh\<sub><span class="caps">CN</span></sub></b>
+假如我想本地化中文: <b>zh\_CN</b>
 </p>
 </li>
-<li>编辑生成的本地化配置文件(zh\<sub><span class="caps">CN</span></sub>.po),设置转换对应关系，注意设置编码(charset)为 <b>utf-8</b> ，否则转换可能有问题:
+<li>编辑生成的本地化配置文件(zh\_CN.po),设置转换对应关系，注意设置编码(charset)为 <b>utf-8</b> ，否则转换可能有问题:
 <div class="org-src-container">
 
 <pre class="src src-perl"># SOME DESCRIPTIVE TITLE.
@@ -181,7 +181,7 @@ msgstr "你好，世界"
 </pre>
 </div>
 </li>
-<li>验证，设置环境变量<span class="caps">LC</span>\<sub><span class="caps">MESSAGES</span>或LANG为zh\</sub><sub><span class="caps">CN</span>。然后运行程序即可。</sub>
+<li>验证，设置环境变量<span class="caps">LC</span>\_MESSAGES或LANG为zh\_CN。然后运行程序即可。
 </li>
 </ol>
 </div>

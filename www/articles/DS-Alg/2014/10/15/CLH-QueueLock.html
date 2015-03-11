@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li class="active"><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -83,9 +83,9 @@
 如上图，每个node代表一个阻塞获取的锁进程。
 </p>
 <dl class="org-dl">
-<dt> lock </dt><dd>将自己插入到 <b>tail</b> 所指的队尾，然后不断的检查previous节点的 <i>succ\<sub>must\</sub><sub>wait</sub></i>&nbsp;字段，判断锁是否被前面进程释放，如果释放，则将previous节点移除，代表自己获取锁成功
+<dt> lock </dt><dd>将自己插入到 <b>tail</b> 所指的队尾，然后不断的检查previous节点的 <i>succ\_must\_wait</i>&nbsp;字段，判断锁是否被前面进程释放，如果释放，则将previous节点移除，代表自己获取锁成功
 </dd>
-<dt> unlock </dt><dd>将自己节点的 <i>succ\<sub>must\</sub><sub>wait</sub></i>&nbsp;字段设置为0，表示自己释放对锁的占有
+<dt> unlock </dt><dd>将自己节点的 <i>succ\_must\_wait</i>&nbsp;字段设置为0，表示自己释放对锁的占有
 </dd>
 </dl>
 </div>

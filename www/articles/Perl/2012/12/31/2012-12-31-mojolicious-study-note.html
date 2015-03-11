@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -101,7 +101,7 @@
 </li>
 <li>plugins: config plugin, and other third party&nbsp;plugins.
 </li>
-<li>mode: development, production, prepub, defined in <span class="caps">MOJO</span>\<sub><span class="caps">MODE</span></sub> and set to&nbsp;`app-&gt;mode`
+<li>mode: development, production, prepub, defined in <span class="caps">MOJO</span>\_MODE and set to&nbsp;`app-&gt;mode`
 </li>
 </ul>
 </div>
@@ -116,11 +116,11 @@
 </li>
 <li>http-header:&nbsp;$controler-&gt;req-&gt;headers 
 </li>
-<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with `<span class="caps">MOJO</span>\<sub><span class="caps">MODE</span>`</sub> configure file.(can read the config-plugin&#8217;s source code and confirm&nbsp;).
+<li>configure: use config-plugin, write perl-ish configure file. mojo will merge main configure file with `<span class="caps">MOJO</span>\_MODE` configure file.(can read the config-plugin&#8217;s source code and confirm&nbsp;).
 </li>
 <li>in controller, $self-&gt;app: get the&nbsp;application
 </li>
-<li>$controller-&gt;stash, $controller-&gt;current\<sub>route</sub>, $controller-&gt;url\<sub>for</sub> &#x2026;
+<li>$controller-&gt;stash, $controller-&gt;current\_route, $controller-&gt;url\_for&nbsp;&#x2026;
 </li>
 <li>route: route to Controller#action or to&nbsp;callback
 </li>
@@ -128,7 +128,7 @@
 </li>
 <li>over: over a condition or call back. condition check is earler than bridge and other&nbsp;route.
 </li>
-<li>use $route-&gt;add\<sub>condition</sub> to add condition in&nbsp;route.
+<li>use $route-&gt;add\_condition to add condition in&nbsp;route.
 </li>
 <li>form validation: Validator::Cutstom or thers you&nbsp;like.
 </li>

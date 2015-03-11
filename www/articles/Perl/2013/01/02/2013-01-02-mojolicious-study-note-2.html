@@ -15,14 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>13</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -108,7 +108,7 @@
 </li>
 <li>controller是Mojolicious::Controller的子类。  
 </li>
-<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller\<sub>class</sub>(&#8216;PeSystem::Controller&#8217;)&nbsp;设定$app的默认controller.  
+<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller\_class(&#8216;PeSystem::Controller&#8217;)&nbsp;设定$app的默认controller.  
 </li>
 <li>controller获得app: <b>$self-&gt;app</b>
 </li>
@@ -116,7 +116,7 @@
 </li>
 <li>controller获得路由匹配的参数: <b>$self-&gt;stash(&#8216;id&#8217;)</b>
 </li>
-<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url\<sub>encode等方法方便使用</sub>(<b>$self-&gt;stash(&#8216;a&#8217;=&gt;&#8217;b&#8217;)</b>)
+<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url\_encode等方法方便使用(<b>$self-&gt;stash(&#8216;a&#8217;=&gt;&#8217;b&#8217;)</b>)
 </li>
 </ul>
 </div>
@@ -128,7 +128,7 @@
 <ul class="org-ul">
 <li>action是controller内的子过程。操作都是在action内进行的.  
 </li>
-<li>渲染页面: <b>$self-&gt;render(&#8216;&#x2026;&#8217;),$self-&gt;render\<sub>exception</sub>,$self-&gt;redirect\<sub>to</sub>(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
+<li>渲染页面: <b>$self-&gt;render(&#8216;&#x2026;&#8217;),$self-&gt;render\_exception,$self-&gt;redirect\_to(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
 </li>
 </ul>
 </div>
@@ -142,7 +142,7 @@
 </li>
 <li>异常模版: exception.$mode.$format.ep,exception.$format.ep,&nbsp;$mode为mojo运行的模式（如production,development）
 </li>
-<li>404模版:not\<sub>found</sub>.$mode.$format.ep,not\<sub>found</sub>.$format.ep
+<li>404模版:not\_found.$mode.$format.ep,not\_found.$format.ep
 </li>
 </ul>
 </div>
@@ -154,11 +154,11 @@
 <ul class="org-ul">
 <li>Mojo::Exception&nbsp;是其异常类  
 </li>
-<li>Mojo是通过local $<span class="caps">SIG</span>{\<sub>\</sub><sub><span class="caps">DIE</span>\</sub><sub>\</sub>_}来注册自己的异常捕获的。  
+<li>Mojo是通过local&nbsp;$<span class="caps">SIG</span>{\_\_DIE\_\_}来注册自己的异常捕获的。  
 </li>
 <li>主动抛出异常用die&nbsp;&#8220;string&#8221;,用Mojo::Exception-&gt;throw(&#8216;string&#8217;)不会携带上下文信息.  
 </li>
-<li>controller的render\<sub>exception用来渲染异常页面，它会示例化Mojo</sub>::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+<li>controller的render\_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
 </li>
 <li>捕获异常: 
 <div class="org-src-container">
@@ -167,7 +167,7 @@
 </pre>
 </div>
 </li>
-<li>返回异常页面: $self-&gt;render<sub>exception</sub>(&#x2026;);
+<li>返回异常页面:&nbsp;$self-&gt;render_exception(&#x2026;);
 </li>
 </ul>
 </div>
@@ -208,19 +208,19 @@
 埋点和回调，可以在请求处理和响应的各个阶段进行回调函数的挂入来完成高级自定义。如Exception的处理就是hook来实现的。&nbsp;Hook点有:
 </p>
 <ul class="org-ul">
-<li>after<sub>build</sub><sub>tx</sub>
+<li>after_build_tx
 </li>
-<li>before<sub>dispatch</sub>
+<li>before_dispatch
 </li>
-<li>after<sub>static</sub>
+<li>after_static
 </li>
-<li>before<sub>routes</sub>
+<li>before_routes
 </li>
-<li>after<sub>render</sub>
+<li>after_render
 </li>
-<li>after<sub>dispatch</sub>
+<li>after_dispatch
 </li>
-<li>around<sub>dispatch</sub>
+<li>around_dispatch
 </li>
 </ul>
 </div>
@@ -396,7 +396,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload&nbsp;,
 使用CoreModule: Time::Piece 和&nbsp;Time::Seconds
 </p>
 <ul class="org-ul">
-<li>Time::Seconds : <span class="caps">ONE</span><sub><span class="caps">DAY</span></sub>, <span class="caps">ONE</span><sub><span class="caps">MIN</span></sub> , $s-&gt;sencods &#x2026;&nbsp;提供秒到各个单位的转换.
+<li>Time::Seconds : ONE_DAY, ONE_MIN , $s-&gt;sencods &#x2026;&nbsp;提供秒到各个单位的转换.
 </li>
 <li>Time::Piece   : 提供localetime 函数, 返回本地时间,&nbsp;2个Time::Piece对象的差结果是Time::Seconds对象.
 </li>
@@ -421,7 +421,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload&nbsp;,
 使用插件Mojolicious::Plugin::Human
 </p>
 <ul class="org-ul">
-<li>导出很多helper:human<sub>datetime</sub>,human<sub>date</sub>&#x2026; 方便进行变量的本地化和人性化查看的转换. 如: human<sub>datetime</sub> $now
+<li>导出很多helper:human_datetime,human_date&#x2026; 方便进行变量的本地化和人性化查看的转换. 如: human_datetime&nbsp;$now
 </li>
 </ul>
 </div>
@@ -498,7 +498,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload&nbsp;,
 <h3 id="sec-2-11">获取时间</h3>
 <div class="outline-text-3" id="text-2-11">
 <p>
-Mojo::Util::steady\<sub>time</sub>
+Mojo::Util::steady\_time
 </p>
 <ul class="org-ul">
 <li>使用Time::HiRes模块获得的当前高精度时间
@@ -520,7 +520,7 @@ Mojo::Util模块
 </li>
 <li>squish,&nbsp;删除首尾的空白符,并且合并行中的连续空白符
 </li>
-<li>md5\<sub>bytes</sub>,md5\<sub>sum</sub>,sha1\<sub>bytes</sub>,sha1\<sub>sum</sub>,b64\<sub>decode</sub>,b64\<sub>encode</sub>,encode,decode
+<li>md5\_bytes,md5\_sum,sha1\_bytes,sha1\_sum,b64\_decode,b64\_encode,encode,decode
 </li>
 </ul>
 </div>
@@ -530,7 +530,7 @@ Mojo::Util模块
 <h3 id="sec-2-13">给类添加方法或者函数</h3>
 <div class="outline-text-3" id="text-2-13">
 <p>
-Mojo::Util::mokey\<sub>patch</sub>
+Mojo::Util::mokey\_patch
 </p>
 <div class="org-src-container">
 
