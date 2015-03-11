@@ -26,7 +26,12 @@ Erlang语言，时间上不算新，1987与Perl同岁。为大并发设计，支
 + atom :: atom 代表了一种类似其它语言常量的东西
 + port :: erlang与其它语言的程序对接，使用port的概念，将其它程序映射为一个进程。通过port进行交互。
 + Jinterface :: java与erlang对接的java库 [[http://www.erlang.org/doc/apps/jinterface/jinterface_users_guide.html][Jinterface Package]]
-
++ sasl ::
+  - overload —— cpu 使用率控制
+  - alarm_handler —— alarm 处理接口
+  - rb —— report browser tool , 查询和浏览report
+  - release_handler —— release相关的工具和接口
+  - systools —— 脚本生成、upgrade生成等工具
 ** 工具和支持
 + rebar :: 项目管理，类似maven。
 
