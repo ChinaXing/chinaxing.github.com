@@ -30,11 +30,30 @@ UDP 面向数据报，不会分段。
 半链接缓冲队列长度。
 **** somaxconn
 处于listen状态单个端口上面accept队列长度。
+**** tcp_synack_retries
+链接被动打开方的确认链接的应答最大重试次数。
+**** tcp_syncookies
+开启此功能，防止sync flood攻击，在将链接加入syn_backlog之前先发出syn并带上cookies。
+**** tcp_syn_retries
+链接主动打开方的syn尝试次数
+**** tcp_abort_on_overflow
+如果上层accept应用无法处理过来，就对新来的connection直接rst。
 *** 传输过程中
 **** tcp_window_scaling
 调整window大小，针对更大的tcp报文——大于64k。
 **** tcp_congestion_control
 拥塞控制算法。默认的算法是慢启动——线性增大，快减少——重传超时指数后退，丢包重传减半。
+**** tcp_retrans_collapse
+重传合并
+**** tcp_retries1
+进行重传的次数，超过这个次数后进入第二阶段的重传，这个阶段假设网络是ok的
+**** tcp_retries2
+第二阶段的重传，重传次数增加。
+*** 链接断开
+**** tcp_orphan_reties
+探测对端已经close的次数
+**** tcp_max_orphans
+同样是为了防止dos攻击
 *** TimeWait
 **** tcp_fin_timeout 
 处于fin_wait_2状态的tcp等待时间，超过此时间进入closed状态。
@@ -52,11 +71,12 @@ UDP 面向数据报，不会分段。
 最大tw状态的链接数，超过这个数字，tw的状态链接被直接丢弃。设置这个值为了防止攻击造成SOCKET被大量 =TIME_WAIT= 占用。
 
 *** 缓冲区
-缓冲区，也就是所谓的tcp窗口。这里的参数都是针对一个链接而言的。因为没有必要限制全局的。
+**** tcp_mem
+tcp 内存总量，分别是［low，watermark，hight］，这是全局内存的限制，在boot time计算得到。
 ****  net.core.rmem_default
-读缓冲的大小
+读缓冲的大小 —— per connection
 **** net.core.rmem_max
-最大值
+最大值 —— per connection
 **** net.core.wmem_default
 写缓冲的大小
 **** net.core.wmem_max
@@ -66,8 +86,10 @@ tcp receive buffer size -- Per connection.
 **** tcp_wmem
 tcp send buffer size -- Per connection.
 *** Keepalive
-**** tcp_keepalive_intvl
+**** tcp_keepalive_time
 多久没有数据就开始进行probe来探测链接的活跃
+**** tcp_keepalive_intvl
+probe 重试间隔
 **** tcp_keepalive_probes
 连续探测多少次都失败后就认为链接断裂了。
 *** port
