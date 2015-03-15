@@ -1,0 +1,40 @@
+#+BEGIN_HTML
+---
+date: 2015-03-16 00:17:13
+template: tech.jade
+title: CSP -- Communicating Sequential Processes
+category: CS-Arch
+chage_frequency: monthly
+tag: concurrency
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+*** CSP 大意
+
+CSP 是处理并发编程的一种设计模式或者模型，指导并发程序的设计，它提供一种并发程序可实践的组织方法或者设计范式，通过此方法，可以减少并发程序引入的其它缺点，减少和规避并发程序的常见缺点和bug。
+
+CSP 是 Hoare 发明的，据说是经过了数学的理论论证，有一定的理论基础。
+
+大致的思想是，将程序分成两种模块，Processor 与 Channel，Processor 代表了执行任务的顺序单元，它们内部没有并发，而Channel代表了并发流之间的信息交互，如共享数据的交换、修改、消息传递等等。
+
+除了Channel，Processor之间再无联系，这样就将并发同步作用缩小在Channel之处，使得问题得到了约束、集中。
+
+Processor 通过 Channel 进行连接，基于这两种组件，我们就可以构建摩天大楼或者是复杂的处理器。
+
+同步操作与争用并没有消失，只是聚焦在Channel之上，Processor之间的协作，Channel提供原语来支持，如Barrier等。
+
+CSP 是一种处理并发的方法，当然不是唯一的解决方法，是一种可用的选择或者设计指导，下次写程序的时候，你就可以尝试这么组织你的程序了。
+
+CSP 的好处是使得系统较为清晰，Processor 之间是解耦合的，职责也非常清楚，容易理解和维护。
+
+*** CSP 的应用
+- Java 语言的CSP实现 :: JCSP
+- GO :: Go 语言内置了CSP的支持，Go routine之间的同步通过CSP Channel来完成:
+
+	_"Go's design was strongly influenced by Hoare's paper ..."_  [[https://godoc.org/github.com/thomas11/csp][go scp]]
+
+*** Refrence
+- [[http://www.ibm.com/developerworks/java/library/j-csp2/?S_TACT=105AGX52&S_CMP=cn-a-j][CSP for Java]] 
+- [[http://www.usingcsp.com/cspbook.pdf][csp by C. A. R. Hoare]]
