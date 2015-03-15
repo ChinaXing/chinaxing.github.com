@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Erlang 开发环境 - The Chinaxing's blog
+    <title>Haskell，稍后再回来 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -16,8 +16,8 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
-          <li class="active"><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
+          <li class="active"><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
@@ -30,60 +30,62 @@
     </header>
     <section id="content">
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
-      <h2 style="text-align:center">Erlang 开发环境
+      <h2 style="text-align:center">Haskell，稍后再回来
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
       </div>
-      <link rel="stylesheet" href="/css/highlight/codepen-embed.css">
-      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
-      <div class="tech">
+      <div class="article">
+
 <p>
-Erlang&nbsp;程序开发环境包括了：
+我对一件事物的热情，往往来的没有理由，热情突然涌来，很突然地决定喜欢上一件事物，没有太多的理性可言，一些理由自己也说不上来，如果说是什么，大概只有一个字：
 </p>
+<blockquote>
+<p>
+值&nbsp;！
+</p>
+</blockquote>
+
+<p>
+比如，喜欢上Haskell&nbsp;语言，并不是深思熟虑，了解深刻后才决心坚持，而仅仅是惊鸿一瞥，觉得它学院派，讲求“pure”，又能够抽象的很理论，必然应该较严谨，就像一个美丽的女孩，却偏偏有原则和坚持，我们所喜欢的淑女。
+</p>
+
+<p>
+那么，现实也往往教人理智与成熟，热情洋溢的人生必然也有别样的忧伤，我们总要生存，才能为浪漫的理想所附丽。
+</p>
+
+<p>
+所以，我将暂别Haskell，只在有空的时候再回来，再来研究它，写有趣的program，享受其中理性的乐趣，别人常说，程序员写代码的过程是枯燥的，甚至称为码农，其实，这其中的那种独有的乐趣，不也是如同生命中其它乐趣一样，真实存在吗？
+</p>
+
+<p>
+尊重每一种爱好，虽然你不懂，但应该懂得尊重。爱好没有贵贱高下，说这个就太俗。
+</p>
+
+<p>
+还有好多东西没有了解，这个美丽的语言，有许多理智光辉闪闪的地方，如夜晚的星星，如床前的台灯，如约会时的莹莹的烛光，都有让你内心宁静而欣然的美。
+</p>
+
 <ul class="org-ul">
-<li>代码编辑器 —— Emacs&nbsp;erlang-mode
+<li>熟练Monad、Applicative、Functor
 </li>
-<li>编译器 ——&nbsp;erlc/hipe（native代码）
+<li>Monad Transformer&nbsp;我还没完全搞明白
 </li>
-<li>交互式解释器 ——&nbsp;erl
+<li>parallel and concurrency in Haskell&nbsp;还没完全学完
 </li>
-<li>执行器 —— erl ，&nbsp;escript
+<li>real world Haskell&nbsp;还没看完
 </li>
-<li>项目管理器 ——&nbsp;rebar，reltool
+<li>Haskell&nbsp;的宏或者模板
 </li>
-<li>调试器 ——&nbsp;debugger:start()
+<li><span class="caps">GHC</span>&nbsp;窥秘之编译器的实现
 </li>
-<li>性能诊断器 ——&nbsp;fprof，eprof，cover，cprof
+<li><span class="caps">GHC</span>&nbsp;窥秘之GC实现
 </li>
-<li>错误诊断器 ——&nbsp;dialyzer
-</li>
-<li>crash 分析 —— erl -s crashdump_viewer&nbsp;start
-</li>
-<li>运行时监控 ——&nbsp;observer:start()
-</li>
-<li>日志 ——&nbsp;error_logger
-</li>
-<li>sasl —— system architechture Support libraries&nbsp;提供了系统报警处理、升级、打包release、cpu使用率控制等。
+<li>惰性求值的内部实现
 </li>
 </ul>
 
-<p>
-我的Erlang <span class="caps">UDP</span>发送器 : <a href="https://github.com/ChinaXing/udp-broker">https://github.com/ChinaXing/udp-broker</a>
-</p>
-
       </div>
-      <script>
-        $(function(){
-         $('pre.src').each(function(i, block){
-            var b = $(block);
-            var m = b.attr('class').match(/src src-(.*)/,1);
-            if (null == m || m.length < 2 ) { return; }
-            b.addClass(m[1]);
-            hljs.highlightBlock(block);
-         });
-        })
-      </script>
       <!-- Table of Content-->
       <script src="/js/tableofcontents.js" charset="utf-8"></script>
       <script charset="utf-8">

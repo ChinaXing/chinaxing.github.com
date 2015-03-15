@@ -16,11 +16,11 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>7</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>7</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>28</sup></a></li>
         </ul>
@@ -29,6 +29,43 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>15. March 2015</span></p>
+          <h2><a href="/articles/Haskell/2015/03/16/2015-03-15-come-back-soon.html">Haskell，稍后再回来</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+我对一件事物的热情，往往来的没有理由，热情突然涌来，很突然地决定喜欢上一件事物，没有太多的理性可言，一些理由自己也说不上来，如果说是什么，大概只有一个字：
+</p>
+<blockquote>
+<p>
+值&nbsp;！
+</p>
+</blockquote>
+
+<p>
+比如，喜欢上Haskell&nbsp;语言，并不是深思熟虑，了解深刻后才决心坚持，而仅仅是惊鸿一瞥，觉得它学院派，讲求“pure”，又能够抽象的很理论，必然应该较严谨，就像一个美丽的女孩，却偏偏有原则和坚持，我们所喜欢的淑女。
+</p>
+
+<p>
+那么，现实也往往教人理智与成熟，热情洋溢的人生必然也有别样的忧伤，我们总要生存，才能为浪漫的理想所附丽。
+</p>
+
+<p>
+所以，我将暂别Haskell，只在有空的时候再回来，再来研究它，写有趣的program，享受其中理性的乐趣，别人常说，程序员写代码的过程是枯燥的，甚至称为码农，其实，这其中的那种独有的乐趣，不也是如同生命中其它乐趣一样，真实存在吗？
+</p>
+
+<p>
+尊重每一种爱好，虽然你不懂，但应该懂得尊重。爱好没有贵贱高下，说这个就太俗。
+</p>
+
+<p>
+还有好多东西没有</p>
+          <p class="more"><a href="/articles/Haskell/2015/03/16/2015-03-15-come-back-soon.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>14. March 2015</span></p>
@@ -85,48 +122,6 @@
 <li><a href="#sec-2-4">tcp_syncookies</a></li>
 </ul></li></ul></div></div>
           <p class="more"><a href="/articles/linux/2015/03/12/2015-03-11-linux-tcp-tunning.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>10. March 2015</span></p>
-          <h2><a href="/articles/linux/2015/03/10/2015-03-10-ip-port.html">Linux ip 端口选择</a></h2>
-        </header>
-        <section class="content">
-<p>
-网络通信中有2种角色，client与server，分别执行不同的操作：
-</p>
-
-<dl class="org-dl">
-<dt> server </dt><dd>listen
-</dd>
-<dt> client </dt><dd>connect
-</dd>
-</dl>
-
-<p>
-server的端口相对固定，而且是知名端口，或者是配置文件中配置的。
-</p>
-
-<p>
-对于client连接远程客户端的时候，需要选取本地的端口和ip来建立连接。
-</p>
-
-<p>
-为了避免Client选择的端口与同一服务器上别的服务的端口冲突：
-</p>
-
-<p>
-比如：一个服务运行的端口是9090，如果此时启动的另一个client程序，就可能选择了本地的9090端口，然后再去启动服务程序的时候，因为此端口已经被占用，就会发出inuse的错误。
-</p>
-
-<p>
-解决这个问题的方案，Linux&nbsp;内核提供了2个配置参数：
-</p>
-
-<dl class="org-dl">
-<dt> ip_local_port_range </dt><dd>用来指定本地的端口选择范围，如果你需要大量的连接，这</dd></dl>
-          <p class="more"><a href="/articles/linux/2015/03/10/2015-03-10-ip-port.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>
