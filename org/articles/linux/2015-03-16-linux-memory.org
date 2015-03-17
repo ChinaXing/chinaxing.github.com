@@ -1,0 +1,61 @@
+#+BEGIN_HTML
+---
+date: 2015-03-16 13:35:14
+template: tech.jade
+title: Linux 内存使用
+category: Linux
+chage_frequency: monthly
+tag: Linux
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Linux 内存使用，经常比较模糊，这篇摘要一定要简洁明了的解决这个问题。
+
+内存，按照系统和应用角度来看：
+- 应用程序内存 :: 
+处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。  
+
+查看应用程序内存可以通过 =ps= 命令 =/proc/$pid/= 等途径获得。其中 =ps= 命令中的 =RSS= 字段是程序此刻所占用的内存量。
+- Kernel内存 ::
+应用程序内存之外的内存，都归内核内存，内核内存可以想到，因为内核也是一个程序，所以也有上面用户程序说到的那些内存，如代码、栈、数据。
+
+这里不同的是，我们可以将这里的数据再细分一下，按照其特性（占用比例较大，而且是可以及时拿来供应用程序使用）分一下：
+  - slab :: 内核数据结构对象的缓冲，这里的缓冲减少了频繁的创建与销毁带来的开销以及造成的碎片，所以内核做了一层cache来管理这些内使用到的对象。
+            如：task_structure, dentry, inode, vm_area等等。
+            因为是缓冲，所以有一部分是可以释放的，有一些不行，因为在使用中。
+  - pagetables :: 这个数据结果是内核管理物理内存页的，如跟踪记录内存页的使用情况、是否dirty、是否可写等等。因为内存是固定的，因此管理内存页的这种数据结构也是固定的，在系统启动的时候来进行初始化，它们因为要管理内存页，所以永远不空闲，永远不可释放用作它用。
+  - page cache :: fs层在读写文件的时候为了提升效率，一次将一整个页面读入内存，缓冲起来，减少对磁盘的频繁请求，只要命中了内存cache就减少了磁盘的io，这个cache类似于slab，有部分是可回收的，有部分是因为被修改所以是dirty的，需要释放用作它用之前，flush改动到磁盘。
+  - buffers :: 这部分数据是缓冲着文件系统和文件、目录相关的元数据，而page cache是数据。两者是有关联的。
+#+BEGIN_EXAMPLE
+             total       used       free     shared    buffers     cached
+Mem:          3959        560       3398          0          2         32
+-/+ buffers/cache:        525       3433
+Swap:            0          0          0
+#+END_EXAMPLE
+
+- buffers :: file system metadata
+- cached :: pages with actual contents of files or block devices
+- used :: slab + pagetables + processes rss + buffers + cached + kernel stack + kernel code + etc.
+- slab :: 内核对象的缓存，部分可释放。
+- pagetables :: 管理内存页的数据解构，不可释放。
+
+*** 释放缓冲
+#+BEGIN_SRC shell
+#To free pagecache:
+	echo 1 > /proc/sys/vm/drop_caches
+#To free reclaimable slab objects (includes dentries and inodes):
+	echo 2 > /proc/sys/vm/drop_caches
+#To free slab objects and pagecache:
+	echo 3 > /proc/sys/vm/drop_caches
+#+END_SRC
+
+*** reference
+- https://www.kernel.org/doc/Documentation/sysctl/vm.txt
+- [[https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/Tuning_and_Optimizing_Red_Hat_Enterprise_Linux_for_Oracle_9i_and_10g_Databases/chap-Oracle_9i_and_10g_Tuning_Guide-Memory_Usage_and_Page_Cache.html][mem used redhat]]
+- [[http://blog.famzah.net/2014/09/22/know-your-linux-memory-usage/][Know your Linux memory usage]]
+
+
+
+
