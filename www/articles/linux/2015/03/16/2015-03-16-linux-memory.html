@@ -15,14 +15,15 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>8</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
-          <li class="active"><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
+          <li><a href="/Linuxn/index.html">Linuxn<sup>1</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -83,7 +84,7 @@ Linux&nbsp;内存使用，经常比较模糊，这篇摘要一定要简洁明了
 </dd>
 <dt> page&nbsp;cache </dt><dd>fs层在读写文件的时候为了提升效率，一次将一整个页面读入内存，缓冲起来，减少对磁盘的频繁请求，只要命中了内存cache就减少了磁盘的io，这个cache类似于slab，有部分是可回收的，有部分是因为被修改所以是dirty的，需要释放用作它用之前，flush改动到磁盘。
 </dd>
-<dt> buffers </dt><dd>这部分数据是缓冲着文件系统和文件、目录相关的元数据，而page&nbsp;cache是数据。两者是有关联的。
+<dt> buffers </dt><dd>非page&nbsp;cache的裸设备<span class="caps">IO</span>缓冲。
 </dd>
 </dl>
 <pre class="example">
@@ -92,11 +93,10 @@ Mem:          3959        560       3398          0          2         32
 -/+ buffers/cache:        525       3433
 Swap:            0          0          0
 </pre>
-
 <dl class="org-dl">
-<dt> buffers </dt><dd>file system&nbsp;metadata
+<dt> buffers </dt><dd>Buffers are in-memory block I/O buffers. They are relatively short-lived. Prior to Linux kernel version 2.4, Linux had separate page and buffer caches. Since 2.4, the page and buffer cache are unified and Buffers is raw disk blocks not represented in the page cache—i.e., not file data. The Buffers metric is thus of minimal importance. On most systems, Buffers is often only tens of&nbsp;megabytes.
 </dd>
-<dt> cached </dt><dd>pages with actual contents of files or block&nbsp;devices
+<dt> cached </dt><dd>Cached is the size of the Linux page cache, minus the memory in the swap cache, which is represented by SwapCached (thus the total page cache size is Cached + SwapCached). Linux performs all file I/O through the page cache. Writes are implemented as simply marking as dirty the corresponding pages in the page cache; the flusher threads then periodically write back to disk any dirty pages. Reads are implemented by returning the data from the page cache; if the data is not yet in the cache, it is first populated. On a modern Linux system, Cached can easily be several gigabytes. It will shrink only in response to memory pressure. The system will purge the page cache along with swapping data out to disk to make available more memory as&nbsp;needed.
 </dd>
 <dt> used </dt><dd>slab + pagetables + processes rss + buffers + cached + kernel stack + kernel code +&nbsp;etc.
 </dd>

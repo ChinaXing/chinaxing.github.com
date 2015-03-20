@@ -1,0 +1,197 @@
+---
+date: 2015-03-20 21:10:58
+template: tech.jade
+title: strace —— system call trace
+category: Linuxn
+chage_frequency: monthly
+tag: Linux, strace
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">trace tools</a></li>
+<li><a href="#sec-2">strace</a>
+<ul>
+<li><a href="#sec-2-1">跟踪模式启动程序</a></li>
+<li><a href="#sec-2-2">跟踪运行中的程序</a></li>
+<li><a href="#sec-2-3">跟踪特定的系统调用</a></li>
+<li><a href="#sec-2-4">跟踪某个参数的系统调用</a></li>
+<li><a href="#sec-2-5">跟踪调用时长</a></li>
+<li><a href="#sec-2-6">跟踪子进程（线程）</a></li>
+<li><a href="#sec-2-7">打印汇总统计信息</a></li>
+<li><a href="#sec-2-8">输出到文件</a></li>
+<li><a href="#sec-2-9">输出更宽的内存</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">strace 原理与注意事项</a></li>
+<li><a href="#sec-4">reference</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">trace tools</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Linux 系统下面有许多工具辅助跟踪和剖析系统和程序。其中Trace工具系列，为跟踪进程提供了便捷：
+</p>
+<dl class="org-dl">
+<dt> strace </dt><dd>trace syscall
+</dd>
+<dt> ptrace </dt><dd></dd>
+<dt> ltrace </dt><dd>library call trace
+</dd>
+<dt> btrace </dt><dd>java method trace by instrumentation tech.
+</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">strace</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+strace可以跟踪打印进程/线程的系统调用。非常方便的可以剖析程序的内部行为，可以用来验证我们的猜测，观察程序的行为。
+</p>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">跟踪模式启动程序</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace ls
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">跟踪运行中的程序</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -p 1922
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">跟踪特定的系统调用</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -e trace=fork,clone,read,write -p 1922
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">跟踪某个参数的系统调用</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -e write=3 -p 1922 # write 的fd 为3
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">跟踪调用时长</h3>
+<div class="outline-text-3" id="text-2-5">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -T -p 1922
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">跟踪子进程（线程）</h3>
+<div class="outline-text-3" id="text-2-6">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -f -p 1922
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">打印汇总统计信息</h3>
+<div class="outline-text-3" id="text-2-7">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -c -p 1922
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8">输出到文件</h3>
+<div class="outline-text-3" id="text-2-8">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -p 1922 -o file
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9">输出更宽的内存</h3>
+<div class="outline-text-3" id="text-2-9">
+<div class="org-src-container">
+
+<pre class="src src-shell">strace -p 1922 -s0 # -s1024
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">strace 原理与注意事项</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+strace使用ptrace的系统调用，跟踪进程，类似gdb调试进程的原理，建立了一种跟踪与被跟踪的关系。
+</p>
+
+<p>
+这种跟踪会带来性能损失，对于被跟踪进程，其性能会受到很大影响。
+</p>
+
+<p>
+我在Java机器上面运行，程序会超时报警。此外，一些其它使用者也测试出了这一情况：
+</p>
+<blockquote>
+<p>
+WARNING: Can cause significant and sometimes massive performance overhead, in the worst case, slowing the target application by over 100x. This may not only make it unsuitable for production use, but any timing information may also be so distorted as to be misleading.
+</p>
+</blockquote>
+
+<p>
+下面是对dd的测试结果：
+</p>
+<pre class="example">
+$ dd if=/dev/zero of=/dev/null bs=1 count=500k
+512000+0 records in
+512000+0 records out
+512000 bytes (512 kB) copied, 0.103851 s, 4.9 MB/s
+</pre>
+<pre class="example">
+$ strace -eaccept dd if=/dev/zero of=/dev/null bs=1 count=500k
+512000+0 records in
+512000+0 records out
+512000 bytes (512 kB) copied, 45.9599 s, 11.1 kB/s
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">reference</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><a href="http://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html">http://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html</a>
+</li>
+</ul>
+</div>
+</div>

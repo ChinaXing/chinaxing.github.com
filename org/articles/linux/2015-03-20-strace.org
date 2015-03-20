@@ -1,0 +1,86 @@
+#+BEGIN_HTML
+---
+date: 2015-03-20 21:10:58
+template: tech.jade
+title: strace —— system call trace
+category: Linuxn
+chage_frequency: monthly
+tag: Linux, strace
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+*** trace tools
+Linux 系统下面有许多工具辅助跟踪和剖析系统和程序。其中Trace工具系列，为跟踪进程提供了便捷：
+- strace :: trace syscall
+- ptrace :: 
+- ltrace :: library call trace
+- btrace :: java method trace by instrumentation tech.
+
+*** strace
+strace可以跟踪打印进程/线程的系统调用。非常方便的可以剖析程序的内部行为，可以用来验证我们的猜测，观察程序的行为。
+
+**** 跟踪模式启动程序
+#+BEGIN_SRC shell
+strace ls
+#+END_SRC
+**** 跟踪运行中的程序
+#+BEGIN_SRC shell
+strace -p 1922
+#+END_SRC
+**** 跟踪特定的系统调用
+#+BEGIN_SRC shell
+strace -e trace=fork,clone,read,write -p 1922
+#+END_SRC
+**** 跟踪某个参数的系统调用
+#+BEGIN_SRC shell
+strace -e write=3 -p 1922 # write 的fd 为3
+#+END_SRC
+**** 跟踪调用时长
+#+BEGIN_SRC shell
+strace -T -p 1922
+#+END_SRC
+**** 跟踪子进程（线程）
+#+BEGIN_SRC shell
+strace -f -p 1922
+#+END_SRC
+**** 打印汇总统计信息
+#+BEGIN_SRC shell
+strace -c -p 1922
+#+END_SRC
+**** 输出到文件
+#+BEGIN_SRC shell
+strace -p 1922 -o file
+#+END_SRC
+**** 输出更宽的内存
+#+BEGIN_SRC shell
+strace -p 1922 -s0 # -s1024
+#+END_SRC
+
+*** strace 原理与注意事项
+strace使用ptrace的系统调用，跟踪进程，类似gdb调试进程的原理，建立了一种跟踪与被跟踪的关系。
+
+这种跟踪会带来性能损失，对于被跟踪进程，其性能会受到很大影响。
+
+我在Java机器上面运行，程序会超时报警。此外，一些其它使用者也测试出了这一情况：
+#+BEGIN_QUOTE
+WARNING: Can cause significant and sometimes massive performance overhead, in the worst case, slowing the target application by over 100x. This may not only make it unsuitable for production use, but any timing information may also be so distorted as to be misleading.
+#+END_QUOTE
+
+下面是对dd的测试结果：
+#+BEGIN_EXAMPLE
+$ dd if=/dev/zero of=/dev/null bs=1 count=500k
+512000+0 records in
+512000+0 records out
+512000 bytes (512 kB) copied, 0.103851 s, 4.9 MB/s
+#+END_EXAMPLE
+#+BEGIN_EXAMPLE
+$ strace -eaccept dd if=/dev/zero of=/dev/null bs=1 count=500k
+512000+0 records in
+512000+0 records out
+512000 bytes (512 kB) copied, 45.9599 s, 11.1 kB/s
+#+END_EXAMPLE
+
+*** reference
+- http://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html
