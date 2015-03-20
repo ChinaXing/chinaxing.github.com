@@ -14,8 +14,9 @@ tag: Linux, strace
 *** trace tools
 Linux 系统下面有许多工具辅助跟踪和剖析系统和程序。其中Trace工具系列，为跟踪进程提供了便捷：
 - strace :: trace syscall
-- pstack :: print a stack trace of a running process
-- ltrace :: library call trace
+- pstack :: print a stack trace of a running process.
+- ltrace :: library call trace.
+- systemtap :: kernel function/data and user function/data probe.
 - btrace :: java method trace by instrumentation tech.
 
 *** strace
