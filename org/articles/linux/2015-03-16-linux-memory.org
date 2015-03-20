@@ -11,35 +11,85 @@ tag: Linux
 #+OPTIONS: toc:nil
 #+TOC: headlines 2
 
-Linux 内存使用，经常比较模糊，这篇摘要一定要简洁明了的解决这个问题。
-
 内存，按照系统和应用角度来看：
-- 应用程序内存 :: 
+*** 应用程序内存
 处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。  
 
 查看应用程序内存可以通过 =ps= 命令 =/proc/$pid/= 等途径获得。其中 =ps= 命令中的 =RSS= 字段是程序此刻所占用的内存量。
-- Kernel内存 ::
+*** Kernel内存
 应用程序内存之外的内存，都归内核内存，内核内存可以想到，因为内核也是一个程序，所以也有上面用户程序说到的那些内存，如代码、栈、数据。
 
-这里不同的是，我们可以将这里的数据再细分一下，按照其特性（占用比例较大，而且是可以及时拿来供应用程序使用）分一下：
-  - slab :: 内核数据结构对象的缓冲，这里的缓冲减少了频繁的创建与销毁带来的开销以及造成的碎片，所以内核做了一层cache来管理这些内使用到的对象。
+较大的消耗有:
+
+- slab :: 内核数据结构对象的缓冲，这里的缓冲减少了频繁的创建与销毁带来的开销以及造成的碎片，所以内核做了一层cache来管理这些内使用到的对象。
             如：task_structure, dentry, inode, vm_area等等。
             因为是缓冲，所以有一部分是可以释放的，有一些不行，因为在使用中。
-  - pagetables :: 这个数据结果是内核管理物理内存页的，如跟踪记录内存页的使用情况、是否dirty、是否可写等等。因为内存是固定的，因此管理内存页的这种数据结构也是固定的，在系统启动的时候来进行初始化，它们因为要管理内存页，所以永远不空闲，永远不可释放用作它用。
-  - page cache :: fs层在读写文件的时候为了提升效率，一次将一整个页面读入内存，缓冲起来，减少对磁盘的频繁请求，只要命中了内存cache就减少了磁盘的io，这个cache类似于slab，有部分是可回收的，有部分是因为被修改所以是dirty的，需要释放用作它用之前，flush改动到磁盘。
-  - buffers :: 非page cache的裸设备IO缓冲。
+- pagetables :: 这个数据结果是内核管理物理内存页的，如跟踪记录内存页的使用情况、是否dirty、是否可写等等。
+- page cache :: Cached is the size of the Linux page cache, minus the memory in the swap cache, which is represented by SwapCached (thus the total page cache size is Cached + SwapCached). Linux performs all file I/O through the page cache. Writes are implemented as simply marking as dirty the corresponding pages in the page cache; the flusher threads then periodically write back to disk any dirty pages. Reads are implemented by returning the data from the page cache; if the data is not yet in the cache, it is first populated. On a modern Linux system, Cached can easily be several gigabytes. It will shrink only in response to memory pressure. The system will purge the page cache along with swapping data out to disk to make available more memory as needed.
+- buffers :: Buffers are in-memory block I/O buffers. They are relatively short-lived. Prior to Linux kernel version 2.4, Linux had separate page and buffer caches. Since 2.4, the page and buffer cache are unified and Buffers is raw disk blocks not represented in the page cache—i.e., not file data. The Buffers metric is thus of minimal importance. On most systems, Buffers is often only tens of megabytes.
+**** free 输出
 #+BEGIN_EXAMPLE
              total       used       free     shared    buffers     cached
 Mem:          3959        560       3398          0          2         32
 -/+ buffers/cache:        525       3433
 Swap:            0          0          0
 #+END_EXAMPLE
-- buffers :: Buffers are in-memory block I/O buffers. They are relatively short-lived. Prior to Linux kernel version 2.4, Linux had separate page and buffer caches. Since 2.4, the page and buffer cache are unified and Buffers is raw disk blocks not represented in the page cache—i.e., not file data. The Buffers metric is thus of minimal importance. On most systems, Buffers is often only tens of megabytes.
-- cached ::  Cached is the size of the Linux page cache, minus the memory in the swap cache, which is represented by SwapCached (thus the total page cache size is Cached + SwapCached). Linux performs all file I/O through the page cache. Writes are implemented as simply marking as dirty the corresponding pages in the page cache; the flusher threads then periodically write back to disk any dirty pages. Reads are implemented by returning the data from the page cache; if the data is not yet in the cache, it is first populated. On a modern Linux system, Cached can easily be several gigabytes. It will shrink only in response to memory pressure. The system will purge the page cache along with swapping data out to disk to make available more memory as needed.
 - used :: slab + pagetables + processes rss + buffers + cached + kernel stack + kernel code + etc.
-- slab :: 内核对象的缓存，部分可释放。
-- pagetables :: 管理内存页的数据解构，不可释放。
 
+*** 内存使用详情
+=/proc/meminfo= 包含内存总体使用的详细明细在此：
+#+BEGIN_EXAMPLE
+MemTotal:        3876532 kB
+MemFree:         1982232 kB
+MemAvailable:    2043864 kB
+Buffers:               0 kB
+Cached:           202344 kB
+SwapCached:            0 kB
+Active:          1518560 kB
+Inactive:          20640 kB
+Active(anon):    1337292 kB
+Inactive(anon):     8528 kB
+Active(file):     181268 kB
+Inactive(file):    12112 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:               232 kB
+Writeback:             0 kB
+AnonPages:       1336756 kB
+Mapped:            14772 kB
+Shmem:              8952 kB
+Slab:             260788 kB
+SReclaimable:      74388 kB
+SUnreclaim:       186400 kB
+KernelStack:        2640 kB
+PageTables:         7944 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     1938264 kB
+Committed_AS:    1685000 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      322380 kB
+VmallocChunk:   34359393212 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:   1200128 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:      116608 kB
+DirectMap2M:     4077568 kB
+#+END_EXAMPL
+*** slab 详情
+=/proc/slabinfo= 包含了当前系统的slab分配情况。通过 =slabtop= 命令可以动态查看slab分配的详情，此外，还可以通过 =vmstat -m= 来查看slab。
+
+=/proc/sys/vm/vfs_cache_pressure= vfs会占用大量的slab缓存dentry和inode，这个参数来设置这种换冲的程度。
+
+*** swap
+swap 用来交换匿名页，在内存紧张的时候，内核将匿名页面换出到swap磁盘分区上面，来腾出内存供分配。swap 有个参数，来调整进行swap的倾向： =/proc/sys/vm/swappiness= 这个值越大，越早进入swap。
 *** 释放缓冲
 #+BEGIN_SRC shell
 #To free pagecache:

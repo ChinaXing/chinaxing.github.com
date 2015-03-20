@@ -16,11 +16,11 @@
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>8</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>30</sup></a></li>
         </ul>
@@ -63,28 +63,25 @@
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">释放缓冲</a></li>
-<li><a href="#sec-2">reference</a></li>
+<li><a href="#sec-1">应用程序内存</a></li>
+<li><a href="#sec-2">Kernel内存</a>
+<ul>
+<li><a href="#sec-2-1">free&nbsp;输出</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">内存使用详情</a></li>
+<li><a href="#sec-4">slab&nbsp;详情</a></li>
+<li><a href="#sec-5">swap</a></li>
+<li><a href="#sec-6">释放缓冲</a></li>
+<li><a href="#sec-7">reference</a></li>
 </ul>
 </div>
 </div>
 
 <p>
-Linux&nbsp;内存使用，经常比较模糊，这篇摘要一定要简洁明了的解决这个问题。
-</p>
-
-<p>
 内存，按照系统和应用角度来看：
 </p>
-<dl class="org-dl">
-<dt> 应用程序内存 </dt><dd></dd>
-</dl>
-<p>
-处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。  
-</p>
 
-<p>
-查看应用程序内存可以通过 <code>ps</code> 命令 <code>/proc/$pid/</code> 等途径获得。其中 <code>ps</code> 命令中的 </p>
           <p class="more"><a href="/articles/linux/2015/03/16/2015-03-16-linux-memory.html">more</a></p>
         </section>
       </article>
