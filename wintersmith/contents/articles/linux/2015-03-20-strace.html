@@ -2,7 +2,7 @@
 date: 2015-03-20 21:10:58
 template: tech.jade
 title: strace —— system call trace
-category: Linuxn
+category: Linux
 chage_frequency: monthly
 tag: Linux, strace
 ---
@@ -39,7 +39,8 @@ Linux 系统下面有许多工具辅助跟踪和剖析系统和程序。其中Tr
 <dl class="org-dl">
 <dt> strace </dt><dd>trace syscall
 </dd>
-<dt> ptrace </dt><dd></dd>
+<dt> pstack </dt><dd>print a stack trace of a running process
+</dd>
 <dt> ltrace </dt><dd>library call trace
 </dd>
 <dt> btrace </dt><dd>java method trace by instrumentation tech.
@@ -152,7 +153,7 @@ strace可以跟踪打印进程/线程的系统调用。非常方便的可以剖�
 <h2 id="sec-3">strace 原理与注意事项</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-strace使用ptrace的系统调用，跟踪进程，类似gdb调试进程的原理，建立了一种跟踪与被跟踪的关系。
+strace使用 <code>ptrace()</code> 系统调用，跟踪进程，类似gdb调试进程的原理，建立了一种跟踪与被跟踪的关系。
 </p>
 
 <p>

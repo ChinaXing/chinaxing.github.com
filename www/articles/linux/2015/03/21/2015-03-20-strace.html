@@ -15,15 +15,14 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>8</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>2</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
-          <li class="active"><a href="/Linuxn/index.html">Linuxn<sup>1</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>30</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div>
@@ -72,7 +71,8 @@ Linux&nbsp;系统下面有许多工具辅助跟踪和剖析系统和程序。其
 <dl class="org-dl">
 <dt> strace </dt><dd>trace&nbsp;syscall
 </dd>
-<dt> ptrace </dt><dd></dd>
+<dt> pstack </dt><dd>print a stack trace of a running&nbsp;process
+</dd>
 <dt> ltrace </dt><dd>library call&nbsp;trace
 </dd>
 <dt> btrace </dt><dd>java method trace by instrumentation&nbsp;tech.
@@ -185,7 +185,7 @@ strace可以跟踪打印进程/线程的系统调用。非常方便的可以剖�
 <h2 id="sec-3">strace&nbsp;原理与注意事项</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-strace使用ptrace的系统调用，跟踪进程，类似gdb调试进程的原理，建立了一种跟踪与被跟踪的关系。
+strace使用 <code>ptrace()</code> 系统调用，跟踪进程，类似gdb调试进程的原理，建立了一种跟踪与被跟踪的关系。
 </p>
 
 <p>
