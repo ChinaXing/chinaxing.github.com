@@ -82,7 +82,7 @@ HugePages_Surp:        0
 Hugepagesize:       2048 kB
 DirectMap4k:      116608 kB
 DirectMap2M:     4077568 kB
-#+END_EXAMPL
+#+END_EXAMPLE
 *** slab 详情
 =/proc/slabinfo= 包含了当前系统的slab分配情况。通过 =slabtop= 命令可以动态查看slab分配的详情，此外，还可以通过 =vmstat -m= 来查看slab。
 
