@@ -31,6 +31,7 @@ CSP 的好处是使得系统较为清晰，Processor 之间是解耦合的，职
 
 *** CSP 的应用
 - Java 语言的CSP实现 :: JCSP
+- Java SynchronousQueue :: 提供了类似CSP中Channel的功能，供多线程进行信息交换
 - GO :: Go 语言内置了CSP的支持，Go routine之间的同步通过CSP Channel来完成:
 
 	"Go's design was strongly influenced by Hoare's paper ..."  [[https://godoc.org/github.com/thomas11/csp][go scp]]
