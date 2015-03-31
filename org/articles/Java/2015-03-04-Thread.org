@@ -25,6 +25,9 @@ tag: Java
 - target :: runable 对象，要执行的过程。
 - group :: 线程的线程组，继承父线程。
 *** Thread 状态
+比较容易混淆的是 =BLOCKED= 与 =WAITING= , 可以这样理解， =BLOCKED= 代表那些因条件不满足 *被动* 进入暂停的状态，如进入临界区因为monitor被占用而被迫挂起，被唤醒后获取monitor而被迫挂起。因为是被动挂起，所以也由系统来被动唤醒它们，没有编程的参与。
+
+除此之外，其它由编程 *主动* 发起的暂停，就是 =WAITING= 及其带超时时间的 =TIMED_WAITING= ,如：主动发起的 =Object.wait= ，主动发起的 =LockSupport.park= 以及主动发起的 =join= 等待线程退出(内部调用了Threadd对象上面的wait, 然后Thread终止的时候notifyAll会被调用）。因为是主动挂起，需要别的编程动作来主动解除这种挂起（唤醒）。
 #+BEGIN_SRC java
     public enum State {
         /**
@@ -96,7 +99,9 @@ tag: Java
 - sleep(..) :: 休息，但是不释放拥有的对象锁——如果在同步区
 - yield() :: 主动放弃执行，提示调度器执行一次调度
 - join(..)  :: 等待线程的执行结束
-- Object.wait(..) :: 将当前线程暂停，进入 =WAITING= 状态或者 =TIMED\_WAITING= 同时释放掉获取的 monitor, 其它线程通过 =Object.notify= 或者 =Object.notifyAll= 来wakeup 它
+- Object.wait(..) :: 执行前必须获取对象monitor。将当前线程暂停，进入 =WAITING= 状态或者 =TIMED_WAITING= 同时释放掉获取的 monitor, 其它线程通过 =Object.notify= 或者 =Object.notifyAll= 来wakeup 它
+- Object.notify() :: 执行前必须获取对象monitor。随机（不确定，依赖具体实现）唤醒一个处于 =WAITING= 或 =TIMED_WAITING= 的线程，使其进入 =BLOCKED= 状态等待获取对象上的monitor。
+- Object.notifyAll() :: 执行前必须获得对象monitor。唤醒所有处于 =WAITING= 或 =TIMED_WAITING= 的线程，使它们都进入 =BLOCKED= 状态等待获取对象上的monitor。
 - synchronized(..) :: 等待对象 monitor而暂停，进入 =BLOCKED= 状态，在monitor可获取且获取成功后进入 =RUNABLE=
 - LockSupport.park(..) :: 进入暂停状态， =WAITING= 或者 =TIMED\_WAITING= 在被其它线程 =LockSupport.unpark= 后进入 =RUNABLE=
 - isAlive() :: 判断是否已经启动且未结束
@@ -129,6 +134,23 @@ tag: Java
      *
      * <p> Interrupting a thread that is not alive need not have any effect.
 #+END_SRC 
+可见，中断线程只有在线程处于 blocked的时候，才会马上生效——发出异常或者立马中断，否则如果是在运行中，那么仅仅会设置其被中断的标识。并不会马上生效。
+
+**** 线程退出WAIT状态
+有3种情况：
+- 调用线程上的interrupt方法 :: 如果线程block在事件或者IO上，那么退出WAIT状态，进入下一状态，如果有中断异常要抛出，那么在执行抛出异常前设置中断标识。否则中断标识被设置（后面调度的时候应该会检查此标识？）。
+- 调用notifyAll/notify，如果进程是wait在monitor上面。
+- 如果设置了超时而且超时时间到达，那么进入下一状态。
+*** 对象monitor 
+ 通过synchorized获取对象的monitor，形成一个临界区，临界区保证了同时只能有一个活跃线程处于临界区中。即临界区内部的代码不会并发执行。
+
+临界区内线程可以执行monitor对象上的 =wait= 系列操作，来等待某个条件的发生，这些条件发生时别的线程通过调用对象monitor上面的notify系列方法，将wait的线程唤醒退出 =WAITING= 状态，本质上是一个进程协同与同步的机制。
+
+- 为什么需要wait时候释放monitor ::
+  因为 =wait= 系列操作，意味着当前线程等待某个条件，需要别的线程满足它，因此为了不影响别的线程执行，需要释放拥有的monitor（因为别的线程可能会需要进入临界区）。
+- 为什么notify/wait需要在临界区 ::
+  不在临界区的暂停线程的方法也有，如 =LockSupport.park()= 。
+  要求在临界区，保证notify， wait的执行不会并发执行，包含notify的执行单元与包含wait的执行单元不会同时并发执行。满足这样的场景，那么就使用监视器上面的同步。
 *** Thread stack dump
 jstack -l 可以获取Jvm线程的stackTrace列表，其中列出了线程的状态，我们可以参照上面的线程状态，知道线程在干什么，判断死锁和竞争等情况。
 

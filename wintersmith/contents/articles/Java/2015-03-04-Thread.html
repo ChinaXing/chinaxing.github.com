@@ -12,8 +12,13 @@ tag: Java
 <ul>
 <li><a href="#sec-1">Thread 对象</a></li>
 <li><a href="#sec-2">Thread 状态</a></li>
-<li><a href="#sec-3">Thread 操作</a></li>
-<li><a href="#sec-4">Thread stack dump</a></li>
+<li><a href="#sec-3">Thread 操作</a>
+<ul>
+<li><a href="#sec-3-1">线程退出WAIT状态</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">对象monitor</a></li>
+<li><a href="#sec-5">Thread stack dump</a></li>
 </ul>
 </div>
 </div>
@@ -52,6 +57,13 @@ tag: Java
 <div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2">Thread 状态</h2>
 <div class="outline-text-2" id="text-2">
+<p>
+比较容易混淆的是 <code>BLOCKED</code> 与 <code>WAITING</code> , 可以这样理解， <code>BLOCKED</code> 代表那些因条件不满足 <b>被动</b> 进入暂停的状态，如进入临界区因为monitor被占用而被迫挂起，被唤醒后获取monitor而被迫挂起。因为是被动挂起，所以也由系统来被动唤醒它们，没有编程的参与。
+</p>
+
+<p>
+除此之外，其它由编程 <b>主动</b> 发起的暂停，就是 <code>WAITING</code> 及其带超时时间的 <code>TIMED_WAITING</code> ,如：主动发起的 <code>Object.wait</code> ，主动发起的 <code>LockSupport.park</code> 以及主动发起的 <code>join</code> 等待线程退出(内部调用了Threadd对象上面的wait, 然后Thread终止的时候notifyAll会被调用）。因为是主动挂起，需要别的编程动作来主动解除这种挂起（唤醒）。
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public enum State {
@@ -134,7 +146,11 @@ tag: Java
 </dd>
 <dt> join(..)  </dt><dd>等待线程的执行结束
 </dd>
-<dt> Object.wait(..) </dt><dd>将当前线程暂停，进入 <code>WAITING</code> 状态或者 <code>TIMED\_WAITING</code> 同时释放掉获取的 monitor, 其它线程通过 <code>Object.notify</code> 或者 <code>Object.notifyAll</code> 来wakeup 它
+<dt> Object.wait(..) </dt><dd>执行前必须获取对象monitor。将当前线程暂停，进入 <code>WAITING</code> 状态或者 <code>TIMED_WAITING</code> 同时释放掉获取的 monitor, 其它线程通过 <code>Object.notify</code> 或者 <code>Object.notifyAll</code> 来wakeup 它
+</dd>
+<dt> Object.notify() </dt><dd>执行前必须获取对象monitor。随机（不确定，依赖具体实现）唤醒一个处于 <code>WAITING</code> 或 <code>TIMED_WAITING</code> 的线程，使其进入 <code>BLOCKED</code> 状态等待获取对象上的monitor。
+</dd>
+<dt> Object.notifyAll() </dt><dd>执行前必须获得对象monitor。唤醒所有处于 <code>WAITING</code> 或 <code>TIMED_WAITING</code> 的线程，使它们都进入 <code>BLOCKED</code> 状态等待获取对象上的monitor。
 </dd>
 <dt> synchronized(..) </dt><dd>等待对象 monitor而暂停，进入 <code>BLOCKED</code> 状态，在monitor可获取且获取成功后进入 <code>RUNABLE</code>
 </dd>
@@ -177,11 +193,51 @@ tag: Java
 * &lt;p&gt; Interrupting a thread that is not alive need not have any effect.
 </pre>
 </div>
+<p>
+可见，中断线程只有在线程处于 blocked的时候，才会马上生效——发出异常或者立马中断，否则如果是在运行中，那么仅仅会设置其被中断的标识。并不会马上生效。
+</p>
+</div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">线程退出WAIT状态</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+有3种情况：
+</p>
+<dl class="org-dl">
+<dt> 调用线程上的interrupt方法 </dt><dd>如果线程block在事件或者IO上，那么退出WAIT状态，进入下一状态，如果有中断异常要抛出，那么在执行抛出异常前设置中断标识。否则中断标识被设置（后面调度的时候应该会检查此标识？）。
+</dd>
+<dt> (no term) </dt><dd>调用notifyAll/notify，如果进程是wait在monitor上面。
+</dd>
+<dt> (no term) </dt><dd>如果设置了超时而且超时时间到达，那么进入下一状态。
+</dd>
+</dl>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">Thread stack dump</h2>
+<h2 id="sec-4">对象monitor</h2>
 <div class="outline-text-2" id="text-4">
+<p>
+通过synchorized获取对象的monitor，形成一个临界区，临界区保证了同时只能有一个活跃线程处于临界区中。即临界区内部的代码不会并发执行。
+</p>
+
+<p>
+临界区内线程可以执行monitor对象上的 <code>wait</code> 系列操作，来等待某个条件的发生，这些条件发生时别的线程通过调用对象monitor上面的notify系列方法，将wait的线程唤醒退出 <code>WAITING</code> 状态，本质上是一个进程协同与同步的机制。
+</p>
+
+<dl class="org-dl">
+<dt> 为什么需要wait时候释放monitor </dt><dd>  因为 <code>wait</code> 系列操作，意味着当前线程等待某个条件，需要别的线程满足它，因此为了不影响别的线程执行，需要释放拥有的monitor（因为别的线程可能会需要进入临界区）。
+</dd>
+<dt> 为什么notify/wait需要在临界区 </dt><dd>  不在临界区的暂停线程的方法也有，如 <code>LockSupport.park()</code> 。
+要求在临界区，保证notify， wait的执行不会并发执行，包含notify的执行单元与包含wait的执行单元不会同时并发执行。满足这样的场景，那么就使用监视器上面的同步。
+</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Thread stack dump</h2>
+<div class="outline-text-2" id="text-5">
 <p>
 jstack -l 可以获取Jvm线程的stackTrace列表，其中列出了线程的状态，我们可以参照上面的线程状态，知道线程在干什么，判断死锁和竞争等情况。
 </p>
