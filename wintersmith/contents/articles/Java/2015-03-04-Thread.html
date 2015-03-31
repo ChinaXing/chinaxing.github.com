@@ -207,9 +207,9 @@ tag: Java
 <dl class="org-dl">
 <dt> 调用线程上的interrupt方法 </dt><dd>如果线程block在事件或者IO上，那么退出WAIT状态，进入下一状态，如果有中断异常要抛出，那么在执行抛出异常前设置中断标识。否则中断标识被设置（后面调度的时候应该会检查此标识？）。
 </dd>
-<dt> (no term) </dt><dd>调用notifyAll/notify，如果进程是wait在monitor上面。
+<dt> 调用notifyAll/notify </dt><dd>如果进程是wait在monitor上面。
 </dd>
-<dt> (no term) </dt><dd>如果设置了超时而且超时时间到达，那么进入下一状态。
+<dt> 如果设置了超时而且超时时间到达 </dt><dd>那么进入下一状态。
 </dd>
 </dl>
 </div>
