@@ -77,7 +77,7 @@ x[b] = a; //1
 </pre>
 </div>
 <p>
-如果2 3 行被重排序，那么cpu 2 的计算结果就存在 <code>x[2] = 2</code> 的情况，而在正常顺序下 <code>x[2] = 2</code> 。
+如果2 3 行被重排序，那么cpu 2的计算结果就存在: <code>x[2] = 2</code> 的情况，而在正常顺序下: <code>x[2] = 3</code> 。
 </p>
 </div>
 </div>
@@ -160,16 +160,13 @@ barrier的插入可以是cpu提供的指令。
 </li>
 <li><a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea Java memory Model</a>
 </li>
-<li><a href="http://www.cs.umd.edu/~pugh/java/memoryModel">The Java Memory Model</a>
+<li><a href="http://www.cs.umd.edu/~pugh/java/memoryModel/">The Java Memory Model</a>
 </li>
-</ul>
-<p>
--<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305"> Linux kernel memory barrie</a>r
-</p>
-<ul class="org-ul">
-<li><a href="http://lwn.net/Articles/262464/">RCU - read-copy-update</a>
+<li><a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305">Linux Kernel memory barrier</a>
 </li>
-<li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376">The Art of Multiprocessor Programming</a>
+<li><a href="http://lwn.net/Articles/262464/">RCU - Read-copy-update</a>
+</li>
+<li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376">The art of multiprocessor programming</a>
 </li>
 </ul>
 </div>

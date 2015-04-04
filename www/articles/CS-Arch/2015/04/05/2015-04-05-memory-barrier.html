@@ -14,11 +14,11 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li class="active"><a href="/CS-Arch/index.html">CS-Arch<sup>8</sup></a></li>
+          <li class="active"><a href="/CS-Arch/index.html">CS-Arch<sup>9</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>3</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>1</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
@@ -108,7 +108,7 @@ x[b] = a; //1
 </pre>
 </div>
 <p>
-如果2 3 行被重排序，那么cpu 2 的计算结果就存在 <code>x[2] = 2</code> 的情况，而在正常顺序下 <code>x[2] = 2</code> 。
+如果2 3 行被重排序，那么cpu 2的计算结果就存在: <code>x[2] = 2</code> 的情况，而在正常顺序下: <code>x[2] = 3</code> 。
 </p>
 </div>
 </div>
@@ -191,16 +191,13 @@ barrier的插入可以是cpu提供的指令。
 </li>
 <li><a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea Java memory&nbsp;Model</a>
 </li>
-<li><a href="http://www.cs.umd.edu/~pugh/java/memoryModel">The Java Memory&nbsp;Model</a>
+<li><a href="http://www.cs.umd.edu/~pugh/java/memoryModel/">The Java Memory&nbsp;Model</a>
 </li>
-</ul>
-<p>
--<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305"> Linux kernel memory barrie</a>r
-</p>
-<ul class="org-ul">
-<li><a href="http://lwn.net/Articles/262464/"><span class="caps">RCU</span> -&nbsp;read-copy-update</a>
+<li><a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305">Linux Kernel memory&nbsp;barrier</a>
 </li>
-<li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376">The Art of Multiprocessor&nbsp;Programming</a>
+<li><a href="http://lwn.net/Articles/262464/"><span class="caps">RCU</span> -&nbsp;Read-copy-update</a>
+</li>
+<li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376">The art of multiprocessor&nbsp;programming</a>
 </li>
 </ul>
 </div>

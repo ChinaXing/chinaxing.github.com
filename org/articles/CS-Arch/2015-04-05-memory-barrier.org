@@ -41,7 +41,7 @@ b = 2; // 3
 // cpu 2
 x[b] = a; //1
 #+END_SRC
-如果2 3 行被重排序，那么cpu 2 的计算结果就存在 =x[2] = 2= 的情况，而在正常顺序下 =x[2] = 2= 。
+如果2 3 行被重排序，那么cpu 2的计算结果就存在: =x[2] = 2= 的情况，而在正常顺序下: =x[2] = 3= 。
 
 *** 内存模型
 把多处理器上面这种一个cpu内存操作重排序后对其它外部设备和cpu的可见性/承诺，叫做处理器的内存模型，每个处理器都有自己的内存模型说明和保证，在编写并发程序的时候，需要遵循此cpu对其内存模型的保证和申明，才能编写出正确的并发程序。
@@ -73,7 +73,7 @@ barrier的插入可以是cpu提供的指令。
 - [[http://preshing.com/20120710/memory-barriers-are-like-source-control-operations/][Memory Barriers Are Like Source Control Operations]]
 - [[http://preshing.com/20120930/weak-vs-strong-memory-models/][Weak strong memory models]]
 - [[http://g.oswego.edu/dl/jmm/cookbook.html][Doug Lea Java memory Model]]
-- [[http://www.cs.umd.edu/%7Epugh/java/memoryModel][The Java Memory Model]]
--[[http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305][ Linux kernel memory barrie]]r
-- [[http://lwn.net/Articles/262464/][RCU - read-copy-update]]
-- [[http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376][The Art of Multiprocessor Programming]]
+- [[http://www.cs.umd.edu/~pugh/java/memoryModel/][The Java Memory Model]]
+- [[http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305][Linux Kernel memory barrier]]
+- [[http://lwn.net/Articles/262464/][RCU - Read-copy-update]]
+- [[http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376][The art of multiprocessor programming]]
