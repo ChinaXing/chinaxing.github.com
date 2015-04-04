@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>hardware multithreading - HT - The Chinaxing's blog
+    <title>Memory barrier —— 内存屏障 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -30,7 +30,7 @@
     </header>
     <section id="content">
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
-      <h2 style="text-align:center">hardware multithreading - HT
+      <h2 style="text-align:center">Memory barrier —— 内存屏障
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -42,161 +42,165 @@
 <h2>Table of&nbsp;Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">为什么要采用多线程</a></li>
-<li><a href="#sec-2">多线程的种类</a></li>
-<li><a href="#sec-3">Hyper-Threading</a>
-<ul>
-<li><a href="#sec-3-1">perfermance&nbsp;improve</a></li>
-</ul>
-</li>
-<li><a href="#sec-4">落幕的技术</a></li>
-<li><a href="#sec-5">安全问题</a></li>
-<li><a href="#sec-6">What you&nbsp;got</a></li>
-<li><a href="#sec-7">Reference</a></li>
+<li><a href="#sec-1">什么是memory&nbsp;barrier</a></li>
+<li><a href="#sec-2">为什么要有memory&nbsp;barrier</a></li>
+<li><a href="#sec-3">内存模型</a></li>
+<li><a href="#sec-4">memory&nbsp;barrier干什么</a></li>
+<li><a href="#sec-5">memory&nbsp;barrier分类</a></li>
+<li><a href="#sec-6">Refer</a></li>
 </ul>
 </div>
 </div>
-<p>
-cpu/硬件级别支持的多线程类似软件级别的多线程，逻辑上的多个执行流，并且它们共享了一些状态和资源。
-</p>
-
-<p>
-对于cpu级别的多线程，共享的是如下资源：
-</p>
-<ol class="org-ol">
-<li>执行单元
-</li>
-<li>cache
-</li>
-</ol>
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">为什么要采用多线程</h2>
+<h2 id="sec-1">什么是memory&nbsp;barrier</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-多线程的思想主要出于一个cpu执行流可能因为某些原因暂停（如等待数据，分支预测失败），这时可以将空闲的执行资源用来执行另一个程序。&nbsp;另一点是，程序的执行涉及到了多个cpu处理单元，而这些单元并不总是满负载，也就是说某些情况idle，这样可以拿去执行别的程序。
+memory barrier&nbsp;可以看做是cpu执行内存读写时候插入到读写操作序列中得一个barrier，通过这个barrier，将这些读写序列做了个划分，指示cpu：barrier前的读写序列必须发生在barrier之前，barrier之后的读写序列必须发生在barrier之后。
 </p>
 
 <p>
-也就是说，为了充分使用cpu资源，将单线程不能完全饱和的cpu资源拿来充分利用。
+那么也就间接地保证了barrier前后读写操作的顺序。
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">多线程的种类</h2>
+<h2 id="sec-2">为什么要有memory&nbsp;barrier</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-按照是否可以真正的同时执行指令，将cpu级别的multithreading分为：
+很多人可能奇怪，读写序列不是已经在编写程序的时候写好了吗，为何还要再去要求？
 </p>
-<dl class="org-dl">
-<dt> temporal&nbsp;multithreading </dt><dd>每个指令执行步骤,同时只有一个线程的指令在执行
-</dd>
-<dt> simultaneous&nbsp;multithreading </dt><dd>每个指令执行步骤，同时有多个线程的在执行
-</dd>
-</dl>
 
 <p>
-其中simultaneous multithreading 的一个实际实现就是 intel 的&nbsp;Hyper-Threading
+这是因为cpu为了提高执行效率，有权利在不影响单线程下顺序正确性的前提下，对指令流进行乱序—— <b>访存指令重排序</b> ，以提高执行效率。&nbsp;比如：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c">a = 20; // 1
+d = a * 2; // 2  
+b = 30; // 3
+c = a + b; // 4
+</pre>
+</div>
+<p>
+这段代码，1 3 两行因为没有顺序性要求，可以重排序，比如先执行2后执行1。同理，2 3&nbsp;两行也没有顺序性要求。
+</p>
+
+<p>
+因为有 <b>访存重排序</b>&nbsp;的情况，所以我们写的代码在实际cpu上执行的时候，并不会按照我们指定的顺序执行，cpu会做一些重排优化，但前提是保证语义正确。
+</p>
+
+<p>
+这在本cpu内执行是没有问题的，但是如果数据要被cpu之外的其它cpu或者设备访问和读写，就会存在问题，因为重排，可能导致外部程序看到的数据状态不是预期的:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c">// cpu 1
+int a = 2, b = 0;
+a = 3; // 2
+b = 2; // 3
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-c">// cpu 2
+x[b] = a; //1
+</pre>
+</div>
+<p>
+如果2 3 行被重排序，那么cpu 2 的计算结果就存在 <code>x[2] = 2</code> 的情况，而在正常顺序下 <code>x[2] = 2</code> 。
 </p>
 </div>
 </div>
 
 <div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">Hyper-Threading</h2>
+<h2 id="sec-3">内存模型</h2>
 <div class="outline-text-2" id="text-3">
 <p>
-Hyper-Threading 是一个physical&nbsp;core运行2个threading，对使用者（如os）表现为2个core，即对应用是透明的，但是应用如果愿意，也可以感知到是logical的Core还是physical的core。
+把多处理器上面这种一个cpu内存操作重排序后对其它外部设备和cpu的可见性/承诺，叫做处理器的内存模型，每个处理器都有自己的内存模型说明和保证，在编写并发程序的时候，需要遵循此cpu对其内存模型的保证和申明，才能编写出正确的并发程序。
 </p>
 
 <p>
-intel&nbsp;于2002年发明了Hyper-Threading技术，之后多数产品都包含了这一技术。
+内存模型安装承诺的可见性与代码本身指定的顺序性之间的差异程度，可以分为：weak memory model 与 strong memory&nbsp;model。
 </p>
-</div>
-
-<div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">perfermance&nbsp;improve</h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-性能提升有30%。
-</p>
+<dl class="org-dl">
+<dt> weak/relaxed memory&nbsp;model </dt><dd>指承诺的顺序性很弱，与之伴随的就是重排程度会很大（很宽松），很灵活，处理器自由发挥的余地大，因而往往cpu的效率会相应的高。比如服务器的cpu、Alpha、<span class="caps">DEC</span>、powerPC等。
+</dd>
+<dt> strong memory&nbsp;model </dt><dd>代表对顺序性保证很强，对顺序性的丢失很少，与之伴随的是重排比较少，cpu发挥重排提升性能的空间较小，因此也丧失一定的性能提升，一般在非服务器领域，如：x86&nbsp;cpu。
+</dd>
+</dl>
 
 <p>
-但是这并不是绝对的。仅仅是对于some&nbsp;applications。因为存在互相的影响，存在资源的共享。
+因为现代的cpu都是分时多任务支持，而且是smp的多cpu多核心架构，势必存在内存模型的问题。因此如果使用非常贴近cpu的语言去编程，一定要考虑好内存model的情况，否则编写的程序可能在比当前平台更weak的平台上运行就会出现并发bug。
 </p>
 
 <p>
-使用者需要通过合理的配置和调整，才能充分发挥这种性能提升。也许有些场景/应用，开启Hyper-Threading并不合适。
-</p>
-
-<p>
-对于一个开启了<span class="caps">HT</span>的core，运行一个程序和同时运行两个程序相比，会相应的变慢。
-</p>
-
-<p>
-对于<span class="caps">OS</span>，需要能够感知到core的Logical和Physical属性，比如尽量将负载均分在多个physical上隔离的Core上，而不应该对无视这种区别。
-</p>
-
-<p>
-当<span class="caps">HT</span>推出的初期，许多OS都没有对应的支持，Linux&nbsp;从2.4开始支持HT，能够识别逻辑core和物理core的区别而不是无视差别，并且在识别的基础上自然要进行必要的优化。
+因而，我们可以知道，通过编译的程序，并不一定能在相同指令集的别的cpu上进行正确运行，因为不同的cpu型号虽然指令集相同，却很可能内存模型不同。
 </p>
 </div>
 </div>
-</div>
-
 <div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">落幕的技术</h2>
+<h2 id="sec-4">memory&nbsp;barrier干什么</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-虽然<span class="caps">HT</span>技术Intel平台上面带来了一定的作用，但是并不是那么优越，并且在ARM的研究中称这种技术会带来能耗增加，增加cache失效，所以并没有在ARM中进行实现。
+memory barrier&nbsp;的目的就是通过一些指令，告知cpu防止某些重排序，而是要保证某些有序性。
 </p>
 
 <p>
-2013 intel发明了新的性能提升技术 <i>out-of-order execution</i> ,&nbsp;取代了<span class="caps">HT</span>技术。
+barrier的前后，就是这种有序性的划界，之前和之后的操作要在barrier上按照时间上有序——不能跨越barrier所处的时间。
+</p>
+
+<p>
+通过保证有序性，提供多进程之间的协同和同步。
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">安全问题</h2>
+<h2 id="sec-5">memory&nbsp;barrier分类</h2>
 <div class="outline-text-2" id="text-5">
 <p>
-因为<span class="caps">HT</span>技术存在着多个执行流共享cache的特点，2005年，有人证明可以在Pentium&nbsp;4上面通过恶意程序访问到隔壁线程的内容，带来了安全隐患。
+按照读写操作可以分为四类
 </p>
-</div>
-</div>
+<dl class="org-dl">
+<dt> LoadLoad </dt><dd>两个load操作之间的发生是有序的，barrier之前的发生于barrier之后的。
+</dd>
+<dt> StoreStore </dt><dd>两个store之间的有序性发生，barrier之前的写入操作一定发生在barrier之后的。
+</dd>
+<dt> LoadStore </dt><dd>barrier之前的load操作一定发生在barrier之后的store操作。
+</dd>
+<dt> StoreLoad </dt><dd>barrier&nbsp;之前的store操作一定发生在barrier之后的Load操作。这个barrier特别有意义，因为它保证了读取的一定是上次刚刚写入的数据。
+</dd>
+</dl>
 
-
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6">What you&nbsp;got</h2>
-<div class="outline-text-2" id="text-6">
 <p>
-现在，我们总结下，你应该知道了哪些
+barrier的支持在不同的cpu上有不同的程度支持，如果本身有支持，那么就不需要强制的插入barrier。
 </p>
+
+<p>
+barrier的插入可以是cpu提供的指令。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Refer</h2>
+<div class="outline-text-2" id="text-6">
 <ul class="org-ul">
-<li><span class="caps">HT</span>是一种在一个逻辑cpu上面模拟多个cpu的技术，物理上是一个cpu
+<li><a href="http://preshing.com/20120710/memory-barriers-are-like-source-control-operations/">Memory Barriers Are Like Source Control&nbsp;Operations</a>
 </li>
-<li><span class="caps">HT</span>技术的2各Logical&nbsp;core共享了物理资源，但是对用户表现出2个cpu的假象：Transparent
+<li><a href="http://preshing.com/20120930/weak-vs-strong-memory-models/">Weak strong memory&nbsp;models</a>
 </li>
-<li><span class="caps">HT</span>技术能带来一定的性能提升，但是不是绝对的，application-dependent
+<li><a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea Java memory&nbsp;Model</a>
 </li>
-<li>2个Logical&nbsp;core会相互影响，所以尽量别让他们都忙，这需要<span class="caps">OS</span>的optimization
-</li>
-<li>可以关闭<span class="caps">HT</span>（通过BIOS）
-</li>
-<li><span class="caps">HT</span>将要被别的技术取代
+<li><a href="http://www.cs.umd.edu/~pugh/java/memoryModel">The Java Memory&nbsp;Model</a>
 </li>
 </ul>
-</div>
-</div>
-
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7">Reference</h2>
-<div class="outline-text-2" id="text-7">
+<p>
+-<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305"> Linux kernel memory barrie</a>r
+</p>
 <ul class="org-ul">
-<li><a href="http://en.wikipedia.org/wiki/Hyper-threading">Hyper-Threading&nbsp;Wikipedia</a>
+<li><a href="http://lwn.net/Articles/262464/"><span class="caps">RCU</span> -&nbsp;read-copy-update</a>
 </li>
-<li><a href="http://en.wikipedia.org/wiki/Simultaneous_multithreading">Simultaneous Multithreading&nbsp;Wikipedia</a>
+<li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376">The Art of Multiprocessor&nbsp;Programming</a>
 </li>
 </ul>
 </div>
