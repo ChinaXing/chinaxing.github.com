@@ -1,0 +1,111 @@
+---
+date: 2015-04-11 17:37:11
+template: tech.jade
+title: Redis Cluster
+category: distribute
+chage_frequency: monthly
+tag: Redis,Cache
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">一致性（consisten）</a></li>
+<li><a href="#sec-2">partition</a></li>
+<li><a href="#sec-3">可用性（available）</a></li>
+<li><a href="#sec-4">可靠性（reliable）</a></li>
+<li><a href="#sec-5">学习参考</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+Redis 提供了功能丰富的内存KV数据库特性，应该称为： <code>data structure server</code> 。
+</p>
+
+<p>
+同其它分布式系统一样，面临分布式的数据partition、一致性等问题。
+</p>
+
+<p>
+下面是Redis提供的方案。应该是一种AP保证。
+</p>
+
+<p>
+目前<a href="http://redis.io/topics/cluster-tutorial">Redis cluster</a>还没有正式release，还在beta中。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">一致性（consisten）</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+redis 强调一致性是若一致性，因为replicate是异步的，即便是同步模式，也不能保证强一致性。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">partition</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+partition 解决数据的分布问题，redis 实现的方案有几种：
+</p>
+
+<dl class="org-dl">
+<dt> client side partition </dt><dd>客户端使用算法完成hash。比如使用consistent hash（如jedis实现）。
+</dd>
+<dt> proxy assisted partion </dt><dd>通过proxy层来完成，proxy通过hash算法，完成映射（如有名的Twemproxy）。阿里的KVstore应该也是用proxy来做吧，而且应该类似RDS也是Erlang写的？
+</dd>
+<dt> Query routing </dt><dd>client 的请求叫做“Query”，client随变选择一个节点，将Query出发，位于分布式集群内的节完成请求的路由，保证请求路由到正确的Query执行方，有点类似于Ip网络的数据包的路由了。Redis cluster使用这种方式的一个改进版本，当集群内机器知道需要将请求forward到目标时，自己不进行proxy，而是返回client端一个redirect（类似http请求的302）让cleint来重定向。
+</dd>
+</dl>
+
+<p>
+这三种方法，都可以借鉴作为分布式数据/请求路由的方式。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">可用性（available）</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+redis在master故障后，slave可以切换转变为master。提供高可用性，因为牺牲一致性，所以可能存在一定的master和slave的不一致性。
+如果slave故障，或者写入失败，那么redis依旧认为成功，即高可用性。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">可靠性（reliable）</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+可靠性是衡量正确性的，如不能丢数据，容错性。redis通过master/slave的方式实现replication，可以一定程度避免这个问题，同时redis支持persistent到磁盘，进行持久化存储，也提高了可靠性。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">学习参考</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+可以通过阅读client端的源码和redis的代码以及proxy来学习redis如何做到分布式。
+</p>
+
+<dl class="org-dl">
+<dt> Twemproxy </dt><dd></dd>
+</dl>
+<blockquote>
+<p>
+<a href="https://github.com/twitter/twemproxy">Twemproxy</a> is a proxy developed at Twitter for the Memcached ASCII and the Redis protocol. It is single threaded, it is written in C, and is extremely fast. 
+</p>
+</blockquote>
+
+<dl class="org-dl">
+<dt> Jedis </dt><dd></dd>
+</dl>
+<p>
+Jedis 是一个Java的redis客户端实现，支持sharding、cluster、transaction等，它采用consistent hash。
+</p>
+</div>
+</div>

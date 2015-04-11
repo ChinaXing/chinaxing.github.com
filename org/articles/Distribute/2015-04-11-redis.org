@@ -1,0 +1,54 @@
+#+BEGIN_HTML
+---
+date: 2015-04-11 17:37:11
+template: tech.jade
+title: Redis Cluster
+category: distribute
+chage_frequency: monthly
+tag: Redis,Cache
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Redis 提供了功能丰富的内存KV数据库特性，应该称为： =data structure server= 。
+
+同其它分布式系统一样，面临分布式的数据partition、一致性等问题。
+
+下面是Redis提供的方案。应该是一种AP保证。
+
+目前[[http://redis.io/topics/cluster-tutorial][Redis cluster]]还没有正式release，还在beta中。
+
+*** 一致性（consisten）
+
+redis 强调一致性是若一致性，因为replicate是异步的，即便是同步模式，也不能保证强一致性。
+
+*** partition
+
+partition 解决数据的分布问题，redis 实现的方案有几种：
+
+- client side partition :: 客户端使用算法完成hash。比如使用consistent hash（如jedis实现）。
+- proxy assisted partion :: 通过proxy层来完成，proxy通过hash算法，完成映射（如有名的Twemproxy）。阿里的KVstore应该也是用proxy来做吧，而且应该类似RDS也是Erlang写的？
+- Query routing :: client 的请求叫做“Query”，client随变选择一个节点，将Query出发，位于分布式集群内的节完成请求的路由，保证请求路由到正确的Query执行方，有点类似于Ip网络的数据包的路由了。Redis cluster使用这种方式的一个改进版本，当集群内机器知道需要将请求forward到目标时，自己不进行proxy，而是返回client端一个redirect（类似http请求的302）让cleint来重定向。
+
+这三种方法，都可以借鉴作为分布式数据/请求路由的方式。
+
+*** 可用性（available）
+redis在master故障后，slave可以切换转变为master。提供高可用性，因为牺牲一致性，所以可能存在一定的master和slave的不一致性。
+如果slave故障，或者写入失败，那么redis依旧认为成功，即高可用性。
+
+*** 可靠性（reliable）
+可靠性是衡量正确性的，如不能丢数据，容错性。redis通过master/slave的方式实现replication，可以一定程度避免这个问题，同时redis支持persistent到磁盘，进行持久化存储，也提高了可靠性。
+
+*** 学习参考
+可以通过阅读client端的源码和redis的代码以及proxy来学习redis如何做到分布式。
+
+- Twemproxy ::
+#+BEGIN_QUOTE
+[[https://github.com/twitter/twemproxy][Twemproxy]] is a proxy developed at Twitter for the Memcached ASCII and the Redis protocol. It is single threaded, it is written in C, and is extremely fast. 
+#+END_QUOTE
+
+- Jedis ::
+Jedis 是一个Java的redis客户端实现，支持sharding、cluster、transaction等，它采用consistent hash。
+
+
