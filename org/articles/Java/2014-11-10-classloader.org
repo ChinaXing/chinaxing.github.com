@@ -76,7 +76,7 @@ ClassLoader的主要作用就是加载类（还可以加载resource），加载�
 在这个基础上可以保证安全性、隔离性。
 
 *** 类加载过程
-#+BEGIN_SRC dot :file ~/ChinaXing.org/org/img/classload_procedure.png :cmdline -Tpng -Kdot :eval no-export
+#+BEGIN_SRC dot :file ../../img/classload_procedure.png :cmdline -Tpng -Kdot :eval no-export
 digraph load_class_procedure {
   node [ color = red style = dashed fontsize = 10 ]
   edge [ color = blue fontsize = 8 ]
@@ -99,7 +99,7 @@ digraph load_class_procedure {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/classload_procedure.png]]
+[[file:../../img/classload_procedure.png]]
 
 其中ClassLoader种的findClass方法是一个未被实现的方法:
 #+BEGIN_SRC java 

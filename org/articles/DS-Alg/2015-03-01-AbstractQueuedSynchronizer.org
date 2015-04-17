@@ -60,7 +60,7 @@ digraph aqs {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/ds-alg-abstractQueuedSynchronizer.png]]
+[[file:../../img/ds-alg-abstractQueuedSynchronizer.png]]
 
 **** CLH
 AQS内部使用CLH队列作为同步的数据结构，等待获取锁的进程挂在这个队列上面。使用的是CLH的改进版本。
@@ -89,7 +89,7 @@ digraph clh {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/ds-alg-aqs-clh.png]]
+[[file:../../img/ds-alg-aqs-clh.png]]
 
 **** Node
 一个Node代表了一个等待着的线程，以及一些用来实现链接表的数据字段和代表等待的状态。
@@ -117,10 +117,12 @@ digraph condition {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/ds-alg-aqs-condition.png]]
+[[file:../../img/ds-alg-aqs-condition.png]]
 
 *** LockSupport
 LockSupport 提供park 和 unpark 方法完成底层的线程挂起和唤醒。内部使用了unsafe。
 *** Unsafe
 操作对象的字段，进行CAS都使用了vm提供的底层对象unsafe。
 
+*** TODO Worker
+ExecutorPool 的Worker 的实现，继承了AQS。

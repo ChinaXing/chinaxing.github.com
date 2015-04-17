@@ -53,10 +53,9 @@ digraph bind {
         "javaChannel.register(EventLoop.Selector)" -> "pipeline.fireChannelActive" [ style = dotted, color = blue , label = "if binded" ] 
 }
 #+END_SRC
-
-#+RESULTS:
 #+ATTR_HTML: :style max-height:1200px;
-[[/img/netty-bootstrap-server-bind.png]]
+[[file:../../img/netty-bootstrap-server-bind.png]]
+
 
 
 
@@ -79,9 +78,9 @@ digraph connect {
 }
 #+END_SRC
 
-#+RESULTS:
 #+ATTR_HTML: :style max-height:1200px
-[[/img/netty-bootstrap-client-connect.png]]
+[[file:../../img/netty-bootstrap-client-connect.png]]
+
 
 ** Channel 
 Channel 抽象为一个客户端和服务端的链接，Channel与其它组件的关系：
@@ -127,7 +126,7 @@ digraph channel {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/netty-channel.png]]
+[[file:../../img/netty-channel.png]]
 
 从中可以看出tail 是接近用户层而head是接近网络层（底层socket），head有一个unsafe成员，head将事件处理委托给unsafe完成，而unsafe就是与底层系统衔接的元素。在unsafe中操作javaChannel，注册SelectKey等等Nio相关的操作。
 

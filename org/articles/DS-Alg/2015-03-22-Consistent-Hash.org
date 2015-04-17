@@ -43,4 +43,4 @@ f(x) = h(y)
 具体的实施过程，可以给物理节点和虚拟节点都分配id，同时保证这些id中物理节点散布均匀：
 
 
-[[file:/img/consistant-hash.png]]
+[[file:../../img/consistant-hash.png]]

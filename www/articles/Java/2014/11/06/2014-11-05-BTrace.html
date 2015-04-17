@@ -14,13 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>8</sup></a></li>
+          <li><a href="/CS-Arch/index.html">CS-Arch<sup>9</sup></a></li>
           <li><a href="/DS-Al/index.html">DS-Al<sup>3</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>5</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>8</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>6</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>30</sup></a></li>
         </ul>
@@ -50,7 +50,8 @@
 </ul>
 </li>
 <li><a href="#sec-3">使用场景</a></li>
-<li><a href="#sec-4">注意点</a></li>
+<li><a href="#sec-4">BTraceUtils</a></li>
+<li><a href="#sec-5">注意点</a></li>
 </ul>
 </div>
 </div>
@@ -154,6 +155,9 @@ BTrace有安全模式和非安全模式，默认情况是安全模式，在安�
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3">使用场景</h2>
 <div class="outline-text-2" id="text-3">
+<p>
+各种使用场景，都包含在了samples&nbsp;目录中，因此，在实现自己需求的时候，可以先看看是否有例子可用。
+</p>
 <dl class="org-dl">
 <dt> 跟踪方法调用 </dt><dd>通过 <b>@OnMethod</b> 注解，可以对指定类的方法上进行注入分析代码，通过 <b>@Self</b> 注解可以拿到 <b>$this</b> 对象， <b>@Return</b>&nbsp;注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
 </dd>
@@ -171,13 +175,76 @@ BTrace有安全模式和非安全模式，默认情况是安全模式，在安�
 </dd>
 <dt> 捕获异常 </dt><dd>BTrace&nbsp;可以对异常进行probe，在异常发生时打印异常栈。
 </dd>
+<dt> 执行统计 </dt><dd>内建Histogram&nbsp;功能，生成采样值的分布，帮助分析。
+</dd>
+<dt> 监视对象创建 </dt><dd>通过监视对象的 <code>&lt;init&gt;</code> 方法可以监视对象的创建，监视在 <code>@Location(Kind.RETURN)</code> 可以拿到创建后的对象。
+</dd>
+<dt> 监视方法调用 </dt><dd>通过 <code>@Location(Kind.CALL, method .. ,class .. )</code> 位置，可以监视方法被调用的Context（调用者、调用发生的位置）等，可以跟踪到方法的（在全部或特定上下文）被调用情况。
+</dd>
+<dt> 监视数组的创建 </dt><dd>数组对象的创建比较特殊，因为是容器，可以监视到其特定容器元素类型的数组的创建（可参考samples目录）。
+</dd>
+<dt> 监视某一类的子类 </dt><dd>通过 <code>class=+ClassA</code> 的方式，可以监视所有ClassA子类，ClassA可以为接口。这对于监控接口或者超类的所有实现的调用非常有用。
+</dd>
+<dt> 监视对象监视器的获取 </dt><dd>可以监视synchronized 块和方法处的调用，提供 <code>@Location=(Kind.SYNC_ENTRY)</code> ，此外还可以指定是监视器获取前还是获取后的位置，对于监视同步有帮助。 <code>@Location(Kind.SYNC_EXIT)</code> 监视对象monitor的释放（离开同步区）。
+</dd>
+<dt> 监视某一行 </dt><dd>除了监视方法还可以监视类内的某一行，通过 <code>@Location(value=Kind.LINE, line ...)</code> 来指定监视行，后面的line参数指定行号，如果 <b>line=-1</b>&nbsp;那么会监视所有行。
+</dd>
 </dl>
 </div>
 </div>
-
 <div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">注意点</h2>
+<h2 id="sec-4">BTraceUtils</h2>
 <div class="outline-text-2" id="text-4">
+<p>
+在编写脚本的时候，经常需要查阅BTrace提供的辅助库里面的方法和类
+</p>
+
+<p>
+可以在此查看 JavaDoc ：<a href="https://btrace.kenai.com/javadoc/1.2/index.html">https://btrace.kenai.com/javadoc/1.2/index.html</a>
+</p>
+
+<p>
+BTraceUtils提供了非常丰富的工具，足够你完成Btrace脚本的编写，所以先查阅<span class="caps">API</span>，而不是自己造轮子！
+</p>
+
+<p>
+大体上，可以分为如下几类：
+</p>
+<dl class="org-dl">
+<dt> Collections </dt><dd>容器类操作
+</dd>
+<dt> Atomic </dt><dd>原子性操作和容器
+</dd>
+<dt> Reflective </dt><dd>反射相关的工具类
+</dd>
+<dt> Strings </dt><dd>string操作和其它string与之转换之类的操作。
+</dd>
+<dt> Sys </dt><dd>系统相关的，如内存（heap）、环境、Vm等类似Java的 System&nbsp;类。
+</dd>
+<dt> Threads </dt><dd>线程相关，如stack、currentThread，thread名等等。
+</dd>
+<dt> Time </dt><dd>获取时间，格式化时间等。
+</dd>
+<dt> Export </dt><dd>比较厉害的功能
+<ol class="org-ol">
+<li>提供将对象引用关系图导出到<span class="caps">XML</span>、DOT
+</li>
+<li>序列化对象到文件
+</li>
+</ol>
+</dd>
+<dt> Profiling </dt><dd>profile相关的支持，自动采样统计，生成汇总信息等，可以使用减少自己编码。
+</dd>
+<dt> Numbers </dt><dd>提供字符串和其它primitive类型的转换以及自动装箱操作。
+</dd>
+<dt> Reference </dt><dd>提供java类： <code>Reference</code> 类的接口，操作引用对象。
+</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">注意点</h2>
+<div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>BTrace&nbsp;agent只会加载一次，因此如果第一次加载时候未打开unsafe选项，而之后再打开此选项是无效的，只能重启java程序。
 </li>

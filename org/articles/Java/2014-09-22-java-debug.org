@@ -11,7 +11,7 @@ tag: Java,debug
 #+OPTIONS: toc:nil
 #+TOC: headlines 2
 ** overview
-   [[/img/jpda.jpg]]
+   [[file:../../img/jpda.jpg]]
 ** debug client
 jdk 自带的debug工具jdb类似于其他语言如gcc 的 gdb，可以完成命令行模式下进行debug：
 

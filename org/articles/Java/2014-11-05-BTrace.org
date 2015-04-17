@@ -25,7 +25,7 @@ BTrace在基于以上两点技术之上，实现了灵活性、易用性。灵�
 *** BTrace 结构
 
 BTrace的系统结构图如下:
-#+BEGIN_SRC dot :file ~/ChinaXing.org/org/img/btrace-arch.png :cmdline -Kdot -Tpng :eval no-export
+#+BEGIN_SRC dot :file ../../img/btrace-arch.png :cmdline -Kdot -Tpng :eval no-export
 digraph btrace_struct {
         resolution = 100
         fixedsize = false
@@ -52,7 +52,7 @@ digraph btrace_struct {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/btrace-arch.png]]
+[[file:../../img/btrace-arch.png]]
 
 btrace-server 和 btrace-client通过 tcp 连接进行通信，交换Command对象。
 
@@ -83,6 +83,7 @@ BTrace有安全模式和非安全模式，默认情况是安全模式，在安�
 虽然BTrace在实现上的安全模式下对操作做了很多限制，但是如果能很好的使用BTraceUtils类中提供的方法，完全可以实现90%的debug需求。而且非常便捷。
 
 *** 使用场景
+各种使用场景，都包含在了samples 目录中，因此，在实现自己需求的时候，可以先看看是否有例子可用。
 - 跟踪方法调用 :: 通过 *@OnMethod* 注解，可以对指定类的方法上进行注入分析代码，通过 *@Self* 注解可以拿到 *$this* 对象， *@Return* 注解可以拿到返回值，然后通过BTraceUtils中提供的各种反射函数可以拿到相关数据结构的内容，然后通过print函数打印出来。
 - 打印调用堆栈 :: BTraceUtils提供了jstack方法，可以打印出调用栈。此方法其实是对Thread重jstack方法的封装。
 - 打印系统信息 :: BTraceUtils中提供的内存相关、cpu相关等Runtime信息可以获得运行中的系统资源使用信息
@@ -91,6 +92,33 @@ BTrace有安全模式和非安全模式，默认情况是安全模式，在安�
 - 输出对象XML :: 将对象导出成XML各式
 - Profile :: BTrace本身对性能剖析提供了支持，可以很方便实现性能统计。
 - 捕获异常 :: BTrace 可以对异常进行probe，在异常发生时打印异常栈。
+- 执行统计 :: 内建Histogram 功能，生成采样值的分布，帮助分析。
+- 监视对象创建 :: 通过监视对象的 =<init>= 方法可以监视对象的创建，监视在 =@Location(Kind.RETURN)= 可以拿到创建后的对象。
+- 监视方法调用 :: 通过 =@Location(Kind.CALL, method .. ,class .. )= 位置，可以监视方法被调用的Context（调用者、调用发生的位置）等，可以跟踪到方法的（在全部或特定上下文）被调用情况。
+- 监视数组的创建 :: 数组对象的创建比较特殊，因为是容器，可以监视到其特定容器元素类型的数组的创建（可参考samples目录）。
+- 监视某一类的子类 :: 通过 =class=+ClassA= 的方式，可以监视所有ClassA子类，ClassA可以为接口。这对于监控接口或者超类的所有实现的调用非常有用。
+- 监视对象监视器的获取 :: 可以监视synchronized 块和方法处的调用，提供 =@Location=(Kind.SYNC_ENTRY)= ，此外还可以指定是监视器获取前还是获取后的位置，对于监视同步有帮助。 =@Location(Kind.SYNC_EXIT)= 监视对象monitor的释放（离开同步区）。
+- 监视某一行 :: 除了监视方法还可以监视类内的某一行，通过 =@Location(value=Kind.LINE, line ...)= 来指定监视行，后面的line参数指定行号，如果 *line=-1* 那么会监视所有行。
+*** BTraceUtils
+在编写脚本的时候，经常需要查阅BTrace提供的辅助库里面的方法和类
 
+可以在此查看 JavaDoc ：[[https://btrace.kenai.com/javadoc/1.2/index.html]]
+
+BTraceUtils提供了非常丰富的工具，足够你完成Btrace脚本的编写，所以先查阅API，而不是自己造轮子！
+
+大体上，可以分为如下几类：
+- Collections :: 容器类操作
+- Atomic :: 原子性操作和容器
+- Reflective :: 反射相关的工具类
+- Strings :: string操作和其它string与之转换之类的操作。
+- Sys :: 系统相关的，如内存（heap）、环境、Vm等类似Java的 System 类。
+- Threads :: 线程相关，如stack、currentThread，thread名等等。
+- Time :: 获取时间，格式化时间等。
+- Export :: 比较厉害的功能
+    1. 提供将对象引用关系图导出到XML、DOT
+    2. 序列化对象到文件
+- Profiling :: profile相关的支持，自动采样统计，生成汇总信息等，可以使用减少自己编码。
+- Numbers :: 提供字符串和其它primitive类型的转换以及自动装箱操作。
+- Reference :: 提供java类： =Reference= 类的接口，操作引用对象。
 *** 注意点
 - BTrace agent只会加载一次，因此如果第一次加载时候未打开unsafe选项，而之后再打开此选项是无效的，只能重启java程序。

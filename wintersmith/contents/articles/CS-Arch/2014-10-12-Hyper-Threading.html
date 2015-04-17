@@ -49,9 +49,12 @@ cpu/硬件级别支持的多线程类似软件级别的多线程，逻辑上的�
 <p>
 也就是说，为了充分使用cpu资源，将单线程不能完全饱和的cpu资源拿来充分利用。
 </p>
-</div>
-</div>
 
+<p>
+所以，cpu多线程共享了一个core的很多单元，仅仅保存状态的原件是独立的。
+</p>
+</div>
+</div>
 <div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2">多线程的种类</h2>
 <div class="outline-text-2" id="text-2">
@@ -81,8 +84,12 @@ Hyper-Threading 是一个physical core运行2个threading，对使用者（如os
 <p>
 intel 于2002年发明了Hyper-Threading技术，之后多数产品都包含了这一技术。
 </p>
-</div>
 
+
+<p>
+Intel 的超线程的实现，仅仅寄存器（部分寄存器）是独立的，其余的单元都是共享的。
+</p>
+</div>
 <div id="outline-container-sec-3-1" class="outline-3">
 <h3 id="sec-3-1">perfermance improve</h3>
 <div class="outline-text-3" id="text-3-1">

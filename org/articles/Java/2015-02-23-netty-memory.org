@@ -86,7 +86,7 @@ digraph stack {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/netty-recycler-stack.png]]
+[[file:../../img/netty-recycler-stack.png]]
 
 *** Handler
 Handler是一个对象的wraper，handler.value 是所关心的对象，Handler提供了recyle方法，此方法会将对象放入池，Handler对象关联了stack，回收handler就是将handler对象放回stack。
@@ -112,7 +112,7 @@ digraph handler {
 #+END_SRC
 
 #+RESULTS:
-[[/img/netty-recycler-handler.png]]
+[[file:../../img/netty-recycler-handler.png]]
 
 *** WeakQueue
 这个队列是存放那些其它线程释放的对象，这个队列没有容量限制，是一个LinkedList，每个节点有一定容量的数组。
@@ -136,5 +136,5 @@ digraph weakqueue {
 #+END_SRC
 
 #+RESULTS:
-[[file:/img/netty-recycler-weakQueue.png]]
+[[file:../../img/netty-recycler-weakQueue.png]]
 

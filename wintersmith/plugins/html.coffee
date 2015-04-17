@@ -77,7 +77,7 @@ module.exports = (env, callback) ->
     constructor: (@filepath, @metadata, @result) ->
 
     getHtml: (base=env.config.baseUrl) ->
-      rv = @result.replace /( src=("|')?)file:\/\//g, '$1'
+      rv = @result.replace /( src=("|')?)(file:)?..\/..\//g, '$1/'
       return rv
 
     getIntro: (base) ->
