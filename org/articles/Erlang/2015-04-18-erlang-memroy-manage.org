@@ -1,0 +1,24 @@
+#+BEGIN_HTML
+---
+date: 2015-04-18 02:40:41
+template: tech.jade
+title: Erlang 的内存管理
+category: Erlang
+chage_frequency: monthly
+tag: erlang,memory
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Erlang 的内存管理算是比较高效的，结合了copy和share2种，形成混合模式。 Erlang是函数式语言，因而其内存管理具有代表性——因为对象不可更改，所以有一些特殊的处理办法可以使用。
+
+此外，Erlang像其它高级语言一样，使用动态内存管理来执行GC回收空余对象。
+
+因为需要大量的进程创建和频繁的消息发送。Erlang需要支持高效的内存管理才行。 本文企图将Erlang的内存管理简要的介绍清楚。
+
+*** TODO 内存布局
+**** 内存分类
+**** 内存对象管理
+*** TODO 内存回收 - GC
+*** TODO 内存参数调整
