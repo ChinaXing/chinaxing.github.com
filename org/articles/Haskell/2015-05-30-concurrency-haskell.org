@@ -1,0 +1,114 @@
+#+BEGIN_HTML
+---
+date: 2015-05-30 00:17:17
+template: tech.jade
+title: Haskell 中并发编程
+category: Haskell
+chage_frequency: monthly
+tag: Concurrency, Parallism, Haskell
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Haskell 对并发/并行的支持，有许多种方式，其中创建线程非常轻量，这点类似于Erlang语言中的进程，创建和销毁非常快速，而且开销非常低。
+
+它们都声称，线程/进程的个数仅仅受限制于机器上面内存的量！
+
+[[http://chimera.labs.oreilly.com/books/1230000000929/ch15.html#sec_conc-efficiency][《Parallel and Concurrent Programming in Haskell》]] 中的测试表明，创建单个线程的时间是1.2微秒，单个线程消耗121Byte。
+
+*** 并发
+
+*并发* 这里的意思是指，问题本身的解决方案就是并行的，问题的存在方式即为多个实体的交互来完成。
+
+那么，并发的关注点是如果处理多个并行执行实体间的协作，如通信，同步等不可抹去的客观的问题。
+
+#+BEGIN_QUOTE
+Concurrent Haskell is the collective name for the facilities that Haskell provides for programming with multiple threads of control. Unlike parallel programming, where the goal is to make the program run faster by using more CPUs, the goal in concurrent programming is usually to write a program with multiple interactions. These interactions might be with the user via a user interface of some kind, with other systems, or indeed between different subsystems within the same program. Concurrency allows us to write a program in which each of these interactions is described separately but all happen at the same time. As we shall see, concurrency is a powerful tool for structuring programs with multiple interactions.
+#+END_QUOTE
+
+对并发的支持，有创建线程的方式， =Control.Concurrent= 库中提供的 =forkIO=  函数创建线程。
+
+**** scheduler
+Haskell 的线程由于在用户态实现，需要自己完成调度，即，线程执行到一定时间必须中断，以便切换到别的线程来执行，可以通过如下运行时参数指定：
+#+BEGIN_SRC sh
++RTS -C[seconds] # 这里的-C参数后面的秒数，代表context-switch的间隔
+#+END_SRC
+程序可以根据需要进行设置，这会影响到响应度和吞吐量。
+**** Thread
+当编译的时候，打开 *-threaded* 选项，生成的执行文件就可以使用多核。否则，只会使用一个核。
+
+**** forkIO
+=forkIO= 创建一个 /Haskell Thread/ , Haskell Thread不同于OS的Thread，由Haskell管理和调度。
+**** forkOS
+=forkOS= 创建一个 /OS Thread/ 和 /Haskell Thread/ 绑定, OS thread是通过OS的接口创建的，代价比较大。
+
+绑定线程主要用在对OS线程有特殊要求的Foreign Call中。将一个Haskell Thread 与 OS Thread 绑定，对应起来。
+#+BEGIN_QUOTE
+Libraries that allow only one OS thread to use their API. GUI libraries often fall into this category. Not only must the library be called by only one OS thread, but it must often be one particular thread (e.g., the main thread). The Win32 GUI APIs are an example of this.
+
+APIs that use internal thread-local state. The best known example of this is OpenGL, which supports multithreaded use but stores state between API calls in thread-local storage. Hence, subsequent calls must be made in the same OS thread; otherwise, the later call will see the wrong state.
+#+END_QUOTE
+
+Haskell 在调用外部接口的时候，自动根据需要创建新的OS线程来满足并发要求。
+#+BEGIN_QUOTE
+When a Haskell thread makes a foreign call, another OS thread is created (if necessary), and the responsibility for running the remaining Haskell threads is handed over to the new OS thread, while the current OS thread makes the foreign call.
+#+END_QUOTE
+
+main 方法运行线程就是一个 绑定线程。
+
+#+BEGIN_QUOTE
+There is a common misconception about forkOS, which is partly a consequence of its poorly chosen name. Upon seeing a function called forkOS, one might jump to the conclusion that you need to use forkOS to call a foreign function like read() and have it run concurrently with the other Haskell threads. This isn’t the case. As I mentioned earlier, the GHC runtime system creates more OS threads on demand for running foreign calls. Moreover, using forkOS instead of forkIO will make your code a lot slower.
+
+The only reason to call forkOS is to create a bound thread, and the only reason for wanting bound threads is to work with foreign libraries that have particular requirements about the OS thread in which a call is made.
+
+#+END_QUOTE
+
+**** 并发通信
+并发实体之间的同步有2种方式，一种是共享变量: *MVar* ，一种是使用软件事务内存: *STM* 。
+
+其中在并发剧烈的情况下，STM要比共享变量高效，而且彻底无需关心死锁的问题，编程模式也变得简单。
+
+软事务内存通过记录事务log，和commit前进行check的方式决定是否commit 还是rollback后重试。
+
+*** 并行
+并行计算是指并行实体之间并没有或很少通信的需要，相对独立。
+
+*并行* 关注的点是如何分解问题，使之并行度可以提高。可以理解为，并行着重于通过并行的手段，企图达到高效计算的目标。
+#+BEGIN_QUOTE
+Now that processor manufacturers have largely given up trying to squeeze more performance out of individual processors and have refocused their attention on providing us with more processors instead, the biggest gains in performance are to be had by using parallel techniques in our programs so as to make use of these extra cores. Parallel Haskell is aimed at providing access to multiple processors in a natural and robust way.
+#+END_QUOTE
+这里的并行是人为构造的，而非问题本身存在的。
+
+对于并行计算的支持有：
+
+- Eval Monad
+- Evaluation Strategies
+- Par Monad
+- Repa Library
+
+Haskell 的并发灵活和强大之处在于，无需修改顺序执行的代码，只要将他们带入到并行框架或lib提供的并行函数中，就能实现并行执行的效果。
+*** 异常
+Haskell 中的异常都是 “异步异常”—— 随时可能发生而中断当前线程的执行。同步异常是指那种自己查询异常而感知到异常的方式。
+
+异步异常发生后，投递到线程，要想编程的方式给一个线程投递异常，通过: =throwTo= 来完成。异常投递是同步操作，因而可能阻塞。
+
+捕获异常通过 =try= 语句，配合 =finally= 可以用来进行clean类的操作。
+
+异常如果没有被捕获，就向上传递，直到终止主线程。
+
+异常处理以异常handler来处理。
+
+=bracket= 可以初始化一个IO Action，注册一个异常处理函数，然后执行业务逻辑计算，在异常发生的时候，异常处理函数被执行。
+
+对于处于block状态的线程，异步异常投递并不会使他们中断，异常被defer。
+
+可以使线程进入block的操作如： =takeMVar= 当MVar空时。STM中的 =try= 也时线程block。
+
+线程block在状态container上面，等待container中得内存被更新，然后唤醒他们。
+
+为了保证一致性，通过 =mask= 的方式，将要执行的代码包含在一个屏蔽异步异常的情况下执行，如果内部安全的部分可以接收异常，那么使用 =restore= 方法来关闭屏蔽或者说打开异常监听。
+
+如果使用STM方式来进行同步，无需关心死锁的情况，仅需将要执行的存在同步的代码包含在 =atomically= 的函数中，作为一个事务来执行即可。
+
+相对维护多个共享状态，避免死锁的情况的方式， =STM= 的方式争用小，而且是更容易减少并发处理错误。
