@@ -96,7 +96,7 @@ body {
     display:block;
     padding-left:1em;
     text-transform:capitalize;
-    font-family: cursive;
+    font-family: "Helvetica Neue"
 }
 
 #menu li a:hover,#menu li.active a {
@@ -112,7 +112,7 @@ body {
     padding-left:0px;
     display:inline-block;
     font-size:1.5em;
-    font-family: cursive;
+    font-family: serif;
 }
 
 #github-icon {
@@ -206,7 +206,7 @@ a:hover {
 }
 
 #cat-title {
-    font-family: cursive;
+    font-family: Helvetica;
     text-transform: capitalize;
 }
 
@@ -343,7 +343,7 @@ code {
 }
 
 blockquote {
-    border-left:.3em solid black;
+    border-left:.3em solid rgb(221,66,52);
     padding-left: .5em;
 }
 
@@ -352,5 +352,15 @@ dt {
 }
 
 span.todo.TODO {
-    color: red;
+    color: rgb(146,154,110);
+    font-size: 0.5em; 
 }
+
+.outline-text-2 ul, .outline-text-3 ul {
+    margin-left:-1.5em;
+}
+
+.outline-text-2,.outline-text-3 {
+    margin-left:1.5em;
+}
+

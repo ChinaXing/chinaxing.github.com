@@ -4,7 +4,7 @@ extends layout
 block content
   h3#cat-title
     b= page.category
-    | &nbsp;文章列表:
+    | &nbsp;文章列表
   ul#cat-content
     each article in page.articles.reverse()
       - var date = article.date
