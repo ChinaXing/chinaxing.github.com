@@ -21,7 +21,7 @@ Redis 提供了功能丰富的内存KV数据库特性，应该称为： =data st
 
 *** 一致性（consisten）
 
-redis 强调一致性是若一致性，因为replicate是异步的，即便是同步模式，也不能保证强一致性。
+redis 强调一致性是弱一致性，因为replicate是异步的，即便是同步模式，也不能保证强一致性。
 
 *** partition
 
