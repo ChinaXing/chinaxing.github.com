@@ -3,7 +3,7 @@
 date: 2015-07-13 23:47:15
 template: tech.jade
 title: 使用sudo进行安全控制
-category: linux
+category: Linux
 chage_frequency: monthly
 tag: sercurity,linux
 ---
