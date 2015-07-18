@@ -16,11 +16,12 @@
         <ul id="menu-list">
           <li><a href="/DS-Al/index.html">DS-Al<sup>3</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>9</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>9</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>9</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
@@ -29,6 +30,36 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>09. February 2015</span></p>
+          <h2><a href="/articles/linux/2015/02/09/2015-02-09-select-poll-epoll.html">select vs poll vs epoll</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">select</a></li>
+<li><a href="#sec-2">poll</a></li>
+<li><a href="#sec-3">epoll</a></li>
+<li><a href="#sec-4">参考</a></li>
+</ul>
+</div>
+</div>
+<p>
+select, poll 和 epoll 是Linux系统支持的多路复用io的系统调用，在高性能的网络编程中，都会涉及到基于事件的处理。&nbsp;事件的处理机制，得力与底层<span class="caps">OS</span>的机制，使得这一实现变的容易。
+</p>
+
+<p>
+那么select，poll 和 epoll&nbsp;分别是什么呢，它们的区别在什么地方？
+</p>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">select</h2>
+</div>
+          <p class="more"><a href="/articles/linux/2015/02/09/2015-02-09-select-poll-epoll.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>23. January 2015</span></p>
@@ -111,41 +142,6 @@
 真正的理想，真正的热爱，真正的追求，都应该源于当下的生活。
 </p>
           <p class="more"><a href="/articles/life/2015/01/24/2015-01-23-ideal-vs-reality.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>17. January 2015</span></p>
-          <h2><a href="/articles/Haskell/2015/01/18/2015-01-17-haskell-feeling.html">学习Haskell感想</a></h2>
-        </header>
-        <section class="content">
-<p>
-这几天在坚持学习Haskell，书是先看了《Real World&nbsp;Haskell》，感觉实践的东西较多，基础涉及的较少，于是决定找个从基础来学习的书，毕竟基础的东西才是这个语言的要义所在，不容忽略。
-</p>
-
-<p>
-其实最好的方式是看官网的Document或者Toturial等，全面而且原滋原味，可惜担心太多内容，没有经理坚持下去。
-</p>
-
-<p>
-在知呼上面提问，几个Haskell大牛说有一本很基础的《Haskell&nbsp;趣学指南》已经有中文版，但是我找到了英文版，就坚持看完！
-</p>
-
-<p>
-全书14章，每章几个主题，每个主题一个大Page，每次看一个主题，就咬牙看完它，有时真的一个Page的内容很多，要看很久，于是常常就看到深夜了！
-</p>
-
-<p>
-Haskell的学习不像别的语言，新的东西非常多，可以说是全新的，而且遇到很多类似数学的感觉，有时还需要手动推导一下，才能理解！
-</p>
-
-<p>
-里面的东西，能理解的最好理解，要记忆的东西的却不多，尽量不要靠记忆，如果是记忆，说明你还没有理解它。
-</p>
-
-<dl class="org-dl">
-<dt> </dt></dl>
-          <p class="more"><a href="/articles/Haskell/2015/01/18/2015-01-17-haskell-feeling.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/11/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/13/" class="nav-next">Next page »</a>
