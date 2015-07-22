@@ -14,12 +14,12 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/DS-Al/index.html">DS-Al<sup>3</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/CS-Arch/index.html">CS-Arch<sup>9</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/DS-Al/index.html">DS-Al<sup>3</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li class="active"><a href="/Network/index.html">Network<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>9</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
@@ -44,10 +44,15 @@
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#sec-1"><span class="caps">MTU</span></a></li>
-<li><a href="#sec-2"><span class="caps">PMTUD</span></a></li>
-<li><a href="#sec-3"><span class="caps">PLPMTUD</span></a></li>
-<li><a href="#sec-4"><span class="caps">MSS</span></a></li>
-<li><a href="#sec-5">Reference</a></li>
+<li><a href="#sec-2"><span class="caps">IP</span>&nbsp;分片</a></li>
+<li><a href="#sec-3"><span class="caps">PMTUD</span></a>
+<ul>
+<li><a href="#sec-3-1"><span class="caps">PMTUD</span>的不足</a></li>
+</ul>
+</li>
+<li><a href="#sec-4"><span class="caps">PLPMTUD</span></a></li>
+<li><a href="#sec-5"><span class="caps">MSS</span></a></li>
+<li><a href="#sec-6">Reference</a></li>
 </ul>
 </div>
 </div>
@@ -196,15 +201,29 @@
 <li>通知源主机调整<span class="caps">IP</span>报文的大小重传
 </li>
 </ul>
+</div>
+</div>
 
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="caps">IP</span>&nbsp;分片</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 <span class="caps">IP</span>分片是IP协议的一部分，通过在IP报文头部中的标记（flag）中指定，IP分片发生在网关发现无法完整单次传输报文的时候，报文被拆分为多个ip报文，然后再由目标主机的IP协议栈实现报文的重组（reassembly）。
 </p>
 
 <p>
-<span class="caps">IP</span>分段对上层协议是透明的。但是IP分段会消耗性能，而且如果其中某段报文传输失败，则整个报文就无效。因此，尽量减少IP分段的使用。
+注意，由于一条经过的的链路层可能有多种，所以ip可能分片后再分片，每个<span class="caps">IP</span>报文有一个Identity的标识来表明属于同一个IP报文。
 </p>
 
+<p>
+<span class="caps">IP</span>分段对上层协议是透明的。但是IP分段会消耗性能，而且如果其中某段报文传输失败，则整个报文就无效。因此，尽量减少IP分段的使用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="caps">PMTUD</span></h2>
+<div class="outline-text-2" id="text-3">
 <p>
 另一种方式为丢弃超过本网络<span class="caps">MTU</span>的报文，同时发送一个ICMP的报文（Packet Too&nbsp;Big），甚至可以在报文中指定本网络的MTU的值，来告知主机，你需要调整发送的报文的大小。
 </p>
@@ -218,16 +237,7 @@ Router在实现<span class="caps">IP</span>协议的规范中，如果IP报文�
 </p>
 
 <p>
-这个过程，叫做 <b>Path-<span class="caps">MTU</span>-Discover</b>
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="caps">PMTUD</span></h2>
-<div class="outline-text-2" id="text-2">
-<p>
-路径<span class="caps">MTU</span>发现，是解决上面提到的发送报文选择最佳尺寸的问题，其实现原理就是通过设置IP报文的flag标记为DF防止分片，然后观察是否收到ICMP响应，如果收到则：
+这个过程，叫做 <b>Path-<span class="caps">MTU</span>-Discover</b>&nbsp;路径<span class="caps">MTU</span>发现，是解决上面提到的发送报文选择最佳尺寸的问题，其实现原理就是通过设置IP报文的flag标记为DF防止分片，然后观察是否收到ICMP响应，如果收到则：
 </p>
 <ul class="org-ul">
 <li>若<span class="caps">ICMP</span>报文中包含了路由器的MTU值，则根据此值进行调整PMTU（Path-MTU）
@@ -236,11 +246,26 @@ Router在实现<span class="caps">IP</span>协议的规范中，如果IP报文�
 </li>
 </ul>
 </div>
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="caps">PMTUD</span>的不足</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+<span class="caps">PMTUD</span>依赖了ICMP通告，而ICMP报文在某些情况下并不能保证有效：
+</p>
+<ul class="org-ul">
+<li>路由器处于性能（内存与cpu）以及安全（大报文flood）的考虑，不产生<span class="caps">ICMP</span>回应。这种情况一般较少
+</li>
+<li><span class="caps">ICMP</span>报文在到达发送方的途中被截获或者黑洞（如防火墙）。这种情况较常见。
+</li>
+</ul>
+</div>
+</div>
 </div>
 
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="caps">PLPMTUD</span></h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="caps">PLPMTUD</span></h2>
+<div class="outline-text-2" id="text-4">
 <p>
 <span class="caps">PLPMTUD</span>（Packetization-Layer-Path-MTU-Discover) 是在封包层次进行的MTU发现实现。基本思想是通过 <code>probe</code> 的方式来进行探测链路上面的<span class="caps">MTU</span>值。
 </p>
@@ -270,9 +295,9 @@ The following values may be  assigned  to the file:
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="caps">MSS</span></h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="caps">MSS</span></h2>
+<div class="outline-text-2" id="text-5">
 <p>
 <span class="caps">MSS</span>&nbsp;（Max-Segment-Size）是TCP协议层的一个参数，在TCP握手的阶段，报文中的MSS表示了本端能够处理的最大段大小。如果超过这个值，报文可能会无法被处理。一般来说这个值是PMTU减去tcp+ip的header后的值：
 </p>
@@ -291,10 +316,12 @@ The following values may be  assigned  to the file:
 </div>
 </div>
 
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">Reference</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Reference</h2>
+<div class="outline-text-2" id="text-6">
 <ul class="org-ul">
+<li><a href="http://www.cisco.com/c/en/us/support/docs/ip/generic-routing-encapsulation-gre/25885-pmtud-ipfrag.html">Resolve <span class="caps">IP</span> Fragmentation, MTU, MSS, and PMTUD Issues with GRE and&nbsp;IPSEC</a>
+</li>
 <li><span class="caps">PMTUD</span> - <a href="http://www.ietf.org/rfc/rfc1191.txt"><span class="caps">RFC1191</span></a>
 </li>
 <li><span class="caps">PLPMTUD</span> - <a href="http://www.ietf.org/rfc/rfc4821.txt"><span class="caps">RFC4821</span></a>  

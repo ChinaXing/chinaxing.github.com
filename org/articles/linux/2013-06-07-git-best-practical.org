@@ -53,6 +53,14 @@ change_frequency: monthly
     #+BEGIN_SRC sh :eval no
     git push --force origin/master
     #+END_SRC
+*** merge远程机器commit
+    #+BEGIN_SRC sh
+      git fetch ssh://root@hosta.com/root/account && git merge FETCH_HEAD    
+    #+END_SRC
+*** 解决合并产生的冲突
+    #+BEGIN_SRC sh
+    grep -lr "<<<<<" | xargs git checkout --ours
+    #+END_SRC
 *** 配置
     - 全局配置文件
       ~/.gitconfig

@@ -47,24 +47,31 @@ MTU（最大传输单元）指的网络能够支持的最大IP报文的的长度
 - IP分片
 - 通知源主机调整IP报文的大小重传
 
-IP分片是IP协议的一部分，通过在IP报文头部中的标记（flag）中指定，IP分片发生在网关发现无法完整单次传输报文的时候，报文被拆分为多个ip报文，然后再由目标主机的IP协议栈实现报文的重组（reassembly）。
+*** IP 分片
+    IP分片是IP协议的一部分，通过在IP报文头部中的标记（flag）中指定，IP分片发生在网关发现无法完整单次传输报文的时候，报文被拆分为多个ip报文，然后再由目标主机的IP协议栈实现报文的重组（reassembly）。
+
+注意，由于一条经过的的链路层可能有多种，所以ip可能分片后再分片，每个IP报文有一个Identity的标识来表明属于同一个IP报文。
 
 IP分段对上层协议是透明的。但是IP分段会消耗性能，而且如果其中某段报文传输失败，则整个报文就无效。因此，尽量减少IP分段的使用。
 
-另一种方式为丢弃超过本网络MTU的报文，同时发送一个ICMP的报文（Packet Too Big），甚至可以在报文中指定本网络的MTU的值，来告知主机，你需要调整发送的报文的大小。
+*** PMTUD
+    另一种方式为丢弃超过本网络MTU的报文，同时发送一个ICMP的报文（Packet Too Big），甚至可以在报文中指定本网络的MTU的值，来告知主机，你需要调整发送的报文的大小。
 
 Router在实现IP协议的规范中，如果IP报文未标记为DF（don't fragement），那么就执行第二种策略（ICMP回应），否则就执行第一种策略（分片）。
 
 为了减少分片，那么就需要发送方选择合适的报文大小来发送，即，不要超过传输路径上任何被支持的MTU的值。
 
 这个过程，叫做 *Path-MTU-Discover*
-
-*** PMTUD
     路径MTU发现，是解决上面提到的发送报文选择最佳尺寸的问题，其实现原理就是通过设置IP报文的flag标记为DF防止分片，然后观察是否收到ICMP响应，如果收到则：
 - 若ICMP报文中包含了路由器的MTU值，则根据此值进行调整PMTU（Path-MTU）
 - 若ICMP报文中未包含此路由的MTU值（这种情况发生在Router支持的协议较老，没有支持MTU协商），那么需要采用别的策略来调整PMTU
     这种路径MTU发现发生在IP层。在IP层之上，还有其它的路径MTU发现策略，如PLPMTUD。
 
+**** PMTUD的不足
+PMTUD依赖了ICMP通告，而ICMP报文在某些情况下并不能保证有效：
+- 路由器处于性能（内存与cpu）以及安全（大报文flood）的考虑，不产生ICMP回应。这种情况一般较少
+- ICMP报文在到达发送方的途中被截获或者黑洞（如防火墙）。这种情况较常见。
+  
 *** PLPMTUD
     PLPMTUD（Packetization-Layer-Path-MTU-Discover) 是在封包层次进行的MTU发现实现。基本思想是通过 =probe= 的方式来进行探测链路上面的MTU值。
 
@@ -95,6 +102,7 @@ MSS （Max-Segment-Size）是TCP协议层的一个参数，在TCP握手的阶段
 协议的双方应该遵循对方的MSS的建议，选择不要超过此MSS的TCP数据段大小进行发送，也就是说取MTU和MSS的最小作为合适的报文大小。
 
 *** Reference
+    - [[http://www.cisco.com/c/en/us/support/docs/ip/generic-routing-encapsulation-gre/25885-pmtud-ipfrag.html][Resolve IP Fragmentation, MTU, MSS, and PMTUD Issues with GRE and IPSEC]]
     - PMTUD - [[http://www.ietf.org/rfc/rfc1191.txt][RFC1191]]
     - PLPMTUD - [[http://www.ietf.org/rfc/rfc4821.txt][RFC4821]]  
   
