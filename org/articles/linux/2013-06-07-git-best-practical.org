@@ -61,6 +61,10 @@ change_frequency: monthly
     #+BEGIN_SRC sh
     grep -lr "<<<<<" | xargs git checkout --ours
     #+END_SRC
+*** 查看某个文件某个commit的内容
+    #+BEGIN_SRC sh
+    git cat-file blob 42f70347905ce30435459d3e114f30bb5d3084f4:compile.sh
+    #+END_SRC
 *** 配置
     - 全局配置文件
       ~/.gitconfig

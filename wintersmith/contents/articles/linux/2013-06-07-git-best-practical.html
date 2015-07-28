@@ -21,7 +21,8 @@ change_frequency: monthly
 <li><a href="#sec-9">强制覆盖远程</a></li>
 <li><a href="#sec-10">merge远程机器commit</a></li>
 <li><a href="#sec-11">解决合并产生的冲突</a></li>
-<li><a href="#sec-12">配置</a></li>
+<li><a href="#sec-12">查看某个文件某个commit的内容</a></li>
+<li><a href="#sec-13">配置</a></li>
 </ul>
 </div>
 </div>
@@ -151,8 +152,18 @@ git clean 删除没有纳入git管理的文件
 </div>
 </div>
 <div id="outline-container-sec-12" class="outline-2">
-<h2 id="sec-12">配置</h2>
+<h2 id="sec-12">查看某个文件某个commit的内容</h2>
 <div class="outline-text-2" id="text-12">
+<div class="org-src-container">
+
+<pre class="src src-sh">git cat-file blob 42f70347905ce30435459d3e114f30bb5d3084f4:compile.sh
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13">配置</h2>
+<div class="outline-text-2" id="text-13">
 <ul class="org-ul">
 <li>全局配置文件
 ~/.gitconfig
