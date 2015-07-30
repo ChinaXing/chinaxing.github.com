@@ -36,6 +36,6 @@ CSP 的好处是使得系统较为清晰，Processor 之间是解耦合的，职
 
 	"Go's design was strongly influenced by Hoare's paper ..."  [[https://godoc.org/github.com/thomas11/csp][go scp]]
 
-*** Refrence
+*** Reference
 - [[http://www.ibm.com/developerworks/java/library/j-csp2/?S_TACT=105AGX52&S_CMP=cn-a-j][CSP for Java]] 
 - [[http://www.usingcsp.com/cspbook.pdf][csp by C. A. R. Hoare]]
