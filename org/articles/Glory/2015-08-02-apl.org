@@ -27,7 +27,6 @@ APL 语言通常是解析执行，编译APL语言到机器码视乎比较困难�
 
 [[file:../../img/Kenneth-Eugene-Iverson.png]]
 
-
-*** Reference
+学习APL
 - [[https://www.youtube.com/playlist?list=PL1955671BD6E21548][APL tutorials]]
 - [[http://aplwiki.com/FrontPage][APL wiki]]
