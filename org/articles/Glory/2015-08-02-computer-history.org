@@ -23,3 +23,5 @@ change_frequency: never
 正如我们不会忘记歌德、贝多芬、普希金、苏格拉底、康德、罗素，我们中的多数人终将有一天不会忘记计算机科学的巨匠和大师们。
 
 我们只是先行一步，先看见这光荣和伟大之光。
+
+[[http://www.computerhistory.org/fellowawards/hall/][Hall of Fellows]]

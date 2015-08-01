@@ -8,7 +8,7 @@ change_frequency: never
 ---
 #+END_HTML
 
-APL - (A programming Language) 发明人是 [[http://www.keiapl.info][Ken Iverson]], 一种非常简洁地表示计算的语言，
+[[http://www.computerhistory.org/atchm/the-apl-programming-language-source-code/][APL]] - (A programming Language) 发明人是 [[http://www.keiapl.info][Ken Iverson]], 一种非常简洁地表示计算的语言，
 它采用多维数组作为基础数据结构，通过chain多种操作函数来完成计算，理论上可以用一行代码，表述任何可计算问题。
 
 APL 以其简洁性显著，又因为其对矩阵运算的天然良好支持，可以利于并行计算，写出来的程序会非常的高效，被应用于金融领域，可视计算、人工智能等。
@@ -26,3 +26,8 @@ APL 语言通常是解析执行，编译APL语言到机器码视乎比较困难�
 下面是 *Ken Iverson* 老人家的照片， /有的人轻如鸿毛，有的人重于泰山/
 
 [[file:../../img/Kenneth-Eugene-Iverson.png]]
+
+
+*** Reference
+- [[https://www.youtube.com/playlist?list=PL1955671BD6E21548][APL tutorials]]
+- [[http://aplwiki.com/FrontPage][APL wiki]]
