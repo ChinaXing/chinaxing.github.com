@@ -235,8 +235,20 @@ a:hover {
     border:0;
 }
 
-img {
-    max-width:100%;
+.figure {
+    text-align: center;
+}
+
+.figure p {
+    text-indent: 0;
+}
+
+.figure img {
+    max-width:90%;
+}
+
+.article .figure img {
+    box-shadow: -.5em -.5em 1em .1em black;
 }
 
 #menu-list {

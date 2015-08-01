@@ -1,0 +1,81 @@
+#+BEGIN_HTML
+---
+date: 2014-10-12 22:56:29
+template: tech.jade
+title: hardware multithreading - HT
+category: Compute
+chage_frequency: monthly
+tag: hardware,cpu
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+cpu/硬件级别支持的多线程类似软件级别的多线程，逻辑上的多个执行流，并且它们共享了一些状态和资源。
+
+对于cpu级别的多线程，共享的是如下资源：
+1. 执行单元
+2. cache
+
+*** 为什么要采用多线程
+多线程的思想主要出于一个cpu执行流可能因为某些原因暂停（如等待数据，分支预测失败），这时可以将空闲的执行资源用来执行另一个程序。
+另一点是，程序的执行涉及到了多个cpu处理单元，而这些单元并不总是满负载，也就是说某些情况idle，这样可以拿去执行别的程序。
+
+也就是说，为了充分使用cpu资源，将单线程不能完全饱和的cpu资源拿来充分利用。
+
+所以，cpu多线程共享了一个core的很多单元，仅仅保存状态的原件是独立的。
+*** 多线程的种类
+按照是否可以真正的同时执行指令，将cpu级别的multithreading分为：
++ temporal multithreading :: 每个指令执行步骤,同时只有一个线程的指令在执行
++ simultaneous multithreading :: 每个指令执行步骤，同时有多个线程的在执行
+
+其中simultaneous multithreading 的一个实际实现就是 intel 的 Hyper-Threading
+
+*** Hyper-Threading
+
+Hyper-Threading 是一个physical core运行2个threading，对使用者（如os）表现为2个core，即对应用是透明的，但是应用如果愿意，也可以感知到是logical的Core还是physical的core。
+
+intel 于2002年发明了Hyper-Threading技术，之后多数产品都包含了这一技术。
+
+
+Intel 的超线程的实现，仅仅寄存器（部分寄存器）是独立的，其余的单元都是共享的。
+**** perfermance improve
+性能提升有30%。
+
+但是这并不是绝对的。仅仅是对于some applications。因为存在互相的影响，存在资源的共享。
+
+使用者需要通过合理的配置和调整，才能充分发挥这种性能提升。也许有些场景/应用，开启Hyper-Threading并不合适。
+
+对于一个开启了HT的core，运行一个程序和同时运行两个程序相比，会相应的变慢。
+
+对于OS，需要能够感知到core的Logical和Physical属性，比如尽量将负载均分在多个physical上隔离的Core上，而不应该对无视这种区别。
+
+当HT推出的初期，许多OS都没有对应的支持，Linux 从2.4开始支持HT，能够识别逻辑core和物理core的区别而不是无视差别，并且在识别的基础上自然要进行必要的优化。
+
+*** 落幕的技术
+
+虽然HT技术Intel平台上面带来了一定的作用，但是并不是那么优越，并且在ARM的研究中称这种技术会带来能耗增加，增加cache失效，所以并没有在ARM中进行实现。
+
+2013 intel发明了新的性能提升技术 /out-of-order execution/ , 取代了HT技术。
+
+*** 安全问题
+因为HT技术存在着多个执行流共享cache的特点，2005年，有人证明可以在Pentium 4上面通过恶意程序访问到隔壁线程的内容，带来了安全隐患。
+
+
+*** What you got
+现在，我们总结下，你应该知道了哪些
++ HT是一种在一个逻辑cpu上面模拟多个cpu的技术，物理上是一个cpu
++ HT技术的2各Logical core共享了物理资源，但是对用户表现出2个cpu的假象：Transparent
++ HT技术能带来一定的性能提升，但是不是绝对的，application-dependent
++ 2个Logical core会相互影响，所以尽量别让他们都忙，这需要OS的optimization
++ 可以关闭HT（通过BIOS）
++ HT将要被别的技术取代
+
+*** Reference
++ [[http://en.wikipedia.org/wiki/Hyper-threading][Hyper-Threading Wikipedia]]
++ [[http://en.wikipedia.org/wiki/Simultaneous_multithreading][Simultaneous Multithreading Wikipedia]]
+
+
+
+
+
+

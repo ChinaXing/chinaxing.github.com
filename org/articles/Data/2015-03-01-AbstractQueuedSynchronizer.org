@@ -1,0 +1,128 @@
+#+BEGIN_HTML
+---
+date: 2015-03-01 15:56:14
+template: tech.jade
+title: AbstractQueuedSynchronizer
+category: Data
+chage_frequency: monthly
+tag: DS-Al, concurrent
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+*** AQS
+
+Java 并发包：java.util.concurrent 非常有名，是Java 并发编程的基础。
+
+AbstractQueuedSynchronizer 是 这个库设计的中心，为并发原语，并发工具以及更高层的并发数据结构，提供了基础设施。
+#+BEGIN_SRC dot :file ../../img/ds-alg-abstractQueuedSynchronizer.png :exports results :eval no-export
+digraph aqs {
+   nodesep = 1.0
+   ranksep = 2.0
+   graph [ fontsize = 10 fontname = "Helvetica Neue" ]
+   node [ shape = box3d , style = filled , fontsize = 10, fontname = "Helvetica Neue" ]
+//   compound = true
+   aqs [ label = "AbstractQueuedSynchronizer" ]
+   ReentranLock 
+   Semphore
+   ReentranReadWriteLock
+   CountDownLatch
+   CyclicBarrier
+   ArrayBlockingQueue
+   DelayQueue
+
+   subgraph cluster_0 {
+       color = blue
+       label = "并发原语"
+       style = dotted
+       {rank = same; aqs , Condition }
+   }
+
+   subgraph cluster_1 {
+       label = "并发工具"
+       color = blue
+       style = dotted
+       {rank = same; ReentranLock, Semphore, ReentranReadWriteLock, CountDownLatch }
+   }
+
+   subgraph cluster_2 {
+       label = "并发数据结构"
+       color = blue
+       style = dotted
+       {rank = same;  CyclicBarrier, ArrayBlockingQueue, DelayQueue } 
+   } 
+
+   aqs -> { ReentranLock, Semphore, ReentranReadWriteLock, CountDownLatch }  
+   
+   ReentranLock -> { CyclicBarrier, ArrayBlockingQueue, DelayQueue } 
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:../../img/ds-alg-abstractQueuedSynchronizer.png]]
+
+**** CLH
+AQS内部使用CLH队列作为同步的数据结构，等待获取锁的进程挂在这个队列上面。使用的是CLH的改进版本。
+
+CLH 队列实现为FIFO的链表，head 指针与 tail 指针索引，插入在队尾，删除在队首。
+
+CLH 队列的好处是对于竞争有好的性能，没用内存聚集访问，不会导致热点竞争，每个线程只要判断相邻节点的状态就能确定是否能够拥有锁。
+
+唤醒只要检查head。在获取的时候，先将自身加入队列，然后在尝试判断是否处于队列的head，如果是则尝试获取。否则Park等待。
+
+#+BEGIN_SRC dot :file ../../img/ds-alg-aqs-clh.png :exports results :eval no-export
+digraph clh {
+  graph [ label = "AQS 内部队列", fontsize = 10, fontname = "Helvetica Neue" ]
+  rankdir = LR 
+  nd [ label = "{<f0> waitStatus|<f1> Thread|<f2> nextWaiter}", shape = record ,fontname = "Helvetica Neue", fontsize = 10 ]
+  t [ shape = plaintext, style = none, label = "Node:",fontname = "Helvetica Neue", fontsize = 10 ]
+  t -> nd:f0 [ style = dotted, color = grey ]
+  nd:f2 -> ConditionQueue [ color = blue ] 
+
+  tail [ style = normal, shape = box3d, color = blue, fontname = "Helvetica Neue", fontsize = 10 ] 
+  head [ style = normal, shape = box3d, color = blue,fontname = "Helvetica Neue", fontsize = 10 ]
+  node [ style = filled, shape = box3d, fontname = "Helvetica Neue", fontsize = 10 ]
+  head -> n1 -> n2 -> n3 -> tail [ label = "next(successor)"  ]
+  tail -> n3 -> n2 -> n1 -> head [ label = "prev", constraint = false, color = gray  ]
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:../../img/ds-alg-aqs-clh.png]]
+
+**** Node
+一个Node代表了一个等待着的线程，以及一些用来实现链接表的数据字段和代表等待的状态。
+**** Acquire
+将自身加入队列，然后判断是否处于head，如果是则dequeue，否则park等待。
+**** Release
+从head处唤醒head指向的节点next节点，注意head被设置为此节点。
+**** Cancel
+取消队列中的节点（线程），设置CANCEL标志，next 指向自身。后续的别的acquire操作会有清理Cancel节点的操作，将他们移出CLH队列。
+
+*** Conditon
+AQS 提供Lock（这里指AQS队列）基础原语外，还提供Condition，一个Lock上面可以有多个Condition，每个Condition在内部是一个队列，操作此队列之前，线程已经获得了Lock上面的锁，所以没用竞争问题。
+
+nextWaiter字段将同一个Condition上面的多个等待线程（Node）链接起来。
+
+ConditionObject代表一个Condition。
+
+#+BEGIN_SRC dot :file ../../img/ds-alg-aqs-condition.png :exports results :eval no-export
+digraph condition {
+  graph [ label = "Condition队列", fontsize = 10, fontname = "Helvetica Neue" ]
+  node [ style = filled, shape = box3d, fontname = "Helvetica Neue", fontsize = 10 ]
+  rankdir = LR 
+  ConditionObject -> n1 -> n2 -> n3 [ label = nextWaiter ]
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:../../img/ds-alg-aqs-condition.png]]
+
+*** LockSupport
+LockSupport 提供park 和 unpark 方法完成底层的线程挂起和唤醒。内部使用了unsafe。
+*** Unsafe
+操作对象的字段，进行CAS都使用了vm提供的底层对象unsafe。
+
+*** TODO Worker
+ExecutorPool 的Worker 的实现，继承了AQS。

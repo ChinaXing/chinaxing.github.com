@@ -1,0 +1,34 @@
+#+BEGIN_HTML
+---
+date: 2014-10-14 20:36:02
+template: tech.jade
+title: Concurrency support - LL/SC
+category: Compute
+chage_frequency: monthly
+tag: cs,concurrency
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+本文介绍CPU/硬件对并发的支持之LL/SC (Load-Link/Store-Conditional).
+
+** LL/SC
+
+LL/SC 可以实现Lock-Free的同步原语。它对并发同步的解决方式是通过Read-Modify-Write的方式完成。
+其中，在Write的时候，做Condition Check，确保数据在Read之后没有发生过更新。
+#+BEGIN_QUOTE
+Load-link returns the current value of a memory location, while a subsequent store-conditional to the same memory location will store a new value only if no updates have occurred to that location since the load-link. Together, this implements a lock-free atomic read-modify-write 
+#+END_QUOTE
+
+*** vs CAS
+与CAS(compare-and-swap)机制相比，LL/SC有更强的同步正确性保障，只要有LL后的任何update，都会使后续的SC操作失败。而CAS某些情况下得ABA问题。
+
+*** Implementation
+Alpha、PowerPC、MIPS、ARM实现了LL/SC指令，LL和SC为两个指令，构成Instruction pair。
+
+实现方式：track cache-line access
+
+** refrence
++ [[http://en.wikipedia.org/wiki/Load-link/store-conditional][Load-link/Store-conditional]]
+
+

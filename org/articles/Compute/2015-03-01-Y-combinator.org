@@ -1,0 +1,89 @@
+#+BEGIN_HTML
+---
+date: 2015-03-01 00:51:49
+template: tech.jade
+title: Y combinator
+category: Compute
+chage_frequency: monthly
+tag: CS-Arch
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+尝试推导Y组合子：
+
+Y combinator 可以将伪递归定义的函数转换为递归定义，中间不引入别的函数：
+
+设递归函数：
+#+BEGIN_SRC haskell
+f x = g (f x) -- 1. 这里表示f 内部调用了自身
+#+END_SRC
+转换为非递归形式：
+#+BEGIN_SRC haskell
+f' f x = g(f x) -- 2. 引入参数 f，消除递归调用自身
+#+END_SRC
+Y组合子是这样一个函数：
+#+BEGIN_SRC haskell
+y f' = f -- 3. 满足 将 f' 转换为 f，
+         -- 即将伪递归函数转换为其原本的递归函数，这样就可以使用了
+#+END_SRC
+
+下面是尝试寻找Y组合子的过程：
+#+BEGIN_SRC haskell
+f' f = f -- 2. 处的f'的定义可知
+y f' = f = f' f = f' (y f') -- 进行等价代换
+#+END_SRC
+
+这种特性叫做不动点，函数值与其参数值相等。
+
+所以, [ y f' ]  、 [ f ]  都是  [ f' ]  的不动点
+#+BEGIN_SRC haskell
+g k = l ( k k ) -- 这种函数有意思
+#+END_SRC
+
+对这种函数，有个特点：
+#+BEGIN_SRC haskell
+g g = l ( g g ) -- 注意到，当 k ＝ g
+#+END_SRC
+
+因此，[ f' ]的不动点可以表示为：
+#+BEGIN_SRC haskell
+g' h = f' (h h) -- h 为函数，h h = f
+g' g' = f' (g' g') -- h ＝ g' 的时候，g‘ g' 为f'的不动点
+#+END_SRC
+所以f'的不动点可以表示为: [ g' g' ]
+因为f'的不动点是： [ y f' ]
+#+BEGIN_SRC haskell
+y f' = g' g' = f' (g' g')
+#+END_SRC
+
+将这些形式转换为haskell函数定义：
+#+BEGIN_SRC haskell
+g' = \h -> f' (h h) -- 根据：g h = f' (h h)
+y = \f' -> -- 根据 ：y f' = g' g'
+       (\h -> f' (h h) ) (\h -> f' (h h)) 
+#+END_SRC
+
+转换为scheme lambda形式：
+#+BEGIN_SRC scheme
+(defn g'
+  (lambda (h) (f' (h h))))
+
+(defn y
+  (lambda (f')
+     (lambda (h) (f' (h h)) (lambda (h) (f' (h h))))))
+#+END_SRC
+
+*** Haskell fix
+haskell中已经包含了fix函数，我们只需要使用：
+#+BEGIN_SRC haskell :exports both :eval no-export
+import Data.Function (fix)
+flip ($) 20 (fix $ \fib' n -> if n < 2 then 1 else fib' (n-1) + fib' (n-2))
+#+END_SRC
+
+#+RESULTS:
+: 10946
+
+
+

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>SICP 笔记 - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li class="active"><a href="/Compute/index.html">Compute<sup>9</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>3</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>1</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>9</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <div id="clustrmaps-widget"></div>
+      </div>
+    </header>
+    <section id="content">
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
+      <h2 style="text-align:center">SICP 笔记
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <link rel="stylesheet" href="/css/highlight/github.css">
+      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
+      <div class="tech">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">抽象</a></li>
+<li><a href="#sec-2">系统健壮性 ——&nbsp;robust</a></li>
+<li><a href="#sec-3">分层</a></li>
+<li><a href="#sec-4">数据抽象的要点</a></li>
+<li><a href="#sec-5">数据的类型</a></li>
+<li><a href="#sec-6">Lisp&nbsp;的优势</a></li>
+<li><a href="#sec-7">符号数据</a></li>
+<li><a href="#sec-8">过程抽象</a></li>
+<li><a href="#sec-9">递归</a></li>
+<li><a href="#sec-10">有状态的对象和过程</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+<span class="caps">SICP</span>&nbsp;分为5章，分别讲解了计算机程序设计的几个方面：
+</p>
+<ul class="org-ul">
+<li>过程抽象
+</li>
+<li>数据抽象
+</li>
+<li>模块化——对象和流以及状态
+</li>
+<li>元语言抽象
+</li>
+<li>编译器构造
+</li>
+</ul>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">抽象</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+抽象是将普遍知识与具体知识相隔离的方法，使得抽象后的普遍知识具有通用性，不依赖于具体实现。
+</p>
+
+<p>
+处理 <b>复杂问题</b>&nbsp;的最佳方法就是抽象，认识事物的关键方法就是尽可能地减少对其中细节的关注。
+</p>
+
+<p>
+你会发现，处在计算机中的每一层，都可以发现你不清楚的细节——下一层的抽象，所以不要陷入细节中，这样会无休止的深入下去，使你失去问题的焦点。
+</p>
+
+<p>
+学会用抽象的方式分析、解决问题。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">系统健壮性 ——&nbsp;robust</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+对小的改动不敏感，小的方案调整只需要做小的改动。
+</p>
+
+<p>
+比将问题分解为子问题逐个解决的方式更有效的方式是：&nbsp;发明一种针对系统的特定语言表述系统，当方案发生变化的时候，在语言之上做小的调整。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">分层</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+分层的思想是抽象的一种应用，分层是逻辑上的，每一层对于上一层提供基本的操作，同时借助下一层提供的基本操作实现本层的语义。
+</p>
+
+<p>
+分层使得层与层之间的界面清晰，每个层能够独立实现。
+</p>
+
+<p>
+每个层都提供了系统的某个视图——某种层面的抽象，如果修改系统进行扩展和调整，可以选择在任何一层完成，因此分层抽象使得系统更加强健。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">数据抽象的要点</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+数据抽象是指将数据的表示与数据的操作分离，数据的定义就是数据的操作的集合，这些操作还应该满足一定的规则。
+</p>
+
+<p>
+数据的表示是数据抽象的具体实现，可以有很多种，而数据的使用方只需要使用数据的操作函数，无需关心这些实现。
+</p>
+
+<p>
+数据抽象通常是提供数据构造和数据选择这两种接口，数据构造用于生产数据对象，而数据选择接口用于选取数据对象的局部组成。
+</p>
+
+<p>
+处理抽象数据可以定义通用接口，通用操作接口不关心数据的具体类型，却能够兼容任意多的数据类型，实现方式是基于数据类型的分派，
+</p>
+
+<p>
+分派有2种方法：
+</p>
+<dl class="org-dl">
+<dt> 采用数据驱动的设计 </dt><dd>数据表示方需要注册数据的操作函数到表格，分派函数根据表格进行分派。
+</dd>
+<dt> 采用消息传递的设计 </dt><dd>将数据看作对象，而将操作看作发给数据的消息。此种实现是将数据对象实现为一个过程——而非数据。
+</dd>
+</dl>
+
+<p>
+数据抽象的设计过程是，将需要的数据表现先假设存在，然后基于这些假设设计数据的操作，这样延迟了数据表现具体的实现，使得一开始不必专注与具体表现，而在设计完成后根据需要选择具体表示。
+</p>
+
+<p>
+将数据的处理，看作是一系列操作的串接，这是一个通用的处理范型：map是一个变换，filter是一个过滤，accumulate是累积。&nbsp;这一区分使得程序结构清晰。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">数据的类型</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+数据的类型引入后，数据的类型之间存在某种关系，如子类型，利用这种关系，可以实现转换，然后数据可以执行更广泛的操作，但是现实的复杂性是这种关系的非线性，而是网状的，如何合理的划分类型，一直没有很好的解决。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Lisp&nbsp;的优势</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Lisp的优势是使用了具有 <b>闭包</b>&nbsp;特点的数据表现形式——列表来表示数据，这使得它构造和操作复杂数据变的非常简单，因为通过构造的复合数据还是合法的复合数据。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">符号数据</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+符号数据有别于”值“数据，符号数据是语法上面的数据，而值数据是语义上面的数据，符号数据的引入为语言元编程提供了基础，使得程序能够理解和处理程序本身。
+</p>
+
+<p>
+支持符号后，替换将变得不总是成立。
+</p>
+
+<p>
+支持符号，可以看到程序和数据之间的界限变得模糊。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">过程抽象</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+使用高阶函数，可以完成更加高级的抽象，更加通用。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">递归</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+递归是程序设计非常直观和简便的方式，而在使用递归数据结构的时候更是如此。
+</p>
+
+<p>
+递归的过程可以通过转化为尾部递归的方式消除栈溢出的问题，使得递归使用的空间是固定的，如同迭代一样。
+</p>
+
+<p>
+递归的函数需要收敛于一个终结点。
+</p>
+
+<p>
+执行递归的方式有2种，一种是展开代换，一种是求值后代入，它们个有优势。
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">有状态的对象和过程</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+问题是会带来时间性，程序的输出与历史有关。进而在并发环境种带来同步问题，解决同步问题的一个方法是使用内存屏障。
+</p>
+</div>
+</div>
+
+      </div>
+      <script>
+        $(function(){
+         $('pre.src').each(function(i, block){
+            var b = $(block);
+            var m = b.attr('class').match(/src src-(.*)/,1);
+            if (null == m || m.length < 2 ) { return; }
+            b.addClass(m[1]);
+            hljs.highlightBlock(block);
+         });
+        })
+      </script>
+      <!-- Table of Content-->
+      <script src="/js/tableofcontents.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+             topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- clusterMaps-->
+  <script>
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")
+  </noscript>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

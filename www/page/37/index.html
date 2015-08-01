@@ -14,13 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/CS-Arch/index.html">CS-Arch<sup>9</sup></a></li>
-          <li><a href="/DS-Al/index.html">DS-Al<sup>3</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>9</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Network/index.html">Network<sup>1</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>3</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>1</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>9</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
@@ -30,6 +31,77 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>10. November 2012</span></p>
+          <h2><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">快速取得apache/nginx的qps和rt</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">脚本</a></li>
+<li><a href="#sec-2">说明</a></li>
+</ul>
+</div>
+</div>
+<p>
+在计算<span class="caps">QPS</span>和RT的时候，我们一般使用grep&nbsp;。但是当日志文件很大的时候，grep会很耗时。
+</p>
+
+<p>
+监控系统中计算的方法是记录上次采样的行，下次读取的时候从记录的位置开始。所以不存在这个问题。
+</p>
+
+<p>
+但是如果我们仅仅希望链接到服务器，执行一条命令就快速的计算出qps和rt。则需要考虑如何快速读取需要的行的问题：
+</p>
+
+<p>
+经过我这几天的考虑，总结出了下面一条命令。计算qps和rt算是很快了。如果谁有比这个更秒的方法，不吝赐教：
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">脚本</h2></div>
+          <p class="more"><a href="/articles/linux/2012/11/10/2012-11-10-quick-calculate-qps_rt.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>01. January 1970</span></p>
+          <h2><a href="/articles/life/1970/01/01/2013-02-16-mark-2012.html">Untitled</a></h2>
+        </header>
+        <section class="content"><div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">2012记之家里</a>
+<ul>
+<li><a href="#sec-1-1">姥姥去世</a></li>
+<li><a href="#sec-1-2">四爷去世</a></li>
+<li><a href="#sec-1-3">青兰爷爷去世</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2012记之自己</a>
+<ul>
+<li><a href="#sec-2-1">买了房定了家</a></li>
+<li><a href="#sec-2-2">工作</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+&#8212;
+date: 2013-02-16
+template: article.jade
+title: 2012记
+category: Life
+change_frequency:&nbsp;never
+
+          <p class="more"><a href="/articles/life/1970/01/01/2013-02-16-mark-2012.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>01. January 1970</span></p>
@@ -56,41 +128,7 @@
           <p class="more"><a href="/articles/linux/1970/01/01/2013-07-16-git-staudy-note.html">more</a></p>
         </section>
       </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>01. January 1970</span></p>
-          <h2><a href="/articles/life/1970/01/01/2014-09-25-train.html">Untitled</a></h2>
-        </header>
-        <section class="content"><div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">创业</a></li>
-<li><a href="#sec-2">人生</a></li>
-</ul>
-</div>
-</div>
-&#8212;
-date: 2014-09-25 21:52:10
-template: article.jade
-title: 新人培训
-category: Life
-change_frequency: never
-&#8212;
-
-<p>
-今天参加新人培训，有些感触，说几句。
-</p>
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">创业</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>创业好比踢球，场上和场外是完全不同的感受，当你有一个好的想法的时候，觉得事情很e</li></ul></div></div>
-          <p class="more"><a href="/articles/life/1970/01/01/2014-09-25-train.html">more</a></p>
-        </section>
-      </article>
-      <div id="paginator-nav"><a href="/page/36/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a>
+      <div id="paginator-nav"><a href="/page/36/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/38/" class="nav-next">Next page »</a>
       </div>
     </section>
     <footer>
