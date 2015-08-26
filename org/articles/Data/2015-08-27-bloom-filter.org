@@ -1,0 +1,29 @@
+#+BEGIN_HTML
+---
+date: 2015-08-27 00:23:34
+template: tech.jade
+title: Bloom filter
+category: Data
+chage_frequency: monthly
+tag: Data
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+[[https://zh.wikipedia.org/zh-cn/布隆过滤器][Bloom filter]], 被用在大数据中（Redis、Hbase、mongoDB）他是一个非常巧妙的数据结构。
+
+Bloom filter 可以用很小的空间复杂度和常量的计算复杂度来做出判断，回答如下问题：
+#+BEGIN_QUOTE
+一个元素是否在集合中
+#+END_QUOTE
+
+由于Bloom filter 使用有限的空间来记录信息，所以存在信息丢失（信息熵的下降）,所以它不是完全精确的判定器：
+
+- 如果Bloom filter 告诉你元素不在集合中，那么一定不在
+- 如果Bloom filter 告诉你元素在集合中，可能不在
+
+这一特性，可以被用在元素是否在数据集中得判断，如，在访问数据库前，加入一层Bloom filter，可以拦截那些非法的请求，起到保护作用。
+
+
+可以通过查找HBase，Redis代码，学习Bloom filter的真实使用，以及了解其改进的使用方式。
