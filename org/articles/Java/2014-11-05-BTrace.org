@@ -122,3 +122,20 @@ BTraceUtils提供了非常丰富的工具，足够你完成Btrace脚本的编写
 - Reference :: 提供java类： =Reference= 类的接口，操作引用对象。
 *** 注意点
 - BTrace agent只会加载一次，因此如果第一次加载时候未打开unsafe选项，而之后再打开此选项是无效的，只能重启java程序。
+- Return 类型与方法参数
+  在使用@Return 类型时，同时想获取方法的参数，需要保证参数放在@Return之前，否则无法work：
+  #+BEGIN_SRC java
+        @OnMethod(
+        clazz="...",
+        method="onMessage",
+        location = @Location(Kind.RETURN)
+    )
+    public static void onLog(AnyType[] args, @Return boolean ret) {
+       if(!com.sun.btrace.BTraceUtils.Strings.startsWith(com.sun.btrace.BTraceUtils.Strings.str(args[0]),"...")){
+           print(args[0]);
+           print("hello");
+           println();
+           print(ret);
+      }
+    }
+  #+END_SRC
