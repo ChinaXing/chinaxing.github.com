@@ -379,3 +379,30 @@ span.todo.TODO {
     display:block;
     text-align: center;
 }
+
+@media screen and (max-width: 80em){
+    #content {margin-right: 10em}
+}
+
+@media screen and (max-width: 70em){
+    #content {margin-right: 5em}
+}
+
+@media screen and (max-width: 65em){
+    #content {margin-right: 0em}
+}
+
+@media (max-width: 60em) {
+    #header {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	right: 0.1em;
+    }
+    #menu #motto { display: none;}
+    #menu-list { display: none;}
+    #clustrmaps-widget { display: none;}
+    #menu-header {display: block;}
+    #content { width: 100%; margin-top: 4em;}
+}
+	     
