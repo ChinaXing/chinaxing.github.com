@@ -1,0 +1,133 @@
+#+BEGIN_HTML
+---
+date: 2015-09-05 23:41:34
+template: tech.jade
+title: Token Bucket / Leaky Bucket
+category: Data
+chage_frequency: monthly
+tag: Data
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+本文介绍一些流控的模型。
+** Token Bucket
+[[https://en.wikipedia.org/wiki/Token_bucket][Token Bucket]] 是一个数学模型，如下图：
+
+#+BEGIN_EXAMPLE
+
+                Fill constant rate
+                  |
+                  |
+                  |
+                  |
+                  V
+              +--------+
+              |        |    \
+              |        |     \
+              |   B    |      \
+              |   u    |       |
+              |   c    |       |   Bucket Depth = L
+              |   k    |       |
+              |   e    |       /
+              |   t    |      /
+              |        |     /
+              |        |    /
+              +---+----+
+                  ^
+                  |
+                  |
+                  |
+                  |
+                Take
+#+END_EXAMPLE
+
+一个固定长度的Bucket，深度为L，深度越大，所能接受得突发（burst）越大。
+
+算法以固定的速率r，向桶中添加Token，如果桶已满，则溢出的Token丢弃。
+
+使用Token Bucket的程序在处理数据前，根据数据量换算为要获取的Token数量，然后从Bucket中Take出Token，根据Token数进行发送相应数量的数据。
+
+多出来的数据可以选择丢弃、延迟处理。
+
+当Bucket满时，如果有突发量的获取Token，那么可以获取L个数的Token，这时，获取的Token速率远大于填充Bucket的速率，称为突发速率。
+
+TokenBucket的目标是实现流量的平均速率控制，同时允许突发流量。
+
+
+** Leaky Bucket
+[[https://en.wikipedia.org/wiki/Leaky_bucket][Leaky Bucket]] 与Token Bucket类似，但是它除了用作限速外，还可以实现不允许突发流量的功能。
+
+Leaky Bucket 有2种使用方式：
+
+*** As a Meter（速率测量）
+作用上与Token Bucket完全一样，用来进行流量整形，允许一定的突发流量。
+#+BEGIN_EXAMPLE
+         Put imimmediately
+            |
+            |
+            |
+            |
+            |
+            V
+       +---------+
+       |         |
+       |    B    |
+       |    u    |
+       |    c    |
+       |    k    |
+       |    e    |
+       |    t    |
+       |         |
+       |         |
+       +----+----+
+            |
+            |
+            |
+            |
+            |
+            V
+       Leak constant rate
+#+END_EXAMPLE
+注意，这里仅仅是判断Bucket是否还有容量，如果有则放入一定数量Token，然后立即发送这批数据。
+
+*** As a Queue（速率控制）
+流量的通过完全由Bucket进行控制，不允许突发流量，流量是均衡的。
+#+BEGIN_EXAMPLE
+          Put imimmediately
+             |
+             |
+             |
+             |
+             |
+             V
+        +---------+
+        |         |
+        |    B    |
+        |    u    |
+        |    c    |
+        |    k    |
+        |    e    |
+        |    t    |
+        |         |
+        |         |
+        +----+----+
+             |
+             |
+             |
+             |
+             |
+             V
+        Take constant rate
+#+END_EXAMPLE
+注意，这里数据包会真正放入到Bucket中，然后从另一头取出来，再进行发送。
+
+** HTB (Hierarchy Token Bucket)
+   HTB 是Token Bucket的高级版，Linux trafic control中有使用到。可以参考tc手册。
+** CBQ (Class Based Queue)
+   按照类别进行分类的流控
+
+** 流控与流量整形
+   流控与流量整形在网络中普遍应用。在交换机中、路由器中已经成熟使用。Linux 系统支持的流量控制非常丰富。linux 的 tc命令可以设置流量控制的规则到内核。具体可以参见 [[http://linux-ip.net/articles/Traffic-Control-HOWTO/][Trafic Control HOWTO]] 。
+
+   
