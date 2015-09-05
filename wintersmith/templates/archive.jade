@@ -7,6 +7,8 @@ block content
   - }).value()
   - var map = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   section.archive
+    script.
+      document.getElementsByName("viewport")[0].setAttribute('content','width=640')
     h2 Archive
     ul
       - var years = _.chain(archive).keys().reverse().value()

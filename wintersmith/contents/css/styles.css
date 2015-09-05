@@ -380,6 +380,10 @@ span.todo.TODO {
     text-align: center;
 }
 
+@media (max-width: 80em){
+    #reactivemanifesto { display:none;}
+}
+
 @media screen and (max-width: 80em){
     #content {margin-right: 10em}
 }
