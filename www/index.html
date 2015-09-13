@@ -14,23 +14,83 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Data/index.html">Data<sup>5</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>10</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>11</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div><i id="motto">快乐地成功！</i>
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>13. September 2015</span></p>
+          <h2><a href="/articles/life/2015/09/13/2015-09-13-lucidity-yesterday.html">天真作少年</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+常常想起往日时光，天空很高，白云很悠闲
+</p>
+
+<p>
+阳光刺眼，世界喧嚣而充满活力
+</p>
+
+<p>
+那时候的冬天，有些难熬，因为手脚冻的疼痛难忍，像是酷刑
+</p>
+
+<p>
+也有些喜欢，因为喜欢窗内的温暖——炉火，妈妈煮沸的饭菜，热气飘出来，可以做任何事情
+</p>
+
+<p>
+那些冬天，我曾经坐在炕上，
+</p>
+
+<p>
+看书、编程、看电影、看流星雨、听古典音乐、用手机聊天、看说说、思考对方的心境
+</p>
+
+<p>
+那些冬天，一定很冷，一定很严酷，一定是真正意义上的冬天，阳光明媚，却冰冷万分。
+</p>
+
+<p>
+然而，我却能记得，被东红的鼻子，呵出的热气，冻红的脸上绽放的笑容，很真实，很坚定。
+</p>
+
+<p>
+让我能在严酷的冬天，满怀热情的生活下去。
+</p>
+
+<p>
+冬天，哪儿去了，既然已经没有理由回来，那么我也已经安静的接受。
+</p>
+
+<p>
+是因为我们太忙，弄丢了快乐
+</p>
+
+<p>
+弄丢了自由，弄丢了热情，弄丢了最真实的真实，最简单的幸福，最安静的日子，最珍贵的拥有。
+</p>
+
+<p>
+少年时的事情很多，像风一样飘走，天真、纯粹、执</p>
+          <p class="more"><a href="/articles/life/2015/09/13/2015-09-13-lucidity-yesterday.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>05. September 2015</span></p>
@@ -96,41 +156,6 @@
 <p>
 确保每</p>
           <p class="more"><a href="/articles/life/2015/09/06/2015-09-05-design-before-write.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>27. August 2015</span></p>
-          <h2><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">Bloom filter</a></h2>
-        </header>
-        <section class="content">
-<p>
-<a href="https://zh.wikipedia.org/zh-cn/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8">Bloom filter</a>,&nbsp;被用在大数据中（Redis、Hbase、mongoDB）他是一个非常巧妙的数据结构。
-</p>
-
-<p>
-Bloom filter&nbsp;可以用很小的空间复杂度和常量的计算复杂度来做出判断，回答如下问题：
-</p>
-<blockquote>
-<p>
-一个元素是否在集合中
-</p>
-</blockquote>
-
-<p>
-由于Bloom filter&nbsp;使用有限的空间来记录信息，所以存在信息丢失（信息熵的下降）,所以它不是完全精确的判定器：
-</p>
-
-<ul class="org-ul">
-<li>如果Bloom filter&nbsp;告诉你元素不在集合中，那么一定不在
-</li>
-<li>如果Bloom filter&nbsp;告诉你元素在集合中，可能不在
-</li>
-</ul>
-
-<p>
-这一特性，可以被用在元素是否在数据集中得判断，如，在访问数据库前，加入一层Bloom&nbsp;filter，可以拦</p>
-          <p class="more"><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

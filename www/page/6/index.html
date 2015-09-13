@@ -14,23 +14,50 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Data/index.html">Data<sup>5</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>10</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>11</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div><i id="motto">快乐地成功！</i>
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>18. April 2015</span></p>
+          <h2><a href="/articles/Erlang/2015/04/18/2015-04-18-erlang-memroy-manage.html">Erlang 的内存管理</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1"><span class="todo TODO"><span class="caps">TODO</span></span> 内存布局</a>
+<ul>
+<li><a href="#sec-1-1">内存分类</a></li>
+<li><a href="#sec-1-2">内存对象管理</a></li>
+</ul>
+</li>
+<li><a href="#sec-2"><span class="todo TODO"><span class="caps">TODO</span></span> 内存回收 -&nbsp;<span class="caps">GC</span></a></li>
+<li><a href="#sec-3"><span class="todo TODO"><span class="caps">TODO</span></span>&nbsp;内存参数调整</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+Erlang 的内存管理算是比较高效的，结合了copy和share2种，形成混合模式。&nbsp;Erlang是函数式语言，因而其内存管理具有代表性——</p>
+          <p class="more"><a href="/articles/Erlang/2015/04/18/2015-04-18-erlang-memroy-manage.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>18. April 2015</span></p>
@@ -102,32 +129,6 @@ Redis 提供了功能丰富的内存<span class="caps">KV</span>数据库特性�
 <p>
 目前</p>
           <p class="more"><a href="/articles/Distribute/2015/04/12/2015-04-11-redis.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>05. April 2015</span></p>
-          <h2><a href="/articles/Compute/2015/04/05/2015-04-05-memory-barrier.html">Memory barrier —— 内存屏障</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">什么是memory&nbsp;barrier</a></li>
-<li><a href="#sec-2">为什么要有memory&nbsp;barrier</a></li>
-<li><a href="#sec-3">内存模型</a></li>
-<li><a href="#sec-4">memory&nbsp;barrier干什么</a></li>
-<li><a href="#sec-5">memory&nbsp;barrier分类</a></li>
-<li><a href="#sec-6">Refer</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">什么是memory&nbsp;barrier</h2>
-</div>
-          <p class="more"><a href="/articles/Compute/2015/04/05/2015-04-05-memory-barrier.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/5/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/7/" class="nav-next">Next page »</a>
