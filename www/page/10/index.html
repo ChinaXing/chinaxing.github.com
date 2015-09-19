@@ -14,15 +14,15 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
-          <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>11</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>12</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
         </ul>
@@ -31,6 +31,48 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>10. March 2015</span></p>
+          <h2><a href="/articles/Network/2015/03/10/2015-03-10-ip-port.html">Linux ip 端口选择</a></h2>
+        </header>
+        <section class="content">
+<p>
+网络通信中有2种角色，client与server，分别执行不同的操作：
+</p>
+
+<dl class="org-dl">
+<dt> server </dt><dd>listen
+</dd>
+<dt> client </dt><dd>connect
+</dd>
+</dl>
+
+<p>
+server的端口相对固定，而且是知名端口，或者是配置文件中配置的。
+</p>
+
+<p>
+对于client连接远程客户端的时候，需要选取本地的端口和ip来建立连接。
+</p>
+
+<p>
+为了避免Client选择的端口与同一服务器上别的服务的端口冲突：
+</p>
+
+<p>
+比如：一个服务运行的端口是9090，如果此时启动的另一个client程序，就可能选择了本地的9090端口，然后再去启动服务程序的时候，因为此端口已经被占用，就会发出inuse的错误。
+</p>
+
+<p>
+解决这个问题的方案，Linux&nbsp;内核提供了2个配置参数：
+</p>
+
+<dl class="org-dl">
+<dt> ip_local_port_range </dt><dd>用来指定本地的端口选择范围，如果你需要大量的连接，这</dd></dl>
+          <p class="more"><a href="/articles/Network/2015/03/10/2015-03-10-ip-port.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>04. March 2015</span></p>
@@ -84,50 +126,6 @@
 <li><a href="#sec-4">Unsafe</a></li>
 <li><a href="#sec-5"><span class="todo TODO"><span class="caps">TOD</span></span></a></li></ul></div></div>
           <p class="more"><a href="/articles/Data/2015/03/01/2015-03-01-AbstractQueuedSynchronizer.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>01. March 2015</span></p>
-          <h2><a href="/articles/Compute/2015/03/01/2015-03-01-Y-combinator.html">Y combinator</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Haskell&nbsp;fix</a></li>
-</ul>
-</div>
-</div>
-
-<p>
-尝试推导Y组合子：
-</p>
-
-<p>
-Y combinator&nbsp;可以将伪递归定义的函数转换为递归定义，中间不引入别的函数：
-</p>
-
-<p>
-设递归函数：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-haskell">f x = g (f x) -- 1. 这里表示f 内部调用了自身
-</pre>
-</div>
-<p>
-转换为非递归形式：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-haskell">f' f x = g(f x) -- 2. 引入参数 f，消除递归调用自身
-</pre>
-</div>
-<p>
-Y组合子是</p>
-          <p class="more"><a href="/articles/Compute/2015/03/01/2015-03-01-Y-combinator.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/9/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/11/" class="nav-next">Next page »</a>
