@@ -7,7 +7,8 @@ category: Life
 change_frequency: never
 ---
 #+END_HTML
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 今天参加新人培训，有些感触，说几句。
 
 ** 创业

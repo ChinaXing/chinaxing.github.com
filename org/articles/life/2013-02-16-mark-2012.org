@@ -7,7 +7,8 @@ category: Life
 change_frequency: never
 ---
 #+end_html
-
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
   以此文纪念2012.
 
   最近越发感觉人生短暂，那么做点记录吧。
