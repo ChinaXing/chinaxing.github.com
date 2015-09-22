@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>15</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <div id="clustrmaps-widget"></div><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>07. June 2013</span></p>
+          <h2><a href="/articles/linux/2013/06/07/2013-06-07-git-best-practical.html">git 使用常见问题解决方法</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">查询Ref对应的Commit&nbsp;<span class="caps">ID</span></a></li>
+<li><a href="#sec-2">撤销commit</a></li>
+<li><a href="#sec-3">强制使用远端仓库的内容</a></li>
+<li><a href="#sec-4">删除tag，并删除远程tag</a></li>
+<li><a href="#sec-5">添加tag，并推送到远程</a></li>
+<li><a href="#sec-6">修改上次的commit&nbsp;message</a></li>
+<li><a href="#sec-7">修改上次的commit&nbsp;author</a></li>
+<li><a href="#sec-8">删除未跟踪(Untracked)的文件</a></li>
+<li><a href="#sec-9">强制覆盖远程</a></li>
+</ul></div></div>
+          <p class="more"><a href="/articles/linux/2013/06/07/2013-06-07-git-best-practical.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>03. May 2013</span></p>
+          <h2><a href="/articles/Perl/2013/05/03/2013-05-03-DBIx-Class-beginners-presentation.html">DBIx::Class 入门</a></h2>
+        </header>
+        <section class="content">
+<div>
+<button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
+</div>
+<div class="mask" onclick="javascript: hide_ppt(this)"></div>
+<div class="mask_container">
+<iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIcTZwMTlxakZhYTQ/preview" width="100%" height="100%"></iframe>
+</div>
+
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>19. April 2013</span></p>
+          <h2><a href="/articles/linux/2013/04/19/2013-04-19-limits.html">Linux中系统资源limit</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">limit设置策略</a></li>
+<li><a href="#sec-2">inittab与/etc/rcX.d/</a></li>
+</ul>
+</div>
+</div>
+<p>
+linux&nbsp;系统通过进程的rlimit字段，限制进程的资源使用，包括：文件打开数,core文件大小等，可以通过ulimit命令查看当前进程的设置:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">ulimit -a
+</pre>
+</div>
+
+<pre class="example">
+time(seconds)        unlimited
+file(blocks)         unlimited
+data(kbytes)         unlimited
+stack(kbytes) </pre>
+          <p class="more"><a href="/articles/linux/2013/04/19/2013-04-19-limits.html">more</a></p>
+        </section>
+      </article>
+      <div id="paginator-nav"><a href="/page/29/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/31/" class="nav-next">Next page »</a>
+      </div>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- clusterMaps-->
+  <script>
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")
+  </noscript>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

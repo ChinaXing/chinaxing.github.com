@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>15</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <div id="clustrmaps-widget"></div><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <h3 id="cat-title"><b>Haskell</b>&nbsp;文章列表</h3>
+      <ul id="cat-content">
+        <li><span>2015-05-30</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/05/30/2015-05-30-concurrency-haskell.html">Haskell 中并发编程</a></li>
+        <li><span>2015-03-16</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/03/16/2015-03-15-come-back-soon.html">Haskell，稍后再回来</a></li>
+        <li><span>2015-02-28</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/02/28/2015-02-27-lesson-5-Monad-transformer.html">Monad Transformer</a></li>
+        <li><span>2015-01-18</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/01/18/2015-01-17-haskell-feeling.html">学习Haskell感想</a></li>
+        <li><span>2015-01-12</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-4-Monad.html">Haskell 第四课 —— Monad</a></li>
+        <li><span>2015-01-12</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/01/12/2015-01-12-haskell-lesson-3-IO.html">Haskell 第三课 —— 输入输出</a></li>
+        <li><span>2015-01-12</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/01/12/2015-01-11-haskell-lesson-2-Type.html">Haskell 第二课 —— 类型</a></li>
+        <li><span>2015-01-12</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2015/01/12/2015-01-11-haskell-lesson-1-basic.html">Haskell 第一课 —— 基础</a></li>
+        <li><span>2014-10-06</span>&nbsp;&raquo;&nbsp;<a href="/articles/Haskell/2014/10/06/2014-10-05-start.html">开始学习Haskell</a></li>
+      </ul>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- clusterMaps-->
+  <script>
+    var _clustrmaps = {
+     'url' : 'http://chinaxing.org', 
+     'user' : 1103575, 
+     'server' : '2',
+     'id' : 'clustrmaps-widget', 
+      'version' : 1, 
+     'date' : '2013-07-14',
+     'lang' : 'zh',
+     'corners' : 'square' 
+    };
+    (function (){
+      var s = document.createElement('script'); 
+      s.type = 'text/javascript'; 
+      s.async = true; 
+      s.src = 'http://www2.clustrmaps.com/counter/map.js'; 
+      var x = document.getElementsByTagName('script')[0]; 
+      x.parentNode.insertBefore(s, x);})();
+  </script>
+  <noscript>
+    a(href="http://www2.clustrmaps.com/user/f0710d6d7")
+      img(src="http://www2.clustrmaps.com/stats/maps-no_clusters/chinaxing.org-thumb.jpg", alt="Locations of visitors to this page")
+  </noscript>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>
