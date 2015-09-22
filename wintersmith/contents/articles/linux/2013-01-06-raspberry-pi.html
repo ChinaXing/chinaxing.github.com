@@ -1,0 +1,328 @@
+---
+date: 2013-01-06
+template: tech.jade
+title: Raspberry Pi 试玩
+category: Linux
+change_frequency: monthly
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Raspberry Pi 构成</a></li>
+<li><a href="#sec-2">Raspberry Pi ssh 登陆</a></li>
+<li><a href="#sec-3">使用远程桌面连接Pi</a></li>
+<li><a href="#sec-4">配置Pi连接Internet</a></li>
+<li><a href="#sec-5">使用iphone连接Pi</a></li>
+</ul>
+</div>
+</div>
+<p>
+<a href="http://www.raspberrypi.org/">Raspberry Pi</a> 是ARM 处理器搭载Gnu/Debian Linux的单片电脑。它的发行目标是促进青少年学习计算机技术。
+</p>
+
+
+<div class="figure">
+<p><img src="../../img/Raspberry-Pi.jpg" alt="Raspberry-Pi.jpg" />
+</p>
+</div>
+
+<p>
+Raspberry Pi 有早些发布的256M内存/不带网卡的A版本和迟些时候发布的512M内存/带100M网卡的B版本，多数人应该买B版。
+</p>
+
+<p>
+B版本35$，RMB325￥。
+</p>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Raspberry Pi 构成</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Raspberry Pi 买到手后，还需要一块SD卡来作"硬盘"，容量需要2GB以上，我买了一块8GB SanDisk的45 ￥。
+</p>
+
+<p>
+Raspberry Pi 有如下接口：
+</p>
+
+<ul class="org-ul">
+<li>电源输入：Micro usb接口的5V 1A 的输入电流。
+</li>
+<li>2个USB接口：可以接鼠标和键盘等。
+</li>
+<li>HDMI接口：接HDMI接口的显示器，如果是DVI或VGA的，需要买转接线。
+</li>
+<li>以太网接口：100M的以太网接口，插网线上网用的。
+</li>
+<li>模拟信号音频和视频输出接口：可以接电视机，输出模拟信号，显示在电视机上。
+</li>
+<li>SD卡插口：插入SD卡，作存储用。
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Raspberry Pi ssh 登陆</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+拿到手后，我由于没有HDMI的显示器（目前这样显示器还贵，多数还是VGA的便宜LED），也不打算花钱再买，所以打算用ssh登陆试玩。
+</p>
+
+<p>
+Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配置为随系统启动启动。所以Rapsberry Pi 启动后ssh服务就可用了。
+</p>
+
+<p>
+在连接ssh前我们需要配置Pi的网络，我使用了一根网线连接Pi和我的笔记本，两者组成了一个局域网。
+</p>
+
+<p>
+为了实现连接，我在我的笔记本Fedora中配置了DHCP服务，这样Pi启动的时候就可以从DHCP获得IP：
+</p>
+
+<ol class="org-ol">
+<li>安装dhcp-server 在Fedora中：
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo yum install dhcp
+</pre>
+</div>
+<ol class="org-ol">
+<li>配置dhcp：
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo vim /etc/dhcp/dhcpd.conf
+</pre>
+</div>
+<p>
+添加如下配置：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 { 
+    range 192.168.33.2 192.168.33.114; 
+    default-lease-time 86400; 
+    max-lease-time 259200; 
+    option subnet-mask 255.255.255.0; 
+    option broadcast-address 192.168.33.255; 
+    option routers 192.168.33.2; 
+    option domain-name-servers 192.168.33.2; 
+}
+</pre>
+</div>
+</li>
+<li>配置与Pi连接的网卡的IP:
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo ifconfig em1 192.168.33.2/24
+</pre>
+</div>
+</li>
+<li>启动dhcp服务：
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo dhcpd
+</pre>
+</div>
+</li>
+<li>启动Pi,重新加电即可重起Pi。
+</li>
+<li>查看Pi 的IP：
+<div class="org-src-container">
+
+<pre class="src src-sh">cat /var/lib/dhcpd/dhcpd.lease
+</pre>
+</div>
+<p>
+里面可以看到从dhcpd 获取到IP的客户端，可以看到服务器带有Pi字样的服务器，就是Pi了。<br  />
+   我的Pi获取的地址是:192.168.33.3
+</p>
+</li>
+<li>使用ssh 登陆Pi:
+<div class="org-src-container">
+
+<pre class="src src-sh">ssh pi@192.168.33.3
+</pre>
+</div>
+<p>
+密码是:*respberry*
+</p>
+</li>
+<li>登陆后我们可以设置Pi的网络配置，配成静态地址，这样就不需要使用dhcp了。网络配置在/etc/network/interfaces
+<pre class="example">
+auto eth0
+#iface eth0 inet dhcp 
+iface eth0 inet static
+address 192.168.33.3
+netmask 255.255.255.0
+network 192.168.33.0
+broadcast 192.168.33.255
+gateway 192.168.33.2
+</pre>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">使用远程桌面连接Pi</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+没有显示器，却想看Pi的图形桌面，怎么办？
+</p>
+
+<p>
+可以使用远程桌面来访问Pi，过程也很简单，我通过iphone也连接到了Pi。
+</p>
+
+<ol class="org-ol">
+<li>在Pi上安装xrdp, 一个远程桌面的服务端：
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo apt-get install xrdp
+</pre>
+</div>
+
+<p>
+安装好后xrdp就自动启动了，而且配置为随系统启动
+</p>
+</li>
+<li>在Fedora上安装rdesktop，一个远程桌面客户端：
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo yum install rdesktop
+</pre>
+</div>
+</li>
+<li>使用Fedora 的Remte Desktop 连接Pi，输入Pi的ip地址和用户名pi，连接后如图：
+<img src="../../img/Raspberry-Pi-Remote-desktop.png" alt="Raspberry-Pi-Remote-desktop.png" />
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">配置Pi连接Internet</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+使用一根网线连接Pi和电脑实现了Pi和电脑的互联，Pi却无法连接internet，访问google，baidu等网站，需要作一些配置。
+</p>
+
+<p>
+我使用iptables来让Fedora作路由器的功能，相当于Pi通过网线连接到了一台局域网的路由器一样。<br  />
+Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连接局域网的网卡的地址（我这里的网卡是无线网卡），因为局域网路由器和Pi不在一个网段。
+</p>
+
+<ol class="org-ol">
+<li>打开Fedora的ip_forward功能，允许转发从Pi发来的和到达Pi的包，作路由器用:
+<div class="org-src-container">
+
+<pre class="src src-sh">echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+</pre>
+</div>
+</li>
+
+<li>在Fedora上面添加iptables，实现SNAT:
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT \
+	--to-source 192.168.1.100 --random
+</pre>
+</div>
+
+<p>
+<b>&#x2013;random</b> 选项让内核帮我们选源端口<br  />
+   <b>192.168.1.100</b> 是我连接路由器上网的那个网卡的ip地址，是个无线网卡,接口wlan0
+</p>
+</li>
+<li>在Pi内部检测网络联通：
+<div class="org-src-container">
+
+<pre class="src src-sh">ping www.baidu.com
+</pre>
+</div>
+
+<p>
+<b>如果没有配置域名服务器</b> 需要配置域名解析服务器地址:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">echo nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
+</pre>
+</div>
+</li>
+</ol>
+
+
+<ol class="org-ol">
+<li>完成设置后，整个网络数据流如下:<br  />
+   Pi ==&gt; internet
+
+<div class="figure">
+<p><img src="../../img/raspberry-pi--pi2internet.png" alt="raspberry-pi--pi2internet.png" />
+</p>
+</div>
+
+<p>
+Ineternet ==&gt; Pi
+</p>
+
+<div class="figure">
+<p><img src="../../img/raspberry-pi--internet2pi.png" alt="raspberry-pi--internet2pi.png" />
+</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">使用iphone连接Pi</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+使用iphone连接Pi，需要安装远程桌面客户端在iphone上。
+</p>
+
+<p>
+由于iphone通过无线路由器接入局域网，和Fedora是同一个网段:192.168.1.0，和Pi是不在一个局域网的（没有物理连接），
+所以需要通过Fedora的转发来完成iphone到Pi的连接:
+</p>
+<pre class="example">
+iphone --&gt; Fedora --&gt; Pi
+</pre>
+<p>
+通过在Fedora上面配置如下iptables完成转发功能：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">sudo iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp \
+       --dport 3389 -j DNAT --to-destination 192.168.33.3
+</pre>
+</div>
+
+<p>
+<b>wlan0</b> 是电脑的无线网卡，连接到局域网的无线路由器上网 <br  />
+<b>192.168.3.3</b> 是Pi的地址<br  />
+这句iptables的意思是对访问fedora的3389的连接，DNAT到Pi的3389端口。
+</p>
+
+<p>
+配置完成后就可以使用iphone连接到Pi:
+</p>
+
+
+<div class="figure">
+<p><img src="../../img/Raspberry-Pi-iphone-remote-desktop.jpg" alt="Raspberry-Pi-iphone-remote-desktop.jpg" />
+</p>
+</div>
+
+
+<p>
+Have Fun :)
+</p>
+</div>
+</div>

@@ -1,0 +1,49 @@
+---
+date: 2015-03-10 11:48:33
+template: tech.jade
+title: Linux ip 端口选择
+category: Network
+chage_frequency: monthly
+tag: Linux,network 
+---
+<p>
+网络通信中有2种角色，client与server，分别执行不同的操作：
+</p>
+
+<dl class="org-dl">
+<dt> server </dt><dd>listen
+</dd>
+<dt> client </dt><dd>connect
+</dd>
+</dl>
+
+<p>
+server的端口相对固定，而且是知名端口，或者是配置文件中配置的。
+</p>
+
+<p>
+对于client连接远程客户端的时候，需要选取本地的端口和ip来建立连接。
+</p>
+
+<p>
+为了避免Client选择的端口与同一服务器上别的服务的端口冲突：
+</p>
+
+<p>
+比如：一个服务运行的端口是9090，如果此时启动的另一个client程序，就可能选择了本地的9090端口，然后再去启动服务程序的时候，因为此端口已经被占用，就会发出inuse的错误。
+</p>
+
+<p>
+解决这个问题的方案，Linux 内核提供了2个配置参数：
+</p>
+
+<dl class="org-dl">
+<dt> ip_local_port_range </dt><dd>用来指定本地的端口选择范围，如果你需要大量的连接，这个值的范围需要调大。
+</dd>
+<dt> ip_local_reserved_ports </dt><dd>给服务器程序保留的端口范围，在client程序选取端口的时候跳过这段区域内的端口。
+</dd>
+</dl>
+
+<p>
+通过这个策略，就避免了端口被占用的情况。
+</p>

@@ -1,0 +1,118 @@
+---
+date: 2015-01-11 18:46:11
+template: tech.jade
+title: Haskell 第一课 —— 基础
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Haskell 特点</a></li>
+<li><a href="#sec-2">haskell 模块</a></li>
+<li><a href="#sec-3">haskell 类型</a></li>
+<li><a href="#sec-4">To be haskellism</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Haskell 特点</h2>
+<div class="outline-text-2" id="text-1">
+<dl class="org-dl">
+<dt> static Type </dt><dd>静态类型，类型可在编译时候明确，不存在运行时器的类型确定。带来的好处是类型安全，不会出现运行期的类型错误。
+</dd>
+<dt> type infer </dt><dd>类型推导，编译器和运行系统自己可以根据上下文明确每个变量和函数的类型，不需要每处都显式的书写类型。带来的好处是可以减少输入。
+</dd>
+<dt> lazy evaluate </dt><dd>延迟计算，计算和求值会推迟到需要的时候才进行，好处是可以减少不必要的运算等。
+</dd>
+<dt> lazy IO Action </dt><dd>IO 动作只有在需要的时候才触发，而且是按需触发。
+</dd>
+<dt> curry / partial </dt><dd>每个haskell函数只有一个参数，多参数的函数可以通过curry化，转换为新的单参数函数，curry 化是partial applicate函数的部分参数来获得。
+</dd>
+<dt> partern match </dt><dd>根据模式匹配来进行函数的路由，是实现分支和递归的利器。这也几乎是所有函数语言的特点之一。
+</dd>
+<dt> TypeClass </dt><dd>类型的类型，若干类型可以具有某种特点（类型），这个类型的类型就是TypeClass，类比于Java的Interface。
+</dd>
+<dt> Type varaible </dt><dd>一种抽象类型可以具有类型变量，类似于java generic和c++ template。
+</dd>
+<dt> composition function </dt><dd>复合函数，多个函数可以复合，实现函数链条 (f . g) x = f(g x) 。 
+</dd>
+<dt> Recursion </dt><dd>使用递归思想取代使用循环的命令式思想，将问题的求解转换为递归到边界条件的运算。
+</dd>
+<dt> Guard </dt><dd>guard 是模式匹配的增强版本，guard对参数进行路由，实现了分支。
+</dd>
+<dt> fold </dt><dd>fold 代替递归，fold 本质是一种迭代，使用foldr。
+</dd>
+<dt> flip </dt><dd>将参数对换: flip f x y = f y x 或 flip f = \x y -&gt; f y x
+</dd>
+<dt> lambda </dt><dd>一种匿名函数，便捷函数
+</dd>
+<dt> syntax </dt><dd>变量小写开头，类型大写开头
+</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">haskell 模块</h2>
+<div class="outline-text-2" id="text-2">
+<dl class="org-dl">
+<dt> module定义 </dt><dd>使用module Ma (expors&#x2026;) where &#x2026; 开始来定义一个文件内容为模块。
+</dd>
+<dt> module引用 </dt><dd>import Ma 来导入模块内部的函数和类型
+</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">haskell 类型</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>定义类型 
+<div class="org-src-container">
+
+<pre class="src src-haskell">data T1 a b = Constructor1 a | Consutructor2 a b -- with type varaible
+data Circle = Circle r -- normal
+data Rectangle = Rectangle { width :: Int , height :: Int } -- record style
+</pre>
+</div>
+<ul class="org-ul">
+<li>类型构造器是一个函数或者是一个类型常量（如果没有参数）
+</li>
+<li>类型定义支持递归定义，递归数据结构
+</li>
+<li>对于复杂类型，最好使用record模式，这样，访问器自动生成。
+</li>
+</ul>
+</li>
+<li>类型别名
+<div class="org-src-container">
+
+<pre class="src src-haskell">type UserName = String -- simple
+type StringArray = [String] -- yet another
+type IntMap = Map.Map Int -- from abstract Type
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">To be haskellism</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>使用Maybe返回函数的结果，避免抛出异常
+</li>
+<li>使用Either返回函数结果，如果你在乎出错原因的话
+</li>
+<li>使用foldr代替定义递归
+</li>
+<li>使用组合函数代替括号和lambda
+</li>
+</ul>
+</div>
+</div>

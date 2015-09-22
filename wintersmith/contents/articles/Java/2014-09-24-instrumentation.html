@@ -1,0 +1,211 @@
+---
+date: 2014-09-24 20:13:47
+template: tech.jade
+title: Java instrumentation
+category: Java
+chage_frequency: monthly
+tag: Java
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">是什么</a></li>
+<li><a href="#sec-2">如何操作</a>
+<ul>
+<li><a href="#sec-2-1">运作机制</a></li>
+<li><a href="#sec-2-2">限制性条件</a></li>
+<li><a href="#sec-2-3">替换发生时</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">编程接口</a></li>
+<li><a href="#sec-4">字节码增强</a></li>
+<li><a href="#sec-5">deep in</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">是什么</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Instrumentation, 是Java提供在字节码/jvm层面进行类增强的机制，Instrumentation可以对类加载进行拦截，对已加载类进行转换以及对类进行重新定义。
+</p>
+
+<p>
+不仅能够对Java字节码类型的类进行增强，对native类型的类，方法也能进行增强。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">如何操作</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">运作机制</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+可以通过instrumentation类型接口，将ClassTransformer注册给JVM，这些transformer就如同servlet规范中的filter一样，在类加载的时刻，会触发他们的执行，在经过这些tranformer链条的处理后，最终的类字节流被用来初始化类。
+</p>
+
+<p>
+Instrumentation 接受几种类型的transformer:
+</p>
+<ul class="org-ul">
+<li>retransform capable 
+</li>
+<li>retransform incapable
+</li>
+</ul>
+
+<p>
+第一种可以对已经加载的类进行再次tranform，而第二种在retransform的时候，不会被触发调用
+</p>
+
+<p>
+类被tranform的时刻有如下几种情况，这些情况下，这些tranform可以hook进去，对类的定义进行字节码层面的enhance：
+</p>
+<ol class="org-ol">
+<li>define
+</li>
+<li>redefine
+</li>
+<li>retransform
+</li>
+</ol>
+
+
+<ul class="org-ul">
+<li><b>define</b> 是在类被通过class file加载的时候，这种情形会触发transformer的调用，调用次序为：
+<ol class="org-ol">
+<li>retransformer incapable 的transformer
+</li>
+<li>retransformer incapable 的native transformer
+</li>
+<li>retransformer capable 的transformer
+</li>
+<li>retransformer capable 的native transformer
+</li>
+</ol>
+</li>
+
+<li><b>redefine</b> 发生在调用Instrument.redefineClasses 方法的时刻，它会从指定的class file加载类的定义码，然后触发transformer链的执行：
+执行的顺序和define类时候执行顺序一样（如上）。
+</li>
+
+<li><b>retransform</b> 发生在调用Instrument.retransformClasses 方法的时刻，它触发retransformer capable的transformer链进行执行：
+<ol class="org-ol">
+<li>retransformer capable 的transformer 被依次执行
+</li>
+<li>retransformer capable 的native transformer 被依次执行
+</li>
+</ol>
+</li>
+</ul>
+
+<p>
+注意可以看到，retransformer incapable的transformer未被执行。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">限制性条件</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+transformer 可以对类的字节码进行替换，修改类的初始化方法、字段值默认值等等。但是有些条件不允许违背，否则会在transformer结束后的check和verify过程中失败，抛出异常:<br  />
+</p>
+<ol class="org-ol">
+<li>不能修改类的field的定义（如类型、名称、访问属性等）
+</li>
+<li>不能修改方法的签名
+</li>
+</ol>
+
+<p>
+可见，此种替换仅仅是将类的实现进行了替换，而类的结构、接口是没有改变的，这样就维持了类的对外一致性，保证老版本的class和替换后的class的object能够共存。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">替换发生时</h3>
+<div class="outline-text-3" id="text-2-3">
+<ol class="org-ol">
+<li>对已经run的实例没有影响，如一个方法正在被调用，那么这个调用会在老版本上继续执行完成。直到下次的调用才会调用到新的版本。
+</li>
+<li>对已经create的object没有影响，如在retransformer/redefine之前new的对象实例，不会做更改。
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">编程接口</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+jvm通过agent 接口提供对Instrumentation的支持：
+</p>
+<ol class="org-ol">
+<li>jvm通过允许在JVM启动的时候加载java agent来进行Instrumentation，java agent的jar包指定的Premain-Class的premain方法会在jvm运行MainClass的main方法之前运行，在这个premain方法里，开发者可以定义形如:
+<div class="org-src-container">
+
+<pre class="src src-java">public static void premain(String agentArgs, Instrumentation inst)
+</pre>
+</div>
+<p>
+的方法，将Instrumentation实例拿到，然后依照上面讲到的Instrument机制对类进行增强。具体可以参考Instrumentatin类的方法。
+</p>
+
+<p>
+这种方式的好处是可以对类进行早期的transform：define的时候
+</p>
+</li>
+
+<li>通过jvm 提供的Attach API在运行期对JVM进行引导其加载java agent：
+<script src="https://gist.github.com/ChinaXing/6044ef2da3cb7075264c.js"></script>
+<p>
+此种方式除了可对未加载类进行transform外，也可以对已经加载的类进行redefine和retransform
+</p>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">字节码增强</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+对字节码进行修改的技术叫做字节码增强，字节码增强有许多著名的类库可以使用，如：asm，bcel，Javassist，相对于前两个后者提供了更高level的抽象，用起来简单，不需要对jvm字节码，虚拟机运行机制人有太多理解。
+</p>
+
+<p>
+字节码增强用在很多地方，典型的应用有：
+</p>
+<ol class="org-ol">
+<li>AOP运行期植入：Spring 使用cglib对类生成代理，植入切面代码。
+</li>
+<li>性能剖析：通过在方法执行前后植入统计代码可以辅助分析方法性能，如Btrace使用此技术可以实现Profile功能。
+</li>
+<li>错误诊断：BTrace可以对已经存在的类进行retransform，植入跟踪代码，可以打印出运行期变量的值，辅助进行问题排查。
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">deep in</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/attach/index.html">Java attach API</a>
+</li>
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/instrumentation/index.html">Java Instrumentation doc</a>
+</li>
+<li><a href="http://docs.oracle.com/javase/7/docs/technotes/guides/jvmti/index.html">Jvm Tool interface</a>
+</li>
+<li><a href="http://www.jcarder.org/manual.html">Jcarder</a> -  finding potential deadlocks
+</li>
+<li><a href="http://jiprof.sourceforge.net">JIP</a> - The Java Interactive Profiler 
+</li>
+</ul>
+</div>
+</div>

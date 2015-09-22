@@ -1,0 +1,55 @@
+---
+date: 2014-11-04 10:13:47
+template: tech.jade
+title: Ext4 fs feature
+category: Linux
+chage_frequency: monthly
+tag: fs,ext4,Linux
+---
+<dl class="org-dl">
+<dt> Block 大小可定 </dt><dd>但是不应该大于PageSize（一般4k）,否则可能会有问题。建议4k
+</dd>
+<dt> Block 组织为BlockGroup </dt><dd>大小128M 32768个block。文件系统由多个blockGroup顺序组成
+</dd>
+<dt> 每个blockGroup内部是一个类似ext3的文件系统结构 </dt><dd><ul class="org-ul">
+<li>SuperBLock
+</li>
+<li>inodeBitMap
+</li>
+<li>Inode Block List
+</li>
+<li>blockBitMap
+</li>
+<li>data Bock List
+</li>
+</ul>
+</dd>
+<dt> Fixed Block </dt><dd>多个blockGroup组成一个固定长度的blockGroup的组，组内的第一个BlockGroup 携带了除本group外的其余3个blockGroup的元数据信息。这起到了快速访问和冗余的作用。
+</dd>
+<dt> bigAlloce </dt><dd>允许进行大块分配，通过多个block组成cluster的形式，这样的话一个bitMap就对应了一个cluster，分配和释放都以cluster为单位。目前还支持不是很好。
+</dd>
+<dt> Multialloce </dt><dd>在分配很大空间的时候可以一次分配多个块，避免重复地调用
+</dd>
+<dt> inlineData </dt><dd>可以将数据放在inode中，当数据很少的时候
+</dd>
+<dt> 查看文件系统信息（从磁盘读取）工具 </dt><dd>dumpe2fs
+</dd>
+<dt> Hash Tree Direcotry </dt><dd>使用HTree 来提高目录操作的性能
+</dd>
+<dt> 文件寻址快 </dt><dd><ul class="org-ul">
+<li>extent 分配128M
+</li>
+<li>extent tree，查找快速
+<blockquote>
+<p>
+Extents replace the traditional block mapping scheme used by ext2 and ext3. An extent is a range of contiguous physical blocks, improving large file performance and reducing fragmentation. A single extent in ext4 can map up to 128 MiB of contiguous space with a 4 KiB block size. There can be four extents stored in the inode. When there are more than four extents to a file, the rest of the extents are indexed in an HTree.
+</p>
+</blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+
+<p>
+<a href="https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout">Ext4_Disk_Layout</a> <a href="http://en.wikipedia.org/wiki/HTree">HTree</a>
+</p>

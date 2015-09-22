@@ -1,0 +1,165 @@
+---
+date: 2015-02-23 15:34:25
+template: tech.jade
+title: Netty 内存管理 —— Recycler
+category: Java
+chage_frequency: monthly
+tag: Java, Netty
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Recycler</a></li>
+<li><a href="#sec-2">Stack</a></li>
+<li><a href="#sec-3">Handler</a></li>
+<li><a href="#sec-4">WeakQueue</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+Netty框架中使用内存的地方非常多，如编码、解码，socket的接收和发送之前的缓冲，为了高效的使用内存，避免频繁申请和释放内存等带来的gc开销，使用了Recycle等机制，下面进行了解。
+</p>
+
+<p>
+<code>Recycler</code> 类提供了Object Pool的机制，整体思想是避免对象释放后马上被GC回收，将对象放入池中，下次使用此类对象的时候，直接从池中拿来重复利用。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Recycler</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Recycler内部模拟出Stack对象来代表一个线程的对象缓冲，每个Thread一个Stack对象，Stack对象提供push与pop方法来释放和获取对象，push方法在超出Stack最大容量的时候丢弃最后放入的对象。
+</p>
+
+<p>
+每个Stack还关联了一个WeakQueue，这个队列存放着别的线程释放的对象（这些对象是其它非此释放线程创建的），如果线程A使用了线程B创建的对象（这些对象在B的Recycler中），那么A释放这些对象的时候，这些对象被放入B的Recycler中的Queue中。
+</p>
+
+<p>
+Stack在获取对象的时候调用Pop方法，如果发现本Stack的size为0，表示空了，这时候它从其Queue中寻找空闲对象，移动到stack中填充stack，然后返回给使用者。
+</p>
+
+<p>
+recycler 提供get方法，用来获取对象，get方法再调用pop来获取对象。
+</p>
+
+<p>
+使用了Recycler的地方很多，可以通过IDE工具来查看引用，我们可以看到下面的例子：
+</p>
+<ul class="org-ul">
+<li>PooledDirectByteBuf
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java">final class PooledDirectByteBuf extends PooledByteBuf&lt;ByteBuffer&gt; {
+
+private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledDirectByteBuf&gt;()
+{
+     @Override
+     protected PooledDirectByteBuf newObject(Handle handle) {
+	 return new PooledDirectByteBuf(handle, 0);
+     }
+};
+</pre>
+</div>
+<ul class="org-ul">
+<li>PooledHeapByteBuf
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java">final class PooledHeapByteBuf extends PooledByteBuf&lt;byte[]&gt; {
+
+private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&lt;PooledHeapByteBuf&gt;() {
+      @Override
+      protected PooledHeapByteBuf newObject(Handle handle) {
+	  return new PooledHeapByteBuf(handle, 0);
+      }
+};
+</pre>
+</div>
+<ul class="org-ul">
+<li>PooledUnsafeDirectByteBuf
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-java">final class PooledUnsafeDirectByteBuf extends PooledByteBuf&lt;ByteBuffer&gt; {
+
+ private static final boolean NATIVE_ORDER = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
+ private static final Recycler&lt;PooledUnsafeDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledUnsafeDirectByteBuf&gt;() {
+      @Override
+      protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
+	  return new PooledUnsafeDirectByteBuf(handle, 0);
+     }
+ };
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Stack</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+每个Recycler一个Stack，一个Stack和一个线程关联，关联是通过threadLocal变量来实现。
+</p>
+
+<p>
+Stack提供了push与pop，pop获取对象，push释放对象到池，如果push的时候池满，那么会丢弃。
+</p>
+
+<p>
+池有一个初始容量，以及一个最大容量。
+</p>
+
+<div class="figure">
+<p><img src="../../img/netty-recycler-stack.png" alt="netty-recycler-stack.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">Handler</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Handler是一个对象的wraper，handler.value 是所关心的对象，Handler提供了recyle方法，此方法会将对象放入池，Handler对象关联了stack，回收handler就是将handler对象放回stack。
+</p>
+
+<p>
+如果执行回收的线程与handler的所属池的线程不是一个线程，那么这个对象被放入stack关联的队列中，这样做的原因，可能是为了避免同步问题。
+</p>
+
+
+<div class="figure">
+<p><img src="../../img/netty-recycler-handler.png" alt="netty-recycler-handler.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">WeakQueue</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+这个队列是存放那些其它线程释放的对象，这个队列没有容量限制，是一个LinkedList，每个节点有一定容量的数组。
+</p>
+
+<p>
+这个队列属于某个Stack，这个stack在自己空的时候，如果请求对象，那么它尝试从队列里面移动这些对象到栈中。
+</p>
+
+<p>
+这个队列如果所属线程已经不存在，队列里面的所有对象都会被转移到stack，然后可以被gc回收。
+</p>
+
+
+<div class="figure">
+<p><img src="../../img/netty-recycler-weakQueue.png" alt="netty-recycler-weakQueue.png" />
+</p>
+</div>
+</div>
+</div>

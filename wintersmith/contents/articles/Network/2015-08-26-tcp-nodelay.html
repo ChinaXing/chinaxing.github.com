@@ -1,0 +1,135 @@
+---
+date: 2015-08-27 00:00:28
+template: tech.jade
+title: TCP nodelay
+category: Network
+chage_frequency: monthly
+tag: network,linux
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">合并发送</a></li>
+<li><a href="#sec-2">Delay Ack</a></li>
+<li><a href="#sec-3">冲突</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">合并发送</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Nagle's 算法的目的是合并小包发送，减少传输和确认的次数以及拆包组包的工作，提高网络利用率：
+</p>
+<ul class="org-ul">
+<li>应用层send的数据包不会立即发送给下层，而是到一个水位后才一起发出——合并
+</li>
+<li>如果在累积期间收到一个ack，则将累积区的数据立即发出——说明对方处理好了，等待下一个
+</li>
+</ul>
+<blockquote>
+<p>
+4.2.3.4  When to Send Data
+</p>
+
+<p>
+A TCP MUST include a SWS avoidance algorithm in the sender.
+</p>
+
+<p>
+A TCP SHOULD implement the Nagle Algorithm [TCP:9] to
+coalesce short segments.  However, there MUST be a way for
+an application to disable the Nagle algorithm on an
+individual connection.  In all cases, sending data is also
+subject to the limitation imposed by the Slow Start
+algorithm (Section 4.2.2.15).
+</p>
+
+<p>
+DISCUSSION:
+     The Nagle algorithm is generally as follows:
+</p>
+
+<p>
+If there is unacknowledged data (i.e., SND.NXT &gt;
+SND.UNA), then the sending TCP buffers all user
+data (regardless of the PSH bit), until the
+outstanding data has been acknowledged or until
+the TCP can send a full-sized segment (Eff.snd.MSS
+bytes; see Section 4.2.2.6).
+</p>
+
+<p>
+Some applications (e.g., real-time display window
+updates) require that the Nagle algorithm be turned
+off, so small data segments can be streamed out at the
+maximum rate.
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Delay Ack</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+TCP还有一个增强特性，叫做延迟确认或者累积确认，目标是减少ack包的数量，多个数据包一起ack，或者ack带上数据：
+</p>
+<blockquote>
+<p>
+4.2.3.2  When to Send an ACK Segment
+</p>
+
+<p>
+A host that is receiving a stream of TCP data segments can
+increase efficiency in both the Internet and the hosts by
+sending fewer than one ACK (acknowledgment) segment per data
+segment received; this is known as a "delayed ACK" [TCP:5].
+</p>
+
+<p>
+A TCP SHOULD implement a delayed ACK, but an ACK should not
+be excessively delayed; in particular, the delay MUST be
+less than 0.5 seconds, and in a stream of full-sized
+segments there SHOULD be an ACK for at least every second
+segment.
+</p>
+
+<p>
+DISCUSSION:
+     A delayed ACK gives the application an opportunity to
+     update the window and perhaps to send an immediate
+     response.  In particular, in the case of character-mode
+     remote login, a delayed ACK can reduce the number of
+     segments sent by the server by a factor of 3 (ACK,
+     window update, and echo character all combined in one
+     segment).
+</p>
+
+<p>
+In addition, on some large multi-user hosts, a delayed
+ACK can substantially reduce protocol processing
+overhead by reducing the total number of packets to be
+processed [TCP:5].  However, excessive delays on ACK's
+can disturb the round-trip timing and packet "clocking"
+algorithms [TCP:7].
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">冲突</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+那么如果一端启用Nagle算法，一端启用tcp delay ack，则 发送端在发送第一个包后，如果后续发送的都是小包，就会进入僵持状态：
+发送端等ack或者更多数据，接收方等更多数据或者超时40ms，这将导致后续的数据都无法及时发送到接收方。
+</p>
+
+<p>
+为了解决这个问题，tcp增加一个NODELAY选项，此选项关闭Nagle算法，数据在送达缓冲区后，立即发送到下层。
+</p>
+</div>
+</div>

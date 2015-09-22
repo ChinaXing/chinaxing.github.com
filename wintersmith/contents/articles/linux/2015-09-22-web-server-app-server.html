@@ -1,0 +1,87 @@
+---
+date: 2015-09-22 17:56:35
+template: tech.jade
+title: Web 服务为什么这样部署
+category: Linux
+chage_frequency: monthly
+tag: 
+---
+<p>
+Web 服务的典型部署结构是
+</p>
+
+<blockquote>
+<p>
+nginx + tomcat 或者 nginx + jetty 的结构。
+</p>
+</blockquote>
+
+<p>
+其中nginx部分称为Web server，tomcat部分称为App server。
+</p>
+
+<p>
+初看，不免有如下疑问
+</p>
+
+<blockquote>
+<p>
+tomcat本身已经有Http server的功能，为何还要多此一举来再加一层nginx呢？
+</p>
+</blockquote>
+
+<p>
+有的回答的理由是：我们需要nginx做动静分离。
+</p>
+
+<p>
+但这不是核心问题，而且动静分离一般使用cdn更妥。
+</p>
+
+<p>
+核心问题是：
+</p>
+
+<p>
+tomcat 与 nginx 组合后，nginx直面用户，一个请求被分割为2个阶段：
+</p>
+
+<ol class="org-ol">
+<li>请求到达nginx被nginx接住
+</li>
+<li>请求被nginx转发（proxy_pass）给tomcat返回业务结果。
+</li>
+</ol>
+
+<p>
+这样分割的好处是，tomcat容器不必处理与http请求相关的问题了，因为nginx与tomcat的通信是内网甚至是本机loop接口，可以说网络环境非常理想，而且对于tomcat来说client的行为就是nginx，而nginx我们是可以控制的。
+</p>
+
+<p>
+于是tomcat只需要处理业务功能，连接维持、慢连接处理、IO处理都理想化了。理想化为一个程序内部的方法调用。
+</p>
+
+<p>
+而nginx层的作用，也正是与client完成http层及其之下层的处理，这包括client的握手、连接管理、keepalive、网络io。这些正是nginx的优势所在。它的并发连接建立能力、连接保护、连接io处理等非常高效。
+</p>
+
+<p>
+这里的思想，就是分而自治的思想，通过隔离问题域，采用各个环节击破，使问题进行转化。
+</p>
+
+<p>
+nginx到tomcat的连接并没有减少，只不过连接的生命周期非常短，因为连接是nginx可控的，他会proxy的response接收到后，关闭到tomcat得连接。这个过程非常快速，没有死连接残留。
+</p>
+
+<p>
+可以通过下面的命令，观察这个过程：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-shell"># nginx 连接到tomcat
+/usr/sbin/tcpdump -i lo tcp[13] == 2 and port 30080
+# nginx 关闭到tomcat的连接
+/usr/sbin/tcpdump -i lo tcp[13] == 0x11  and port 30080
+</pre>
+</div>

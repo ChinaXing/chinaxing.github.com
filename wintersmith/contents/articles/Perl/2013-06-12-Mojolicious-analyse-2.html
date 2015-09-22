@@ -1,0 +1,523 @@
+---
+date: 2013-06-12
+template: tech.jade
+title: Mojolicious Web框架实现分析 -- 请求处理过程
+category: Perl
+change_frequency: monthly
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">请求处理过程</a>
+<ul>
+<li><a href="#sec-1-1">listen socket上面的回调</a></li>
+<li><a href="#sec-1-2">listen socket上链接达到</a></li>
+<li><a href="#sec-1-3">为链接创建Mojo::IOLoop::Stream</a></li>
+<li><a href="#sec-1-4">client发来数据</a></li>
+<li><a href="#sec-1-5">transaction被创建并处理数据</a></li>
+<li><a href="#sec-1-6">数据分析完整触发tx上的request事件</a></li>
+<li><a href="#sec-1-7">执行app上的handler方法</a></li>
+<li><a href="#sec-1-8">tx被唤醒写response数据到链接</a></li>
+<li><a href="#sec-1-9">结束tx</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">总结</a></li>
+</ul>
+</div>
+</div>
+<p>
+Mojolicious 是基于事件的web框架，那么如何知道请求这个事件发生了呢？
+</p>
+
+<p>
+由于请求是通过网络上达到，通过Client对server监听的端口发起链接而产生，这一事件是accept事件，Mojolicious得知这一事件的方法有两种:
+</p>
+<ul class="org-ul">
+<li>使用IO::Poll 模块，隔一段时间进行一次轮询，问内核:是否有链接了？ 这个轮询是被ioloop-&gt;start所启动
+</li>
+<li>使用EV模块， 注册一个回调函数，在链接到达的时候，这个回调函数会被EV模块调用．
+</li>
+</ul>
+
+<p>
+不论哪种方式(主动查询还是被动通告)，当一个socket上的accept事件发生的时候，Mojolicious被唤醒
+</p>
+<ul class="org-ul">
+<li>IO::Pool模式
+此模式下轮询函数是Mojo::Reactor::one_tick方法，可以看到当可读/写发生时候，调用:
+<div class="org-src-container">
+
+<pre class="src src-perl">++$i and $self-&gt;_sandbox('Write'， $self-&gt;{io}{fileno $_}{cb}， 1)
+</pre>
+</div>
+</li>
+<li>EV模式
+_io方法会被调用，进而调用注册的回调:
+<div class="org-src-container">
+
+<pre class="src src-perl">my $io = $self-&gt;{io}{$fd};
+$self-&gt;_sandbox('Read'， $io-&gt;{cb}， 0) if EV::READ &amp;$revents;
+</pre>
+</div>
+</li>
+</ul>
+
+<p>
+因此从处理函数被调用开始分析一个请求的处理过程
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">请求处理过程</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">listen socket上面的回调</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+socket对应fd上面的回调， 这个回调在哪注册的呢？<br  />
+   Mojo::IOLoop在创建server实例的时候，创建完毕会执行一个:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">return $self-&gt;acceptor($server);
+</pre>
+</div>
+<p>
+来将$server实例记录在$self-&gt;{acceptors}中，最后执行:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl"># Stop accepting so new acceptor can get picked up
+$self-&gt;_not_accepting;
+</pre>
+</div>
+<p>
+这里释放accept锁，表示其他进程的server可以进行注册accept处理函数到accept的socket．<br  />
+     在释放锁的同时，注意到_not_accepting函数内首先启动了一个定时器:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">$self-&gt;_timers;
+．．．
+sub _timers {
+      my $self = shift;
+      $self-&gt;{accept} ||= $self-&gt;recurring($self-&gt;accept_interval =&gt; \&amp;_accepting);
+      $self-&gt;{stop} ||= $self-&gt;recurring(1 =&gt; \&amp;_stop);
+}
+</pre>
+</div>
+<p>
+启动了定时的执行_accepting，注意，同一个进程内不会启动多个．
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl"> sub _accepting {
+  my $self = shift;
+
+  # Check if we have acceptors
+  my $acceptors = $self-&gt;{acceptors} ||= {};
+  return $self-&gt;_remove(delete $self-&gt;{accept}) unless keys %$acceptors;
+
+  # Check connection limit
+  my $i   = keys %{$self-&gt;{connections}};
+  my $max = $self-&gt;max_connections;
+  return unless $i &lt; $max;
+
+  # Acquire accept mutex
+  if (my $cb = $self-&gt;lock) { return unless $self-&gt;$cb(!$i) }
+  $self-&gt;_remove(delete $self-&gt;{accept});
+
+  # Check if multi-accept is desirable
+  my $multi = $self-&gt;multi_accept;
+  $_-&gt;multi_accept($max &lt; $multi ? 1 : $multi)-&gt;start for values %$acceptors;
+  $self-&gt;{accepting}++;
+}
+</pre>
+</div>
+<p>
+此方法每隔一段时间运行一次，目的是注册accept的事件处理，直到成功注册(便会停止尝试)．<br  />
+     什么时候失败呢？
+</p>
+<ul class="org-ul">
+<li>锁没获取，其它进程的server获取了锁，已经注册了
+</li>
+<li>链接数达到了最大链接数
+</li>
+</ul>
+<p>
+如果获取了锁，则进行注册处理函数，这在Mojo::IOLoop::Server:start方法内进行:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub start {
+ my $self = shift;
+ weaken $self;
+ $self-&gt;reactor-&gt;io(
+   $self-&gt;{handle} =&gt; sub { $self-&gt;_accept for 1 ．． $self-&gt;multi_accept });
+}
+</pre>
+</div>
+<p>
+设置server的handle(是socket的fd)的处理函数为_accept方法．multi_accept表示一次可以获取多个可以accept的链接:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub _accept {
+  my $self = shift;
+
+  return unless my $handle = $self-&gt;{handle}-&gt;accept;
+  $handle-&gt;blocking(0);
+
+  # Disable Nagle's algorithm
+  setsockopt $handle， IPPROTO_TCP， TCP_NODELAY， 1;
+
+  # Start TLS handshake
+  return $self-&gt;emit_safe(accept =&gt; $handle) unless my $tls = $self-&gt;{tls};
+  weaken $self;
+  $tls-&gt;{SSL_error_trap} = sub {
+    return unless my $handle = delete $self-&gt;{handles}{shift()};
+    $self-&gt;reactor-&gt;remove($handle);
+    close $handle;
+  };
+  return unless $handle = IO::Socket::SSL-&gt;start_SSL($handle， %$tls);
+  $self-&gt;reactor-&gt;io($handle =&gt; sub { $self-&gt;_tls($handle) });
+  $self-&gt;{handles}{$handle} = $handle;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">listen socket上链接达到</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+可以看到当Reactor上面的读写发生时候，这个函数被调用，他执行socket的accept获得新的socket(和client链接的socket)．然后触发了accept事件．<br  />
+     accept事件是什么时候被注册的呢？<br  />
+     Mojo::IOLoop中server方法:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub server {
+  my ($self， $cb) = (shift， pop);
+  $self = $self-&gt;singleton unless ref $self;
+
+  my $server = Mojo::IOLoop::Server-&gt;new;
+  weaken $self;
+  $server-&gt;on(
+    accept =&gt; sub {
+      my $handle = pop;
+
+      # Turn handle into stream
+      my $stream = Mojo::IOLoop::Stream-&gt;new($handle);
+      $self-&gt;$cb($stream， $self-&gt;stream($stream));
+
+      # Enforce connection limit (randomize to improve load balancing)
+      $self-&gt;max_connections(0)
+	if defined $self-&gt;{accepts}
+	&amp;&amp; ($self-&gt;{accepts} -= int(rand 2) + 1) &lt;= 0;
+
+      # Stop accepting to release accept mutex
+      $self-&gt;_not_accepting;
+    }
+  );
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">为链接创建Mojo::IOLoop::Stream</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+注册了server上面的accept事件，于是这里注册的处理函数被执行，观察到，他创建了一个Mojo::IOLoop::Stream实例，表示Client和Server的这条链接．然后执行了一个callback．<br  />
+     这个callback是什么呢？<br  />
+     由于这里的server方法是被Mojo::Server::Daemon的_listen方法调用用来创建acceptor．在那里可以看到提供了此回调:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub _listen {
+  my ($self， $listen) = @_;
+  ．．．
+  weaken $self;
+  my $id = $self-&gt;ioloop-&gt;server(
+    $options =&gt; sub {
+      my ($loop， $stream， $id) = @_;
+
+      my $c = $self-&gt;{connections}{$id} = {tls =&gt; $tls};
+      warn "-- Accept (@{[$stream-&gt;handle-&gt;peerhost]})\n" if DEBUG;
+      $stream-&gt;timeout($self-&gt;inactivity_timeout);
+
+      $stream-&gt;on(close =&gt; sub { $self-&gt;_close($id) });
+      $stream-&gt;on(
+	error =&gt; sub {
+	  return unless $self;
+	  $self-&gt;app-&gt;log-&gt;error(pop);
+	  $self-&gt;_close($id);
+	}
+      );
+      $stream-&gt;on(read =&gt; sub { $self-&gt;_read($id =&gt; pop) });
+      $stream-&gt;on(timeout =&gt;
+	  sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout．') if $c-&gt;{tx} });
+   }
+);
+．．．
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">client发来数据</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+这个回掉注册了stream上面的事件处理:close，error，read，timeout等．read方法，表示链接上有数据达到，即client发来数据:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub _read {
+  my ($self， $id， $chunk) = @_;
+
+  # Make sure we have a transaction and parse chunk
+  return unless my $c = $self-&gt;{connections}{$id};
+  my $tx = $c-&gt;{tx} ||= $self-&gt;_build_tx($id， $c);
+  warn "-- Server &lt;&lt;&lt; Client (@{[$tx-&gt;req-&gt;url-&gt;to_abs]})\n$chunk\n" if DEBUG;
+  $tx-&gt;server_read($chunk);
+
+  # Last keep-alive request or corrupted connection
+  $tx-&gt;res-&gt;headers-&gt;connection('close')
+    if (($c-&gt;{requests} || 0) &gt;= $self-&gt;max_requests) || $tx-&gt;req-&gt;error;
+
+  # Finish or start writing
+  if ($tx-&gt;is_finished) { $self-&gt;_finish($id， $tx) }
+  elsif ($tx-&gt;is_writing) { $self-&gt;_write($id) }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">transaction被创建并处理数据</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+此方法创建transaction(如果链接上有tx就复用)，注意调次方法被调用的时候数据已经就绪了，在$chunk中<br  />
+   调用transacton上面的server_read方法，这个方法并不会从socket读数据(因为数据已经读上来，在$chunk中)，而是进行分析数据:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl"># Mojo::Transaction::HTTP
+sub server_read {
+  my ($self， $chunk) = @_;
+
+  # Parse request
+  my $req = $self-&gt;req;
+  $req-&gt;parse($chunk) unless $req-&gt;error;
+  $self-&gt;{state} ||= 'read';
+
+  # Generate response
+  return unless $req-&gt;is_finished &amp;&amp; !$self-&gt;{handled}++;
+  $self-&gt;emit(upgrade =&gt; Mojo::Transaction::WebSocket-&gt;new(handshake =&gt; $self))
+    if lc($req-&gt;headers-&gt;upgrade // '') eq 'websocket';
+  $self-&gt;emit('request');
+}
+</pre>
+</div>
+<p>
+此方法调用$req-&gt;parse方法分析数据，先分析HTTP头，然后使用Mojo::Content分析headers和body，如果完整那么一次就可以分析完，状态变为finished，
+于是本函数的最后一行被调用，触发request事件．<br  />
+     事件处理函数是？<br  />
+     由于tx是在Mojo::Daemon::_read方法内调用_build_tx构建:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub _build_tx {
+  my ($self， $id， $c) = @_;
+
+  my $tx = $self-&gt;build_tx-&gt;connection($id);
+  $tx-&gt;res-&gt;headers-&gt;server('Mojolicious (Perl)');
+  my $handle = $self-&gt;ioloop-&gt;stream($id)-&gt;handle;
+  $tx-&gt;local_address($handle-&gt;sockhost)-&gt;local_port($handle-&gt;sockport);
+  $tx-&gt;remote_address($handle-&gt;peerhost)-&gt;remote_port($handle-&gt;peerport);
+  $tx-&gt;req-&gt;url-&gt;base-&gt;scheme('https') if $c-&gt;{tls};
+
+  # Handle upgrades and requests
+  weaken $self;
+  $tx-&gt;on(
+    upgrade =&gt; sub {
+      my ($tx， $ws) = @_;
+      $ws-&gt;server_handshake;
+      $self-&gt;{connections}{$id}{ws} = $ws;
+    }
+  );
+  $tx-&gt;on(
+    request =&gt; sub {
+      my $tx = shift;
+      $self-&gt;emit(request =&gt; $self-&gt;{connections}{$id}{ws} || $tx);
+      $tx-&gt;on(resume =&gt; sub { $self-&gt;_write($id) });
+    }
+  );
+
+  # Kept alive if we have more than one request on the connection
+  return ++$c-&gt;{requests} &gt; 1 ? $tx-&gt;kept_alive(1) : $tx;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">数据分析完整触发tx上的request事件</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+request事件的处理函数会执行Mojo::Server::Daemon实例上注册的request处理函数，传递tx作为参数:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl"># Mojo::Server
+sub new {
+  my $self = shift-&gt;SUPER::new(@_);
+  $self-&gt;on(request =&gt; sub { shift-&gt;app-&gt;handler(shift) });
+  return $self;
+}
+</pre>
+</div>
+<p>
+可以看到这里会调用app上面的handler函数:
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">执行app上的handler方法</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+handler方法在Mojolicious．pm中，handler方法目的是生成response(响应内容):
+</p>
+<ul class="org-ul">
+<li>redirect
+</li>
+<li>static 资源
+</li>
+<li>route到app自定义的controller
+</li>
+</ul>
+<p>
+在生成response，且如果需要渲染模板而渲染后，执行rendered方法，次方法是收尾工作，在次方法的最后执行:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub rendered {
+    ．．．
+    $self-&gt;tx-&gt;resume;
+    return $self;
+}
+</pre>
+</div>
+<p>
+唤醒了tx:
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">tx被唤醒写response数据到链接</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+在Mojo::Server::Daemon::_build_tx内:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">$tx-&gt;on(resume =&gt; sub { $self-&gt;_write($id) });
+</pre>
+</div>
+<p>
+可以看到Mojo::Server::Daemon的_write方法被执行:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">sub _write {
+    my ($self， $id) = @_;
+
+    # Not writing
+    return unless my $c  = $self-&gt;{connections}{$id};
+    return unless my $tx = $c-&gt;{tx};
+    return unless $tx-&gt;is_writing;
+
+    # Get chunk and write
+    return if $c-&gt;{writing}++;
+    my $chunk = $tx-&gt;server_write;
+    delete $c-&gt;{writing};
+    warn "-- Server &gt;&gt;&gt; Client (@{[$tx-&gt;req-&gt;url-&gt;to_abs]})\n$chunk\n" if DEBUG;
+    my $stream = $self-&gt;ioloop-&gt;stream($id)-&gt;write($chunk);
+
+    # Finish or continue writing
+    weaken $self;
+    my $cb = sub { $self-&gt;_write($id) };
+    if ($tx-&gt;is_finished) {
+      if ($tx-&gt;has_subscribers('finish')) {
+	$cb = sub { $self-&gt;_finish($id， $tx) }
+      }
+      else {
+	$self-&gt;_finish($id， $tx);
+	return unless $c-&gt;{tx};
+      }
+    }
+    $stream-&gt;write(''， $cb);
+  }
+</pre>
+</div>
+<p>
+此方法的目的是写response给客户端，调用tx-&gt;server_write获得要写的数据，然后在connection绑定的Mojo::IOLoop::Stream实例上面调用write方法写出数据．
+如果tx数据完整则状态为finished，调用Mojo::Server::Daemon的_finish方法，结束tx:
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">结束tx</h3>
+<div class="outline-text-3" id="text-1-9">
+<div class="org-src-container">
+
+<pre class="src src-perl">sub _finish {
+    my ($self， $id， $tx) = @_;
+
+    # Always remove connection for WebSockets
+    return $self-&gt;_remove($id) if $tx-&gt;is_websocket;
+
+    # Finish transaction
+    $tx-&gt;server_close;
+    ．．．
+    # Close connection if necessary
+    my $req = $tx-&gt;req;
+   return $self-&gt;_remove($id) if $req-&gt;error || !$tx-&gt;keep_alive;
+</pre>
+</div>
+<p>
+从这里可以看出tx被设置为finished，如果非keepalive链接，还会关闭链接(同时删除了tx，tx属于connection)．
+</p>
+
+<p>
+至此请求处理完成
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">总结</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>一个client链接代表一个connection
+</li>
+<li>一个connection对应一个Mojo::IOLoop::Stream
+</li>
+<li>一个connection上面有一个tx
+</li>
+<li>tx完成请求的分析，转交app处理，响应生成
+</li>
+<li>Stream负责将链接上数据读取和写入
+</li>
+<li>connection被注册在listen socket上的回调创建，进而stream被创建
+</li>
+<li>tx被stream上read事件触发创建(可能复用)
+</li>
+<li>每个listen socket上面一个Mojo::IOLoop::Server实例，对应于一个acceptor
+</li>
+<li>keepalive的连接请求完成后不会删除tx和connection，tx被标记为finished
+</li>
+</ul>
+</div>
+</div>

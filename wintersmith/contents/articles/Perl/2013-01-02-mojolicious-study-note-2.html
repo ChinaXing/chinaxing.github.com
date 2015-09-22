@@ -1,0 +1,537 @@
+---
+date: 2013-01-02
+template: tech.jade
+title: Mojolicious 学习笔记
+category: Perl
+change_frequency: monthly
+tag: Mojolicious
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Mojolicous结构</a>
+<ul>
+<li><a href="#sec-1-1">route 路由</a></li>
+<li><a href="#sec-1-2">controller</a></li>
+<li><a href="#sec-1-3">action</a></li>
+<li><a href="#sec-1-4">template</a></li>
+<li><a href="#sec-1-5">异常</a></li>
+<li><a href="#sec-1-6">helper</a></li>
+<li><a href="#sec-1-7">plugin</a></li>
+<li><a href="#sec-1-8">hook</a></li>
+<li><a href="#sec-1-9">command 模块</a></li>
+<li><a href="#sec-1-10">daemon 模块</a></li>
+<li><a href="#sec-1-11">Prefork 模块</a></li>
+<li><a href="#sec-1-12">Hypnotoad模块</a></li>
+<li><a href="#sec-1-13">websocket</a></li>
+<li><a href="#sec-1-14">CGI，PSGI</a></li>
+<li><a href="#sec-1-15">Test::Mojo</a></li>
+<li><a href="#sec-1-16">Useragent模块</a></li>
+<li><a href="#sec-1-17">auto-reboot</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">Web开发实践</a>
+<ul>
+<li><a href="#sec-2-1">数据库访问</a></li>
+<li><a href="#sec-2-2">Form表单</a></li>
+<li><a href="#sec-2-3">Cache缓冲</a></li>
+<li><a href="#sec-2-4">日期时间:</a></li>
+<li><a href="#sec-2-5">国际化i18n</a></li>
+<li><a href="#sec-2-6">访问日志AccessLog</a></li>
+<li><a href="#sec-2-7">错误日志ErrorLog</a></li>
+<li><a href="#sec-2-8">Hypontoad配置</a></li>
+<li><a href="#sec-2-9">执行外部命令/Fork进程</a></li>
+<li><a href="#sec-2-10">目录autoindex</a></li>
+<li><a href="#sec-2-11">获取时间</a></li>
+<li><a href="#sec-2-12">字符串操作</a></li>
+<li><a href="#sec-2-13">给类添加方法或者函数</a></li>
+<li><a href="#sec-2-14">调整最大允许消息体大小</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+<b>Mojolicous</b> : <a href="http://mojolicio.us/">http://mojolicio.us/</a>
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Mojolicous结构</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">route 路由</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+根据request进行路由，可以根据：url,param,format,method等进行路由
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">controller</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。  
+</li>
+<li>controller是Mojolicious::Controller的子类。  
+</li>
+<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class('PeSystem::Controller') 设定$app的默认controller.  
+</li>
+<li>controller获得app: <b>$self-&gt;app</b>
+</li>
+<li>controller获得请求: <b>$self-&gt;req</b>
+</li>
+<li>controller获得路由匹配的参数: <b>$self-&gt;stash('id')</b>
+</li>
+<li>controller的一些helpers:Mojolicious::Plugin::Defaulthelps，它包含dumper,stash,url_encode等方法方便使用(<b>$self-&gt;stash('a'=&gt;'b')</b>)
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">action</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>action是controller内的子过程。操作都是在action内进行的.  
+</li>
+<li>渲染页面: <b>$self-&gt;render('&#x2026;'),$self-&gt;render_exception,$self-&gt;redirect_to(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">template</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）  
+</li>
+<li>异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
+</li>
+<li>404模版:not_found.$mode.$format.ep,not_found.$format.ep
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">异常</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>Mojo::Exception 是其异常类  
+</li>
+<li>Mojo是通过local $SIG{<span class="underline"><span class="underline">DIE</span></span>}来注册自己的异常捕获的。  
+</li>
+<li>主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.  
+</li>
+<li>controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+</li>
+<li>捕获异常: 
+<div class="org-src-container">
+
+<pre class="src src-perl">eval { code } or do { die "xxx" }
+</pre>
+</div>
+</li>
+<li>返回异常页面: $self-&gt;render_exception(&#x2026;);
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">helper</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>辅助工具，默认的/自带的Mojolicious::Plugin::DefaultHelpers 包含stash,dumper等方法.  
+</li>
+<li>也可以自己方便地写helper。
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">plugin</h3>
+<div class="outline-text-3" id="text-1-7">
+<ul class="org-ul">
+<li>插件，许多功能通过插件来添加到Mojo.如Config插件，  
+</li>
+<li>使用插件：
+<div class="org-src-container">
+
+<pre class="src src-perl">$self-&gt;app-&gt;plugin('Config',{file =&gt; 'pesystem.conf')
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">hook</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+埋点和回调，可以在请求处理和响应的各个阶段进行回调函数的挂入来完成高级自定义。如Exception的处理就是hook来实现的。
+Hook点有:
+</p>
+<ul class="org-ul">
+<li>after_build_tx
+</li>
+<li>before_dispatch
+</li>
+<li>after_static
+</li>
+<li>before_routes
+</li>
+<li>after_render
+</li>
+<li>after_dispatch
+</li>
+<li>around_dispatch
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">command 模块</h3>
+<div class="outline-text-3" id="text-1-9">
+<ul class="org-ul">
+<li>提供命令行选项功能和启动app的功能。
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10">daemon 模块</h3>
+<div class="outline-text-3" id="text-1-10">
+<ul class="org-ul">
+<li>实现daemon，继承了command模块。
+</li>
+<li>是单进程实例.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-11" class="outline-3">
+<h3 id="sec-1-11">Prefork 模块</h3>
+<div class="outline-text-3" id="text-1-11">
+<ul class="org-ul">
+<li>多进程实例,但是进程数固定.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-12" class="outline-3">
+<h3 id="sec-1-12">Hypnotoad模块</h3>
+<div class="outline-text-3" id="text-1-12">
+<ul class="org-ul">
+<li>实现服务器进程，热部署，websocket支持，非阻塞服务器。
+</li>
+<li>使用prefork 实现了多进程(固定进程数,类似nginx worker).
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-13" class="outline-3">
+<h3 id="sec-1-13">websocket</h3>
+<div class="outline-text-3" id="text-1-13">
+<p>
+mojolicious 支持websocket, websocket 和 HTTP一样是一种transaction类型, 此外还有Https.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-14" class="outline-3">
+<h3 id="sec-1-14">CGI，PSGI</h3>
+<div class="outline-text-3" id="text-1-14">
+<p>
+mojolicious 支持部署方式为PSGI。Plack 启动mojolicious程序则使用PSGI协议.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-15" class="outline-3">
+<h3 id="sec-1-15">Test::Mojo</h3>
+<div class="outline-text-3" id="text-1-15">
+<p>
+测试模块, Mojolicious 应用测试基类,方便测试.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-16" class="outline-3">
+<h3 id="sec-1-16">Useragent模块</h3>
+<div class="outline-text-3" id="text-1-16">
+<ul class="org-ul">
+<li>模拟UserAgent. 支持同步和异步的请求方式.
+</li>
+<li>每个controller有一个UserAgent实例,可以通过$self-&gt;ua获取.
+</li>
+<li>每个UserAgent有一个app属性,request,response属性等等: $self-&gt;app, $self-&gt;req, $self-&gt;res
+</li>
+<li>UserAgent 使用和依赖了Mojo::IOLoop完成具体任务,使用Mojo::Transaction来构建请求事务.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-17" class="outline-3">
+<h3 id="sec-1-17">auto-reboot</h3>
+<div class="outline-text-3" id="text-1-17">
+<p>
+morbo 启动mojolicious app 则会检测代码变化，然后自动reload ,一般用在开发环境
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Web开发实践</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">数据库访问</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+使用DBIx::Class
+</p>
+<ul class="org-ul">
+<li>DBIx::Class 提供ORM层功能.
+</li>
+<li>DBIx::Class 可以将schema和数据库DDL之间转换,互相生成.
+</li>
+<li>DBIx::Class 提供版本功能.(我还没有使用)
+</li>
+<li>DBIx::Class 有缓冲功能
+</li>
+<li>AnyEvent::DBI 提供异步的数据库请求机制, 没有发现DBIx::Class的.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">Form表单</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+使用HTML::FormHandler
+</p>
+<ul class="org-ul">
+<li>Form绘制,提供多种widget和theme(Bootstrap主题), 可以通过指定subroutine或hash之类的配置进行配置,可配置性好
+</li>
+<li>Form的Validation
+</li>
+<li>Form的解析
+</li>
+</ul>
+
+<p>
+数据库相关表单使用HTML::FormHandler::TraitFor::Model::DBIC
+</p>
+<ul class="org-ul">
+<li>根据DBIx::Class Schema描述生成Form
+</li>
+<li>Form进行Validate后,进行DB的update.
+</li>
+<li>根据relationship关系,自动获取关联关系的Form元素.可以处理relationship.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">Cache缓冲</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+使用插件Mojolicious::Plugin::CHI
+</p>
+<ul class="org-ul">
+<li>它使用<a href="http://search.cpan.org/perldoc?CHI">CHI</a> 做缓冲系统 CHI缓冲系统可以支持很多的存储后端:内存,文件,数据库等等
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">日期时间:</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+使用CoreModule: Time::Piece 和 Time::Seconds
+</p>
+<ul class="org-ul">
+<li>Time::Seconds : ONE_DAY, ONE_MIN , $s-&gt;sencods &#x2026; 提供秒到各个单位的转换.
+</li>
+<li>Time::Piece   : 提供localetime 函数, 返回本地时间, 2个Time::Piece对象的差结果是Time::Seconds对象.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">国际化i18n</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+使用插件Mojolicious::Plugin::I18N
+</p>
+<ul class="org-ul">
+<li>自定义I18N类,通过配置此插件,然后在需要国际化的地方调用: $self-&gt;l, 如果是模版内,可以使用helper: l 
+</li>
+<li>I18N类,继承Locale::Maketext,然后进行Hack,见其Perldoc
+</li>
+</ul>
+
+<p>
+使用插件Mojolicious::Plugin::Human
+</p>
+<ul class="org-ul">
+<li>导出很多helper:human_datetime,human_date&#x2026; 方便进行变量的本地化和人性化查看的转换. 如: human_datetime $now
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">访问日志AccessLog</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+使用插件Mojolicious::Plugin::AccessLog
+</p>
+<ul class="org-ul">
+<li>可以定义日志的位置,日志的format,默认使用类似apache logformat的combinded格式.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">错误日志ErrorLog</h3>
+<div class="outline-text-3" id="text-2-7">
+<ul class="org-ul">
+<li>mojolicious应用的模块目录下建立log目录,app启动的时候自动生成日志在此目录:$mode.log, 如development.log
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8">Hypontoad配置</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+可以在app的配置文件中进行如下配置:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">{
+   hypontoad =&gt; { listen =&gt; ['http://*:9999'], worker =&gt; 4 },
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9">执行外部命令/Fork进程</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+使用插件Mojolicious::Plugin::Process
+</p>
+<ul class="org-ul">
+<li>可以以异步方式执行外部命令和程序
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10">目录autoindex</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+使用插件Mojolicious::Plugin::Directory
+</p>
+<ul class="org-ul">
+<li>当访问目录的时候，自动内部重定向为/index.html, index.html等文件，类似apache/nginx的autoindex模块功能
+</li>
+<li>此模块还可以针对目录生成目录索引，类似apache/nginx的目录浏览功能
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-11" class="outline-3">
+<h3 id="sec-2-11">获取时间</h3>
+<div class="outline-text-3" id="text-2-11">
+<p>
+Mojo::Util::steady_time
+</p>
+<ul class="org-ul">
+<li>使用Time::HiRes模块获得的当前高精度时间
+</li>
+<li>Mojo自带的,可以方便的计算耗时
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-12" class="outline-3">
+<h3 id="sec-2-12">字符串操作</h3>
+<div class="outline-text-3" id="text-2-12">
+<p>
+Mojo::Util模块
+</p>
+<ul class="org-ul">
+<li>trim, 删除首尾的空白符
+</li>
+<li>squish, 删除首尾的空白符,并且合并行中的连续空白符
+</li>
+<li>md5_bytes,md5_sum,sha1_bytes,sha1_sum,b64_decode,b64_encode,encode,decode
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-13" class="outline-3">
+<h3 id="sec-2-13">给类添加方法或者函数</h3>
+<div class="outline-text-3" id="text-2-13">
+<p>
+Mojo::Util::mokey_patch
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl"># 给调用者添加名为del的方法或者函数(见Mojolicious::Lite源码)
+monkey_patch $caller, del =&gt; sub { $routes-&gt;delete(@_) };
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-14" class="outline-3">
+<h3 id="sec-2-14">调整最大允许消息体大小</h3>
+<div class="outline-text-3" id="text-2-14">
+<p>
+Mojo允许的最大消息体（HTTP响应体或请求体）大小为：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">has max_message_size =&gt; sub { $ENV{MOJO_MAX_MESSAGE_SIZE} || 5242880 };
+</pre>
+</div>
+<p>
+设置于Mojo::Message 模块中。<br  />
+  下面是如何根据需要调整此值的示例
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">my $tx = $self-&gt;ua-&gt;build_tx( GET =&gt; $self-&gt;app-&gt;config-&gt;{VIPINFO_UPDATE_API} );
+  $tx-&gt;res-&gt;max_message_size(7000000); # here
+  $self-&gt;ua-&gt;start($tx, sub { ... });
+</pre>
+</div>
+</div>
+</div>
+</div>

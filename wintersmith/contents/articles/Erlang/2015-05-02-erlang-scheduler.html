@@ -1,0 +1,70 @@
+---
+date: 2015-05-02 11:36:00
+template: tech.jade
+title: Erlang 进程调度
+category: Erlang
+chage_frequency: monthly
+tag: erlang
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">soft realtime</a></li>
+<li><a href="#sec-2">获取scheduler的信息</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">soft realtime</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Erlang 内部，创建大量进程，这些进程由称为scheduler的调度器进行调度运行，在多核机器上（SMP），每个物理线程绑定到一个核心上面，每个物理线程运行一个调度器，
+</p>
+
+<p>
+调度器与cpu的banding方式通过 <code>+sbt</code> 选项设置。 
+</p>
+
+<p>
+通过设置绑定类型，可以减少调度器的迁移，因为迁移会带来性能损失。
+</p>
+
+<p>
+Erlang 实现了 <b>soft-realtim</b> 的特点，这是通过引入preemptive的抢占机制，使得一个任务不会长时间占用计算资源。
+</p>
+
+<p>
+抢占的机制是使用内部一个称为reduction的计数器，类似于OS中得时间片机制，每当执行一些操作（执行内部函数、网络操作，循环递归等等几乎所有位置）的时候，reduction计数器会加1，当reduction超过一个设定值（2000）时，执行的进程被抢占挂起，然后调度器切换入下一个待执行进程进行执行。
+</p>
+
+<p>
+这里的机制，类似于Linux等Unix系统的分时机制，通过引入计数器，对进程的执行进行计时，然后进行切换。
+</p>
+
+<p>
+reduction严格来说不能算时间片，因为每个操作的时间是不同的，所以reduction只是粗略的限定了进程的执行粒度。
+</p>
+
+<p>
+如果reduction设置的够长，那么系统的进程切换就频率低一些，实时性会减低，但吞吐量会上升。
+</p>
+
+<p>
+如果reduction设置的很低，那么系统的切换就频繁，实时性较好，但是吞吐量会有所减低。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">获取scheduler的信息</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-erlang">erlang:system_info(schedulers).
+erlang:system_info(schedulers_online).
+erlang:system_info(scheduler_bindings).
+</pre>
+</div>
+</div>
+</div>
