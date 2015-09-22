@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>Erlang 开发环境 - The Chinaxing's blog
+    <title>Web 服务为什么这样部署 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -17,14 +17,14 @@
           <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li class="active"><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>13</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>30</sup></a></li>
+          <li class="active"><a href="/Linux/index.html">Linux<sup>30</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div><i id="motto">快乐地成功！</i>
@@ -32,7 +32,7 @@
     </header>
     <section id="content">
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
-      <h2 style="text-align:center">Erlang 开发环境
+      <h2 style="text-align:center">Web 服务为什么这样部署
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -41,38 +41,84 @@
       <script src="/js/highlight.pack.js" charset="utf-8"> </script>
       <div class="tech">
 <p>
-Erlang&nbsp;程序开发环境包括了：
+Web&nbsp;服务的典型部署结构是
 </p>
-<ul class="org-ul">
-<li>代码编辑器 —— Emacs&nbsp;erlang-mode
-</li>
-<li>编译器 ——&nbsp;erlc/hipe（native代码）
-</li>
-<li>交互式解释器 ——&nbsp;erl
-</li>
-<li>执行器 —— erl ，&nbsp;escript
-</li>
-<li>项目管理器 ——&nbsp;rebar，reltool
-</li>
-<li>调试器 ——&nbsp;debugger:start()
-</li>
-<li>性能诊断器 ——&nbsp;fprof，eprof，cover，cprof
-</li>
-<li>错误诊断器 ——&nbsp;dialyzer
-</li>
-<li>crash 分析 —— erl -s crashdump_viewer&nbsp;start
-</li>
-<li>运行时监控 ——&nbsp;observer:start()
-</li>
-<li>日志 ——&nbsp;error_logger
-</li>
-<li>sasl —— system architechture Support libraries&nbsp;提供了系统报警处理、升级、打包release、cpu使用率控制等。
-</li>
-</ul>
+
+<blockquote>
+<p>
+nginx + tomcat 或者 nginx + jetty&nbsp;的结构。
+</p>
+</blockquote>
 
 <p>
-我的Erlang <span class="caps">UDP</span>发送器 : <a href="https://github.com/ChinaXing/udp-broker">https://github.com/ChinaXing/udp-broker</a>
+其中nginx部分称为Web server，tomcat部分称为App&nbsp;server。
 </p>
+
+<p>
+初看，不免有如下疑问
+</p>
+
+<blockquote>
+<p>
+tomcat本身已经有Http&nbsp;server的功能，为何还要多此一举来再加一层nginx呢？
+</p>
+</blockquote>
+
+<p>
+有的回答的理由是：我们需要nginx做动静分离。
+</p>
+
+<p>
+但这不是核心问题，而且动静分离一般使用cdn更妥。
+</p>
+
+<p>
+核心问题是：
+</p>
+
+<p>
+tomcat 与 nginx&nbsp;组合后，nginx直面用户，一个请求被分割为2个阶段：
+</p>
+
+<ol class="org-ol">
+<li>请求到达nginx被nginx接住
+</li>
+<li>请求被nginx转发（proxy_pass）给tomcat返回业务结果。
+</li>
+</ol>
+
+<p>
+这样分割的好处是，tomcat容器不必处理与http请求相关的问题了，因为nginx与tomcat的通信是内网甚至是本机loop接口，可以说网络环境非常理想，而且对于tomcat来说client的行为就是nginx，而nginx我们是可以控制的。
+</p>
+
+<p>
+于是tomcat只需要处理业务功能，连接维持、慢连接处理、<span class="caps">IO</span>处理都理想化了。理想化为一个程序内部的方法调用。
+</p>
+
+<p>
+而nginx层的作用，也正是与client完成http层及其之下层的处理，这包括client的握手、连接管理、keepalive、网络io。这些正是nginx的优势所在。它的并发连接建立能力、连接保护、连接io处理等非常高效。
+</p>
+
+<p>
+这里的思想，就是分而自治的思想，通过隔离问题域，采用各个环节击破，使问题进行转化。
+</p>
+
+<p>
+nginx到tomcat的连接并没有减少，只不过连接的生命周期非常短，因为连接是nginx可控的，他会proxy的response接收到后，关闭到tomcat得连接。这个过程非常快速，没有死连接残留。
+</p>
+
+<p>
+可以通过下面的命令，观察这个过程：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-shell"># nginx 连接到tomcat
+/usr/sbin/tcpdump -i lo tcp[13] == 2 and port 30080
+# nginx 关闭到tomcat的连接
+/usr/sbin/tcpdump -i lo tcp[13] == 0x11  and port 30080
+</pre>
+</div>
 
       </div>
       <script>
