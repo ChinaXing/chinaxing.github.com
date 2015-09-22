@@ -14,23 +14,48 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>10</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>14</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>12</sup></a></li>
-          <li><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>13</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>29</sup></a></li>
         </ul>
         <!-- vistor map-->
         <div id="clustrmaps-widget"></div><i id="motto">快乐地成功！</i>
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>25. February 2015</span></p>
+          <h2><a href="/articles/Java/2015/02/25/2015-02-25-disruptor-bootstrap.html">Disruptor 设计分析</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">RingBuffer</a></li>
+<li><a href="#sec-2">Publisher</a></li>
+<li><a href="#sec-3">Sequencer</a>
+<ul>
+<li><a href="#sec-3-1">MultiProducerSequencer</a></li>
+<li><a href="#sec-3-2">SingleProducerSequencer</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">SequenceBarrier</a></li>
+<li><a href="#sec-5">Sequence</a></li>
+<li><a href="#sec-6">WaitStrategy</a></li>
+<li><a href="#sec-7">EventHandle</a></li></ul></div></div>
+          <p class="more"><a href="/articles/Java/2015/02/25/2015-02-25-disruptor-bootstrap.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>23. February 2015</span></p>
@@ -84,36 +109,6 @@
 <li><a href="#sec-2-1">PoolArena</a></li>
 </ul></li></ul></div></div>
           <p class="more"><a href="/articles/Java/2015/02/24/2015-02-23-netty-memory-bytebuf.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>23. February 2015</span></p>
-          <h2><a href="/articles/Java/2015/02/23/2015-02-23-netty-memory.html">Netty 内存管理 —— Recycler</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">Recycler</a></li>
-<li><a href="#sec-2">Stack</a></li>
-<li><a href="#sec-3">Handler</a></li>
-<li><a href="#sec-4">WeakQueue</a></li>
-</ul>
-</div>
-</div>
-
-<p>
-Netty框架中使用内存的地方非常多，如编码、解码，socket的接收和发送之前的缓冲，为了高效的使用内存，避免频繁申请和释放内存等带来的gc开销，使用了Recycle等机制，下面进行了解。
-</p>
-
-<p>
-<code>Recycler</code> 类提供了Object&nbsp;Pool的机制，整体思想是避免对象释放后马上被<span class="caps">GC</span>回收，将对象放入池中，下次使用此类对象的时候，直接从池中拿来重复利用。
-</p>
-
-
-          <p class="more"><a href="/articles/Java/2015/02/23/2015-02-23-netty-memory.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/11/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/13/" class="nav-next">Next page »</a>
