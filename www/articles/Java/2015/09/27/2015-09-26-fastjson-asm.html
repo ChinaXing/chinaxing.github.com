@@ -15,13 +15,13 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>11</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>11</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>15</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>15</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
@@ -140,6 +140,38 @@ FastJson初始化时候先将各种默认类别的Deserializer进行注册。
 
 <p>
 数据采用紧凑的方式进行编码，可以减少parser的处理时间，但是若采用复杂的编码算法，反而增加了parser的计算量，不太好。即，保持数据的量少，但是解析尽量方便。
+</p>
+
+<p>
+关于Java的反射：
+</p>
+
+<p>
+Java的反射也有缓存，即如果类没有被redefine，那么就一直使用上次反射的缓存。
+</p>
+
+<p>
+每次redefine一个类，<span class="caps">JVM</span>就会增加Class对象的redefinedCount，反射调用通过这个值来判断类是否被重新定义过了，然后失效缓存。
+</p>
+
+<p>
+从这点上来看，其实多次调用反射方法和一次调用的差别不是很大。
+</p>
+
+<p>
+查询反射方法和反射Field，走的是native方法。
+</p>
+
+<p>
+执行反射方法的调用和反射Field的设置读取，走的是Unsafe接口。
+</p>
+
+<p>
+其实，性能都应该不赖。
+</p>
+
+<p>
+那么fastjson的做法，快在哪儿？应该是指令少了。
 </p>
 
       </div>
