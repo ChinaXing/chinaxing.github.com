@@ -1,0 +1,89 @@
+#+BEGIN_HTML
+---
+date: 2015-09-29 22:52:15
+template: tech.jade
+title: Vitess分布式数据层
+category: distribute
+chage_frequency: monthly
+tag: Distribute,Database
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Vitess 是youtube的分布式数据库管理解决方案。使用go语言编写。目前用在Youtube上面。
+
+分布式数据库管理主要是下面几点：
+- 满足数据的分库分表对应用透明。
+- 进行query的路由，结果合并——解析查询，路由到数据所在节点，如果分布式执行，需要合并结果集，对于分布式事务的支持。
+- 自动伸缩——scale，sharding，通过管理控制台能方便的完成数据的重新分布。
+- 自动、半自动failover HA切换
+
+本质上在中间件层将数据可伸缩做掉，让应用程序端解放出来。在这一中间层上面除了做这些核心的工作外，还可以做其他的事情，比如sql的审计，统计，sql优化，链路复用，访问控制等等。
+
+*** 系统结构
+    cobar、mycat、vitess都类似的采用这样的结果：
+    - 一个用于保存meta数据的中心（cabar的zk的rule规则，vitess的toplogyserver）用来记录数据的路由策略，系统的分片情况等，为系统的工作提供顶层的映射视图。
+    - 一层无状态的proxy层，负责与应用方的mysqlclient进行连接，然后进行转发，转发规则从meta数据中心获得到。
+      这一层完成Query的解析，路由，结果的合并等
+    - 后端db管理端，负责对mysql实例进行管理，同时进行通讯，连接池复用等，直面mysql。
+
+*** Vitess 概念
+    - Keyspace :: 逻辑数据库，可能多个db（shard后）或者一个db（未shard），是用户看到的数据库视图。
+    - Keyspace id :: Keyspace的主键，存在于每个Keyspace中的表中，用来标示数据在Keyspace的Id
+    - Shard :: 对Keyspace的切分，一个Shard包含Keyspace中得一段Keyspace id。一个Shard对应于一个Mysql的数据库Node，一个逻辑Node包含一个Master，多个Slave。同一个Keyspace中得多个shard是同构的。
+    - Tablet :: Tablet 是封装于Mysql服务器的一个服务，每个mysql-server对应一个tablet。有多种类型，比如master、slave等，状态有可用，不可用等。
+*** Range-sharding
+    range-sharding 区别于一般的基于key的hash值进行sharding，好处是灵活，一个range可以包含任意指定的key数量。
+    vitess中有一个keyspace的概念用来定义一个维度的空间，然后range就是这个空间上面的一个子区间。
+    keyspace一般以业务的某个维度进行对应，比如userId。那么keyspace的key就是与userId之间的一个映射，比如通过一个hash函数进行映射。
+    在经过hash映射后的key，就是keyspace中得一个点，key可以使用binarydata来记录，也可以是一个64bit的整数，其中64位整数也会被转换为binarydata再做比较。
+    包含在keyspace中的表，必须包含一列用作keyspace的key值记录，而且所有表的这个列名要保持一致。
+    
+    range, 包含一个起始是empty的range和一个结束是empty的range和中间其它的range，range不重叠、连续，构成整个keyspace。
+    - -40
+    - 40-80
+    - 80-c0
+    - c0-
+    sharding的配置，叫sharding-schema，放在topologyserver中。      
+*** Resharding
+    重新分片的过程涉及到数据迁移，迁移过程中能保证小于5s的只读当机（只可读，不可写）
+    resharding可能包括：
+    - split : 数据增加，热点数据读写
+    - merge : 数据量减少，访问量减少，冷数据合并资源
+*** Resharding过程
+    - 配置新的shard，为每个shard分配key-range。
+    - 创建shard的master tablet，用于管理database instance，每个shard只能一个db instance。
+    - 创建shard的slave tablet，管理rdonly库，可以创建多个slave
+    - 从源shard，copy schema到新shard
+    - copy 数据
+      - 停掉一台源shard的rdonly tablet的读服务和replication，从服务组中摘除，不对外提供读服务。
+      - 并发进行数据transfer，将目标shard是destination shard的数据传输到目标shard
+      - 启动filtered replication，进行复制差异更新到目标shard。
+      - 重新启用第一步被暂停的rdonly tablet
+      - 检查数据一致性，在replication复制完成后，进行逐个目标shard的数据check：
+	- 找到一个正常工作的源rdonly tablet
+	- 停掉master dest shard上面的replication（rdonly dest shard上更新自动也停了）
+	- 等找到的源rdonly tablet上面的复制进度超过了master dest shard上进度，停止其复制
+	- 恢复master dest shard的复制
+	- dest rdonly tablet开始追上源 rdonly的进度，停掉其复制
+	- 逐行读取数据，进行比较
+      - 比较完成后重新启动复制，加入服务组，开启对外提供服务
+    - 切流量，让新的shar schema生效，此步骤如果老的shard是非分片的，那么将不会有流量流入，可以下架
+      - 切流量，先切rdonly的读流量，再切master写流量
+
+    整个过程大体思路是先让复制暂停，同步数据（进行sharding同步非全量），然后使用filtered replicate进行增量同步，最后选择rdonly tablet进行数据正确性校验，校验完成后，进行新sharding schema的应用。
+
+*** HA 切换
+    HA 切换是切换新的Master，发生在当老的Master失效的时候。
+    - 检查各个slave的replication position,确保新Master是最大position。
+    - 提升此Master为Master
+    - 在新的master上面插入test表一个记录（这一步是为了其它slave进行马上同步？）
+    - 将其他tablet的复制指向新的Master
+    除了HA切换，还有一种Master活着的情况下，换master。方式与此大体相同：
+    - 停止当前master的工作，变为rdonly tablet类型，不提供对外服务，此步骤后，写入服务被暂停。
+    - 新Master等待与老master同步后，提升为Master角色
+    - 插入一条新纪录在新master的test表。
+    - 将slave和旧master的replication指向新Master
+ 
+      

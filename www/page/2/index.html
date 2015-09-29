@@ -14,15 +14,15 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>11</sup></a></li>
-          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>11</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>15</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
@@ -31,6 +31,61 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>22. September 2015</span></p>
+          <h2><a href="/articles/linux/2015/09/23/2015-09-22-web-server-app-server.html">Web 服务为什么这样部署</a></h2>
+        </header>
+        <section class="content">
+<p>
+Web&nbsp;服务的典型部署结构是
+</p>
+
+<blockquote>
+<p>
+nginx + tomcat 或者 nginx + jetty&nbsp;的结构。
+</p>
+</blockquote>
+
+<p>
+其中nginx部分称为Web server，tomcat部分称为App&nbsp;server。
+</p>
+
+<p>
+初看，不免有如下疑问
+</p>
+
+<blockquote>
+<p>
+tomcat本身已经有Http&nbsp;server的功能，为何还要多此一举来再加一层nginx呢？
+</p>
+</blockquote>
+
+<p>
+有的回答的理由是：我们需要nginx做动静分离。
+</p>
+
+<p>
+但这不是核心问题，而且动静分离一般使用cdn更妥。
+</p>
+
+<p>
+核心问题是：
+</p>
+
+<p>
+tomcat 与 nginx&nbsp;组合后，nginx直面用户，一个请求被分割为2个阶段：
+</p>
+
+<ol class="org-ol">
+<li>请求到达nginx被nginx接住
+</li>
+<li>请求被nginx转发（proxy_pass）给tomcat返回业务结果。
+</li>
+</ol>
+          <p class="more"><a href="/articles/linux/2015/09/23/2015-09-22-web-server-app-server.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>22. September 2015</span></p>
@@ -136,66 +191,6 @@
 愿我的辛苦努力，给你们增添更多的幸福——是最切实的意义。
 </p>
 
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>13. September 2015</span></p>
-          <h2><a href="/articles/life/2015/09/13/2015-09-13-lucidity-yesterday.html">天真作少年</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-常常想起往日时光，天空很高，白云很悠闲
-</p>
-
-<p>
-阳光刺眼，世界喧嚣而充满活力
-</p>
-
-<p>
-那时候的冬天，有些难熬，因为手脚冻的疼痛难忍，像是酷刑
-</p>
-
-<p>
-也有些喜欢，因为喜欢窗内的温暖——炉火，妈妈煮沸的饭菜，热气飘出来，可以做任何事情
-</p>
-
-<p>
-那些冬天，我曾经坐在炕上，
-</p>
-
-<p>
-看书、编程、看电影、看流星雨、听古典音乐、用手机聊天、看说说、思考对方的心境
-</p>
-
-<p>
-那些冬天，一定很冷，一定很严酷，一定是真正意义上的冬天，阳光明媚，却冰冷万分。
-</p>
-
-<p>
-然而，我却能记得，被东红的鼻子，呵出的热气，冻红的脸上绽放的笑容，很真实，很坚定。
-</p>
-
-<p>
-让我能在严酷的冬天，满怀热情的生活下去。
-</p>
-
-<p>
-冬天，哪儿去了，既然已经没有理由回来，那么我也已经安静的接受。
-</p>
-
-<p>
-是因为我们太忙，弄丢了快乐
-</p>
-
-<p>
-弄丢了自由，弄丢了热情，弄丢了最真实的真实，最简单的幸福，最安静的日子，最珍贵的拥有。
-</p>
-
-<p>
-少年时的事情很多，像风一样飘走，天真、纯粹、执</p>
-          <p class="more"><a href="/articles/life/2015/09/13/2015-09-13-lucidity-yesterday.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/3/" class="nav-next">Next page »</a>

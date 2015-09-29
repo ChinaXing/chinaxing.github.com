@@ -14,15 +14,15 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>11</sup></a></li>
-          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>2</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>11</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>4</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>15</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>9</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
@@ -31,6 +31,41 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>27. August 2015</span></p>
+          <h2><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">Bloom filter</a></h2>
+        </header>
+        <section class="content">
+<p>
+<a href="https://zh.wikipedia.org/zh-cn/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8">Bloom filter</a>,&nbsp;被用在大数据中（Redis、Hbase、mongoDB）他是一个非常巧妙的数据结构。
+</p>
+
+<p>
+Bloom filter&nbsp;可以用很小的空间复杂度和常量的计算复杂度来做出判断，回答如下问题：
+</p>
+<blockquote>
+<p>
+一个元素是否在集合中
+</p>
+</blockquote>
+
+<p>
+由于Bloom filter&nbsp;使用有限的空间来记录信息，所以存在信息丢失（信息熵的下降）,所以它不是完全精确的判定器：
+</p>
+
+<ul class="org-ul">
+<li>如果Bloom filter&nbsp;告诉你元素不在集合中，那么一定不在
+</li>
+<li>如果Bloom filter&nbsp;告诉你元素在集合中，可能不在
+</li>
+</ul>
+
+<p>
+这一特性，可以被用在元素是否在数据集中得判断，如，在访问数据库前，加入一层Bloom&nbsp;filter，可以拦</p>
+          <p class="more"><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>27. August 2015</span></p>
@@ -105,30 +140,6 @@ Nagle&#8217;s&nbsp;算法的目的是合并小包发送，减少传输和确认�
 <b>面向控制</b>&nbsp;的核心思想是系统是一系列动作的流，动作触发后系统如同一个被发动的引擎，开始在控制的传递下运转。
 </p>
           <p class="more"><a href="/articles/Compute/2015/08/07/2015-08-06-elegant-software.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>02. August 2015</span></p>
-          <h2><a href="/articles/Glory/2015/08/02/2015-08-02-apl.html">APL - Ken Iverson</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-<a href="http://www.computerhistory.org/atchm/the-apl-programming-language-source-code/"><span class="caps">APL</span></a> - (A programming Language) 发明人是 <a href="http://www.keiapl.info">Ken Iverson</a>, 一种非常简洁地表示计算的语言，&nbsp;它采用多维数组作为基础数据结构，通过chain多种操作函数来完成计算，理论上可以用一行代码，表述任何可计算问题。
-</p>
-
-<p>
-<span class="caps">APL</span>&nbsp;以其简洁性显著，又因为其对矩阵运算的天然良好支持，可以利于并行计算，写出来的程序会非常的高效，被应用于金融领域，可视计算、人工智能等。
-</p>
-
-<p>
-<span class="caps">APL</span>&nbsp;的发明，虽然在20世纪的50年代，但是其思想对后代语言的设计产生深远影响——如函数式语言。
-</p>
-
-<p>
-<span class="caps">APL</span>&nbsp;大量的使用了特殊符号，类似于人类使用了大量的数学符号，APL也同样使用大量符号来表述其计算，因而要想编写APL程序，你需要一个APL键盘，不然输入这些特殊符号很麻烦（还好作</p>
-          <p class="more"><a href="/articles/Glory/2015/08/02/2015-08-02-apl.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/3/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/5/" class="nav-next">Next page »</a>
