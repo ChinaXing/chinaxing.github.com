@@ -100,3 +100,17 @@ IO 操作由底层OS完成，用户线程只需要负责发起请求和查询/�
 <p><img src="../../img/cs-arch-high-performance-program.png" alt="cs-arch-high-performance-program.png" />
 </p>
 </div>
+
+
+<dl class="org-dl">
+<dt> 使用事件驱动 </dt><dd>事件启动免去同步阻塞
+</dd>
+<dt> 使用Actor模型 </dt><dd>使用好的并发模式，使用消息传递代替共享内存
+</dd>
+<dt> 使用CSP模型 </dt><dd>使用好的并发模式，隔离并发到channel，使用channel共享内存
+</dd>
+<dt> IO操作合并 </dt><dd>少碰IO
+</dd>
+<dt> 充分利用CPU </dt><dd>让CPU忙于处理应用逻辑
+</dd>
+</dl>

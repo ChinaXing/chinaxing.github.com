@@ -81,3 +81,9 @@ digraph hpx {
 #+RESULTS:
 [[file:../../img/cs-arch-high-performance-program.png]]
 
+
+- 使用事件驱动 :: 事件启动免去同步阻塞
+- 使用Actor模型 :: 使用好的并发模式，使用消息传递代替共享内存
+- 使用CSP模型 :: 使用好的并发模式，隔离并发到channel，使用channel共享内存
+- IO操作合并 :: 少碰IO
+- 充分利用CPU :: 让CPU忙于处理应用逻辑

@@ -1,0 +1,23 @@
+---
+date: 2015-10-05 03:33:40
+template: tech.jade
+title: Promise 设计
+category: Compute
+chage_frequency: monthly
+tag: Compute
+---
+<p>
+Promise 的设计思想，使得异步执行封装为对象，提供了异步执行方和发起方之间的沟通桥梁，同时为发起方进行管理调用提供便利。
+</p>
+
+<p>
+Promise 类似future，但是它可以被设置，即具有write功能的future。
+</p>
+
+<p>
+Promise 提供future的类似的isDone，cancle，success、failure、reason、exception、cause、addListener等功能。
+</p>
+
+<p>
+Promise 的设计，是将控制进行封装的做法，使得具象化，可操作化。
+</p>
