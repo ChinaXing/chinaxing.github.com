@@ -103,6 +103,11 @@ ret = do
 <div id="outline-container-sec-5" class="outline-2">
 <h2 id="sec-5">State Monad</h2>
 <div class="outline-text-2" id="text-5">
+<p>
+State Monad实现了状态的记录，更新，是通过一个函数的方式来进行实现的，每次put操作都会返回一个新的函数，里面有新的状态。
+State Monad中有2个部分：状态s和当前值a，其中a表示状态为s的时候的值。
+每次put、get都是对状态进行的操作，即s。注意get和put操作都会更新State Monad，但是不同的是，Monad中代表状态的s部分在get的时候不更新，而在put的时候更新了。
+</p>
 <div class="org-src-container">
 
 <pre class="src src-haskell">-- import Control.Monad.State
@@ -110,15 +115,19 @@ newtype State s a = State { runState :: s -&gt; (a, s) }
 instance Monad (State s) where
   return x = State $ \s -&gt; (x,s)
   (State h) &gt;&gt;= f = State $ \s -&gt; 
-			    let (a, newSate) = h s -- get a, produce newState
-				(State g) = f a -- (f a, state')
-			    in g newState -- store newState in g
+			    let (a, state) = h s -- get state and value
+				(State g) = f a -- \s -&gt; (f a, newState )
+			    in g state -- (f a, newState)
 </pre>
 </div>
-
+<p>
+State Monad 的bind操作是作用在value上面，即 <code>f :: a -&gt; State s a</code>
+</p>
 <div class="org-src-container">
 
-<pre class="src src-haskell">get = State $ \s -&gt; (s,s) -- where s == a, extract will be s
+<pre class="src src-haskell">get :: State s s
+get = State $ \s -&gt; (s,s) -- where s == a, extract will be s
+put :: s -&gt; State s () 
 put newState = State $ \s -&gt; ((), newState)
 </pre>
 </div>

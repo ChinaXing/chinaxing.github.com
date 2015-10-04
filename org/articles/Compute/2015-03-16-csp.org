@@ -35,7 +35,20 @@ CSP 的好处是使得系统较为清晰，Processor 之间是解耦合的，职
 - GO :: Go 语言内置了CSP的支持，Go routine之间的同步通过CSP Channel来完成:
 
 	"Go's design was strongly influenced by Hoare's paper ..."  [[https://godoc.org/github.com/thomas11/csp][go scp]]
+*** CSP in go
+   go 语言中得channel + go routine来实现并发，其中channel即负责进行数据的交换，go routine是活动的主体，他们通过chanel来进行数据的交互，
+   channel 是first class object，就像FP中得函数是第一对象一样，channel如同int、bool等数据一样，你可以随便使用，没有特殊的限制，比如可以在channel中传递channel。
+   Channel在go中定义为有类型的Queue。Channel 分为buffered、unbuffered，buffered是指有容量，默认为unbuffered。
 
+   Channel的协作点作为状态机的状态点，Go把go routine在底层改写为状态机启动的事件模型，因而一个goRoutine的开销并不是一个线程，而是非常小的类似Queue中得一个对象一样，
+
+   而对于程序员，基于goroutine提供的虚拟线程来进行顺序化编程，不必操心并发和同步的问题。
+
+   go的这样的设计，充分的使用了CSP的并发隔离的思想，使得并发都被转换到channel上面，然后再进行channel上面并发处理转换为事件驱动的形式，消除了并发争用，在底层完成了同步。
+
+   go routine的开销非常小，经测试，与Erlang 的actor相比不相上下，没有差距。
+
+   同时go routine的设计使得并发编程非常的容易。感觉比erlang的actor模型更加简单。但是，channel不能跨越多个节点，这点不如actor模型。
 *** Reference
 - [[http://www.ibm.com/developerworks/java/library/j-csp2/?S_TACT=105AGX52&S_CMP=cn-a-j][CSP for Java]] 
 - [[http://www.usingcsp.com/cspbook.pdf][csp by C. A. R. Hoare]]
