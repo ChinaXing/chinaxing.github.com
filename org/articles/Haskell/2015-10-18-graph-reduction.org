@@ -1,0 +1,103 @@
+#+BEGIN_HTML
+---
+date: 2015-10-18 17:36:01
+template: tech.jade
+title: Hashell Graph reduction
+category: Haskell
+chage_frequency: monthly
+tag: Haskell, Functional
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+*** 图规约
+Haskell 的执行过程使用图规约技术，STG的逻辑机器来进行运行时的执行。
+
+G-Machine, 机Graph-reduction机器。
+
+图规约最早被提出来是应用在Lazy Evaluator的实现。核心思想是将表达式表示为ADG——有向无环图，然后进行规约。
+
+一个待求值的表达式如：
+#+BEGIN_EXAMPLE
+((2+2) + (2+2)) + (3 + 3)
+#+END_EXAMPLE
+
+表示为求值的AST：
+#+BEGIN_EXAMPLE
+
+				 +
+			       /   \
+			      /	    \
+			     /	     \
+			    / 	      \
+			   +	      +
+			 /   \	     /	\
+			/     \	    /	 \
+		       /       \   3	  3
+		      +		+
+		     / \       /  \
+		    /	\     /	   \
+		   2	 2   2	    2
+#+END_EXAMPLE
+
+而对应的ADG为:
+#+BEGIN_EXAMPLE
+
+         		    +
+			 /     \
+			/	\
+		       +	 \
+		     /   \	  \
+		    /	  \	   \
+		   /	   \	    +
+		   \	   /	  /   \
+		    \	  /	 /     \
+		     \	 /	3	3
+		       +
+		      / \
+		     / 	 \
+             	    2	  2
+#+END_EXAMPLE
+其中 =(2+2)= 的部分被重用了。
+
+在表示成图以后，进行规约-reduction，规约有2种策略：
+- Eager reduction - 从内部进行规约，如先规约 2+2，再规约 (2+2) + (2+2), 3+3，最后规约 最外层的+。这种规约方式对应于strict-evaluate的求值策略，是大多数语言的求值顺序。
+- Lazy reduction - 从外部进行规约，先规约最外层的+，即最顶层的+，然后，规约其参数，这一步3+3被规约，左边的维持不变，下一步规约2+2.从上至下的规约，对应于Lazy 求值的语言的求值过程。
+
+
+*** Haskell中的规约
+表达式的形式分为：
+- Normal Form :: 所有表达式都不可以进一步进行规约，已经规约到最彻底
+  #+BEGIN_SRC haskell
+  3
+  Just 10
+  \x -> 3 * x 
+  #+END_SRC
+- Head Normal Form :: 顶层不可以进一步规约，子表达式如果是lambda函数，则要进行应用以让参数不可规约。
+  #+BEGIN_SRC haskell
+  \x y -> 3 * x + y + 3
+  Just 20
+  \x -> (+2) 3 -- 不是，因为 + 函数应用在 3 上面
+  \x -> (\f -> f *3 + x) 3 -- 不是，因为内层的函数体的lambda函数可以规约
+  #+END_SRC
+- Weak Head Normal Form :: 顶层不可以进一步规约，顶层是类型构造器或者是Lambda表达式。而其子表达式可能还可以进一步规约。
+  #+BEGIN_SRC haskell
+  Just 20
+  \x y -> 3 * x + y + 3
+  \x -> (\f -> f * 3 + x ) 4 -- 是，注意和上面HNF的区别
+  #+END_SRC
+  
+Haskell 规约到Weak Head Normal Form，则不再进一步对子表达式规约。规约的过程中延迟一切计算，直到必要，可以看下foldl 函数的规约过程：
+#+BEGIN_SRC haskell
+foldl (+) 0 [1..5] -- 从上到下规约，因为非WHNF形式
+foldl (+) (0 + 1) [2..5] -- 不进行子表达式规约，因为还没有必要
+...
+foldl (+) ((((0 + 1) + 2 ) + 3 ) + 4 ) + 5 []
+((((0 + 1) + 2) + 3) + 4) + 5 -- 规约fold函数完成，现在转变为+函数， 此时是非Weak Head Normal Form，要进行规约
+(((1 + 2) + 3) + 4) + 5 -- 从上至下，由外到内规约，但是由于+函数左边是需要一个整数，因此对左边进行规约，递归下去
+...
+15
+#+END_SRC
+
+  

@@ -1,0 +1,149 @@
+---
+date: 2015-10-18 17:36:01
+template: tech.jade
+title: Hashell Graph reduction
+category: Haskell
+chage_frequency: monthly
+tag: Haskell, Functional
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">图规约</a></li>
+<li><a href="#sec-2">Haskell中的规约</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">图规约</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Haskell 的执行过程使用图规约技术，STG的逻辑机器来进行运行时的执行。
+</p>
+
+<p>
+G-Machine, 机Graph-reduction机器。
+</p>
+
+<p>
+图规约最早被提出来是应用在Lazy Evaluator的实现。核心思想是将表达式表示为ADG——有向无环图，然后进行规约。
+</p>
+
+<p>
+一个待求值的表达式如：
+</p>
+<pre class="example">
+((2+2) + (2+2)) + (3 + 3)
+</pre>
+
+<p>
+表示为求值的AST：
+</p>
+<pre class="example">
+	      +
+	    /   \
+	   /	    \
+	  /	     \
+	 / 	      \
+	+	      +
+      /   \	     /	\
+     /     \	    /	 \
+    /       \   3	  3
+   +		+
+  / \       /  \
+ /	\     /	   \
+2	 2   2	    2
+</pre>
+
+<p>
+而对应的ADG为:
+</p>
+<pre class="example">
+         +
+      /     \
+     /	\
+    +	 \
+  /   \	  \
+ /	  \	   \
+/	   \	    +
+\	   /	  /   \
+ \	  /	 /     \
+  \	 /	3	3
+    +
+   / \
+  / 	 \
+ 2	  2
+</pre>
+<p>
+其中 <code>(2+2)</code> 的部分被重用了。
+</p>
+
+<p>
+在表示成图以后，进行规约-reduction，规约有2种策略：
+</p>
+<ul class="org-ul">
+<li>Eager reduction - 从内部进行规约，如先规约 2+2，再规约 (2+2) + (2+2), 3+3，最后规约 最外层的+。这种规约方式对应于strict-evaluate的求值策略，是大多数语言的求值顺序。
+</li>
+<li>Lazy reduction - 从外部进行规约，先规约最外层的+，即最顶层的+，然后，规约其参数，这一步3+3被规约，左边的维持不变，下一步规约2+2.从上至下的规约，对应于Lazy 求值的语言的求值过程。
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Haskell中的规约</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+表达式的形式分为：
+</p>
+<dl class="org-dl">
+<dt> Normal Form </dt><dd>所有表达式都不可以进一步进行规约，已经规约到最彻底
+<div class="org-src-container">
+
+<pre class="src src-haskell">3
+Just 10
+\x -&gt; 3 * x
+</pre>
+</div>
+</dd>
+<dt> Head Normal Form </dt><dd>顶层不可以进一步规约，子表达式如果是lambda函数，则要进行应用以让参数不可规约。
+<div class="org-src-container">
+
+<pre class="src src-haskell">\x y -&gt; 3 * x + y + 3
+Just 20
+\x -&gt; (+2) 3 -- 不是，因为 + 函数应用在 3 上面
+\x -&gt; (\f -&gt; f *3 + x) 3 -- 不是，因为内层的函数体的lambda函数可以规约
+</pre>
+</div>
+</dd>
+<dt> Weak Head Normal Form </dt><dd>顶层不可以进一步规约，顶层是类型构造器或者是Lambda表达式。而其子表达式可能还可以进一步规约。
+<div class="org-src-container">
+
+<pre class="src src-haskell">Just 20
+\x y -&gt; 3 * x + y + 3
+\x -&gt; (\f -&gt; f * 3 + x ) 4 -- 是，注意和上面HNF的区别
+</pre>
+</div>
+</dd>
+</dl>
+
+<p>
+Haskell 规约到Weak Head Normal Form，则不再进一步对子表达式规约。规约的过程中延迟一切计算，直到必要，可以看下foldl 函数的规约过程：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">foldl (+) 0 [1..5] -- 从上到下规约，因为非WHNF形式
+foldl (+) (0 + 1) [2..5] -- 不进行子表达式规约，因为还没有必要
+...
+foldl (+) ((((0 + 1) + 2 ) + 3 ) + 4 ) + 5 []
+((((0 + 1) + 2) + 3) + 4) + 5 -- 规约fold函数完成，现在转变为+函数， 此时是非Weak Head Normal Form，要进行规约
+(((1 + 2) + 3) + 4) + 5 -- 从上至下，由外到内规约，但是由于+函数左边是需要一个整数，因此对左边进行规约，递归下去
+...
+15
+</pre>
+</div>
+</div>
+</div>

@@ -1,0 +1,63 @@
+#+BEGIN_HTML
+---
+date: 2015-10-22 21:02:32
+template: tech.jade
+title: MySQL 5.7 GA 新特性
+category: Database
+chage_frequency: monthly
+tag: mysql
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+MySQL 5.7 算是放大招了，易用性，性能，可用性，安全等都有很大的改善。
+
+*** 性能
+    性能提升3倍以上。包括：
+    - 临时表性能
+    - 大块数据导入时索引构建更快
+    - innodb的读写性能提升
+    - innodb的并行刷盘 O(n^2) -> O(n),以前是单线程，这样可以利用多核
+    - 连接处理能力提升 [[http://mysqlserverteam.com/improving-connectdisconnect-performance/][Improving connect/disconnect performance]]
+*** 易操作性
+    - GTID 在线设置[[http://mysqlhighavailability.com/enabling-gtids-without-downtime-in-mysql-5-7-6/][Enabling Global Transaction Identifiers Without Downtime in MySQL 5.7.6]]
+    - 在线修改 =innodb_buffer_pool_size= [[http://mysqlserverteam.com/resizing-buffer-pool-online/][Resizing the InnoDB Buffer Pool Online]]
+    - 自动Truncate UNDO 日志，避免undo 日志太大
+    - 在线重命名索引
+    - 在线扩大 =VARCHAR= 类型列的长度
+    - 在线修改复制过滤器 =CHANGE REPLICATION FILTER= [[http://mysqlserverteam.com/mysql-5-7-3-making-mysql-slave-replication-filters-dynamic/][Making MySQL Slave Replication Filter Dynamic]]  
+    - 在线更改Slave的Master,无需停止复制 =CHANGE MASTER= [[http://mysqlserverteam.com/mysql-5-7-4-change-master-without-stopping-slave-altogether/][Change Master without stopping slave altogether]]
+*** SQL优化器提升
+    - Parser重写 [[http://mysqlserverteam.com/sql-parser-refactoring-in-5-7-4-lab-release/][SQL parser refactoring]]
+    - 层次化的SQL优化器
+    - 增加GIS实现
+    - Query Rewrite插件框架，用户可以编写自己的Query Rewrite插件 [[http://mysqlserverteam.com/write-yourself-a-query-rewrite-plugin-part-1/][Write Yourself a Query Rewrite Plugin]]
+    - subquery的处理归一化：view和from语句2种方式中得subquery都使用统一的处理方式
+    - 通过使用区间扫描的方式执行行表达式的方法提升"IN queries" 的性能 [[http://mysqlserverteam.com/range-access-now-in-an-in-predicate-near-you/][Range access: now in an IN predicate near you]]
+    - "UNION ALL" 不再创建临时表，减少磁盘空间和磁盘IO的操作。 [[http://mysqlserverteam.com/state-of-the-union/][State of the UNION]]
+    - 压缩排序缓存中得未排序的字段，更加高效的使用排序缓存，减少磁盘IO
+    - 可以执行 =EXPLAIN FOR CONNECTION= 来查看执行中Query得情况，起到运行时profile的作用。
+    - JSON EXPLAIN 增加query开销的输出，处理的数据集数等信息，便于用户进行执行计划的决策比较 [[http://mysqlserverteam.com/mysql-explain-explained/][MySQL EXPLAIN explained]]
+    - 优化器的暗示器语法增加，可以直接跟在SELECT等关键字之后，/*+ */ 的形式的注释
+    - 增加了索引层面的暗示器
+    - 增加控制子查询执行策略的暗示器
+    - 优化器新的开销评估模型 [[http://mysqlserverteam.com/the-mysql-optimizer-cost-model-project/][MySQL Optimizer Cost Model Project]]
+*** InnoDB 增强
+    - Page Compression 增加透明页面压缩，对于在支持稀疏文件的系统上，压缩页面的内容，并利用稀疏文件系统的特点只保存压缩后内容，节约磁盘空间的使用。
+*** Performace Schema
+    监控系统性能能的Schema得以重新设计架构，包括Metadata Locking、Transactions、Memory Usage、Stored Programs、Prepared Statements，[[http://dev.mysql.com/doc/refman/5.7/en/performance-schema.html][MySQL Performace Schema]]
+*** Buffer Pool Dump/ Load
+    提升bufferPool的dump和load，支持只dump每个BufferPool最热的百分之N（默认25%）的页面，load在后台运行，不影响用户的查询执行 [[http://mysqlserverteam.com/mysql-dumping-and-reloading-the-innodb-buffer-pool/][MySQL Dumping and Reloading the InnoDB Buffer Pool]]
+*** Replication
+    - Mutli-Source Replication [[http://mysqlhighavailability.com/mysql-5-7-6-introducing-multi-source-replication/][MySQL Multi-source Replication]] 允许同一个slave配置多个Master
+    - Multi-Threaded Slaves [[http://geek.rohitkalhans.com/2013/09/enhancedMTS-configuration.html][Configuring slave for intra-database parallelization]] 支持Slave SQL执行线程并发应用binlog事件到同一个database和schema（只要没有交集），之前的版本是只支持多个库的并发应用。
+    - Semi-Sync Master可等待N个slave确认binlog日志收到，之前是仅仅等待1个，这样的好处是增加了持久化的可靠性 [[http://my-replication-life.blogspot.co.uk/2013/09/loss-less-semi-synchronous-replication.html][Lossless Semi-Synchronous Replication on MySQL 5.7.2]]
+    - GTID 方式的复制客户端自动感知GTID，保证GTID_EXECUTED和GTID_PURGED不会丢失 [[http://mysqlhighavailability.com/enabling-gtids-without-downtime-in-mysql-5-7-6/][Enabling Global Transaction Identifiers Without Downtime in MySQL 5.7.6]]
+    - No-Blocking =SHOW SLAVE STATUS=
+    - mysqlbinlog 支持Rewrite-DB 可以根据指示改写RowEVENT中的DB  
+    - 增加更多的复制相关的状态变量到Performance Schema Table
+    - Binlogging XA-prepared transactions 在复制中全面支持XA事务  
+
+*** Reference
+   [[http://mysqlserverteam.com/whats-new-in-mysql-5-7-generally-available/][What's New in MySQL 5.7 GA]]
