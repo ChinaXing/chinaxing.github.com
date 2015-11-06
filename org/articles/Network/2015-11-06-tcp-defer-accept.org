@@ -2,7 +2,7 @@
 ---
 date: 2015-11-06 15:05:34
 template: tech.jade
-title: TCP_DEFER_ACCEPT
+title: TCP_DEFER_ACCEPT and TCP_FASTOPEN
 category: Network
 chage_frequency: monthly
 tag: network,tcp
@@ -21,3 +21,47 @@ tag: network,tcp
 /* 5秒后，如果你不发数据我就关掉你！ */
 setsockopt(srv_socket->fd, SOL_TCP, TCP_DEFER_ACCEPT, 5, sizeof(val)) ; 
 #+END_SRC
+
+=TCP_FASTOPEN= 与DEFER accept相反，会提前acceptable，在tcp握手的第一阶段， =SYNC_RECEIVED= 状态后，服务端就可以acceptable了，即此时的accept调用就可以返回。
+
+此选项在3.7内核中引入，最初是Google针对http的优化而对tcp的增强。大体思路是在第一次client和server的交互中，双方协商一个通信cookie，之后的tcp建立连接都可以直接依靠此cookie来快速握手+数据发送，而不需要再次3此握手，
+因为网络延迟的原因，增加握手的步骤，会大大增加RT，特别是短连接的应用影响很大。
+
+
+示例代码
+#+BEGIN_SRC c
+
+/* server */
+
+sfd = socket(AF_INET, SOCK_STREAM, 0);   // Create socket
+
+    bind(sfd, ...);                          // Bind to well known address
+    
+    int qlen = 5;                            // Value to be chosen by application
+    setsockopt(sfd, SOL_TCP, TCP_FASTOPEN, &qlen, sizeof(qlen));
+    
+    listen(sfd, ...);                        // Mark socket to receive connections
+
+    cfd = accept(sfd, NULL, 0);              // Accept connection on new socket
+
+    // read and write data on connected socket cfd
+
+    close(cfd);
+
+
+
+/* client, 注意不是connect了，是sendto */
+
+sfd = socket(AF_INET, SOCK_STREAM, 0);
+    
+    sendto(sfd, data, data_len, MSG_FASTOPEN, 
+                (struct sockaddr *) &server_addr, addr_len);
+        // Replaces connect() + send()/write()
+    
+    // read and write further data on connected socket sfd
+
+    close(sfd);
+#+END_SRC
+
+参见[[http://lwn.net/Articles/508865/][LWN]]
+

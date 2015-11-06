@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>TCP_DEFER_ACCEPT - The Chinaxing's blog
+    <title>TCP_DEFER_ACCEPT and TCP_FASTOPEN - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -14,15 +14,15 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li class="active"><a href="/Network/index.html">Network<sup>5</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>15</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
@@ -33,7 +33,7 @@
     </header>
     <section id="content">
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
-      <h2 style="text-align:center">TCP_DEFER_ACCEPT
+      <h2 style="text-align:center">TCP_DEFER_ACCEPT and TCP_FASTOPEN
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
@@ -55,6 +55,57 @@
 setsockopt(srv_socket-&gt;fd, SOL_TCP, TCP_DEFER_ACCEPT, 5, sizeof(val)) ;
 </pre>
 </div>
+
+<p>
+<code>TCP_FASTOPEN</code> 与<span class="caps">DEFER</span> accept相反，会提前acceptable，在tcp握手的第一阶段， <code>SYNC_RECEIVED</code> 状态后，服务端就可以acceptable了，即此时的accept调用就可以返回。
+</p>
+
+<p>
+此选项在3.7内核中引入，最初是Google针对http的优化而对tcp的增强。大体思路是在第一次client和server的交互中，双方协商一个通信cookie，之后的tcp建立连接都可以直接依靠此cookie来快速握手+数据发送，而不需要再次3此握手，&nbsp;因为网络延迟的原因，增加握手的步骤，会大大增加<span class="caps">RT</span>，特别是短连接的应用影响很大。
+</p>
+
+
+<p>
+示例代码
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c">/* server */
+
+sfd = socket(AF_INET, SOCK_STREAM, 0);   // Create socket
+
+    bind(sfd, ...);                          // Bind to well known address
+
+    int qlen = 5;                            // Value to be chosen by application
+    setsockopt(sfd, SOL_TCP, TCP_FASTOPEN, &amp;qlen, sizeof(qlen));
+
+    listen(sfd, ...);                        // Mark socket to receive connections
+
+    cfd = accept(sfd, NULL, 0);              // Accept connection on new socket
+
+    // read and write data on connected socket cfd
+
+    close(cfd);
+
+
+
+/* client, 注意不是connect了，是sendto */
+
+sfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    sendto(sfd, data, data_len, MSG_FASTOPEN, 
+		(struct sockaddr *) &amp;server_addr, addr_len);
+	// Replaces connect() + send()/write()
+
+    // read and write further data on connected socket sfd
+
+    close(sfd);
+</pre>
+</div>
+
+<p>
+参见<a href="http://lwn.net/Articles/508865/"><span class="caps">LWN</span></a>
+</p>
 
       </div>
       <script>
