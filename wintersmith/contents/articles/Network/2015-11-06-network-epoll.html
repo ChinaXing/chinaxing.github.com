@@ -1,0 +1,117 @@
+---
+date: 2015-11-06 17:46:59
+template: tech.jade
+title: 简话Epoll 
+category: Network
+chage_frequency: monthly
+tag: epoll,linux
+---
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">触发方式</a></li>
+<li><a href="#sec-2">Epoll 实现分析</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">触发方式</h2>
+<div class="outline-text-2" id="text-1">
+<blockquote>
+<p>
+Level-triggered and edge-triggered
+     The epoll event distribution interface is able to behave both as edge-triggered (ET) and as level-triggered (LT).  The difference between the two mechanisms can be described as  fol-
+     lows.  Suppose that this scenario happens:
+</p>
+
+<ol class="org-ol">
+<li>The file descriptor that represents the read side of a pipe (rfd) is registered on the epoll instance.
+</li>
+
+<li>A pipe writer writes 2 kB of data on the write side of the pipe.
+</li>
+
+<li>A call to epoll_wait(2) is done that will return rfd as a ready file descriptor.
+</li>
+
+<li>The pipe reader reads 1 kB of data from rfd.
+</li>
+
+<li>A call to epoll_wait(2) is done.
+</li>
+</ol>
+
+<p>
+If  the  rfd  file  descriptor  has been added to the epoll interface using the EPOLLET (edge-triggered) flag, the call to epoll_wait(2) done in step 5 will probably hang despite the
+available data still present in the file input buffer; meanwhile the remote peer might be expecting a response based on the data it already sent.  The reason for this is  that  edge-
+triggered  mode  delivers events only when changes occur on the monitored file descriptor.  So, in step 5 the caller might end up waiting for some data that is already present inside
+the input buffer.  In the above example, an event on rfd will be generated because of the write done in 2 and the event is consumed in 3.  Since the read operation done in 4 does not
+consume the whole buffer data, the call to epoll_wait(2) done in step 5 might block indefinitely.
+</p>
+
+<p>
+An  application  that  employs the EPOLLET flag should use nonblocking file descriptors to avoid having a blocking read or write starve a task that is handling multiple file descrip-
+tors.  The suggested way to use epoll as an edge-triggered (EPOLLET) interface is as follows:
+</p>
+
+<p>
+i   with nonblocking file descriptors; and
+</p>
+
+<p>
+ii  by waiting for an event only after read(2) or write(2) return EAGAIN.
+</p>
+
+<p>
+By contrast, when used as a level-triggered interface (the default, when EPOLLET is not specified), epoll is simply a faster poll(2), and can be used  wherever  the  latter  is  used
+since it shares the same semantics.
+</p>
+
+<p>
+Since  even  with  edge-triggered epoll, multiple events can be generated upon receipt of multiple chunks of data, the caller has the option to specify the EPOLLONESHOT flag, to tell
+epoll to disable the associated file descriptor after the receipt of an event with epoll_wait(2).  When the EPOLLONESHOT flag is specified, it is the caller's responsibility to rearm
+the file descriptor using epoll_ctl(2) with EPOLL_CTL_MOD.
+</p>
+</blockquote>
+
+<p>
+Epoll 可工作在 network fd 和 pipe fd上面，在BSD系统上对应的是Kqueue。Epoll 被引入取代poll和select，原因是更加高效，只要O(1)的时间复杂度（具体原因再分析对比）。
+</p>
+
+<p>
+Epoll 中事件触发分为“边沿触发”和 “水平触发”，可以从上文的引用中了解到其区别，理解可以参考数字电路的电平脉搏，0-&gt;1 的变化或者1-&gt;0的变化成为边沿，也即只有在状态发生转换的时候，事件才被触发，对应在Epoll中，就是epoll wait关心的状态——readable、writeable、acceptable、connectable等等，
+</p>
+
+<p>
+以可读事件为例：假设当前状态是不可读（没有数据）,则数据到达，变成可读状态，此时由“不可读”-》“可读”于是一个事件被触发，epoll_wait调用就会返回，告知调用者关心的事件发生了。
+</p>
+
+<p>
+而如果当前是可读状态，再有数据到达，那么因为状态依然是“可读”，所以，并不会有事件触发，epoll_wait将会阻塞（如果此时有epoll_wait调用）。因此，就会发生虽然有数据到达，但是无法被告知的情况。需要特别小心。
+</p>
+
+<p>
+解决的办法，正如引文中提到的，epoll_wait仅仅在read 返回 <code>EAGAIN</code> 的时候，才去调用，这样可以确保调用的时候是在真正等待可读事件。要返回 <code>EAGAIN</code> 需要采用非阻塞的read操作，否则read操作会阻塞。
+</p>
+
+<p>
+Epoll的边沿触发还提供了一个EPOLLONESHOT的选项，意思是每次边沿触发事件发生后，将注册的事件监听注销，即不再持续关注此事件。用户程序需要予以配合，比如在接收到事件，完成时间处理，如果还关心事件，则进行再次的注册，才能在后续收到事件。
+</p>
+
+
+<p>
+边沿触发不是Epoll的默认模式，默认的是水平触发。水平触发于之对应，表示“只要发生了电平是1“ 不管当前的状态是1还是0，都触发一个事件，即每次你调用epoll_wait，都检查fd是否是可读，如果可读，就告诉你有可读事件，只有当没有数据了，才会wait。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Epoll 实现分析</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+:TODO:
+</p>
+</div>
+</div>
