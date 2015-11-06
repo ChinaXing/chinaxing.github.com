@@ -1,0 +1,23 @@
+#+BEGIN_HTML
+---
+date: 2015-11-06 15:05:34
+template: tech.jade
+title: TCP_DEFER_ACCEPT
+category: Network
+chage_frequency: monthly
+tag: network,tcp
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+
+=TCP_DEFER_ACCEP= 想法很简单，推迟（DEFER）accept操作，在client端发送 connect 后，服务端收到连接请求，建立TCP连接，在客户端发送数据之前，
+服务端socket上面的accept方法并不会返回，epoll上的accept事件也不会ready，只有在客户端发送数据过来，才会变成"acceptable"，即，这一accceptable状态被defer了。
+
+在设置这个socket_option的时候，可以指定一个timeout的参数，意思是如果客户端连上了，但是没法送数据，那么就超过这个事件后将其close：
+
+#+BEGIN_SRC c
+/* 5秒后，如果你不发数据我就关掉你！ */
+setsockopt(srv_socket->fd, SOL_TCP, TCP_DEFER_ACCEPT, 5, sizeof(val)) ; 
+#+END_SRC
