@@ -80,3 +80,19 @@ change_frequency: monthly
       #+BEGIN_SRC sh :eval no
       git config --global color.diff auto
       #+END_SRC
+*** 删除commit 历史
+    这里使用新建分支时候的 =--orphan= 选项:
+    #+BEGIN_QUOTE
+           --orphan <new_branch>
+           Create a new orphan branch, named <new_branch>, started from <start_point> and switch to it.
+           The first commit made on this new branch will have no parents and it will be the root of a
+           new history totally disconnected from all the other branches and commits.
+    #+END_QUOTE
+    #+BEGIN_SRC 
+    git checkout --orphan new_branch
+    git add -A 
+    git commit -m 'new voyage'
+    git branch -D master      # delete master branch
+    git branch -m master      # rename this branch to master
+    git push -f origin master # replace the remote
+    #+END_SRC
