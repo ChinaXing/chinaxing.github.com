@@ -14,17 +14,17 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>6</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>17</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -32,6 +32,30 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. October 2015</span></p>
+          <h2><a href="/articles/Compute/2015/10/05/2015-10-05-promise.html">Promise 设计</a></h2>
+        </header>
+        <section class="content">
+<p>
+Promise&nbsp;的设计思想，使得异步执行封装为对象，提供了异步执行方和发起方之间的沟通桥梁，同时为发起方进行管理调用提供便利。
+</p>
+
+<p>
+Promise&nbsp;类似future，但是它可以被设置，即具有write功能的future。
+</p>
+
+<p>
+Promise&nbsp;提供future的类似的isDone，cancle，success、failure、reason、exception、cause、addListener等功能。
+</p>
+
+<p>
+Promise&nbsp;的设计，是将控制进行封装的做法，使得具象化，可操作化。
+</p>
+
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>29. September 2015</span></p>
@@ -106,62 +130,6 @@ FastJson初始化时候先将各种默认类别的Deserializer进行注册。
 
 
           <p class="more"><a href="/articles/Java/2015/09/27/2015-09-26-fastjson-asm.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>22. September 2015</span></p>
-          <h2><a href="/articles/Compute/2015/09/23/2015-09-22-message-vs-event.html">Message-Driven vs Event-Driven</a></h2>
-        </header>
-        <section class="content">
-<p>
-消息驱动的设计于事件驱动的设计不同之处是什么？
-</p>
-
-<p>
-虽然二者都是通过传递对象的方式来解耦合。
-</p>
-
-<p>
-基于消息的设计，是消息发送给某个接收者。
-</p>
-
-<p>
-基于事件源的设计，是事件的接收者需要知道事件源的地址——事件中心。
-</p>
-
-<p>
-基于消息的设计一般是一对一的，发送者知道要发送到哪儿。而基于事件的设计，发送者与接收者完全解耦，一个事件可以被任意多个监听者接收。
-</p>
-
-<p>
-基于消息的设计，关注的是消息接收者和发送者。
-</p>
-
-<p>
-基于事件的设计，关注的是事件本身。
-</p>
-
-<p>
-消息发送者是一个恒定量，一个对象。
-</p>
-
-<p>
-而事件是一个瞬时量。如果某些监听者处理出错，则需要监听者自己保证错误处理。
-</p>
-
-<p>
-基于消息的设计比基于事件的设计对错误控制更易处理。
-</p>
-
-<p>
-还可以增加确认机制，这样发送者和消费者是可以互相通信的，而事件方式的通信往往是单向的。
-</p>
-
-<p>
-基于事件的方式，事件源是一个中心点，基于消息的方式没有中心点，因而scalability更好。
-</p>
-          <p class="more"><a href="/articles/Compute/2015/09/23/2015-09-22-message-vs-event.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/2/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/4/" class="nav-next">Next page »</a>
