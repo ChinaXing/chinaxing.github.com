@@ -96,3 +96,14 @@ change_frequency: monthly
     git branch -m master      # rename this branch to master
     git push -f origin master # replace the remote
     #+END_SRC
+*** 查看分支和commit历史
+#+BEGIN_SRC shell
+git log --graph --pretty=format:"%x09%h | %<(10,trunc)%cd |%<(25,trunc)%d | %s" \
+        --date=short
+
+git log --graph --decorate  --pretty=oneline
+
+git log --graph --full-history --all \
+        --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' \
+        --date=short
+#+END_SRC

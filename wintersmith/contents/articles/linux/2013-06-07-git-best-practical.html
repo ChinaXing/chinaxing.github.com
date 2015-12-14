@@ -24,6 +24,7 @@ change_frequency: monthly
 <li><a href="#sec-12">查看某个文件某个commit的内容</a></li>
 <li><a href="#sec-13">配置</a></li>
 <li><a href="#sec-14">删除commit 历史</a></li>
+<li><a href="#sec-15">查看分支和commit历史</a></li>
 </ul>
 </div>
 </div>
@@ -215,5 +216,22 @@ git branch -D master      # delete master branch
 git branch -m master      # rename this branch to master
 git push -f origin master # replace the remote
 </pre>
+</div>
+</div>
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15">查看分支和commit历史</h2>
+<div class="outline-text-2" id="text-15">
+<div class="org-src-container">
+
+<pre class="src src-shell">git log --graph --pretty=format:"%x09%h | %&lt;(10,trunc)%cd |%&lt;(25,trunc)%d | %s" \
+	--date=short
+
+git log --graph --decorate  --pretty=oneline
+
+git log --graph --full-history --all \
+	--pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)&lt;%an&gt;%Creset' \
+	--date=short
+</pre>
+</div>
 </div>
 </div>
