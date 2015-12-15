@@ -107,3 +107,8 @@ git log --graph --full-history --all \
         --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' \
         --date=short
 #+END_SRC
+*** 远程删除分支与本地同步
+    有时候在远程删除分支后（比如执行merge-request后合并并删除source-branch），在执行git pull的时候，并不会将远程删除的分支在本地删除，要在本地也删除此分支可以执行如下命令:
+#+BEGIN_SRC shell
+ git pull -p origin
+#+END_SRC
