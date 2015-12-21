@@ -15,15 +15,15 @@
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
-          <li><a href="/Network/index.html">Network<sup>6</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>17</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>18</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
@@ -32,6 +32,102 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>21. December 2015</span></p>
+          <h2><a href="/articles/life/2015/12/22/2015-12-21-something-meaning.html">题未定</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+爸妈来杭州了，今天我去上班，回来发现，他们俩自个儿逛到余杭镇，买了好多菜和家居用品，房子也收拾的很干净了，顿时感觉到了家的味道。
+</p>
+
+<p>
+我自己也感觉到了一点点不知不觉的幸福————关于生活的、关于家庭的。
+</p>
+
+<p>
+坐在马桶上，看着打扫干净的卫生间，擦亮的门把手。不自觉得在想：为什么总是那么忙呢？难道就是所谓的奋斗吗？
+</p>
+
+<p>
+节奏每天都这么快，无暇平静下心情来，打扫打扫卫生，歇息歇息，聊聊天。
+</p>
+
+<p>
+也许，这就是上班的年轻人一代的生活吧。
+</p>
+
+<p>
+那么，那些不上班的，也许就会放松一些吧，比如那些自己做老板的，做投资的。
+</p>
+
+<p>
+也许，我们也可以慢下来，放松些，脑子里不仅仅无时无刻不想着要高效、快速，而是抽出20%的时间，放松放松，做点无论是什么的事情，没有意义，没有价值，没有效率的时间，只为了让自己大脑放松，心情放空，感受呼吸，感受外在。
+</p>
+
+<p>
+想想也许为何不可呢？
+</p>
+
+<p>
+如果能计划的完成工作，又能够节制地投入充电，再多余出来的时间，便可以去“浪费”。
+</p>
+
+
+          <p class="more"><a href="/articles/life/2015/12/22/2015-12-21-something-meaning.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>16. December 2015</span></p>
+          <h2><a href="/articles/Network/2015/12/17/2015-12-16-address-scope.html">IP 地址/路由的 scope</a></h2>
+        </header>
+        <section class="content">
+<p>
+ip route/ip adress/ifconfig&nbsp;命令的输出，会发现有一个scope选项。
+</p>
+
+<p>
+对于绑定了地址的网口，一般是 : <code>Link</code> 。对于 lo接口，是： <code>Host</code> 。
+</p>
+
+<p>
+site 主要用在&nbsp;ipv6中，ipv4网络没有这个。
+</p>
+
+<p>
+global 只出现在路由中，也是路由的默认&nbsp;Scope，表示全局有效。
+</p>
+
+<blockquote>
+<p>
+Scope |&nbsp;Description
+</p>
+
+<p>
+global | valid everywhere (<span class="caps">GLOBAL</span>&nbsp;NET)
+</p>
+
+<p>
+site | valid only within this site&nbsp;(IPv6)
+</p>
+
+<p>
+link | valid only on this device&nbsp;(<span class="caps">LAN</span>)
+</p>
+
+<p>
+host | valid only inside this host&nbsp;(machine)
+</p>
+</blockquote>
+
+<p>
+含义比较明显，host类</p>
+          <p class="more"><a href="/articles/Network/2015/12/17/2015-12-16-address-scope.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>13. December 2015</span></p>
@@ -59,66 +155,6 @@
 <p>
 一个人的想法，可能非常棒，但是如果不讲出来，不让大家明白，进而通过一起的决</p>
           <p class="more"><a href="/articles/life/2015/12/14/2015-12-13-balance.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>10. December 2015</span></p>
-          <h2><a href="/articles/life/2015/12/11/2015-12-10-we-need-slow-down.html">慢下来</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-面对飞快的发生的一切，不由地去适应和追赶，生怕失去和错过，常常会让自己疲惫，亢奋着。
-</p>
-
-<p>
-节奏需要慢下来，要从容不迫地进入生活和工作，收获80%的目标，而不是争取100%的完美，那样可能太消耗而使你再也没有精力做好一点点简单的事情。
-</p>
-
-<p>
-克努特说：“最具挑战性的工作，往往不是很快搞定的”，有价值的事情一般也是持久而为，再达到目标。
-</p>
-
-<p>
-放下细节和小聪明机智，思考所谓的大智慧，大成功。目标要远一些，才能不为眼前患得患失。
-</p>
-
-<p>
-有时候人其实不懂得自己，想要什么，为何快乐，缺乏什么，令人开心的是，我们处在这斑斓五彩、瞬息万变、的复杂世界中，总能在旅途中渐渐发现更大的自己、更多的惊喜和快乐。
-</p>
-
-
-<p>
-2015 年真快，2016&nbsp;年要有新的不同，拥抱未知，拥抱接下来的精彩岁月。
-</p>
-
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>06. November 2015</span></p>
-          <h2><a href="/articles/Network/2015/11/07/2015-11-06-network-epoll.html">简话Epoll</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">触发方式</a></li>
-<li><a href="#sec-2">Epoll&nbsp;实现分析</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">触发方式</h2>
-<div class="outline-text-2" id="text-1">
-<blockquote>
-<p>
-Level-triggered and edge-triggered
-     The epoll event distribution interface is able to behave both as edge-triggered (<span class="caps">ET</span>) and as level-triggered (LT).  The difference&nbsp;b</p></blockquote></div></div>
-          <p class="more"><a href="/articles/Network/2015/11/07/2015-11-06-network-epoll.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

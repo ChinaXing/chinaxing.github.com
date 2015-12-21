@@ -1,0 +1,46 @@
+#+BEGIN_HTML
+---
+date: 2015-12-16 22:20:04
+template: tech.jade
+title: IP 地址/路由的 scope
+category: Network
+chage_frequency: monthly
+tag: network
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+ip route/ip adress/ifconfig 命令的输出，会发现有一个scope选项。
+
+对于绑定了地址的网口，一般是 : =Link= 。对于 lo接口，是： =Host= 。
+
+site 主要用在 ipv6中，ipv4网络没有这个。
+
+global 只出现在路由中，也是路由的默认 Scope，表示全局有效。
+
+#+BEGIN_QUOTE
+Scope | Description
+
+global | valid everywhere (GLOBAL NET)
+
+site | valid only within this site (IPv6)
+
+link | valid only on this device (LAN)
+
+host | valid only inside this host (machine)
+#+END_QUOTE
+
+含义比较明显，host类型的只能用来主机内部使用和通信。 
+
+link类型的路由只能用来局域网通信。
+
+site 类型的只能site内。
+
+以上3个都是没有路由的，即不进行路由/网关转发。
+
+只有global才能跨网络。
+
+scope 的目的是用来标示一个范围。
+
+参考： [[http://linux-ip.net/html/tools-ip-route.html][ip route]]
