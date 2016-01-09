@@ -14,16 +14,16 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>19</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>19</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
@@ -32,6 +32,48 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>26. September 2015</span></p>
+          <h2><a href="/articles/Java/2015/09/27/2015-09-26-fastjson-asm.html">FastJson 使用 ASM反序列化</a></h2>
+        </header>
+        <section class="content">
+<p>
+通过调查了市面上的几个Json库和Java序列化工具，包括Hession、Gson等，发现多数还是使用反射的机制进行反序列化和序列化，大概是因为Gson不对性能苛刻，如果苛刻可以使用Protobuf等更加高效的工具，
+</p>
+
+<p>
+此外，msgpack也表现不错，不过似乎是不太好用，用户接口不好。
+</p>
+
+<p>
+与之不同的是FastJson。
+</p>
+
+<p>
+FastJson&nbsp;的反序列化使用了<span class="caps">ASM</span>库，好处是避免了反射的频繁调用。
+</p>
+
+<p>
+FastJson初始化时候先将各种默认类别的Deserializer进行注册。
+</p>
+
+<p>
+当需要反序列化一个JavaBean对象时，使用<span class="caps">ASM</span>的反序列化工厂生成一个针对此类型Type的反序列化器，并做缓冲，这样下次就不需要在生成，可以直接使用。
+</p>
+
+<p>
+反序列化工厂首先会通过反射拿到这个Type的所有Field、setter、constructor等要素，为以后服务。
+</p>
+
+<p>
+下面说明下利用<span class="caps">ASM</span>对类型T进行反序列化器生成的过程：
+</p>
+
+
+          <p class="more"><a href="/articles/Java/2015/09/27/2015-09-26-fastjson-asm.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>22. September 2015</span></p>
@@ -141,68 +183,6 @@ tomcat 与 nginx&nbsp;组合后，nginx直面用户，一个请求被分割为2�
 </li>
 </ol>
           <p class="more"><a href="/articles/linux/2015/09/23/2015-09-22-web-server-app-server.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>22. September 2015</span></p>
-          <h2><a href="/articles/life/2015/09/22/2015-09-22-better-style.html">好的状态</a></h2>
-        </header>
-        <section class="content">
-<p>
-<b>热爱</b>
-</p>
-
-<p>
-热爱不沉迷，<br  />
-热爱有所成，<br  />
-热爱而精进，<br  />
-热爱而客观，<br  />
-热爱而全面，<br  />
-热爱而高度，<br  />
-热爱而理性的深入，<br  />
-热爱而超脱与外延。<br  />
-</p>
-
-<p>
-<b>精诚</b>
-</p>
-
-<p>
-精诚而冷静，<br  />
-精诚而无扰，<br  />
-精诚而渐进，<br  />
-精诚而深入，<br  />
-精诚而坚持，<br  />
-精诚而彻底，<br  />
-精诚而突破，<br  />
-精诚而知至，<br  />
-精诚而获其道非其形态。<br  />
-</p>
-
-<p>
-<b>如一</b>
-</p>
-
-<p>
-如一而简洁，<br  />
-如一而秉持，<br  />
-如一而推广，<br  />
-如一而不怠，<br  />
-如一而认真，<br  />
-如一而勇敢，<br  />
-如一而践行，<br  />
-如一而不妥协不求同。<br  />
-</p>
-
-<p>
-<b>目标</b>
-</p>
-
-<p>
-目标于理性，<br  />
-目标于价值，</br></p>
-          <p class="more"><a href="/articles/life/2015/09/22/2015-09-22-better-style.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/4/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/6/" class="nav-next">Next page »</a>

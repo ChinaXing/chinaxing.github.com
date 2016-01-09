@@ -1,0 +1,180 @@
+#+BEGIN_HTML
+---
+date: 2016-01-09 15:16:39
+template: tech.jade
+title: Interrupt（中断）
+category: Java
+chage_frequency: monthly
+tag: Java
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+Java 中的中断通过调用 =Thread.interrupt()= 方法来进行，那么哪些操作可以被中断呢？
+
+可以看该方法的JavaDoc:
+#+BEGIN_EXAMPLE
+    /**
+     * Interrupts this thread.
+     *
+     * <p> Unless the current thread is interrupting itself, which is
+     * always permitted, the {@link #checkAccess() checkAccess} method
+     * of this thread is invoked, which may cause a {@link
+     * SecurityException} to be thrown.
+     *
+     * <p> If this thread is blocked in an invocation of the {@link
+     * Object#wait() wait()}, {@link Object#wait(long) wait(long)}, or {@link
+     * Object#wait(long, int) wait(long, int)} methods of the {@link Object}
+     * class, or of the {@link #join()}, {@link #join(long)}, {@link
+     * #join(long, int)}, {@link #sleep(long)}, or {@link #sleep(long, int)},
+     * methods of this class, then its interrupt status will be cleared and it
+     * will receive an {@link InterruptedException}.
+     *
+     * <p> If this thread is blocked in an I/O operation upon an {@link
+     * java.nio.channels.InterruptibleChannel InterruptibleChannel}
+     * then the channel will be closed, the thread's interrupt
+     * status will be set, and the thread will receive a {@link
+     * java.nio.channels.ClosedByInterruptException}.
+     *
+     * <p> If this thread is blocked in a {@link java.nio.channels.Selector}
+     * then the thread's interrupt status will be set and it will return
+     * immediately from the selection operation, possibly with a non-zero
+     * value, just as if the selector's {@link
+     * java.nio.channels.Selector#wakeup wakeup} method were invoked.
+     *
+     * <p> If none of the previous conditions hold then this thread's interrupt
+     * status will be set. </p>
+     *
+     * <p> Interrupting a thread that is not alive need not have any effect.
+     *
+     * @throws  SecurityException
+     *          if the current thread cannot modify this thread
+     *
+     * @revised 6.0
+     * @spec JSR-51
+     */
+#+END_EXAMPLE
+
+分4种情况：
+- block在Object.wait 和 Thread.join/Thread.sleep :: 触发 =InterruptedException=, 清除中断状态
+- block在InterruptibleChannel类型的Channel上 :: Channel被关闭，设置中断状态
+- block在Selector上 :: Selector上的阻塞操作马上返回，设置中断状态
+- 其它情形 :: 设置中断状态  
+  
+比如，如果在Socket上面的read阻塞操作，在中断的时候，仅仅设置线程的中断状态，而操作不会被中止返回。
+
+那么哪些Channel是InterruptibleChannel？ SocketChannel，DatagramChannel，FileChannel都是，基本很多Channel都是可中断的。
+
+可中断Channel的实现是怎样的？
+
+通过在操作之前插入 =begin()= 函数来实现的，这个函数定义在 =AbstractInterruptibleChannel= 中：
+#+BEGIN_SRC java
+    /**
+     * Marks the beginning of an I/O operation that might block indefinitely.
+     *
+     * <p> This method should be invoked in tandem with the {@link #end end}
+     * method, using a <tt>try</tt>&nbsp;...&nbsp;<tt>finally</tt> block as
+     * shown <a href="#be">above</a>, in order to implement asynchronous
+     * closing and interruption for this channel.  </p>
+     */
+    protected final void begin() {
+        if (interruptor == null) {
+            interruptor = new Interruptible() {
+                    public void interrupt(Thread target) {
+                        synchronized (closeLock) {
+                            if (!open)
+                                return;
+                            open = false;
+                            interrupted = target;
+                            try {
+                                AbstractInterruptibleChannel.this.implCloseChannel();
+                            } catch (IOException x) { }
+                        }
+                    }};
+        }
+        blockedOn(interruptor);
+        Thread me = Thread.currentThread();
+        if (me.isInterrupted())
+            interruptor.interrupt(me);
+    }
+#+END_SRC
+而其原理就是在Thread上面设置hook : =blockedOn(interruptor)= 函数最终调用Thread的 =blockedOn= 函数，将回调钩子注册在线程上面。
+
+当线程的 =interrupt()= 方法被调用时，钩子被执行:
+#+BEGIN_SRC java
+public void interrupt() {
+        if (this != Thread.currentThread())
+            checkAccess();
+
+        synchronized (blockerLock) {
+            Interruptible b = blocker;
+            if (b != null) {
+                interrupt0();           // Just to set the interrupt flag
+                b.interrupt(this);
+                return;
+            }
+        }
+        interrupt0();
+    }
+#+END_SRC
+
+可中断Channel的这个begin过程为阻塞操作提供了异步中断/关闭的方法，如你自己实现InterruptibleChannel的子类，记得在可以中断的阻塞方法中在阻塞操作之前加入对begin函数的调用：
+#+BEGIN_SRC java
+    // 载录自sun.nio.ch.SocketChannelImpl
+    public int read(ByteBuffer var1) throws IOException {
+        if(var1 == null) {
+            throw new NullPointerException();
+        } else {
+            Object var2 = this.readLock;
+            synchronized(this.readLock) {
+                if(!this.ensureReadOpen()) {
+                    return -1;
+                } else {
+                    int var3 = 0;
+                    boolean var20 = false;
+
+                    byte var10000;
+                    byte var5;
+                    label356: {
+                        int var27;
+                        try {
+                            var20 = true;
+                            this.begin();
+#+END_SRC
+
+同理，Selector的中断实现也类似:
+#+BEGIN_SRC java
+// java.nio.channels.spi.AbstractSelector
+    protected final void begin() {
+        if (interruptor == null) {
+            interruptor = new Interruptible() {
+                    public void interrupt(Thread ignore) {
+                        AbstractSelector.this.wakeup();
+                    }};
+        }
+        AbstractInterruptibleChannel.blockedOn(interruptor);
+        Thread me = Thread.currentThread();
+        if (me.isInterrupted())
+            interruptor.interrupt(me);
+    }
+#+END_SRC
+而使用方式：
+#+BEGIN_SRC java
+// sun.nio.ch.KQueueSelectorImpl
+    protected int doSelect(long var1) throws IOException {
+        boolean var3 = false;
+        if(this.closed) {
+            throw new ClosedSelectorException();
+        } else {
+            this.processDeregisterQueue();
+
+            int var7;
+            try {
+                this.begin();
+#+END_SRC
+
+那么其实依赖于Thread本身提供的机制，我们也可以实现对阻塞操作的异步中断，基本原理也就是在进入阻塞前设置好Hook（通过在Thread对象上调用blockedOn方法注册Interruptible对象）.
+
+最后, 关于Interrupt的处理,线程应该在合适的地方检察自己的interrupt状态,是否被中断了, 从而感知到某些事件。
+

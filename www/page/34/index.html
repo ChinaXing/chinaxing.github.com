@@ -14,16 +14,16 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
-          <li><a href="/Java/index.html">Java<sup>15</sup></a></li>
-          <li><a href="/Life/index.html">Life<sup>19</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>19</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
@@ -32,6 +32,28 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>12. June 2013</span></p>
+          <h2><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">Mojolicious Web框架实现分析 -- App启动过程</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">前言</a></li>
+<li><a href="#sec-2">启动Mojolicious App</a>
+<ul>
+<li><a href="#sec-2-1">通过 script/my_app daemon&nbsp;启动应用</a></li>
+<li><a href="#sec-2-2">执行Mojolicious::Commands，此Commands再启动MyApp</a></li>
+<li><a href="#sec-2-3">创建Mojo::Server实例，加载App，启动App</a></li>
+<li><a href="#sec-2-4">App创建完毕，调用其start方法</a></li>
+<li><a href="#sec-2-5">使用Mojolicious::Commands类的run方法执行</a></li>
+<li></li></ul></li></ul></div></div>
+          <p class="more"><a href="/articles/Perl/2013/06/12/2013-06-12-Mojolicious-analyse.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>09. June 2013</span></p>
@@ -83,22 +105,6 @@
 <li><a href="#sec-9">强制覆盖远程</a></li>
 </ul></div></div>
           <p class="more"><a href="/articles/linux/2013/06/07/2013-06-07-git-best-practical.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>03. May 2013</span></p>
-          <h2><a href="/articles/Perl/2013/05/03/2013-05-03-DBIx-Class-beginners-presentation.html">DBIx::Class 入门</a></h2>
-        </header>
-        <section class="content">
-<div>
-<button onclick="javascript: show_ppt(this)" class="pure-button">查看(view)</button>
-</div>
-<div class="mask" onclick="javascript: hide_ppt(this)"></div>
-<div class="mask_container">
-<iframe src="https://docs.google.com/file/d/0B8Zm-qV7M9pIcTZwMTlxakZhYTQ/preview" width="100%" height="100%"></iframe>
-</div>
-
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/33/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/35/" class="nav-next">Next page »</a>
