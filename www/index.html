@@ -14,17 +14,17 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>11</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -34,13 +34,51 @@
     <section id="content">
       <article class="article intro">
         <header>
+          <p class="date"><span>15. February 2016</span></p>
+          <h2><a href="/articles/Haskell/2016/02/15/2016-02-15-algebra-data-type.html">代数数据类型 Algebra-Data-Type</a></h2>
+        </header>
+        <section class="content">
+<p>
+<b>Data-Type</b> 即通常的数据类型。数据类型在很多语言中分为原始类型和复合类型。原始类型如：Int、Boolean、Char等，是语言原生提供的原子类型，而复合类型则经过程序构造而成的，如C语言中的 <code>struct</code> 和 <code>union</code> 构造出来的类型。
+</p>
+
+<p>
+<b>Algebra</b> 意为代数，代数在具象的意义上，指的是 <b>数</b> 、 <b>对数的操作</b> 以及 <b>遵循的规则</b>&nbsp;构成的一个系统。
+</p>
+
+<p>
+<b>数</b> —— object&nbsp;（1，2，3，1.0，）
+</p>
+
+<p>
+<b>操作</b> —— operate&nbsp;（+，-，*，/，幂）
+</p>
+
+<p>
+<b>规则</b> —— law&nbsp;（交换律，结合律）
+</p>
+
+<p>
+<b>Algebra-Data-Type</b>&nbsp;就是具备了代数能力的数据类型，即数据类型可以进行代数运算并满足运算法则。
+</p>
+
+<p>
+抽象的代数系统来说，操作数和操作的含义是抽象的，而规则是形式上的。
+</p>
+
+
+          <p class="more"><a href="/articles/Haskell/2016/02/15/2016-02-15-algebra-data-type.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
           <p class="date"><span>18. January 2016</span></p>
-          <h2><a href="/articles/life/2016/01/19/2016-01-18-how-to-be-old.html">一个人究竟是怎么慢慢变老的</a></h2>
+          <h2><a href="/articles/life/2016/01/19/2016-01-18-how-to-be-old.html">慢慢变老 ？</a></h2>
         </header>
         <section class="content">
 
 <p>
-“老”相对的就是年轻，只有对比，才能发现自己老了，比如对很多事情失去兴趣，对待人和事变的不那么直接率性，而是要考虑和权衡一番。
+只有对比，才能发现自己老了：比如对很多事情失去兴趣，对待人和事变的不那么直接率性，而是要考虑和权衡一番。
 </p>
 
 <p>
@@ -70,7 +108,7 @@
 
 
 <p>
-有些困难，如果不克服，那么就成为了你的阻力，你也许认识到自己一直在解决这个困难想越过去，以至于废了很长时间，视乎得到了一些改善，或者说最</p>
+有些困难，如果不克服，那么就成为了你的阻力，你也许认识到自己一直在解决这个困难想越过去，以至于废了很长时间，视乎得到了一些改善，或者说最终完全解决。而这段时间</p>
           <p class="more"><a href="/articles/life/2016/01/19/2016-01-18-how-to-be-old.html">more</a></p>
         </section>
       </article>
@@ -99,54 +137,6 @@ Java 中的中断通过调用 <code>Thread.interrupt()</code> 方法来进行，
  * &lt;p&gt; If this thread is blocked in an invocation of the {@link
  * Object#wait() wait()}, {@link Object</pre>
           <p class="more"><a href="/articles/Java/2016/01/09/2016-01-09-interrupt.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>29. December 2015</span></p>
-          <h2><a href="/articles/life/2015/12/29/2015-12-29-some-plan.html">几点计划</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-时间长了，容易陷入一种无序的状态中，没有头绪，杂乱，就像无头苍蝇，瞎忙活。
-</p>
-
-<p>
-所以经常静下心来整理整理，非常有必要，有好处。
-</p>
-
-<p>
-最近有一个念头，就是很想买车了，一来是年底了，据说有促销，二来是心里一直痒痒的那款车，好想早点得到手！
-</p>
-
-<p>
-可是，自己也知道，现在的状况这样做是有点不合适的，老爸生病要吃药，家里要靠我一点支持的时候了，加上新家装修刚刚完成，待收拾的地方还有很多很多。
-</p>
-
-<p>
-今年一晃也快过去了，家里念叨的：”该结婚了，该找对象了“&nbsp;还没着落。
-</p>
-
-<p>
-“其实你现在最重要的不是买车或者买什么，先找个对象”。
-</p>
-
-<p>
-也是的，的确，有些事情不宜拖，我也很认同关于“找对象”和“结婚”以及“成家”的确不宜太迟
-</p>
-
-<p>
-总觉得那样的情况是“不正常的”，我脑海中的这些事情，还是比较保守和传统吧，我觉得现在人这么迟的结婚真的不好的现象。
-</p>
-
-<p>
-一个人拼命追求这追求那，仿佛是孤独的舞者，难免凄凉。
-</p>
-
-<p>
-一万年的孤独磨练，何尝不是为了在遇到那个人之后的辉</p>
-          <p class="more"><a href="/articles/life/2015/12/29/2015-12-29-some-plan.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

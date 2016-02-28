@@ -1,0 +1,75 @@
+#+BEGIN_HTML
+---
+date: 2016-02-15 11:10:45
+template: tech.jade
+title: 代数数据类型 Algebra-Data-Type
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+#+END_HTML
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+*Data-Type* 即通常的数据类型。数据类型在很多语言中分为原始类型和复合类型。原始类型如：Int、Boolean、Char等，是语言原生提供的原子类型，而复合类型则经过程序构造而成的，如C语言中的 =struct= 和 =union= 构造出来的类型。
+
+*Algebra* 意为代数，代数在具象的意义上，指的是 *数* 、 *对数的操作* 以及 *遵循的规则* 构成的一个系统。
+
+*数* —— object （1，2，3，1.0，）
+
+*操作* —— operate （+，-，*，/，幂）
+
+*规则* —— law （交换律，结合律）
+
+*Algebra-Data-Type* 就是具备了代数能力的数据类型，即数据类型可以进行代数运算并满足运算法则。
+
+抽象的代数系统来说，操作数和操作的含义是抽象的，而规则是形式上的。
+
+抽象代数系统的具象，操作数和操作的含义，需要具象体系进行语义化解释。
+
+*Algebra-Data-Type* 就是抽象代数系统的具象（数据类型）。
+
+*ADT* 具有代数系统的规则，下面是其语义：
+
+*对象* —— 数据类型的值的数量（取值集合）
+
+*操作* —— + 代表union类型，* 代表组合类型
+
+#+BEGIN_SRC haskell
+  data Boolean = True | False 
+  data Either a b = Left a | Right b
+  data Position = (Int, Int)
+  fun :: Boolean -> Int
+#+END_SRC
+假设用L(t)来表示t类型的值数量，即代数类型中的数。
+
+第一个类型，表示 True 或者 False，是和的关系，L(Boolean) = L(True) + L(False) = 1 + 1 = 2
+
+第二个类型，表示Left a 或者 Right b，也是和的关系，L(Either a b) = L(Left a) + L(Right b) = L(a) + L(b)
+
+第三个类型，表示Int类型与Int类型的组合，是乘积的关系，L(Position) = L(Int) * L(Int)
+
+第四个类型，是函数，表示Boolean到Int的映射，fun的取值范围即为[[http://baike.baidu.com/view/21249.htm][映射的个数]]：L(fun) = L(Int)^(L(Boolean)) = L(Int)^2
+
+可以验证，交换律和结合律依然是遵从的。
+
+对于无限类型，代数规则依然生效：
+#+BEGIN_SRC haskell
+ data List a = Empty | Cons a (List a)
+#+END_SRC
+
+L(List a) = L(Empty) + L(Cons a (List a)) = 1 + aL(List a)
+
+整理得到，
+
+L(List a) = 1/(1 - a) = 1 + a + a^2 + a^3 ... (泰勒级数）
+
+#+BEGIN_SRC haskell
+ data Tree a = Empty | T (Tree a) a (Tree a)
+#+END_SRC
+
+L(Tree a) = 1 + a(L(Tree a)^2)
+
+整理得到，
+
+L(Tree a) = 1/(1-a)

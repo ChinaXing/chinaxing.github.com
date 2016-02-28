@@ -1,0 +1,126 @@
+---
+date: 2016-02-15 11:10:45
+template: tech.jade
+title: 代数数据类型 Algebra-Data-Type
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+<p>
+<b>Data-Type</b> 即通常的数据类型。数据类型在很多语言中分为原始类型和复合类型。原始类型如：Int、Boolean、Char等，是语言原生提供的原子类型，而复合类型则经过程序构造而成的，如C语言中的 <code>struct</code> 和 <code>union</code> 构造出来的类型。
+</p>
+
+<p>
+<b>Algebra</b> 意为代数，代数在具象的意义上，指的是 <b>数</b> 、 <b>对数的操作</b> 以及 <b>遵循的规则</b> 构成的一个系统。
+</p>
+
+<p>
+<b>数</b> —— object （1，2，3，1.0，）
+</p>
+
+<p>
+<b>操作</b> —— operate （+，-，*，/，幂）
+</p>
+
+<p>
+<b>规则</b> —— law （交换律，结合律）
+</p>
+
+<p>
+<b>Algebra-Data-Type</b> 就是具备了代数能力的数据类型，即数据类型可以进行代数运算并满足运算法则。
+</p>
+
+<p>
+抽象的代数系统来说，操作数和操作的含义是抽象的，而规则是形式上的。
+</p>
+
+<p>
+抽象代数系统的具象，操作数和操作的含义，需要具象体系进行语义化解释。
+</p>
+
+<p>
+<b>Algebra-Data-Type</b> 就是抽象代数系统的具象（数据类型）。
+</p>
+
+<p>
+<b>ADT</b> 具有代数系统的规则，下面是其语义：
+</p>
+
+<p>
+<b>对象</b> —— 数据类型的值的数量（取值集合）
+</p>
+
+<p>
+<b>操作</b> —— + 代表union类型，* 代表组合类型
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">data Boolean = True | False 
+data Either a b = Left a | Right b
+data Position = (Int, Int)
+fun :: Boolean -&gt; Int
+</pre>
+</div>
+<p>
+假设用L(t)来表示t类型的值数量，即代数类型中的数。
+</p>
+
+<p>
+第一个类型，表示 True 或者 False，是和的关系，L(Boolean) = L(True) + L(False) = 1 + 1 = 2
+</p>
+
+<p>
+第二个类型，表示Left a 或者 Right b，也是和的关系，L(Either a b) = L(Left a) + L(Right b) = L(a) + L(b)
+</p>
+
+<p>
+第三个类型，表示Int类型与Int类型的组合，是乘积的关系，L(Position) = L(Int) * L(Int)
+</p>
+
+<p>
+第四个类型，是函数，表示Boolean到Int的映射，fun的取值范围即为<a href="http://baike.baidu.com/view/21249.htm">映射的个数</a>：L(fun) = L(Int)^(L(Boolean)) = L(Int)^2
+</p>
+
+<p>
+可以验证，交换律和结合律依然是遵从的。
+</p>
+
+<p>
+对于无限类型，代数规则依然生效：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">data List a = Empty | Cons a (List a)
+</pre>
+</div>
+
+<p>
+L(List a) = L(Empty) + L(Cons a (List a)) = 1 + aL(List a)
+</p>
+
+<p>
+整理得到，
+</p>
+
+<p>
+L(List a) = 1/(1 - a) = 1 + a + a^2 + a^3 &#x2026; (泰勒级数）
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">data Tree a = Empty | T (Tree a) a (Tree a)
+</pre>
+</div>
+
+<p>
+L(Tree a) = 1 + a(L(Tree a)^2)
+</p>
+
+<p>
+整理得到，
+</p>
+
+<p>
+L(Tree a) = 1/(1-a)
+</p>

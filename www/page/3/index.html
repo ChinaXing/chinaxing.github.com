@@ -14,17 +14,17 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>11</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>10</sup></a></li>
-          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -32,6 +32,35 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>13. December 2015</span></p>
+          <h2><a href="/articles/life/2015/12/14/2015-12-13-balance.html">平衡</a></h2>
+        </header>
+        <section class="content">
+
+
+<p>
+参加了两天的团建，虽然做的项目都是4~5年前做过的一样，开始去的时候，只是想应付过去了事。&nbsp;过程中的一些感触使我觉得这个团建认真对待才是正确的。
+</p>
+
+<p>
+团建的项目本身当然只是游戏，但是认真的参与和投入，那么游戏不仅仅是游戏，如果要明白游戏背后的含义，认真对待能够做好，其实也正是团建的目的。其实自己之前的一些想法，看似成熟，其实是幼稚。
+</p>
+
+<p>
+作为一个团队活动，一个集体活动，如何把自己融入、发挥自己的力量和想法，在集体里面发挥作用，而不是一个被动者，其实也是一种挑战，能否积极的思考团队的任务，分析和找出解决方案，将自己的意见讲出来，让大家听明白，与大家沟通，接收和纠正自己想法或者接受别人的想法，并做好执行者的角色，都是一种合作和协调的能力。
+</p>
+
+<p>
+自己内心一直是崇尚个人能力，焦点在个人能力的提升和个人战斗力，往往是不注意集体内部的协调、协作的道理和学问，其实这方面是非常重要的在一个集体之中。特别是作为一个管理者来说，是非常重要的能力要求。
+</p>
+
+<p>
+一个人的想法，可能非常棒，但是如果不讲出来，不让大家明白，进而通过一起的决</p>
+          <p class="more"><a href="/articles/life/2015/12/14/2015-12-13-balance.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>10. December 2015</span></p>
@@ -90,32 +119,6 @@
 Level-triggered and edge-triggered
      The epoll event distribution interface is able to behave both as edge-triggered (<span class="caps">ET</span>) and as level-triggered (LT).  The difference&nbsp;b</p></blockquote></div></div>
           <p class="more"><a href="/articles/Network/2015/11/07/2015-11-06-network-epoll.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>06. November 2015</span></p>
-          <h2><a href="/articles/Network/2015/11/06/2015-11-06-tcp-defer-accept.html">TCP_DEFER_ACCEPT and TCP_FASTOPEN</a></h2>
-        </header>
-        <section class="content">
-<p>
-<code>TCP_DEFER_ACCEP</code> 想法很简单，推迟（<span class="caps">DEFER</span>）accept操作，在client端发送 connect 后，服务端收到连接请求，建立TCP连接，在客户端发送数据之前，&nbsp;服务端socket上面的accept方法并不会返回，epoll上的accept事件也不会ready，只有在客户端发送数据过来，才会变成&#8221;acceptable&#8221;，即，这一accceptable状态被defer了。
-</p>
-
-<p>
-在设置这个socket_option的时候，可以指定一个timeout的参数，意思是如果客户端连上了，但是没法送数据，那么就超过这个事件后将其close：
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-c">/* 5秒后，如果你不发数据我就关掉你！ */
-setsockopt(srv_socket-&gt;fd, SOL_TCP, TCP_DEFER_ACCEPT, 5, sizeof(val)) ;
-</pre>
-</div>
-
-<p>
-<code>TCP_FASTOPE</code></p>
-          <p class="more"><a href="/articles/Network/2015/11/06/2015-11-06-tcp-defer-accept.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/2/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/4/" class="nav-next">Next page »</a>
