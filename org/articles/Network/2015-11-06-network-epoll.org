@@ -65,5 +65,24 @@ Epoll的边沿触发还提供了一个EPOLLONESHOT的选项，意思是每次边
 
 边沿触发不是Epoll的默认模式，默认的是水平触发。水平触发于之对应，表示“只要发生了电平是1“ 不管当前的状态是1还是0，都触发一个事件，即每次你调用epoll_wait，都检查fd是否是可读，如果可读，就告诉你有可读事件，只有当没有数据了，才会wait。
 
+*** Epoll Events
+    - EPOLLIN ::
+              The associated file is available for read(2) operations.
+    - EPOLLOUT :: 
+              The associated file is available for write(2) operations.
+    - EPOLLRDHUP (since Linux 2.6.17) :: 
+              receive FIN
+    - EPOLLPRI :: 
+              There is urgent data available for read(2) operations.
+    - EPOLLERR :: 
+              Error condition happened on the associated file descriptor.  epoll_wait(2) will always wait for this event; it is not necessary to set it in events.
+    - EPOLLHUP :: 
+              recieve RST
+    - EPOLLET ::
+              use edget trigger mode. default is level trigger mode.
+    - EPOLLONESHOT (since Linux 2.6.2) ::
+             when event occurs , clear the event concered.
+    - EPOLLWAKEUP (since Linux 3.5) ::
+             wakeup event
 *** Epoll 实现分析
 :TODO:
