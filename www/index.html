@@ -14,13 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
           <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>11</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -32,6 +32,43 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>01. May 2016</span></p>
+          <h2><a href="/articles/Haskell/2016/05/02/2016-05-01-generic.html">Generic</a></h2>
+        </header>
+        <section class="content">
+<p>
+Generic&nbsp;通用编程，目的是提高代码复用。
+</p>
+
+<p>
+Haskell&nbsp;中的通用编程，基于代数数据类型，将数据运算映射到代数数据类型上运算。因为多种数据类型可以对应到一种代数数据类型表达式，所以可以实现代码通用。
+</p>
+
+<p>
+代数数据类型是指，数据类型的构造类似于代数运算，包含Unit，Multiply，Product等。
+</p>
+
+<p>
+在引入<span class="caps">GHC</span>.Generic&nbsp;包后，代数数据类型的一些标识符被导入。开发人员可以使用这些标识符表达基于ADT的Generic编程：
+</p>
+
+<ul class="org-ul">
+<li>Unit 用 U&nbsp;表示，类比于代数运算中的元，如加法运算的0，乘法运算的1。
+</li>
+<li>:*: 表示乘积，形如数据构造器： data Pair a b = (a,b) 和 data Person = Person String&nbsp;Int
+</li>
+<li>:+: 表示和，形如数据构造器：data Color = Red | Black |&nbsp;Yellow
+</li>
+</ul>
+
+<p>
+Generic编程的步骤是：
+</p>
+          <p class="more"><a href="/articles/Haskell/2016/05/02/2016-05-01-generic.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>15. February 2016</span></p>
@@ -110,33 +147,6 @@
 <p>
 有些困难，如果不克服，那么就成为了你的阻力，你也许认识到自己一直在解决这个困难想越过去，以至于废了很长时间，视乎得到了一些改善，或者说最终完全解决。而这段时间</p>
           <p class="more"><a href="/articles/life/2016/01/19/2016-01-18-how-to-be-old.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>09. January 2016</span></p>
-          <h2><a href="/articles/Java/2016/01/09/2016-01-09-interrupt.html">Interrupt（中断）</a></h2>
-        </header>
-        <section class="content">
-<p>
-Java 中的中断通过调用 <code>Thread.interrupt()</code> 方法来进行，那么哪些操作可以被中断呢？
-</p>
-
-<p>
-可以看该方法的JavaDoc:
-</p>
-<pre class="example">
-/**
- * Interrupts this thread.
- *
- * &lt;p&gt; Unless the current thread is interrupting itself, which is
- * always permitted, the {@link #checkAccess() checkAccess} method
- * of this thread is invoked, which may cause a {@link
- * SecurityException} to be thrown.
- *
- * &lt;p&gt; If this thread is blocked in an invocation of the {@link
- * Object#wait() wait()}, {@link Object</pre>
-          <p class="more"><a href="/articles/Java/2016/01/09/2016-01-09-interrupt.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/2/" class="nav-next">Next page »</a>

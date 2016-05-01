@@ -14,13 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
           <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>11</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -32,6 +32,36 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. September 2015</span></p>
+          <h2><a href="/articles/Data/2015/09/06/2015-09-05-token-bucket.html">Token Bucket / Leaky Bucket</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Token&nbsp;Bucket</a></li>
+<li><a href="#sec-2">Leaky Bucket</a>
+<ul>
+<li><a href="#sec-2-1">As a&nbsp;Meter（速率测量）</a></li>
+<li><a href="#sec-2-2">As a&nbsp;Queue（速率控制）</a></li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="caps">HTB</span> (Hierarchy Token&nbsp;Bucket)</a></li>
+<li><a href="#sec-4"><span class="caps">CBQ</span> (Class Based&nbsp;Queue)</a></li>
+<li><a href="#sec-5">流控与流量整形</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文介绍一些流控的模型。
+</p>
+
+          <p class="more"><a href="/articles/Data/2015/09/06/2015-09-05-token-bucket.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>05. September 2015</span></p>
@@ -102,37 +132,6 @@ Bloom filter&nbsp;可以用很小的空间复杂度和常量的计算复杂度�
 <p>
 这一特性，可以被用在元素是否在数据集中得判断，如，在访问数据库前，加入一层Bloom&nbsp;filter，可以拦</p>
           <p class="more"><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>27. August 2015</span></p>
-          <h2><a href="/articles/Network/2015/08/27/2015-08-26-tcp-nodelay.html">TCP nodelay</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">合并发送</a></li>
-<li><a href="#sec-2">Delay&nbsp;Ack</a></li>
-<li><a href="#sec-3">冲突</a></li>
-</ul>
-</div>
-</div>
-
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">合并发送</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-Nagle&#8217;s&nbsp;算法的目的是合并小包发送，减少传输和确认的次数以及拆包组包的工作，提高网络利用率：
-</p>
-<ul class="org-ul">
-<li>应用层send的数据包不会立即发送给下层，而是到一个水位后才一起发出——合并
-</li>
-<li>如果在累积期间收到一个ack，则将累积区的数据</li></ul></div></div>
-          <p class="more"><a href="/articles/Network/2015/08/27/2015-08-26-tcp-nodelay.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/7/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/9/" class="nav-next">Next page »</a>

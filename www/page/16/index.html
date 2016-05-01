@@ -14,13 +14,13 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
           <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>11</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -32,6 +32,33 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>11. March 2015</span></p>
+          <h2><a href="/articles/Network/2015/03/12/2015-03-11-linux-tcp-tunning.html">Linux Tcp 参数调优</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">半连接</a></li>
+<li><a href="#sec-2">网络分片与重组</a>
+<ul>
+<li><a href="#sec-2-1">link 层 ——&nbsp;Frame</a></li>
+<li><a href="#sec-2-2">ip&nbsp;层</a></li>
+<li><a href="#sec-2-3">tcp&nbsp;层</a></li>
+<li><a href="#sec-2-4">tcp_mtu_probing</a></li>
+<li><a href="#sec-2-5">tcp_base_mss</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">新建链接</a>
+<ul>
+<li><a href="#sec-3-1">tcp_max_syn_backlog</a></li>
+<li></li></ul></li></ul></div></div>
+          <p class="more"><a href="/articles/Network/2015/03/12/2015-03-11-linux-tcp-tunning.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>10. March 2015</span></p>
@@ -101,32 +128,6 @@ server的端口相对固定，而且是知名端口，或者是配置文件中�
 <h2 id="sec-1">Thread&nbsp;对象</h2>
 </div>
           <p class="more"><a href="/articles/Java/2015/03/04/2015-03-04-Thread.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>01. March 2015</span></p>
-          <h2><a href="/articles/Data/2015/03/01/2015-03-01-AbstractQueuedSynchronizer.html">AbstractQueuedSynchronizer</a></h2>
-        </header>
-        <section class="content">
-<div id="table-of-contents">
-<h2>Table of&nbsp;Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1"><span class="caps">AQS</span></a>
-<ul>
-<li><a href="#sec-1-1"><span class="caps">CLH</span></a></li>
-<li><a href="#sec-1-2">Node</a></li>
-<li><a href="#sec-1-3">Acquire</a></li>
-<li><a href="#sec-1-4">Release</a></li>
-<li><a href="#sec-1-5">Cancel</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">Conditon</a></li>
-<li><a href="#sec-3">LockSupport</a></li>
-<li><a href="#sec-4">Unsafe</a></li>
-<li><a href="#sec-5"><span class="todo TODO"><span class="caps">TOD</span></span></a></li></ul></div></div>
-          <p class="more"><a href="/articles/Data/2015/03/01/2015-03-01-AbstractQueuedSynchronizer.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/15/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/17/" class="nav-next">Next page »</a>

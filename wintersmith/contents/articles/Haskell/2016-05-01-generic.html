@@ -1,0 +1,95 @@
+---
+date: 2016-05-01 22:31:19
+template: tech.jade
+title: Generic
+category: Haskell
+chage_frequency: monthly
+tag: Haskell
+---
+<p>
+Generic 通用编程，目的是提高代码复用。
+</p>
+
+<p>
+Haskell 中的通用编程，基于代数数据类型，将数据运算映射到代数数据类型上运算。因为多种数据类型可以对应到一种代数数据类型表达式，所以可以实现代码通用。
+</p>
+
+<p>
+代数数据类型是指，数据类型的构造类似于代数运算，包含Unit，Multiply，Product等。
+</p>
+
+<p>
+在引入GHC.Generic 包后，代数数据类型的一些标识符被导入。开发人员可以使用这些标识符表达基于ADT的Generic编程：
+</p>
+
+<ul class="org-ul">
+<li>Unit 用 U 表示，类比于代数运算中的元，如加法运算的0，乘法运算的1。
+</li>
+<li>:*: 表示乘积，形如数据构造器： data Pair a b = (a,b) 和 data Person = Person String Int
+</li>
+<li>:+: 表示和，形如数据构造器：data Color = Red | Black | Yellow
+</li>
+</ul>
+
+<p>
+Generic编程的步骤是：
+</p>
+
+<ul class="org-ul">
+<li>第一步，定义数据类型的Generic instance，实现 数据类型的 Type Rep 表示（即前面提到的类型代数形式），实现 to 和 from 方法：
+<div class="org-src-container">
+
+<pre class="src src-haskell">class Generic a where
+   -- Encode the representation of a user datatype
+   type Rep a :: * -&gt; *
+   -- Convert from the datatype to its representation
+   from  :: a -&gt; (Rep a) x
+   -- Convert from the representation to the datatype
+   to    :: (Rep a) x -&gt; a
+</pre>
+</div>
+</li>
+
+<li>第二步，为原子类型和基本代数类型实现Generic业务逻辑:
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- Generic 业务逻辑为GEq，有一个方法geq
+class GEq a where
+  geq :: a -&gt; a -&gt; Bool
+  -- 默认的实现是转换为代数类型相等来判断
+  default geq :: (Generic a, GEq (Rep a)) =&gt; a -&gt; a -&gt; Bool
+  geq a b = geq (from a) (from b)
+
+-- 定义GEq的针对代数类型的实现
+instance =&gt; GEq U where
+  geq U U = True
+
+instance (GEq a, GEq b) =&gt; GEq (a:+:b) where
+  geq (a1:+:b1) (a2:+:b2) = geq a1 a2 ^ geq b1 b2
+
+instance (GEq a, GEq b) =&gt; GEq (a:*:b) where
+  geq (L a1) (L a2) = geq a1 a2
+  geq (R b1) (R b2) = geq b1 b2
+  geq _ _ = False
+</pre>
+</div>
+</li>
+<li>第三步，让数据类型自动实现Generic业务逻辑类型类：
+<div class="org-src-container">
+
+<pre class="src src-haskell">data Color = Red | White
+data Person = Person String Int
+-- 自动实现GEq的geq方法
+instance GEq Color where
+instance GEq Person where
+</pre>
+</div>
+</li>
+<li>使用generic业务逻辑方法:
+<div class="org-src-container">
+
+<pre class="src src-haskell">geq (Person "ChinaXing" 20) (Person "Lambdacat" 12)
+</pre>
+</div>
+</li>
+</ul>
