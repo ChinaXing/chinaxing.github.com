@@ -48,8 +48,26 @@ Generic编程的步骤是：
    to    :: (Rep a) x -&gt; a
 </pre>
 </div>
-</li>
 
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- 这是让Haskell知道你定义的类型是如何用代数数据类型表示的
+instance Generic Color where
+  type Rep Color = (L U) :+: (R U)
+  from Red = (L U) Red
+  from White = (R U) Whiet
+  to (L U) = Red
+  to (R U) = White
+instance Generic Person where
+  type Rep (Person a b) = (L a) :*: (R b)
+  from (Person a b) = (L (from a)) ^ (R (from b))
+  to (L a) :*: (R b) = Person (to a) (to b)
+</pre>
+</div>
+<p>
+这一步GHC可以自动完成: 使用-XDeriveGeneric开关，deriving Generic
+</p>
+</li>
 <li>第二步，为原子类型和基本代数类型实现Generic业务逻辑:
 <div class="org-src-container">
 
@@ -84,6 +102,9 @@ instance GEq Color where
 instance GEq Person where
 </pre>
 </div>
+<p>
+也可以使用 deriving 关键字：deriving (GEq)
+</p>
 </li>
 <li>使用generic业务逻辑方法:
 <div class="org-src-container">
