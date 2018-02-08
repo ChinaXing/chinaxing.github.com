@@ -60,9 +60,9 @@ sfd = socket(AF_INET, SOCK_STREAM, 0);   // Create socket
 
 sfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    sendto(sfd, data, data_len, MSG_FASTOPEN, 
-		(struct sockaddr *) &amp;server_addr, addr_len);
-	// Replaces connect() + send()/write()
+    sendto(sfd, data, data_len, MSG_FASTOPEN,
+                (struct sockaddr *) &amp;server_addr, addr_len);
+        // Replaces connect() + send()/write()
 
     // read and write further data on connected socket sfd
 

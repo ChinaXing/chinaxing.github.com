@@ -211,7 +211,7 @@ new history totally disconnected from all the other branches and commits.
 </blockquote>
 <pre class="example">
 git checkout --orphan new_branch
-git add -A 
+git add -A
 git commit -m 'new voyage'
 git branch -D master      # delete master branch
 git branch -m master      # rename this branch to master
@@ -225,13 +225,13 @@ git push -f origin master # replace the remote
 <div class="org-src-container">
 
 <pre class="src src-shell">git log --graph --pretty=format:"%x09%h | %&lt;(10,trunc)%cd |%&lt;(25,trunc)%d | %s" \
-	--date=short
+        --date=short
 
 git log --graph --decorate  --pretty=oneline
 
 git log --graph --full-history --all \
-	--pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)&lt;%an&gt;%Creset' \
-	--date=short
+        --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)&lt;%an&gt;%Creset' \
+        --date=short
 </pre>
 </div>
 </div>

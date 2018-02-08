@@ -1,0 +1,38 @@
+---
+date: 2018-02-08 15:37:18
+template: tech.jade
+title: MySQL semi-replication wait point的问题
+category: Database
+chage_frequency: monthly
+tag: mysql
+---
+<p>
+在MySQL半同步机制中，关于事务提交与等待Slave确认binlog复制完成有一个可选项，可以配置事务提交前/后等待slave完成复制。
+</p>
+
+<p>
+<code>rpl_semi_sync_master_wait_point</code>
+</p>
+
+<ul class="org-ul">
+<li>AFTER_SYNC 刷binlog日志到磁盘后，发起等待，Slave应答后，再Commit事务
+</li>
+<li>AFTER_COMMIT 刷binlog日志到磁盘，commit 事务，然后发起等待，Slave 应答后回应Client事务完成
+</li>
+</ul>
+
+<p>
+2种不同的同步点，决定了MySQL在主库故障后recover时的情况。
+</p>
+
+<p>
+<code>AFTER_SYNC</code> 情形下，主库可能有未提交的事务，而Slave已提交，即主库的事务可能比备库少。
+</p>
+
+<p>
+<code>AFTER_COMMIT</code> 情形下，主库事务可能会多于备库，这与异步复制时候是相同的。
+</p>
+
+<p>
+MySQL默认的配置是 <code>AFTER_SYNC</code> 。也就是会存在主库事务少于备库的情形。
+</p>

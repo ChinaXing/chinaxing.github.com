@@ -49,21 +49,21 @@ dev 放置原始文件，供jekyll转换使用，master分支放置jekyll生成�
 </li>
 <li>在本地搭建jekyll环境,git clone blog网站的内容到本地
 <ol class="org-ol">
-<li>切换到dev分支写文章:  
+<li>切换到dev分支写文章:
 <div class="org-src-container">
 
 <pre class="src src-sh">git checkout dev
 </pre>
 </div>
 </li>
-<li>写文章，写好文章后:  
+<li>写文章，写好文章后:
 <div class="org-src-container">
 
 <pre class="src src-sh">jekyll --server --auto
 </pre>
 </div>
 </li>
-<li>在本地浏览器访问看一切正常后.  
+<li>在本地浏览器访问看一切正常后.
 
 <p>
 提交新文章到库
@@ -74,7 +74,7 @@ dev 放置原始文件，供jekyll转换使用，master分支放置jekyll生成�
 </pre>
 </div>
 </li>
-<li>提交静态页面到master分支  
+<li>提交静态页面到master分支
 <div class="org-src-container">
 
 <pre class="src src-sh">commitID=$(echo "--添加新文章--" | git commit-tree dev^{tree}:_site)

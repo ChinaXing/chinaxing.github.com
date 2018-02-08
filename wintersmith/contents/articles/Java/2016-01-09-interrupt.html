@@ -65,7 +65,7 @@ Java 中的中断通过调用 <code>Thread.interrupt()</code> 方法来进行，
 </dd>
 <dt> block在Selector上 </dt><dd>Selector上的阻塞操作马上返回，设置中断状态
 </dd>
-<dt> 其它情形 </dt><dd>设置中断状态  
+<dt> 其它情形 </dt><dd>设置中断状态
 </dd>
 </dl>
 
@@ -96,23 +96,23 @@ Java 中的中断通过调用 <code>Thread.interrupt()</code> 方法来进行，
  */
 protected final void begin() {
     if (interruptor == null) {
-	interruptor = new Interruptible() {
-		public void interrupt(Thread target) {
-		    synchronized (closeLock) {
-			if (!open)
-			    return;
-			open = false;
-			interrupted = target;
-			try {
-			    AbstractInterruptibleChannel.this.implCloseChannel();
-			} catch (IOException x) { }
-		    }
-		}};
+        interruptor = new Interruptible() {
+                public void interrupt(Thread target) {
+                    synchronized (closeLock) {
+                        if (!open)
+                            return;
+                        open = false;
+                        interrupted = target;
+                        try {
+                            AbstractInterruptibleChannel.this.implCloseChannel();
+                        } catch (IOException x) { }
+                    }
+                }};
     }
     blockedOn(interruptor);
     Thread me = Thread.currentThread();
     if (me.isInterrupted())
-	interruptor.interrupt(me);
+        interruptor.interrupt(me);
 }
 </pre>
 </div>
@@ -126,18 +126,18 @@ protected final void begin() {
 <div class="org-src-container">
 
 <pre class="src src-java">public void interrupt() {
-	if (this != Thread.currentThread())
-	    checkAccess();
+        if (this != Thread.currentThread())
+            checkAccess();
 
-	synchronized (blockerLock) {
-	    Interruptible b = blocker;
-	    if (b != null) {
-		interrupt0();           // Just to set the interrupt flag
-		b.interrupt(this);
-		return;
-	    }
-	}
-	interrupt0();
+        synchronized (blockerLock) {
+            Interruptible b = blocker;
+            if (b != null) {
+                interrupt0();           // Just to set the interrupt flag
+                b.interrupt(this);
+                return;
+            }
+        }
+        interrupt0();
     }
 </pre>
 </div>
@@ -150,23 +150,23 @@ protected final void begin() {
 <pre class="src src-java">// 载录自sun.nio.ch.SocketChannelImpl
 public int read(ByteBuffer var1) throws IOException {
     if(var1 == null) {
-	throw new NullPointerException();
+        throw new NullPointerException();
     } else {
-	Object var2 = this.readLock;
-	synchronized(this.readLock) {
-	    if(!this.ensureReadOpen()) {
-		return -1;
-	    } else {
-		int var3 = 0;
-		boolean var20 = false;
+        Object var2 = this.readLock;
+        synchronized(this.readLock) {
+            if(!this.ensureReadOpen()) {
+                return -1;
+            } else {
+                int var3 = 0;
+                boolean var20 = false;
 
-		byte var10000;
-		byte var5;
-		label356: {
-		    int var27;
-		    try {
-			var20 = true;
-			this.begin();
+                byte var10000;
+                byte var5;
+                label356: {
+                    int var27;
+                    try {
+                        var20 = true;
+                        this.begin();
 </pre>
 </div>
 
@@ -177,16 +177,16 @@ public int read(ByteBuffer var1) throws IOException {
 
 <pre class="src src-java">// java.nio.channels.spi.AbstractSelector
     protected final void begin() {
-	if (interruptor == null) {
-	    interruptor = new Interruptible() {
-		    public void interrupt(Thread ignore) {
-			AbstractSelector.this.wakeup();
-		    }};
-	}
-	AbstractInterruptibleChannel.blockedOn(interruptor);
-	Thread me = Thread.currentThread();
-	if (me.isInterrupted())
-	    interruptor.interrupt(me);
+        if (interruptor == null) {
+            interruptor = new Interruptible() {
+                    public void interrupt(Thread ignore) {
+                        AbstractSelector.this.wakeup();
+                    }};
+        }
+        AbstractInterruptibleChannel.blockedOn(interruptor);
+        Thread me = Thread.currentThread();
+        if (me.isInterrupted())
+            interruptor.interrupt(me);
     }
 </pre>
 </div>
@@ -197,15 +197,15 @@ public int read(ByteBuffer var1) throws IOException {
 
 <pre class="src src-java">// sun.nio.ch.KQueueSelectorImpl
     protected int doSelect(long var1) throws IOException {
-	boolean var3 = false;
-	if(this.closed) {
-	    throw new ClosedSelectorException();
-	} else {
-	    this.processDeregisterQueue();
+        boolean var3 = false;
+        if(this.closed) {
+            throw new ClosedSelectorException();
+        } else {
+            this.processDeregisterQueue();
 
-	    int var7;
-	    try {
-		this.begin();
+            int var7;
+            try {
+                this.begin();
 </pre>
 </div>
 

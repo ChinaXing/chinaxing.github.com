@@ -151,12 +151,12 @@ Plack 是PSGI Server的一个实现，并且提供了额外的功能。
        my $writer = $responder-&gt;( [200, [ 'Content-Type', 'text/plain' ], ]);
        # ...
        wait_for_events(sub {
-	     my $ev = shift;
-	     if($ev-&gt;last){
-		   $writer-&gt;close;
-	      }else{
-		   $writer-&gt;write($ev-&gt;content);
-	      }
+             my $ev = shift;
+             if($ev-&gt;last){
+                   $writer-&gt;close;
+              }else{
+                   $writer-&gt;write($ev-&gt;content);
+              }
        });
   };
 };

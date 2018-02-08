@@ -45,27 +45,27 @@ Emacs org-mode 用来写blog,然后export 出HTML,最后再使用jekyll生成静
 ;; org-mode project define
 (setq org-publish-project-alist
       '(
-	("org-blog-content" ;; 博客内容
-	 ;; Path to your org files.
-	 :base-directory "~/ChinaXing.org/org/"
-	 :base-extension "org"
-	 ;; Path to your jekyll project.
-	 :publishing-directory "~/ChinaXing.org/jekyll/"
-	 :recursive t
-	 :publishing-function org-publish-org-to-html
-	 :headline-levels 4
-	 :html-extension "html"
-	 :table-of-contents t ;; 导出目录
-	 :body-only t ;; Only export section between &lt;body&gt;&lt;/body&gt;
-	 )
-	("org-blog-static" ;; 静态文件
-	 :base-directory "~/ChinaXing.org/org/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php\\|svg"
-	 :publishing-directory "~/ChinaXing.org/jekyll/"
-	 :recursive t
-	 :publishing-function org-publish-attachment)
-	("blog" :components ("org-blog-content" "org-blog-static"))
-	))
+        ("org-blog-content" ;; 博客内容
+         ;; Path to your org files.
+         :base-directory "~/ChinaXing.org/org/"
+         :base-extension "org"
+         ;; Path to your jekyll project.
+         :publishing-directory "~/ChinaXing.org/jekyll/"
+         :recursive t
+         :publishing-function org-publish-org-to-html
+         :headline-levels 4
+         :html-extension "html"
+         :table-of-contents t ;; 导出目录
+         :body-only t ;; Only export section between &lt;body&gt;&lt;/body&gt;
+         )
+        ("org-blog-static" ;; 静态文件
+         :base-directory "~/ChinaXing.org/org/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php\\|svg"
+         :publishing-directory "~/ChinaXing.org/jekyll/"
+         :recursive t
+         :publishing-function org-publish-attachment)
+        ("blog" :components ("org-blog-content" "org-blog-static"))
+        ))
 (setq org-src-fontify-natively t)
 ;; active Babel languages
 (org-babel-do-load-languages
@@ -109,11 +109,11 @@ org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的
 </p>
 <pre class="example">
 #+begin_src sh :exports both :results output :eval no-export
-  figlet 'china xing !'    
+  figlet 'china xing !'
 #+end_src
 
 #+RESULTS:
-:       _     _                    _               _ 
+:       _     _                    _               _
 :   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
 :  / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
 : | (__| | | | | | | | (_| |  &gt;  &lt;| | | | | (_| | |_|
@@ -129,7 +129,7 @@ org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的
 将org文档导出成html文档,要使导出的html文档中源代码部分保持语法高亮,需要如下设置:
 </p>
 <ol class="org-ol">
-<li>设置 org-src-fontify-natively 为 t 
+<li>设置 org-src-fontify-natively 为 t
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(setq org-src-fontify-natively t)
@@ -151,7 +151,7 @@ org-babel 可以在org文档中插入代码,并且会帮你语法高亮插入的
 </p>
 <pre class="example">
 #+begin_src sh :exports both :results output :eval no-export
-  figlet 'china xing !'    
+  figlet 'china xing !'
 #+end_src
 ...
 </pre>

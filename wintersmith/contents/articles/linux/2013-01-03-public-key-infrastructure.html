@@ -106,12 +106,12 @@ tag: ca,digtal-sign
 </ol>
 
 <p>
-<a href="http://en.wikipedia.org/wiki/Certificate_revocation_list">CRL</a>: 
+<a href="http://en.wikipedia.org/wiki/Certificate_revocation_list">CRL</a>:
  即: certificate revocation list。 是CA生成的用来发布告知哪些被签名的公钥现在是无效的（无效不等于过期）。
 </p>
 
 <p>
-一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。  
+一般是用户私钥丢失等，用户主动通知CA标记为无效，类似信用卡密码丢了，卡挂失的道理。
 CRL使用 http协议来传输(不过为了克服其问题，一般已经使用<a href="http://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol"> OCSP</a> 这个协议来代替它了)， 由浏览器发起，
 chrome里面可以在高级设置-&gt;安全里面进行设置，打开*"Check for server certificate revocation"*, 来让浏览器对每个https域名证书都进行CRL验证。这个选项默认是关闭的。
 </p>
@@ -131,7 +131,7 @@ chrome里面可以在高级设置-&gt;安全里面进行设置，打开*"Check f
 <h2 id="sec-7">其它</h2>
 <div class="outline-text-2" id="text-7">
 <ol class="org-ol">
-<li>数字签名中CA/Web browser/developer关系图:  
+<li>数字签名中CA/Web browser/developer关系图:
 <img src="file:///img/Usage-of-Digital-Certificate.svg" alt="Usage-of-Digital-Certificate.svg" />
 </li>
 <li>CA的Wiki:<a href="http://en.wikipedia.org/wiki/Certificate_authority">http://en.wikipedia.org/wiki/Certificate_authority</a>, 比较全面的介绍。

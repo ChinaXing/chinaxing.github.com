@@ -99,7 +99,7 @@ type EitherIntString = EitherInt String
 <div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 
-<pre class="src src-haskell">class  Functor f where 
+<pre class="src src-haskell">class  Functor f where
    fmap :: (a -&gt; b) -&gt; f a -&gt; f b
 </pre>
 </div>
@@ -171,16 +171,16 @@ Either Int :: * -&gt; *
 
 <pre class="src src-haskell">class Functor f =&gt; Applicative (f :: * -&gt; *) where
   pure a = f a
-  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b 
+  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b
   &lt;$&gt; :: (a -&gt; b) -&gt; f a -&gt; f b
 </pre>
 </div>
 <div class="org-src-container">
 
-<pre class="src src-haskell"> instance Applicative ((-&gt;) r) where 
+<pre class="src src-haskell"> instance Applicative ((-&gt;) r) where
     pure a x = \_ -&gt; x
     (f &lt;*&gt; g) x = (f x)(g x)
-    f &lt;$&gt; g = f . g 
+    f &lt;$&gt; g = f . g
 -- prove
 f (a-&gt;b) = \x -&gt; \a -&gt; b = \x -&gt; \a -&gt; (h a) x -- h (a,x)
 f a = \x' -&gt; a = \x' -&gt; k x'
@@ -190,7 +190,7 @@ f a = \x' -&gt; a = g x'
 (a-&gt;b) &lt;$&gt; f a = \x' -&gt; h (g x') = \x' -&gt; h . g $ x'
 -- example
 (+) &lt;$&gt; (*2) &lt;*&gt; (+10) 3= ((+) . (*2)) 3)(+10 3) = ((+) . (*2) $ 3)(+10 3)
-			= ((+) . 6) 13 = (+6) 13 = 19
+                        = ((+) . 6) 13 = (+6) 13 = 19
 </pre>
 </div>
 </div>

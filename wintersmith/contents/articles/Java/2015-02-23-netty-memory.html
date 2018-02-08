@@ -60,7 +60,7 @@ private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler
 {
      @Override
      protected PooledDirectByteBuf newObject(Handle handle) {
-	 return new PooledDirectByteBuf(handle, 0);
+         return new PooledDirectByteBuf(handle, 0);
      }
 };
 </pre>
@@ -76,7 +76,7 @@ private static final Recycler&lt;PooledDirectByteBuf&gt; RECYCLER = new Recycler
 private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&lt;PooledHeapByteBuf&gt;() {
       @Override
       protected PooledHeapByteBuf newObject(Handle handle) {
-	  return new PooledHeapByteBuf(handle, 0);
+          return new PooledHeapByteBuf(handle, 0);
       }
 };
 </pre>
@@ -93,7 +93,7 @@ private static final Recycler&lt;PooledHeapByteBuf&gt; RECYCLER = new Recycler&l
  private static final Recycler&lt;PooledUnsafeDirectByteBuf&gt; RECYCLER = new Recycler&lt;PooledUnsafeDirectByteBuf&gt;() {
       @Override
       protected PooledUnsafeDirectByteBuf newObject(Handle handle) {
-	  return new PooledUnsafeDirectByteBuf(handle, 0);
+          return new PooledUnsafeDirectByteBuf(handle, 0);
      }
  };
 </pre>

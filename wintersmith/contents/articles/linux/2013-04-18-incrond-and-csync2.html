@@ -230,7 +230,7 @@ incrond 要求内核支持inotify（内核版本要在2.6.13之上）。因为�
 <ul class="org-ul">
 <li>下载代码：<a href="http://inotify.aiken.cz/?section=incron&page=download&lang=en">http://inotify.aiken.cz/?section=incron&page=download&lang=en</a>
 </li>
-<li>编译 
+<li>编译
 <div class="org-src-container">
 
 <pre class="src src-sh">make &amp;&amp; sudo make install
@@ -308,8 +308,8 @@ csync2 解决了集群内机器将同步问题，但是csync2需要通过手动�
 <div class="org-src-container">
 
 <pre class="src src-sh">(
-  flock -n 100 || exit 
-  sleep 1 
+  flock -n 100 || exit
+  sleep 1
   echo [$(date +'%y-%m-%d %h:%M:%S')] "${1:-crontab}" &gt;&gt;/home/admin/logs/resource_sync.log
   /usr/local/sbin/csync2 -vx 2&gt;&gt;/home/admin/logs/csync2.log
   sleep 1
@@ -321,7 +321,7 @@ csync2 解决了集群内机器将同步问题，但是csync2需要通过手动�
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">#Run script every 15 seconds : 
+<pre class="src src-sh">#Run script every 15 seconds :
 * * * * * /foo/bar/your_script
 * * * * * sleep 15; /foo/bar/your_script
 * * * * * sleep 30; /foo/bar/your_script

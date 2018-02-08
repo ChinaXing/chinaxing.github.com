@@ -53,27 +53,27 @@ select 有一些缺点：
 
 <pre class="src src-c">fd_set fd_in, fd_out;
 struct timeval tv;
- 
+
 // Reset the sets
 FD_ZERO( &amp;fd_in );
 FD_ZERO( &amp;fd_out );
- 
+
 // Monitor sock1 for input events
 FD_SET( sock1, &amp;fd_in );
- 
+
 // Monitor sock2 for output events
 FD_SET( sock1, &amp;fd_out );
- 
+
 // Find out which socket has the largest numeric value as select requires it
 int largest_sock = sock1 &gt; sock2 ? sock1 : sock2;
- 
+
 // Wait up to 10 seconds
 tv.tv_sec = 10;
 tv.tv_usec = 0;
- 
+
 // Call the select
 int ret = select( largest_sock, &amp;fd_in, &amp;fd_out, NULL, &amp;tv );
- 
+
 // Check if select actually succeed
 if ( ret == -1 )
     // report error and abort
@@ -83,7 +83,7 @@ else
 {
     if ( FD_ISSET( sock1, &amp;fd_in ) )
         // input event on sock1
- 
+
     if ( FD_ISSET( sock2, &amp;fd_out ) )
         // output event on sock2
 }
@@ -134,12 +134,12 @@ else
 {
     // If we detect the event, zero it out so we can reuse the structure
     if ( pfd[0].revents &amp; POLLIN )
-	pfd[0].revents = 0;
-	// input event on sock1
+        pfd[0].revents = 0;
+        // input event on sock1
 
     if ( pfd[1].revents &amp; POLLOUT )
-	pfd[1].revents = 0;
-	// output event on sock2
+        pfd[1].revents = 0;
+        // output event on sock2
 }
 </pre>
 </div>
@@ -162,7 +162,7 @@ epoll的改进点有：
 
 <pre class="src src-c">// Create the epoll descriptor. Only one is needed per app, and is used to monitor all sockets.
 // The function argument is ignored (it was not before, but now it is), so put your favorite number here
-int pollingfd = epoll_create( 0xCAFE ); 
+int pollingfd = epoll_create( 0xCAFE );
 
 if ( pollingfd &lt; 0 )
  // report error
@@ -176,7 +176,7 @@ ev.data.ptr = pConnection1;
 
 // Monitor for input, and do not automatically rearm the descriptor after the event
 ev.events = EPOLLIN | EPOLLONESHOT;
-// Add the descriptor into the monitoring list. We can do it even if another thread is 
+// Add the descriptor into the monitoring list. We can do it even if another thread is
 // waiting in epoll_wait - the descriptor will be properly added
 if ( epoll_ctl( epollfd, EPOLL_CTL_ADD, pConnection1-&gt;getSocket(), &amp;ev ) != 0 )
     // report error
@@ -196,12 +196,12 @@ else
     // Check if any events detected
     for ( int i = 0; i &lt; ret; i++ )
     {
-	if ( pevents[i].events &amp; EPOLLIN )
-	{
-	    // Get back our connection pointer
-	    Connection * c = (Connection*) pevents[i].data.ptr;
-	    c-&gt;handleReadEvent();
-	 }
+        if ( pevents[i].events &amp; EPOLLIN )
+        {
+            // Get back our connection pointer
+            Connection * c = (Connection*) pevents[i].data.ptr;
+            c-&gt;handleReadEvent();
+         }
     }
 }
 </pre>

@@ -104,14 +104,14 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 { 
-    range 192.168.33.2 192.168.33.114; 
-    default-lease-time 86400; 
-    max-lease-time 259200; 
-    option subnet-mask 255.255.255.0; 
-    option broadcast-address 192.168.33.255; 
-    option routers 192.168.33.2; 
-    option domain-name-servers 192.168.33.2; 
+<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 {
+    range 192.168.33.2 192.168.33.114;
+    default-lease-time 86400;
+    max-lease-time 259200;
+    option subnet-mask 255.255.255.0;
+    option broadcast-address 192.168.33.255;
+    option routers 192.168.33.2;
+    option domain-name-servers 192.168.33.2;
 }
 </pre>
 </div>
@@ -156,7 +156,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 <li>登陆后我们可以设置Pi的网络配置，配成静态地址，这样就不需要使用dhcp了。网络配置在/etc/network/interfaces
 <pre class="example">
 auto eth0
-#iface eth0 inet dhcp 
+#iface eth0 inet dhcp
 iface eth0 inet static
 address 192.168.33.3
 netmask 255.255.255.0
@@ -230,7 +230,7 @@ Fedora当路由器作用，同时作Nat功能，将Pi的地址转换为Fedora连
 <div class="org-src-container">
 
 <pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT \
-	--to-source 192.168.1.100 --random
+        --to-source 192.168.1.100 --random
 </pre>
 </div>
 

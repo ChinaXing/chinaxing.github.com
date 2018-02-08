@@ -92,7 +92,7 @@ ret = do
 <pre class="src src-haskell">  instance Monad ((-&gt;) r) where
     return x = \_ -&gt; x
     h &gt;&gt;= f = \w -&gt; f (h w) w
--- 
+--
     f &lt;*&gt; h = \w -&gt; f (h w) w
     -- so
     flip &lt;*&gt; == &gt;&gt;=
@@ -114,10 +114,10 @@ State Monad中有2个部分：状态s和当前值a，其中a表示状态为s的�
 newtype State s a = State { runState :: s -&gt; (a, s) }
 instance Monad (State s) where
   return x = State $ \s -&gt; (x,s)
-  (State h) &gt;&gt;= f = State $ \s -&gt; 
-			    let (a, state) = h s -- get state and value
-				(State g) = f a -- \s -&gt; (f a, newState )
-			    in g state -- (f a, newState)
+  (State h) &gt;&gt;= f = State $ \s -&gt;
+                            let (a, state) = h s -- get state and value
+                                (State g) = f a -- \s -&gt; (f a, newState )
+                            in g state -- (f a, newState)
 </pre>
 </div>
 <p>
@@ -127,7 +127,7 @@ State Monad 的bind操作是作用在value上面，即 <code>f :: a -&gt; State 
 
 <pre class="src src-haskell">get :: State s s
 get = State $ \s -&gt; (s,s) -- where s == a, extract will be s
-put :: s -&gt; State s () 
+put :: s -&gt; State s ()
 put newState = State $ \s -&gt; ((), newState)
 </pre>
 </div>
@@ -138,7 +138,7 @@ put newState = State $ \s -&gt; ((), newState)
 <div class="outline-text-2" id="text-6">
 <div class="org-src-container">
 
-<pre class="src src-haskell"> instance Error e =&gt; Monad (Either e) where 
+<pre class="src src-haskell"> instance Error e =&gt; Monad (Either e) where
     return x = Right x
     Left err &gt;&gt;= f = Left err -- shortcut
     Right x &gt;&gt; f = f x -- just pass value
@@ -209,7 +209,7 @@ liftM3, liftM4, liftM5
 join mm = do -- smart
      m &lt;- mm
      m
--- 
+--
 join [[1,2,3],[4,5,6]] -- [1,2,3,4,5,6]
 </pre>
 </div>
@@ -240,7 +240,7 @@ powerset xs = liftM (\x -&gt; [True, False]) xs
 
 <pre class="src src-haskell">foldl :: (a -&gt; b -&gt;a) -&gt; a -&gt; [b] -&gt; a
 foldM :: (Monad m) =&gt; (a -&gt; b -&gt; m a) -&gt; a -&gt; [b] -&gt; m a
--- 
+--
 foldl (\cc x -&gt; cc + x) 0 [2,3,4,5]
 foldM (\cc x -&gt; return cc + x) 0 [2,3,4,5]
 </pre>
@@ -256,7 +256,7 @@ foldM (\cc x -&gt; return cc + x) 0 [2,3,4,5]
 -- like . normal function composition
 let f = (+1) . (*100) -- normal function composition
 let g = (\x -&gt; return (x+1)) &lt;=&lt; (\x -&gt; return (x * 100)) -- Monad chain
--- 
+--
 Just 4 &gt;&gt;= g
 -- (4 + 1) * 100
 let f = foldr (.) id [(+1), (*100), (+1)]

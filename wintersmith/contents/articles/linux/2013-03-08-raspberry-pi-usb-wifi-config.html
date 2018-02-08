@@ -74,7 +74,7 @@ network={
 说明：
 </p>
 <ul class="org-ul">
-<li>ssid : 无线AP的名称 
+<li>ssid : 无线AP的名称
 </li>
 <li>key\_mgmt : 管理方式，如果是WPA2-PSK也要填写WPA—PSK，请注意。
 </li>
@@ -99,7 +99,7 @@ wpa_passphrase [ssid] [password]
 <pre class="example">
 auto wlan0
 allow-hotplug wlan0
-iface wlan0 inet dhcp 
+iface wlan0 inet dhcp
       wpa-driver wext # 明确使用wext驱动，不然wap_supplicant会尝试另一个驱动（没必要）
       wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 </pre>
@@ -136,7 +136,7 @@ wap\_supplicant 将日志通过syslog输出，因此我们可以在/var/log/daem
 <div class="outline-text-3" id="text-4-2">
 <p>
 这个程序使用客户端服务端的模式，一个叫wap_supplicant的程序启动起来做daemon进程，然后叫wap\_cli的程序会作为客户端，连接daemon进程，
-发送命令（如链接具体的AP）等。 
+发送命令（如链接具体的AP）等。
 </p>
 
 <p>

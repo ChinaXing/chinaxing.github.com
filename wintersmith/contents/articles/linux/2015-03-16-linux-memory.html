@@ -32,7 +32,7 @@ tag: Linux
 <h2 id="sec-1">应用程序内存</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。  
+处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。
 </p>
 
 <p>
@@ -161,11 +161,11 @@ swap 用来交换匿名页，在内存紧张的时候，内核将匿名页面换
 <div class="org-src-container">
 
 <pre class="src src-shell">#To free pagecache:
-	echo 1 &gt; /proc/sys/vm/drop_caches
+        echo 1 &gt; /proc/sys/vm/drop_caches
 #To free reclaimable slab objects (includes dentries and inodes):
-	echo 2 &gt; /proc/sys/vm/drop_caches
+        echo 2 &gt; /proc/sys/vm/drop_caches
 #To free slab objects and pagecache:
-	echo 3 &gt; /proc/sys/vm/drop_caches
+        echo 3 &gt; /proc/sys/vm/drop_caches
 </pre>
 </div>
 </div>

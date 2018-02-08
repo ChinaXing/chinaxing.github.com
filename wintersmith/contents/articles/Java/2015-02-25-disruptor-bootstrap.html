@@ -104,42 +104,42 @@ next 函数是同步的关键，它使用CAS无锁算法，检查所申请的空
 <pre class="src src-java">//com.lmax.disruptor.MultiProducerSequencer#next(int)
 public long next(int n)
     {
-	if (n &lt; 1)
-	{
-	    throw new IllegalArgumentException("n must be &gt; 0");
-	}
+        if (n &lt; 1)
+        {
+            throw new IllegalArgumentException("n must be &gt; 0");
+        }
 
-	long current;
-	long next;
+        long current;
+        long next;
 
-	do
-	{
-	    current = cursor.get();
-	    next = current + n;
+        do
+        {
+            current = cursor.get();
+            next = current + n;
 
-	    long wrapPoint = next - bufferSize;
-	    long cachedGatingSequence = gatingSequenceCache.get();
-	    // 判断是否有覆盖——申请区域不能wrap待消费区域
-	    if (wrapPoint &gt; cachedGatingSequence || cachedGatingSequence &gt; current)
-	    {
-		long gatingSequence = Util.getMinimumSequence(gatingSequences, current);
+            long wrapPoint = next - bufferSize;
+            long cachedGatingSequence = gatingSequenceCache.get();
+            // 判断是否有覆盖——申请区域不能wrap待消费区域
+            if (wrapPoint &gt; cachedGatingSequence || cachedGatingSequence &gt; current)
+            {
+                long gatingSequence = Util.getMinimumSequence(gatingSequences, current);
 
-		if (wrapPoint &gt; gatingSequence)
-		{
-		    LockSupport.parkNanos(1); 
-		    continue;
-		}
+                if (wrapPoint &gt; gatingSequence)
+                {
+                    LockSupport.parkNanos(1);
+                    continue;
+                }
 
-		gatingSequenceCache.set(gatingSequence);
-	    } // 使用CAS操作，好处是没有线程切换开销，坏处是需要频繁执行上面的代码
-	    else if (cursor.compareAndSet(current, next))
-	    {
-		break;
-	    }
-	}
-	while (true);
+                gatingSequenceCache.set(gatingSequence);
+            } // 使用CAS操作，好处是没有线程切换开销，坏处是需要频繁执行上面的代码
+            else if (cursor.compareAndSet(current, next))
+            {
+                break;
+            }
+        }
+        while (true);
 
-	return next;
+        return next;
     }
 </pre>
 </div>
@@ -156,31 +156,31 @@ public long next(int n)
 <pre class="src src-java">//com.lmax.disruptor.SingleProducerSequencer#next(int)
 public long next(int n)
     {
-	if (n &lt; 1)
-	{
-	    throw new IllegalArgumentException("n must be &gt; 0");
-	}
+        if (n &lt; 1)
+        {
+            throw new IllegalArgumentException("n must be &gt; 0");
+        }
 
-	long nextValue = this.nextValue;
+        long nextValue = this.nextValue;
 
-	long nextSequence = nextValue + n;
-	long wrapPoint = nextSequence - bufferSize;
-	long cachedGatingSequence = this.cachedValue;
+        long nextSequence = nextValue + n;
+        long wrapPoint = nextSequence - bufferSize;
+        long cachedGatingSequence = this.cachedValue;
 
-	if (wrapPoint &gt; cachedGatingSequence || cachedGatingSequence &gt; nextValue)
-	{
-	    long minSequence;
-	    while (wrapPoint &gt; (minSequence = Util.getMinimumSequence(gatingSequences, nextValue)))
-	    {
-		LockSupport.parkNanos(1L); // TODO: Use waitStrategy to spin?
-	    }
+        if (wrapPoint &gt; cachedGatingSequence || cachedGatingSequence &gt; nextValue)
+        {
+            long minSequence;
+            while (wrapPoint &gt; (minSequence = Util.getMinimumSequence(gatingSequences, nextValue)))
+            {
+                LockSupport.parkNanos(1L); // TODO: Use waitStrategy to spin?
+            }
 
-	    this.cachedValue = minSequence;
-	}
+            this.cachedValue = minSequence;
+        }
 
-	this.nextValue = nextSequence;
+        this.nextValue = nextSequence;
 
-	return nextSequence;
+        return nextSequence;
     }
 </pre>
 </div>

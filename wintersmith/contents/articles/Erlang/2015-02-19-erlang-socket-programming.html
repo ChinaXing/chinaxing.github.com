@@ -155,13 +155,13 @@ UDP多播需要特殊的UDP地址，UDP多播通常无法跨越局域网，因�
 
 <pre class="src src-erlang">send(Data) -&gt;
     case inet:ifget("en0", [broadaddr]) of %% 获取多播Ip
-	 {ok, [{broadaddr, Ip}]} -&gt;
-	    {ok, S} = gen_udp:open(5019, [{broadcast, true}]), %% 多播设置为true
-	    gen_udp:send(S,Ip,6000,Data), %% Ip，端口
-	    gen_udp:close(S);
-	  _ -&gt;
-	    io:format("Bad interface name, or\n"
-		      "broadcasting not supported\n")
+         {ok, [{broadaddr, Ip}]} -&gt;
+            {ok, S} = gen_udp:open(5019, [{broadcast, true}]), %% 多播设置为true
+            gen_udp:send(S,Ip,6000,Data), %% Ip，端口
+            gen_udp:close(S);
+          _ -&gt;
+            io:format("Bad interface name, or\n"
+                      "broadcasting not supported\n")
     end.
 listen() -&gt;
     {ok, _} = gen_udp:open(6000),
@@ -170,8 +170,8 @@ listen() -&gt;
 loop() -&gt;
     receive
       Any -&gt;
-	  io:format("received : ~p~n", [Any]),
-	  loop()
+          io:format("received : ~p~n", [Any]),
+          loop()
     end.
 </pre>
 </div>

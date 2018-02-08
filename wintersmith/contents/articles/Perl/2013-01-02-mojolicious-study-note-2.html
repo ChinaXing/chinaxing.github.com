@@ -72,11 +72,11 @@ tag: Mojolicious
 <h3 id="sec-1-2">controller</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
-<li>路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。  
+<li>路由的目的地是controller中的某个action，由此action来处理。一个controller一个perl模块，包含多个action作为subrutine。
 </li>
-<li>controller是Mojolicious::Controller的子类。  
+<li>controller是Mojolicious::Controller的子类。
 </li>
-<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class('PeSystem::Controller') 设定$app的默认controller.  
+<li>默认的controller是Mojolicious::Controller,通过$app-&gt;controller_class('PeSystem::Controller') 设定$app的默认controller.
 </li>
 <li>controller获得app: <b>$self-&gt;app</b>
 </li>
@@ -94,7 +94,7 @@ tag: Mojolicious
 <h3 id="sec-1-3">action</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
-<li>action是controller内的子过程。操作都是在action内进行的.  
+<li>action是controller内的子过程。操作都是在action内进行的.
 </li>
 <li>渲染页面: <b>$self-&gt;render('&#x2026;'),$self-&gt;render_exception,$self-&gt;redirect_to(&#x2026;),$self-&gt;render</b>,如果controller没有显式渲染，controller返回后页面会被自动渲染。
 </li>
@@ -106,7 +106,7 @@ tag: Mojolicious
 <h3 id="sec-1-4">template</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
-<li>模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）  
+<li>模版，根据format的不通会自动选择不通的模版:$namespace/$controller/$action.$format.ep, ep结尾表示mojo的内置模版类型（可以嵌入perl）
 </li>
 <li>异常模版: exception.$mode.$format.ep,exception.$format.ep, $mode为mojo运行的模式（如production,development）
 </li>
@@ -120,15 +120,15 @@ tag: Mojolicious
 <h3 id="sec-1-5">异常</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
-<li>Mojo::Exception 是其异常类  
+<li>Mojo::Exception 是其异常类
 </li>
-<li>Mojo是通过local $SIG{<span class="underline"><span class="underline">DIE</span></span>}来注册自己的异常捕获的。  
+<li>Mojo是通过local $SIG{<span class="underline"><span class="underline">DIE</span></span>}来注册自己的异常捕获的。
 </li>
-<li>主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.  
+<li>主动抛出异常用die "string",用Mojo::Exception-&gt;throw('string')不会携带上下文信息.
 </li>
-<li>controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.  
+<li>controller的render_exception用来渲染异常页面，它会示例化Mojo::Exception类，然后渲染，同样也不会带上下文信息，所以建议不主动使用.
 </li>
-<li>捕获异常: 
+<li>捕获异常:
 <div class="org-src-container">
 
 <pre class="src src-perl">eval { code } or do { die "xxx" }
@@ -145,7 +145,7 @@ tag: Mojolicious
 <h3 id="sec-1-6">helper</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
-<li>辅助工具，默认的/自带的Mojolicious::Plugin::DefaultHelpers 包含stash,dumper等方法.  
+<li>辅助工具，默认的/自带的Mojolicious::Plugin::DefaultHelpers 包含stash,dumper等方法.
 </li>
 <li>也可以自己方便地写helper。
 </li>
@@ -157,7 +157,7 @@ tag: Mojolicious
 <h3 id="sec-1-7">plugin</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
-<li>插件，许多功能通过插件来添加到Mojo.如Config插件，  
+<li>插件，许多功能通过插件来添加到Mojo.如Config插件，
 </li>
 <li>使用插件：
 <div class="org-src-container">
@@ -380,7 +380,7 @@ morbo 启动mojolicious app 则会检测代码变化，然后自动reload ,一�
 使用插件Mojolicious::Plugin::I18N
 </p>
 <ul class="org-ul">
-<li>自定义I18N类,通过配置此插件,然后在需要国际化的地方调用: $self-&gt;l, 如果是模版内,可以使用helper: l 
+<li>自定义I18N类,通过配置此插件,然后在需要国际化的地方调用: $self-&gt;l, 如果是模版内,可以使用helper: l
 </li>
 <li>I18N类,继承Locale::Maketext,然后进行Hack,见其Perldoc
 </li>

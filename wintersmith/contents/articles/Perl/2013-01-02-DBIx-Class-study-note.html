@@ -71,7 +71,7 @@ DBIx::Class 的入门介绍可以看<a href="http://search.cpan.org/~getty/DBIx-
 下面逐一介绍:
 </p>
 <ol class="org-ol">
-<li>Schema: 表示数据库。  
+<li>Schema: 表示数据库。
 <ol class="org-ol">
 <li>连接数据库
 <div class="org-src-container">
@@ -96,7 +96,7 @@ DBIx::Class 的入门介绍可以看<a href="http://search.cpan.org/~getty/DBIx-
 </li>
 </ol>
 </li>
-<li>Result: 表示表  
+<li>Result: 表示表
 <ol class="org-ol">
 <li>定义在MySchema/Result/下:
 <div class="org-src-container">
@@ -114,7 +114,7 @@ __PACKAGE__-&gt;add_columns(qw/col1 col2/);
 </ol>
 </li>
 
-<li>ResultSet: 表示查询  
+<li>ResultSet: 表示查询
 <ol class="org-ol">
 <li>如果有则定义在MySchema/ResultSet/下,表示对默认Resultet类的扩展，如加入自定义的方法。
 <a href="http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/ResultSet.pm#CUSTOM_ResultSet_CLASSES_THAT_USE_Moose">扩展方法</a>
@@ -139,7 +139,7 @@ $row=$resultset-&gt;find(1);
 </li>
 </ol>
 </li>
-<li>Row: 代表查询结果里面的行。  
+<li>Row: 代表查询结果里面的行。
 <ol class="org-ol">
 <li>取得row里面的数据:
 <div class="org-src-container">
@@ -152,7 +152,7 @@ $row-&gt;col1;
 </li>
 </ol>
 </li>
-<li>storage: 存储  
+<li>storage: 存储
 涉及具体数据库的通用存储层，下面的子类是其各个数据库的具体连接实现的DBI。
 <ol class="org-ol">
 <li>取得storage

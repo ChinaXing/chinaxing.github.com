@@ -50,7 +50,7 @@ EOF
 <h3 id="sec-1-2">使用 dbicdump 工具</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-该工具其实内部使用了DBIx::Class::Schema::Loader模块. 
+该工具其实内部使用了DBIx::Class::Schema::Loader模块.
 </p>
 <div class="org-src-container">
 
@@ -75,7 +75,7 @@ use base qw/DBIx::Class::Schema::Loader/;
 
 perl -MDBIx::Class::Schema::Loader=dump_to_dir:./ -MMy::Schema \
     -e 'My::Schema-&gt;connection("dbi:Pg:dbname=pesystem","pesystem","pesystem_password")'
-# or 
+# or
 use My::Schema;
 My::Schema-&gt;dump_to_dir('./');
 My::Schema-&gt;connection(...);

@@ -54,9 +54,9 @@ jdb listen $address # listen等待jvm的连接，这个模式比较奇怪，是�
 <div class="org-src-container">
 
 <pre class="src src-sh">#使用socket连接来进行jdb的交互(remote debug)
-java -agentlib:jdwp=transport=dt_socket,server=y,address=$address 
+java -agentlib:jdwp=transport=dt_socket,server=y,address=$address
 #使用共享内存模式来进行通信，本机调试
-java -agentlib:jdwp=transport=dt_shmem,server=y 
+java -agentlib:jdwp=transport=dt_shmem,server=y
 #获取jdwp调试选项的帮助
 java -agentlib:jdwp=help
 </pre>

@@ -32,7 +32,7 @@ man命令是如何查找命令的手册呢？
 <h2 id="sec-1">查找策略</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-man 命令查找命令帮助手册的策略:  
+man 命令查找命令帮助手册的策略:
 </p>
 <ul class="org-ul">
 <li>命令行指定 <b>-M</b> 参数，那么man命令使用这个目录搜索。否则,
@@ -56,14 +56,14 @@ man 命令查找命令帮助手册的策略:
 <h2 id="sec-2">说明</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
-<li>"Map"路径:  
+<li>"Map"路径:
 
 <p>
 这种路径相当于一张hash表，前面是命令所在的PATH搜索路径，后面是man手册的查找路径，man 会根据这个hash表查找该命令的man手册。
 </p>
 
 <p>
-<b>举例</b> :  
+<b>举例</b> :
 </p>
 <ol class="org-ol">
 <li>设置: <b>MANPATH_MAP <i>home/admin/git/bin /home/admin/git/man</i></b>
@@ -74,7 +74,7 @@ man 命令查找命令帮助手册的策略:
 </p>
 </li>
 
-<li>设置: <b>MANPATH_MAP /bin /home/admin/git/man</b> 
+<li>设置: <b>MANPATH_MAP /bin /home/admin/git/man</b>
 
 <p>
 当执行: <b>man git</b> 的时候， <b>man</b> 会根据 <b>PATH</b> 查找 <b>git</b> 命令的位置，在 <b>/home/admin/git/bin</b> 下面找到了，
@@ -84,18 +84,18 @@ man 命令查找命令帮助手册的策略:
 </ol>
 </li>
 
-<li>man查找对象:  
+<li>man查找对象:
 
 <p>
 查找对象为 <b>topic.section</b> ,如果没找到，则查找 <b>man[section]/topic.section</b> ,如: <b>man1/git.1</b> 。
 </p>
 </li>
 
-<li>nearby查找:  
-nearby查找查找什么呢？  
+<li>nearby查找:
+nearby查找查找什么呢？
 
 <p>
-通过我实验，会在本目录先查找 <b>man</b> ,如果没找到, 然后查找 <b>man[section]</b> 目录  
+通过我实验，会在本目录先查找 <b>man</b> ,如果没找到, 然后查找 <b>man[section]</b> 目录
 </p>
 
 <p>

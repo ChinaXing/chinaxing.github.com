@@ -301,15 +301,15 @@ commands现在的app属性已经设置为MyApp.
 
       $stream-&gt;on(close =&gt; sub { $self-&gt;_close($id) });
       $stream-&gt;on(
-	error =&gt; sub {
-	  return unless $self;
-	  $self-&gt;app-&gt;log-&gt;error(pop);
-	  $self-&gt;_close($id);
-	}
+        error =&gt; sub {
+          return unless $self;
+          $self-&gt;app-&gt;log-&gt;error(pop);
+          $self-&gt;_close($id);
+        }
       );
       $stream-&gt;on(read =&gt; sub { $self-&gt;_read($id =&gt; pop) });
       $stream-&gt;on(timeout =&gt;
-	  sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout.') if $c-&gt;{tx} });
+          sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout.') if $c-&gt;{tx} });
     }
   );
   push @{$self-&gt;{acceptors} ||= []}， $id;
