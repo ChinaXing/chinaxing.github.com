@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -104,7 +104,7 @@ Bootstrap有2种，一种是服务端Socket的Bootstrap，接收链接，然后f
    @Override
    public void initChannel(Channel ch) throws Exception {
       ch.pipeline().addLast(new ServerBootstrapAcceptor( // 就是这个
-	 currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
+         currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
    }
 });
 </pre>
@@ -194,7 +194,7 @@ channel按照其读取数据的最小单元分，可以分为2类：
 <dl class="org-dl">
 <dt> ByteChannel </dt><dd>字节为最小单位，是一个字节流，如socketchannel就是如此。
 </dd>
-<dt> MessageChannel </dt><dd>消息体为单位，是一个消息流，如ServerSocketChannel和DataGramChannel。 
+<dt> MessageChannel </dt><dd>消息体为单位，是一个消息流，如ServerSocketChannel和DataGramChannel。
 </dd>
 </dl>
 
@@ -297,58 +297,58 @@ NioEventLoop&nbsp;的实现如下：
 <div class="org-src-container">
 
 <pre class="src src-java">protected void run() {
-	for (;;) { //发生在一个channel的selector上面的事件循环，直到channel被关闭才退出
-	    // 清除wakeup，保证后续的wakeup操作可以成功（wakeup采用CAS）
-	    boolean oldWakenUp = wakenUp.getAndSet(false); 
-	    try {
-		// 如果有任务需要执行，则执行no-blocking的select，保证任务及时被执行
-		if (hasTasks()) { 
-		    selectNow();
-		} else {
-	      // 执行select。此处有2种情况，1. 如果在此之前执行了wakeup，则会立即返回，
-	      // 2.执行timeout的select，直到有事件或者设置wakeup标记
-		    select(oldWakenUp); 
+        for (;;) { //发生在一个channel的selector上面的事件循环，直到channel被关闭才退出
+            // 清除wakeup，保证后续的wakeup操作可以成功（wakeup采用CAS）
+            boolean oldWakenUp = wakenUp.getAndSet(false);
+            try {
+                // 如果有任务需要执行，则执行no-blocking的select，保证任务及时被执行
+                if (hasTasks()) {
+                    selectNow();
+                } else {
+              // 执行select。此处有2种情况，1. 如果在此之前执行了wakeup，则会立即返回，
+              // 2.执行timeout的select，直到有事件或者设置wakeup标记
+                    select(oldWakenUp);
       // 如果select完毕后，wakeup标记被设置，为了保证下次select可以及时返回，需要再次设置selector的wakeup
       // 主要是可能之前设置的wakeup发生在select之前，那么就会被马上发生的select消费掉，那么后续的CAS都会失败，
       // 直到下次for循环设置wakenup后的CAS才会成功, 这里是补救这期间的这种情况的唤醒也是成功的。
-		    if (wakenUp.get()) { 
-			selector.wakeup();
-		    }
-		}
+                    if (wakenUp.get()) {
+                        selector.wakeup();
+                    }
+                }
 
-		cancelledKeys = 0; // 到这里已经拿到了SelectedKeys，或者是需要被唤醒
-		needsToSelectAgain = false;
-		final int ioRatio = this.ioRatio; // ioRatio代表需要执行IO事件处理与任务之间的比例
-		if (ioRatio == 100) {
-		    processSelectedKeys(); // 先执行io事件处理
-		    runAllTasks(); // 再执行所有任务（包含延迟任务）
-		} else {
-		    final long ioStartTime = System.nanoTime();
+                cancelledKeys = 0; // 到这里已经拿到了SelectedKeys，或者是需要被唤醒
+                needsToSelectAgain = false;
+                final int ioRatio = this.ioRatio; // ioRatio代表需要执行IO事件处理与任务之间的比例
+                if (ioRatio == 100) {
+                    processSelectedKeys(); // 先执行io事件处理
+                    runAllTasks(); // 再执行所有任务（包含延迟任务）
+                } else {
+                    final long ioStartTime = System.nanoTime();
 
-		    processSelectedKeys();
+                    processSelectedKeys();
 
-		    final long ioTime = System.nanoTime() - ioStartTime;
-		    runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
-		}
+                    final long ioTime = System.nanoTime() - ioStartTime;
+                    runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
+                }
 
-		if (isShuttingDown()) { 
-		    closeAll();
-		    if (confirmShutdown()) {
-			break;
-		    }
-		}
-	    } catch (Throwable t) {
-		logger.warn("Unexpected exception in the selector loop.", t);
+                if (isShuttingDown()) {
+                    closeAll();
+                    if (confirmShutdown()) {
+                        break;
+                    }
+                }
+            } catch (Throwable t) {
+                logger.warn("Unexpected exception in the selector loop.", t);
 
-		// Prevent possible consecutive immediate failures that lead to
-		// excessive CPU consumption.
-		try {
-		    Thread.sleep(1000);
-		} catch (InterruptedException e) {
-		    // Ignore.
-		}
-	    }
-	}
+                // Prevent possible consecutive immediate failures that lead to
+                // excessive CPU consumption.
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
+            }
+        }
     }
 </pre>
 </div>

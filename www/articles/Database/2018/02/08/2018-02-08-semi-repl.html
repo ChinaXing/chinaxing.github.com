@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width">
-    <title>好的状态 - The Chinaxing's blog
+    <title>MySQL semi-replication wait point的问题 - The Chinaxing's blog
     </title>
     <link rel="stylesheet" href="/css/styles.css">
     <script type="text/javascript" src="/js/index.js"></script>
@@ -14,7 +14,7 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li class="active"><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
           <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
@@ -24,7 +24,7 @@
           <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
-          <li class="active"><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
           <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
         </ul>
         <!-- vistor map-->
@@ -33,93 +33,57 @@
     </header>
     <section id="content">
       <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
-      <h2 style="text-align:center">好的状态
+      <h2 style="text-align:center">MySQL semi-replication wait point的问题
       </h2>
       <div id="toc">Table of Content
         <ol></ol>
       </div>
-      <div class="article">
+      <link rel="stylesheet" href="/css/highlight/github.css">
+      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
+      <div class="tech">
 <p>
-<b>热爱</b>
+在MySQL半同步机制中，关于事务提交与等待Slave确认binlog复制完成有一个可选项，可以配置事务提交前/后等待slave完成复制。
 </p>
 
 <p>
-热爱不沉迷，<br  />
-热爱有所成，<br  />
-热爱而精进，<br  />
-热爱而客观，<br  />
-热爱而全面，<br  />
-热爱而高度，<br  />
-热爱而理性的深入，<br  />
-热爱而超脱与外延。<br  />
+<code>rpl_semi_sync_master_wait_point</code>
+</p>
+
+<ul class="org-ul">
+<li>AFTER_SYNC&nbsp;刷binlog日志到磁盘后，发起等待，Slave应答后，再Commit事务
+</li>
+<li>AFTER_COMMIT 刷binlog日志到磁盘，commit 事务，然后发起等待，Slave&nbsp;应答后回应Client事务完成
+</li>
+</ul>
+
+<p>
+2种不同的同步点，决定了MySQL在主库故障后recover时的情况。
 </p>
 
 <p>
-<b>精诚</b>
+<code>AFTER_SYNC</code> 情形下，主库可能有未提交的事务，而Slave已提交，即主库的事务可能比备库少。
 </p>
 
 <p>
-精诚而冷静，<br  />
-精诚而无扰，<br  />
-精诚而渐进，<br  />
-精诚而深入，<br  />
-精诚而坚持，<br  />
-精诚而彻底，<br  />
-精诚而突破，<br  />
-精诚而知至，<br  />
-精诚而获其道非其形态。<br  />
+<code>AFTER_COMMIT</code> 情形下，主库事务可能会多于备库，这与异步复制时候是相同的。
 </p>
 
 <p>
-<b>如一</b>
-</p>
-
-<p>
-如一而简洁，<br  />
-如一而秉持，<br  />
-如一而推广，<br  />
-如一而不怠，<br  />
-如一而认真，<br  />
-如一而勇敢，<br  />
-如一而践行，<br  />
-如一而不妥协不求同。<br  />
-</p>
-
-<p>
-<b>目标</b>
-</p>
-
-<p>
-目标于理性，<br  />
-目标于价值，<br  />
-目标于恒久，<br  />
-目标于坚定，<br  />
-目标于不马虎而放于心敏于行。<br  />
-</p>
-
-<p>
-<b>坚持</b>
-</p>
-
-<p>
-坚持于价值，<br  />
-坚持于认真，<br  />
-坚持于真实，<br  />
-坚持于每一步在成效而非时长。<br  />
-</p>
-
-<p>
-<b>价值</b>
-</p>
-
-<p>
-价值于自我，<br  />
-价值于事实，<br  />
-价值于本质，<br  />
-价值于客观理性而非虚假荣誉。<br  />
+MySQL默认的配置是 <code>AFTER_SYNC</code> 。也就是会存在主库事务少于备库的情形。
 </p>
 
       </div>
+      <script>
+        $(function(){
+         $('pre.src').each(function(i, block){
+            var b = $(block);
+            var m = b.attr('class').match(/src src-(.*)/,1);
+            if (null == m || m.length < 2 ) { return; }
+            b.addClass(m[1]);
+            hljs.highlightBlock(block);
+         });
+        })
+      </script>
       <!-- Table of Content-->
       <script src="/js/tableofcontents.js" charset="utf-8"></script>
       <script charset="utf-8">

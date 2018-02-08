@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -89,9 +89,9 @@ jdb listen $address # listen等待jvm的连接，这个模式比较奇怪，是�
 <div class="org-src-container">
 
 <pre class="src src-sh">#使用socket连接来进行jdb的交互(remote debug)
-java -agentlib:jdwp=transport=dt_socket,server=y,address=$address 
+java -agentlib:jdwp=transport=dt_socket,server=y,address=$address
 #使用共享内存模式来进行通信，本机调试
-java -agentlib:jdwp=transport=dt_shmem,server=y 
+java -agentlib:jdwp=transport=dt_shmem,server=y
 #获取jdwp调试选项的帮助
 java -agentlib:jdwp=help
 </pre>

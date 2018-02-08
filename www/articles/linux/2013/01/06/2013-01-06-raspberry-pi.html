@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -140,14 +140,14 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 { 
-    range 192.168.33.2 192.168.33.114; 
-    default-lease-time 86400; 
-    max-lease-time 259200; 
-    option subnet-mask 255.255.255.0; 
-    option broadcast-address 192.168.33.255; 
-    option routers 192.168.33.2; 
-    option domain-name-servers 192.168.33.2; 
+<pre class="src src-sh">subnet 192.168.33.0 netmask 255.255.255.0 {
+    range 192.168.33.2 192.168.33.114;
+    default-lease-time 86400;
+    max-lease-time 259200;
+    option subnet-mask 255.255.255.0;
+    option broadcast-address 192.168.33.255;
+    option routers 192.168.33.2;
+    option domain-name-servers 192.168.33.2;
 }
 </pre>
 </div>
@@ -191,7 +191,7 @@ Raspberry Pi在加电后就会自动启动系统，系统中sshd 服务已经配
 <li>登陆后我们可以设置Pi的网络配置，配成静态地址，这样就不需要使用dhcp了。网络配置在/etc/network/interfaces
 <pre class="example">
 auto eth0
-#iface eth0 inet dhcp 
+#iface eth0 inet dhcp
 iface eth0 inet static
 address 192.168.33.3
 netmask 255.255.255.0
@@ -264,7 +264,7 @@ gateway 192.168.33.2
 <div class="org-src-container">
 
 <pre class="src src-sh">sudo iptables -t nat -A POSTROUTING -j SNAT \
-	--to-source 192.168.1.100 --random
+        --to-source 192.168.1.100 --random
 </pre>
 </div>
 

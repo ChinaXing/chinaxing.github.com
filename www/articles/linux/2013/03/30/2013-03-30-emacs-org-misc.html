@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -80,27 +80,27 @@ Emacs org-mode 用来写blog,然后export&nbsp;出<span class="caps">HTML</span>
 ;; org-mode project define
 (setq org-publish-project-alist
       '(
-	("org-blog-content" ;; 博客内容
-	 ;; Path to your org files.
-	 :base-directory "~/ChinaXing.org/org/"
-	 :base-extension "org"
-	 ;; Path to your jekyll project.
-	 :publishing-directory "~/ChinaXing.org/jekyll/"
-	 :recursive t
-	 :publishing-function org-publish-org-to-html
-	 :headline-levels 4
-	 :html-extension "html"
-	 :table-of-contents t ;; 导出目录
-	 :body-only t ;; Only export section between &lt;body&gt;&lt;/body&gt;
-	 )
-	("org-blog-static" ;; 静态文件
-	 :base-directory "~/ChinaXing.org/org/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php\\|svg"
-	 :publishing-directory "~/ChinaXing.org/jekyll/"
-	 :recursive t
-	 :publishing-function org-publish-attachment)
-	("blog" :components ("org-blog-content" "org-blog-static"))
-	))
+        ("org-blog-content" ;; 博客内容
+         ;; Path to your org files.
+         :base-directory "~/ChinaXing.org/org/"
+         :base-extension "org"
+         ;; Path to your jekyll project.
+         :publishing-directory "~/ChinaXing.org/jekyll/"
+         :recursive t
+         :publishing-function org-publish-org-to-html
+         :headline-levels 4
+         :html-extension "html"
+         :table-of-contents t ;; 导出目录
+         :body-only t ;; Only export section between &lt;body&gt;&lt;/body&gt;
+         )
+        ("org-blog-static" ;; 静态文件
+         :base-directory "~/ChinaXing.org/org/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php\\|svg"
+         :publishing-directory "~/ChinaXing.org/jekyll/"
+         :recursive t
+         :publishing-function org-publish-attachment)
+        ("blog" :components ("org-blog-content" "org-blog-static"))
+        ))
 (setq org-src-fontify-natively t)
 ;; active Babel languages
 (org-babel-do-load-languages
@@ -144,11 +144,11 @@ org-babel&nbsp;可以在org文档中插入代码,并且会帮你语法高亮插�
 </p>
 <pre class="example">
 #+begin_src sh :exports both :results output :eval no-export
-  figlet 'china xing !'    
+  figlet 'china xing !'
 #+end_src
 
 #+RESULTS:
-:       _     _                    _               _ 
+:       _     _                    _               _
 :   ___| |__ (_)_ __   __ _  __  _(_)_ __   __ _  | |
 :  / __| '_ \| | '_ \ / _` | \ \/ / | '_ \ / _` | | |
 : | (__| | | | | | | | (_| |  &gt;  &lt;| | | | | (_| | |_|
@@ -164,7 +164,7 @@ org-babel&nbsp;可以在org文档中插入代码,并且会帮你语法高亮插�
 将org文档导出成html文档,要使导出的html文档中源代码部分保持语法高亮,需要如下设置:
 </p>
 <ol class="org-ol">
-<li>设置 org-src-fontify-natively 为 t 
+<li>设置 org-src-fontify-natively 为 t
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(setq org-src-fontify-natively t)
@@ -185,7 +185,7 @@ org-babel&nbsp;可以在org文档中插入代码,并且会帮你语法高亮插�
 </p>
 <pre class="example">
 #+begin_src sh :exports both :results output :eval no-export
-  figlet 'china xing !'    
+  figlet 'china xing !'
 #+end_src
 ...
 </pre>

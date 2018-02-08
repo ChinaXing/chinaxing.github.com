@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -67,7 +67,7 @@
 <h2 id="sec-1">应用程序内存</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。  
+处于用户态，每个程序运行时包括：代码、数据、栈，其中数据区可以分为分配数据对象的堆以及内存映射（mmap）。其中主要是数据区的内存使用占了大头。
 </p>
 
 <p>
@@ -195,11 +195,11 @@ swap 用来交换匿名页，在内存紧张的时候，内核将匿名页面换
 <div class="org-src-container">
 
 <pre class="src src-shell">#To free pagecache:
-	echo 1 &gt; /proc/sys/vm/drop_caches
+        echo 1 &gt; /proc/sys/vm/drop_caches
 #To free reclaimable slab objects (includes dentries and inodes):
-	echo 2 &gt; /proc/sys/vm/drop_caches
+        echo 2 &gt; /proc/sys/vm/drop_caches
 #To free slab objects and pagecache:
-	echo 3 &gt; /proc/sys/vm/drop_caches
+        echo 3 &gt; /proc/sys/vm/drop_caches
 </pre>
 </div>
 </div>

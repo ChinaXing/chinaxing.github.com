@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li class="active"><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -79,7 +79,7 @@ Erlang&nbsp;天然支持分布式，因此帮助我们免去实现分布式的�
 
 <pre class="src src-erlang">erl -sname node1 %% 启动本地节点 ：node1@localhost
 erl -name node2 -setcookie abc %% 启动节点，可以被外界链接：node2@hostname，
-			       %% 远程节点模式，需要设置cookie来进行集群识别
+                               %% 远程节点模式，需要设置cookie来进行集群识别
 </pre>
 </div>
 </div>
@@ -121,12 +121,12 @@ cookie可以通过三种方式来指定：
 <pre class="src src-erlang">nodes(). %% 获取已经建立链接的节点
 node(). %% 获取本节点的名称
 monitor_node(Node,Flag). %% 打开／关闭对目标节点的监控，
-			 %% 目标节点到本节点的链接建立与断开时候可以收到'{nodeup,Node}'
-			 %% 和'{nodedown,Node}'的消息
+                         %% 目标节点到本节点的链接建立与断开时候可以收到'{nodeup,Node}'
+                         %% 和'{nodedown,Node}'的消息
 node(Arg). %% 返回Arg所在的节点，Arg可以是Pid，Ref，Port
 spawn(Node,Fun). %% 在Node上创建进程
 spawn(Node,Mode,Fun,Args).
-spawn_link(Node,Fun). 
+spawn_link(Node,Fun).
 spawn_link(Node,Mode,Fun,Args). %% 同上
 </pre>
 </div>

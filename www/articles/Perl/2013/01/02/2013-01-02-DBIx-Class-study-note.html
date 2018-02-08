@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -105,7 +105,7 @@ DBIx::Class 的入门介绍可以看<a href="http://search.cpan.org/~getty/DBIx-
 下面逐一介绍:
 </p>
 <ol class="org-ol">
-<li>Schema: 表示数据库。  
+<li>Schema: 表示数据库。
 <ol class="org-ol">
 <li>连接数据库
 <div class="org-src-container">
@@ -130,7 +130,7 @@ DBIx::Class 的入门介绍可以看<a href="http://search.cpan.org/~getty/DBIx-
 </li>
 </ol>
 </li>
-<li>Result: 表示表  
+<li>Result: 表示表
 <ol class="org-ol">
 <li>定义在MySchema/Result/下:
 <div class="org-src-container">
@@ -148,7 +148,7 @@ __PACKAGE__-&gt;add_columns(qw/col1 col2/);
 </ol>
 </li>
 
-<li>ResultSet: 表示查询  
+<li>ResultSet: 表示查询
 <ol class="org-ol">
 <li>如果有则定义在MySchema/ResultSet/下,表示对默认Resultet类的扩展，如加入自定义的方法。
 <a href="http://search.cpan.org/~getty/DBIx-Class-0.08204/lib/DBIx/Class/ResultSet.pm#CUSTOM_ResultSet_CLASSES_THAT_USE_Moose">扩展方法</a>
@@ -173,7 +173,7 @@ $row=$resultset-&gt;find(1);
 </li>
 </ol>
 </li>
-<li>Row: 代表查询结果里面的行。  
+<li>Row: 代表查询结果里面的行。
 <ol class="org-ol">
 <li>取得row里面的数据:
 <div class="org-src-container">
@@ -186,7 +186,7 @@ $row-&gt;col1;
 </li>
 </ol>
 </li>
-<li>storage: 存储  
+<li>storage: 存储
 涉及具体数据库的通用存储层，下面的子类是其各个数据库的具体连接实现的<span class="caps">DBI</span>。
 <ol class="org-ol">
 <li>取得storage

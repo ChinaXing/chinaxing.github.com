@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li class="active"><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -248,7 +248,7 @@ ThreadPoolLocalCache会监控本Thread的退出，如果退出，要清理掉缓
 <h3 id="sec-3-2">UnpooledHeapByteBuf</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-直接使用： <code>new byte[initialCapacity]</code> 
+直接使用： <code>new byte[initialCapacity]</code>
 </p>
 </div>
 </div>
@@ -290,26 +290,26 @@ ThreadPoolLocalCache会监控本Thread的退出，如果退出，要清理掉缓
 </p>
 <div class="org-src-container">
 
-<pre class="src src-java">DirectByteBuffer(int cap) {       
+<pre class="src src-java">DirectByteBuffer(int cap) {
    ...
    ...
    cleaner = Cleaner.create(this, new Deallocator(base, size, cap));
    att = null;
 }
 private static class Deallocator
-	implements Runnable
+        implements Runnable
     {
-	...
-	...
-	public void run() {
-	    if (address == 0) {
-		// Paranoia
-		return;
-	    }
-	    unsafe.freeMemory(address); // free
-	    address = 0;
-	    Bits.unreserveMemory(size, capacity);
-	}
+        ...
+        ...
+        public void run() {
+            if (address == 0) {
+                // Paranoia
+                return;
+            }
+            unsafe.freeMemory(address); // free
+            address = 0;
+            Bits.unreserveMemory(size, capacity);
+        }
 
 }
 </pre>
@@ -322,15 +322,15 @@ Deallocator就是我们要注意的对象，因为free动作触发的地方是�
 <pre class="src src-java">public class Cleaner extends PhantomReference {
 ...
     private Cleaner(Object var1, Runnable var2) {
-	super(var1, dummyQueue);
-	this.thunk = var2;
+        super(var1, dummyQueue);
+        this.thunk = var2;
     }
 
 /// PhantomReference
 public class PhantomReference&lt;T&gt; extends Reference&lt;T&gt; {
 ...
     public PhantomReference(T referent, ReferenceQueue&lt;? super T&gt; q) {
-	super(referent, q);
+        super(referent, q);
     }
 </pre>
 </div>
@@ -343,52 +343,52 @@ public class PhantomReference&lt;T&gt; extends Reference&lt;T&gt; {
 ...
     private static class ReferenceHandler extends Thread {
 
-	ReferenceHandler(ThreadGroup g, String name) {
-	    super(g, name);
-	}
+        ReferenceHandler(ThreadGroup g, String name) {
+            super(g, name);
+        }
 
-	public void run() {
-	    for (;;) {
+        public void run() {
+            for (;;) {
 
-		Reference r;
-		synchronized (lock) {
-		    if (pending != null) {
-			r = pending;
-			Reference rn = r.next;
-			pending = (rn == r) ? null : rn;
-			r.next = r;
-		    } else {
-			try {
-			    lock.wait();
-			} catch (InterruptedException x) { }
-			continue;
-		    }
-		}
+                Reference r;
+                synchronized (lock) {
+                    if (pending != null) {
+                        r = pending;
+                        Reference rn = r.next;
+                        pending = (rn == r) ? null : rn;
+                        r.next = r;
+                    } else {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException x) { }
+                        continue;
+                    }
+                }
 
-		// Fast path for cleaners
-		if (r instanceof Cleaner) { //// &lt;here&gt;
-		    ((Cleaner)r).clean();
-		    continue;
-		}
+                // Fast path for cleaners
+                if (r instanceof Cleaner) { //// &lt;here&gt;
+                    ((Cleaner)r).clean();
+                    continue;
+                }
 
-		ReferenceQueue q = r.queue;
-		if (q != ReferenceQueue.NULL) q.enqueue(r);
-	    }
-	}
+                ReferenceQueue q = r.queue;
+                if (q != ReferenceQueue.NULL) q.enqueue(r);
+            }
+        }
     }
 
     static {
-	ThreadGroup tg = Thread.currentThread().getThreadGroup();
-	for (ThreadGroup tgn = tg;
-	     tgn != null;
-	     tg = tgn, tgn = tg.getParent());
-	Thread handler = new ReferenceHandler(tg, "Reference Handler");
-	/* If there were a special system-only priority greater than
-	 * MAX_PRIORITY, it would be used here
-	 */
-	handler.setPriority(Thread.MAX_PRIORITY);
-	handler.setDaemon(true);
-	handler.start();
+        ThreadGroup tg = Thread.currentThread().getThreadGroup();
+        for (ThreadGroup tgn = tg;
+             tgn != null;
+             tg = tgn, tgn = tg.getParent());
+        Thread handler = new ReferenceHandler(tg, "Reference Handler");
+        /* If there were a special system-only priority greater than
+         * MAX_PRIORITY, it would be used here
+         */
+        handler.setPriority(Thread.MAX_PRIORITY);
+        handler.setDaemon(true);
+        handler.start();
     }
 </pre>
 </div>

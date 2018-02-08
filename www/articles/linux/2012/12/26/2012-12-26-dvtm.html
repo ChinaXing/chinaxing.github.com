@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -65,7 +65,7 @@
 <h2 id="sec-1">特点</h2>
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
-<li>小巧简洁，秉承unix设计哲学.  
+<li>小巧简洁，秉承unix设计哲学.
 
 <p>
 dvtm只进行窗口的管理，不涉及别的功能，如会话管理等功能。
@@ -84,14 +84,14 @@ dvtm只进行窗口的管理，不涉及别的功能，如会话管理等功能�
 <h2 id="sec-2">编译安装</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
-<li>下载代码:  
+<li>下载代码:
 <div class="org-src-container">
 
 <pre class="src src-sh">git clone git://repo.or.cz/dvtm.git
 </pre>
 </div>
 </li>
-<li>编译&amp;安装:  
+<li>编译&amp;安装:
 确保安装了 <b>ncurses</b> 库（Ubuntu下为 <b>libncurses</b>,Fedora/Redhat下为 <b>ncurses-devel</b> ），dvtm依赖这个库
 <div class="org-src-container">
 
@@ -106,11 +106,11 @@ dvtm只进行窗口的管理，不涉及别的功能，如会话管理等功能�
 <h2 id="sec-3">常见问题解决方法</h2>
 <div class="outline-text-2" id="text-3">
 <ol class="org-ol">
-<li>终端颜色问题：  
+<li>终端颜色问题：
 如果在dvtm内发现颜色较少，是因为没有设置正确的<span class="caps">TERM</span>环境变量.要支持丰富的颜色,
 
 <p>
-设置 <b><span class="caps">TERM</span></b> 变量为&nbsp;_*-256color_，如:  
+设置 <b><span class="caps">TERM</span></b> 变量为&nbsp;_*-256color_，如:
 </p>
 <div class="org-src-container">
 
@@ -130,23 +130,23 @@ Meta键默认为<span class="caps">CTRL</span>-g，可以在启动dvtm的时候-
 </p>
 
 <ul class="org-ul">
-<li>M-c&nbsp;新窗口  
+<li>M-c&nbsp;新窗口
 </li>
-<li>M-j,k&nbsp;窗口切换  
+<li>M-j,k&nbsp;窗口切换
 </li>
-<li>M-t&nbsp;水平铺开窗口  
+<li>M-t&nbsp;水平铺开窗口
 </li>
-<li>M-b&nbsp;垂直铺开川口  
+<li>M-b&nbsp;垂直铺开川口
 </li>
-<li>M-h,l&nbsp;窗口放大缩小  
+<li>M-h,l&nbsp;窗口放大缩小
 </li>
-<li>M-M&nbsp;鼠标模式切换（鼠标是否可选中文本，鼠标是否可触发窗口切换等）  
+<li>M-M&nbsp;鼠标模式切换（鼠标是否可选中文本，鼠标是否可触发窗口切换等）
 </li>
-<li>M-m&nbsp;全屏当前窗口  
+<li>M-m&nbsp;全屏当前窗口
 </li>
-<li>M-.&nbsp;最小化当前窗口/恢复当前窗口为原来状态（如果当前窗口已经最小化）  
+<li>M-.&nbsp;最小化当前窗口/恢复当前窗口为原来状态（如果当前窗口已经最小化）
 </li>
-<li>M-?&nbsp;调出help  
+<li>M-?&nbsp;调出help
 </li>
 </ul>
 </div>

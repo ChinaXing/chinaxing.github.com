@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li class="active"><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -190,13 +190,13 @@ Udp不关心是否准确投递成功，存在几种可能的情况：
 
 <pre class="src src-erlang">send(Data) -&gt;
     case inet:ifget("en0", [broadaddr]) of %% 获取多播Ip
-	 {ok, [{broadaddr, Ip}]} -&gt;
-	    {ok, S} = gen_udp:open(5019, [{broadcast, true}]), %% 多播设置为true
-	    gen_udp:send(S,Ip,6000,Data), %% Ip，端口
-	    gen_udp:close(S);
-	  _ -&gt;
-	    io:format("Bad interface name, or\n"
-		      "broadcasting not supported\n")
+         {ok, [{broadaddr, Ip}]} -&gt;
+            {ok, S} = gen_udp:open(5019, [{broadcast, true}]), %% 多播设置为true
+            gen_udp:send(S,Ip,6000,Data), %% Ip，端口
+            gen_udp:close(S);
+          _ -&gt;
+            io:format("Bad interface name, or\n"
+                      "broadcasting not supported\n")
     end.
 listen() -&gt;
     {ok, _} = gen_udp:open(6000),
@@ -205,8 +205,8 @@ listen() -&gt;
 loop() -&gt;
     receive
       Any -&gt;
-	  io:format("received : ~p~n", [Any]),
-	  loop()
+          io:format("received : ~p~n", [Any]),
+          loop()
     end.
 </pre>
 </div>

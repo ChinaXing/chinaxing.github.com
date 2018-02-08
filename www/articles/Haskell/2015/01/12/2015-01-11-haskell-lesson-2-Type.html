@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li class="active"><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li class="active"><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -134,7 +134,7 @@ type EitherIntString = EitherInt String
 <div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 
-<pre class="src src-haskell">class  Functor f where 
+<pre class="src src-haskell">class  Functor f where
    fmap :: (a -&gt; b) -&gt; f a -&gt; f b
 </pre>
 </div>
@@ -206,16 +206,16 @@ Either Int :: * -&gt; *
 
 <pre class="src src-haskell">class Functor f =&gt; Applicative (f :: * -&gt; *) where
   pure a = f a
-  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b 
+  &lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b
   &lt;$&gt; :: (a -&gt; b) -&gt; f a -&gt; f b
 </pre>
 </div>
 <div class="org-src-container">
 
-<pre class="src src-haskell"> instance Applicative ((-&gt;) r) where 
+<pre class="src src-haskell"> instance Applicative ((-&gt;) r) where
     pure a x = \_ -&gt; x
     (f &lt;*&gt; g) x = (f x)(g x)
-    f &lt;$&gt; g = f . g 
+    f &lt;$&gt; g = f . g
 -- prove
 f (a-&gt;b) = \x -&gt; \a -&gt; b = \x -&gt; \a -&gt; (h a) x -- h (a,x)
 f a = \x' -&gt; a = \x' -&gt; k x'
@@ -225,7 +225,7 @@ f a = \x' -&gt; a = g x'
 (a-&gt;b) &lt;$&gt; f a = \x' -&gt; h (g x') = \x' -&gt; h . g $ x'
 -- example
 (+) &lt;$&gt; (*2) &lt;*&gt; (+10) 3= ((+) . (*2)) 3)(+10 3) = ((+) . (*2) $ 3)(+10 3)
-			= ((+) . 6) 13 = (+6) 13 = 19
+                        = ((+) . 6) 13 = (+6) 13 = 19
 </pre>
 </div>
 </div>

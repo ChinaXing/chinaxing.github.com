@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -245,8 +245,8 @@ sub _timers {
 
       # Enforce connection limit (randomize to improve load balancing)
       $self-&gt;max_connections(0)
-	if defined $self-&gt;{accepts}
-	&amp;&amp; ($self-&gt;{accepts} -= int(rand 2) + 1) &lt;= 0;
+        if defined $self-&gt;{accepts}
+        &amp;&amp; ($self-&gt;{accepts} -= int(rand 2) + 1) &lt;= 0;
 
       # Stop accepting to release accept mutex
       $self-&gt;_not_accepting;
@@ -279,15 +279,15 @@ sub _timers {
 
       $stream-&gt;on(close =&gt; sub { $self-&gt;_close($id) });
       $stream-&gt;on(
-	error =&gt; sub {
-	  return unless $self;
-	  $self-&gt;app-&gt;log-&gt;error(pop);
-	  $self-&gt;_close($id);
-	}
+        error =&gt; sub {
+          return unless $self;
+          $self-&gt;app-&gt;log-&gt;error(pop);
+          $self-&gt;_close($id);
+        }
       );
       $stream-&gt;on(read =&gt; sub { $self-&gt;_read($id =&gt; pop) });
       $stream-&gt;on(timeout =&gt;
-	  sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout．') if $c-&gt;{tx} });
+          sub { $self-&gt;app-&gt;log-&gt;debug('Inactivity timeout．') if $c-&gt;{tx} });
    }
 );
 ．．．
@@ -478,11 +478,11 @@ handler方法在Mojolicious．pm中，handler方法目的是生成response(响�
     my $cb = sub { $self-&gt;_write($id) };
     if ($tx-&gt;is_finished) {
       if ($tx-&gt;has_subscribers('finish')) {
-	$cb = sub { $self-&gt;_finish($id， $tx) }
+        $cb = sub { $self-&gt;_finish($id， $tx) }
       }
       else {
-	$self-&gt;_finish($id， $tx);
-	return unless $c-&gt;{tx};
+        $self-&gt;_finish($id， $tx);
+        return unless $c-&gt;{tx};
       }
     }
     $stream-&gt;write(''， $cb);

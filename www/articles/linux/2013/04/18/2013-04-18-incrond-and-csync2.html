@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>1</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
-          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
-          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
           <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -263,7 +263,7 @@ incrond&nbsp;要求内核支持inotify（内核版本要在2.6.13之上）。因
 <ul class="org-ul">
 <li>下载代码：<a href="http://inotify.aiken.cz/?section=incron&page=download&lang=en">http://inotify.aiken.cz/?section=incron&page=download&lang=en</a>
 </li>
-<li>编译 
+<li>编译
 <div class="org-src-container">
 
 <pre class="src src-sh">make &amp;&amp; sudo make install
@@ -340,8 +340,8 @@ csync2 解决了集群内机器将同步问题，但是csync2需要通过手动�
 <div class="org-src-container">
 
 <pre class="src src-sh">(
-  flock -n 100 || exit 
-  sleep 1 
+  flock -n 100 || exit
+  sleep 1
   echo [$(date +'%y-%m-%d %h:%M:%S')] "${1:-crontab}" &gt;&gt;/home/admin/logs/resource_sync.log
   /usr/local/sbin/csync2 -vx 2&gt;&gt;/home/admin/logs/csync2.log
   sleep 1
@@ -353,7 +353,7 @@ csync2 解决了集群内机器将同步问题，但是csync2需要通过手动�
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">#Run script every 15 seconds : 
+<pre class="src src-sh">#Run script every 15 seconds :
 * * * * * /foo/bar/your_script
 * * * * * sleep 15; /foo/bar/your_script
 * * * * * sleep 30; /foo/bar/your_script
