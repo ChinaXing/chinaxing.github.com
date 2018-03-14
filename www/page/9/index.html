@@ -14,14 +14,14 @@
       <div id="menu">
         <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
         <ul id="menu-list">
-          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
-          <li><a href="/Compute/index.html">Compute<sup>12</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
           <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
           <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
           <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
-          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
           <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
           <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
           <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
@@ -32,6 +32,43 @@
       </div>
     </header>
     <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. September 2015</span></p>
+          <h2><a href="/articles/life/2015/09/06/2015-09-05-design-before-write.html">设计先行</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+因为时间很赶，就容易草草了事，总在想来不及了，或者没有时间来做充分的思考与计划，然而这恰恰是非常致命的错误，特别是一件事情越复杂，犯的错误就可能越大。
+</p>
+
+<p>
+当一件事情需要做到完美，做到可以持续维持下去，而不仅仅是一次性的作品，那么，给与充分的时间设计，无论在如何时间紧张的情形下，都不能少。
+</p>
+
+<p>
+不然，后期可能因为起初的草草决定而不得不推到重来，或者不断填补前期草率所留下的坑，以至于最后整体来看，浪费的时间和精力更多，做出的结果反而非常不理想。
+</p>
+
+<p>
+因而，合理的评估一件事情需要的时间，而不是拍脑袋去感觉只要挤挤时间就一定可以在什么时候什么点做完。
+</p>
+
+
+<p>
+教训之一是：不要因为赶进度而采用dirty的解决方案，不要因为怕慢下来，而改变了原来的设计出发点和决定，临时采用没有经过充分思考分析的方式方法去解决问题。
+</p>
+
+<p>
+在进展过程中，经常有小的问题出现，有需要对原来设计决定进行调整的必要出现，那么要认真思考，与设计决定进行仔细的比对，寻找最佳方案，而不是模糊的模棱两可的解决方案。
+</p>
+
+<p>
+确保每</p>
+          <p class="more"><a href="/articles/life/2015/09/06/2015-09-05-design-before-write.html">more</a></p>
+        </section>
+      </article>
       <article class="article intro">
         <header>
           <p class="date"><span>27. August 2015</span></p>
@@ -96,51 +133,6 @@ Nagle&#8217;s&nbsp;算法的目的是合并小包发送，减少传输和确认�
 </li>
 <li>如果在累积期间收到一个ack，则将累积区的数据</li></ul></div></div>
           <p class="more"><a href="/articles/Network/2015/08/27/2015-08-26-tcp-nodelay.html">more</a></p>
-        </section>
-      </article>
-      <article class="article intro">
-        <header>
-          <p class="date"><span>06. August 2015</span></p>
-          <h2><a href="/articles/Compute/2015/08/07/2015-08-06-elegant-software.html">怎样才是优秀软件</a></h2>
-        </header>
-        <section class="content">
-
-<p>
-<i>优秀的软件（程序）或者说牛逼的软件，你怎么定义？</i>
-</p>
-
-<p>
-从事程序员工作或者从事计算机研究与教学的人，都在追求和探索能够设计出优秀软件的方法和思想。
-</p>
-
-<p>
-设计从来不是一件简单可以解决的事，它不是一个棘手的难题，而是如同哲学问题一样，可以永远探讨下去，没有终结。
-</p>
-
-<p>
-软件设计从工业还是学院，都在积累和创新出新的方法和最佳实践法则。
-</p>
-
-<p>
-设计模式、响应式编程、各种编程范式等等都是这方面的积累。
-</p>
-
-<p>
-软件业的难度不是如何实现功能，而是如何在结构上简洁、维护性上容易、扩展性上简便等。
-</p>
-
-<p>
-<b>模块化</b>&nbsp;的核心思想是解耦合，保持组件的独立性、可替代性、组件对外界可以完全表现是一个黑盒。
-</p>
-
-<p>
-<b>事件驱动</b>&nbsp;的核心思想是通过事件来组织系统的运转，系统是一个状态机，每个状态都变得清晰，从而系统逻辑变得清澈。
-</p>
-
-<p>
-<b>面向控制</b>&nbsp;的核心思想是系统是一系列动作的流，动作触发后系统如同一个被发动的引擎，开始在控制的传递下运转。
-</p>
-          <p class="more"><a href="/articles/Compute/2015/08/07/2015-08-06-elegant-software.html">more</a></p>
         </section>
       </article>
       <div id="paginator-nav"><a href="/page/8/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/10/" class="nav-next">Next page »</a>
