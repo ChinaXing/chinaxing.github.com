@@ -25,14 +25,14 @@ jdk 自带的debug工具jdb类似于其他语言如gcc 的 gdb，可以完成命
 对于被调试程序，即目标jvm，要打开debug服务，才能接收jdb发来的debug请求，这通过java的agent功能来加载debug相关的lib来实现：
 #+BEGIN_SRC sh :eval no
   #使用socket连接来进行jdb的交互(remote debug)
-  java -agentlib:jdwp=transport=dt_socket,server=y,address=$address 
+  java -agentlib:jdwp=transport=dt_socket,server=y,address=$address
   #使用共享内存模式来进行通信，本机调试
-  java -agentlib:jdwp=transport=dt_shmem,server=y 
+  java -agentlib:jdwp=transport=dt_shmem,server=y
   #获取jdwp调试选项的帮助
-  java -agentlib:jdwp=help 
+  java -agentlib:jdwp=help
 #+END_SRC
 
-** jdwp 
+** jdwp
 jdwp（Java Debug Wire Protocol）是一个debug的协议，是jdb等client跟jvm将互操作的协议，jdwp的传输(transport)用来指明用什么传输层实现，我们可以通过socket来实现远程调试的目的.
 
 jdwp有一个选项:server=y|n 来表达是监听等待debugclient的连接还是去主动连接处于listen状态的debugclient，可以对照上面提到的jdb的listen模式明白它的用处。
@@ -45,4 +45,3 @@ jdwp有一个选项:server=y|n 来表达是监听等待debugclient的连接还�
 3. Java Virtual Machine Tools Interface - JMTI \\
    提供了native方式的接口，可以用来开发调试程序。
 4. 深入java debug 文章 : [[http://www.ibm.com/developerworks/cn/views/java/libraryview.jsp?search_by=深入+Java+调试体系][深入java调试体系]]
-
