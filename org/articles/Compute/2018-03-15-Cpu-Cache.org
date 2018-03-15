@@ -54,6 +54,16 @@ cache的状态转换如下图
 
 在经过改进后，本地的任何读取，都要先检查store buffer中是否有，如果有从store buffer读取，否则再走原来的读取逻辑，这叫做 store buffer 的 read forword。
 
+*** memory order
+经过硬件优化的处理器, 存在乱序执行，对于序（order）的不同保持性，称为内存模型，分为如下几种：
+- relaxed consistency - 没有限制，任意乱序，只要保证数据依赖性，数据依赖性在Alpha处理器也不保证
+- weak consistency - 弱化的一致性保证，可以有如下几种情形的order：
+  - loads can be reordered after loads
+  - loads can be reordered after stores
+  - stores can be reordered after loads
+  - stores can be reordered after stores
+- sequential consistency 没有乱序
+
 *** memory barrier
 在改进后的cache一致性架构中，提升性能的同时，引入了不安全性。
 如，由于cache失效后并未写入cacheLine和同步等待别的cpu失效其cache，如果处于invalid queue中，那么别的cpu读取就是陈旧的值。
@@ -63,14 +73,39 @@ cache的状态转换如下图
 
 在需要多线程并发执行的情形下，如果需要保证因果性，线性化，则引入memory barrier来使得这种优化退化到简单的MESI情况。
 
-- store barrier\\
+- store barrier (aka. store store barrier)\\
   保证任何barrier之前的写入都已经同步到其它cache上，已经cache一致，然后barrier后面的写入才同步到其它cacache上。维持了一种可见性顺序与program的顺序的一致性。
   如果 *write a -> store barrier -> write b* 那么当我看到b被修改时，我一定看到了a被修改。
-- load barrier\\
+- load barrier (aka. load load barrier)\\
   保证任何barrier之前的读取同步都发生于barrier之后的读取同步。
   如果 *read a -> load barrier -> read b* ，a的值是读取b时最新的值。
+
+除了这两种内存barrier外，根据weak consistency的具体情形，还有2中barrier来分别消除弱一致性或者说保证序（order）：
+
+- store load barrier \\
+  处于barrier前的store 和 barrier后的load 不能乱序
+- load store barrier \\
+  处于barrier前的load 和 barrier后的store不能乱序
+
+*** 不同体系结构的内存序
+内存一致性与体系结构设计相关，是硬件相关的。
+在不同的cpu架构中，实现了不同的内存一致性特性，都可以通过cpu说明手册获得详细的信息。
+以x86和IA64以及SPARC为例。
+- x86\\
+  提供store/store的order，多数还保障 load/load 和 load/store的order。但不保证 store/load的order，即读可能被reorder到写前面。
+- IA64\\
+  提供非常弱的内存模型保障，类型relax。提供的内存一致性指令有：
+  - acq : 保证acq之后的读写执行都不会重拍到acq之前。acq是acquire的意思。acquire是read-acquire，针对内存引用的读操作。
+  - rel : 保证rel之前的读写执行都不会重拍到rel之后。rel是release的意思。rel也就是write-release，针对一个内存引用的写操作。
+- SPARC\\
+  sparc提供非常丰富的内存模型，提供4个内存barrier指令来使用保证内存order：
+  - LoadLoad
+  - StoreStore
+  - LoadStore
+  - StoreLoad
 
 *** refrent
   - [[http://www.rdrop.com/users/paulmck/scalability/paper/whymb.2010.07.23a.pdf][Intel cpu manual]]
   - [[http://www.rdrop.com/users/paulmck/scalability/paper/whymb.2010.07.23a.pdf][memory barrier: a hardware view for software hackers]]
+  - [[http://en.cppreference.com/w/cpp/atomic/memory_order#Relaxed_ordering][C++的内存序]]
   - [[https://www.akkadia.org/drepper/cpumemory.pdf][What Every Programmer Should Know About Memory]]
