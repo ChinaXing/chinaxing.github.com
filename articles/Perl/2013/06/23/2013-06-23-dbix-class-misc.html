@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>DBIx::Class 杂记 - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li class="active"><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=06Hb&amp;d=Mo7Gcol92ZMAKeI3BglxNrATFMaDJKE57YFdy7GSyAg"></script><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
+      <h2 style="text-align:center">DBIx::Class 杂记
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <link rel="stylesheet" href="/css/highlight/github.css">
+      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
+      <div class="tech">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">基本概念</a>
+<ul>
+<li><a href="#sec-1-1">Schema</a></li>
+<li><a href="#sec-1-2">ResultSource</a></li>
+<li><a href="#sec-1-3">ResultSet</a></li>
+<li><a href="#sec-1-4">ResultClass</a></li>
+<li><a href="#sec-1-5">Storage</a></li>
+<li><a href="#sec-1-6">Namespace</a></li>
+<li><a href="#sec-1-7">Relationship</a></li>
+<li><a href="#sec-1-8">deploy</a></li>
+<li><a href="#sec-1-9">load</a></li>
+<li><a href="#sec-1-10">version</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">常用技巧</a>
+<ul>
+<li><a href="#sec-2-1">向数据库批量插入数据</a></li>
+<li><a href="#sec-2-2">自定义storage类型</a></li>
+<li><a href="#sec-2-3">异常hook</a></li>
+<li><a href="#sec-2-4">异常时打印堆栈</a></li>
+<li><a href="#sec-2-5">抛出异常</a></li>
+<li><a href="#sec-2-6">解冻和冷冻对象</a></li>
+<li><a href="#sec-2-7">数据库连接建立</a></li>
+<li><a href="#sec-2-8">连接的保持</a></li>
+<li><a href="#sec-2-9">cursor</a></li>
+<li><a href="#sec-2-10">查询的执行</a></li>
+<li><a href="#sec-2-11">dbicadmin</a></li>
+</ul>
+</li>
+<li><a href="#sec-3"><span class="caps">DBIC</span>代码</a></li>
+</ul>
+</div>
+</div>
+<p>
+使用用<a href="http://search.cpan.org/perldoc?DBIx::Class">DBIx::Class</a>&nbsp;(又称为<span class="caps">DBIC</span>)做ORM一段时间，这里做些备忘。
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">基本概念</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Schema</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Schema&nbsp;可以看做是一个数据库或者一个表空间的代称。
+</p>
+<ul class="org-ul">
+<li>schema上注册了ResultSource，可以通过schema-&gt;sources得到所有的resultsource&nbsp;name。
+</li>
+<li>schema-&gt;connect&nbsp;连接到数据库，返回一个实例化的schema对象
+</li>
+<li>schema loadnamespace/loadclass&nbsp;加载namespace内的所有resultsource和resultset模块
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">ResultSource</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+可以看做是一个数据来源，每个resultsource实例代表一行的查询结果，注意dbix-class的定义中这个数据源可以不仅仅是Table。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">ResultSet</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+可以看做是一个查询的结果集合，但是它实际上是一个未被执行的<span class="caps">SQL</span>。一旦被执行，结果将是resultsource(s)而不再是resultset，resultset上可以再进行查询，生成新的resultset。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">ResultClass</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+表示resultsource所对应的类，比如&#8217;<span class="caps">CD</span>&#8217;这个resultsource名，对应的resultclass可能为 <code>MySchema::ResultSource::CD</code>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">Storage</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+存储后端，是一个DBix::Class::Storage名字空间的类，负责和数据库进行结合，连接、执行<span class="caps">SQL</span>（事务）并返回结果等。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">Namespace</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+命名空间是Schema进行加载resultsource和resultset的模块命名空间，通常如果不做明确的指定，就是当前schema所在的命名空间。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-7" class="outline-3">
+<h3 id="sec-1-7">Relationship</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+表示了关系数据库列数据之间的引用关系，不仅仅是外键，而有更加丰富和高级的功能，比如可以进行数据库不支持的关联动作和查询。
+</p>
+<ul class="org-ul">
+<li>one to one &#x2013; 一一对应：&nbsp;一个人有一个身份信息
+</li>
+<li>many to one &#x2013;&nbsp;多对一：多个行星属于一个恒星的卫星
+</li>
+<li>many to many &#x2013;&nbsp;多对多：一个人有多个就读学校，每个学校有多个就读学生
+</li>
+<li>maybe &#x2013;&nbsp;可能有：一个人可能有一个情人（也可能没有）
+</li>
+</ul>
+
+<p>
+relationship&nbsp;也是可以扩展的。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-8" class="outline-3">
+<h3 id="sec-1-8">deploy</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+从schema转换生成<span class="caps">SQL</span>语句文件，然后在数据上执行这些SQL
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-9" class="outline-3">
+<h3 id="sec-1-9">load</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+从数据库生成Schema，resultsource类
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-10" class="outline-3">
+<h3 id="sec-1-10">version</h3>
+<div class="outline-text-3" id="text-1-10">
+<p>
+schema&nbsp;的版本，定义在MySchema.pm中<span class="caps">VERSION</span>=xxx
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">常用技巧</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">向数据库批量插入数据</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+使用<a href="http://search.cpan.org/~ribasushi/DBIx-Class-0.08250/lib/DBIx/Class/Schema.pm#populate">populate</a>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">$schema-&gt;populate( 'CD' =&gt;
+   [ [qw/Artist Title price/],
+     [qw/Sara  'scarborough fair' 25.5/],
+     [qw/Mozart 'Serenade for Strings in G major' 20/]
+   ]);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">自定义storage类型</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+在自定义的Schema类内部:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-perl">__PACKAGE__-&gt;storage_type('DBIx::Class::Storage::DBI')
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">异常hook</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-perl">__PACKAGE__-&gt;exception_action( sub { ... } );
+# or
+$schema_obj-&gt;exception_action( sub { ... } );
+</pre>
+</div>
+<p>
+在处理后需要最后重新throw&nbsp;out异常
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">异常时打印堆栈</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+
+<pre class="src src-perl">$schema_obj-&gt;stacktrace(1);
+# or
+$ENV{DBIC_TRACE} = 1;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">抛出异常</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+<span class="caps">DBIC</span>抛出异常使用DBIx::Class::Exception类
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">解冻和冷冻对象</h3>
+<div class="outline-text-3" id="text-2-6">
+<div class="org-src-container">
+
+<pre class="src src-perl">$schema_obj-&gt;thaw($obj);
+$schema_obj-&gt;freeze($obj);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">数据库连接建立</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+schema调用storage来根据connection-info中提供的dsn和参数进行连接，连接通过<span class="caps">DBI</span>模块进行建立，之后，Storage根据driver的类型（比如Pg）重载storage为:DBIx::Class::Storage::DBI::Pg。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8">连接的保持</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+连接是按需建立，即在第一次需要使用的时候（如执行query）建立，每次执行<span class="caps">SQL</span>，都会判断连接的active与否，如果断开则会重新建立连接。<br  />&nbsp;对于父子进程的情况，如果子进程fork出来后，子进程会检查这个连接是否是自己的（检查pid是否与自己一致），如果不一致，则子进程会重新创建一条自己的连接。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9">cursor</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+<span class="caps">DBIC</span>有cursor的概念，我们可以reset&nbsp;cursor，浏览cursor，而不用进行重复的查询。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10">查询的执行</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+查询在resultset中进行一些调整和组装后，交由storage进行执行。所以几乎查询和事务都是在storage中完成。通过resultsource可以方便的找到对应的storage，而这个storage是schema设定的。一个schema对应一个storage。
+</p>
+
+<p>
+查询语句的构建和转换是在DBIx::Class::Storage::<span class="caps">DBI</span>中进行，转换使用DBIx::Class::SQLMaker,该类是对SQL::Abstract的扩展和增强。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-11" class="outline-3">
+<h3 id="sec-2-11">dbicadmin</h3>
+<div class="outline-text-3" id="text-2-11">
+<p>
+这个类提供一个工具 <code>dbicadmin</code> <br  />&nbsp;这个类不是<span class="caps">DBIC</span>的核心部分，它只是一个辅助工具。可以完成：
+</p>
+<ul class="org-ul">
+<li>Schema部署到数据库 &#x2013;&nbsp;deploy
+</li>
+<li>生成Schema对应的<span class="caps">SQL</span>语句 &#x2013;&nbsp;create
+</li>
+<li>进行升级（如果Schema支持版本） &#x2013;&nbsp;upgrade
+</li>
+<li>生成<span class="caps">SQL</span>的diff文件 &#x2013;&nbsp;create
+</li>
+<li>在库上执行<span class="caps">CRUD</span> 操作 &#x2013; insert, select, update,&nbsp;delete
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="caps">DBIC</span>代码</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<span class="caps">DBIC</span>代码有如下特点：
+</p>
+<ol class="org-ol">
+<li>代码庞大，臃肿，风格糟糕，不清新，不优雅
+</li>
+<li>使用比较底层的Class::C3类模块进行辅助性构建（加载component，mix对象），使得对象不清晰，错综复杂，底层技术使得代码阅读起来晦涩。<br  />&nbsp;原因猜测是Class::C3模块是作者所写，作者对perl老式的编程方式比较熟悉，开发人员应该是比较老派的Perl程序员。
+</li>
+<li>Result,ResultSet,ResultSource,Storge等基本概念比较清晰，关联关系也容易找到。
+</li>
+</ol>
+</div>
+</div>
+
+      </div>
+      <script>
+        $(function(){
+         $('pre.src').each(function(i, block){
+            var b = $(block);
+            var m = b.attr('class').match(/src src-(.*)/,1);
+            if (null == m || m.length < 2 ) { return; }
+            b.addClass(m[1]);
+            hljs.highlightBlock(block);
+         });
+        })
+      </script>
+      <!-- Table of Content-->
+      <script src="/js/tableofcontents.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+             topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

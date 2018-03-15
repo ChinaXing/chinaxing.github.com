@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=06Hb&amp;d=Mo7Gcol92ZMAKeI3BglxNrATFMaDJKE57YFdy7GSyAg"></script><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>06. November 2015</span></p>
+          <h2><a href="/articles/Network/2015/11/06/2015-11-06-tcp-defer-accept.html">TCP_DEFER_ACCEPT and TCP_FASTOPEN</a></h2>
+        </header>
+        <section class="content">
+<p>
+<code>TCP_DEFER_ACCEP</code> 想法很简单，推迟（<span class="caps">DEFER</span>）accept操作，在client端发送 connect 后，服务端收到连接请求，建立TCP连接，在客户端发送数据之前，&nbsp;服务端socket上面的accept方法并不会返回，epoll上的accept事件也不会ready，只有在客户端发送数据过来，才会变成&#8221;acceptable&#8221;，即，这一accceptable状态被defer了。
+</p>
+
+<p>
+在设置这个socket_option的时候，可以指定一个timeout的参数，意思是如果客户端连上了，但是没法送数据，那么就超过这个事件后将其close：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">/* 5秒后，如果你不发数据我就关掉你！ */
+setsockopt(srv_socket-&gt;fd, SOL_TCP, TCP_DEFER_ACCEPT, 5, sizeof(val)) ;
+</pre>
+</div>
+
+<p>
+<code>TCP_FASTOPE</code></p>
+          <p class="more"><a href="/articles/Network/2015/11/06/2015-11-06-tcp-defer-accept.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>22. October 2015</span></p>
+          <h2><a href="/articles/Database/2015/10/23/2015-10-22-mysql-5.7.html">MySQL 5.7 GA 新特性</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">性能</a></li>
+<li><a href="#sec-2">易操作性</a></li>
+<li><a href="#sec-3"><span class="caps">SQL</span>优化器提升</a></li>
+<li><a href="#sec-4">InnoDB&nbsp;增强</a></li>
+<li><a href="#sec-5">Performace&nbsp;Schema</a></li>
+<li><a href="#sec-6">Buffer Pool Dump/&nbsp;Load</a></li>
+<li><a href="#sec-7">Replication</a></li>
+<li><a href="#sec-8">Reference</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+MySQL 5.7&nbsp;算是放大招了，易用性，性能，可用性，安全等都有很大的改善。
+</p>
+
+
+          <p class="more"><a href="/articles/Database/2015/10/23/2015-10-22-mysql-5.7.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>18. October 2015</span></p>
+          <h2><a href="/articles/Haskell/2015/10/19/2015-10-18-graph-reduction.html">Hashell Graph reduction</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">图规约</a></li>
+<li><a href="#sec-2">Haskell中的规约</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">图规约</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Haskell&nbsp;的执行过程使用图规约技术，<span class="caps">STG</span>的逻辑机器来进行运行时的执行。
+</p>
+
+<p>
+G-Machine,&nbsp;机Graph-reduction机器。
+</p>
+
+<p>
+图规约最早被提出来是应用在Lazy&nbsp;Evaluator的实现。核心思想是将表达式表示为<span class="caps">ADG</span>——有向无环图，然后进行规约。
+</p>
+
+<p>
+一个待求值的表达式如：
+</p>
+</div></div>
+          <p class="more"><a href="/articles/Haskell/2015/10/19/2015-10-18-graph-reduction.html">more</a></p>
+        </section>
+      </article>
+      <div id="paginator-nav"><a href="/page/4/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/6/" class="nav-next">Next page »</a>
+      </div>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

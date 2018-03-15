@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Generic - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li class="active"><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=06Hb&amp;d=Mo7Gcol92ZMAKeI3BglxNrATFMaDJKE57YFdy7GSyAg"></script><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
+      <h2 style="text-align:center">Generic
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <link rel="stylesheet" href="/css/highlight/github.css">
+      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
+      <div class="tech">
+<p>
+Generic&nbsp;通用编程，目的是提高代码复用。
+</p>
+
+<p>
+Haskell&nbsp;中的通用编程，基于代数数据类型，将数据运算映射到代数数据类型上运算。因为多种数据类型可以对应到一种代数数据类型表达式，所以可以实现代码通用。
+</p>
+
+<p>
+代数数据类型是指，数据类型的构造类似于代数运算，包含Unit，Multiply，Product等。
+</p>
+
+<p>
+在引入<span class="caps">GHC</span>.Generic&nbsp;包后，代数数据类型的一些标识符被导入。开发人员可以使用这些标识符表达基于ADT的Generic编程：
+</p>
+
+<ul class="org-ul">
+<li>Unit 用 U&nbsp;表示，类比于代数运算中的元，如加法运算的0，乘法运算的1。
+</li>
+<li>:*: 表示乘积，形如数据构造器： data Pair a b = (a,b) 和 data Person = Person String&nbsp;Int
+</li>
+<li>:+: 表示和，形如数据构造器：data Color = Red | Black |&nbsp;Yellow
+</li>
+</ul>
+
+<p>
+Generic编程的步骤是：
+</p>
+
+<ul class="org-ul">
+<li>第一步，定义数据类型的Generic instance，实现 数据类型的 Type Rep 表示（即前面提到的类型代数形式），实现 to 和 from 方法：
+<div class="org-src-container">
+
+<pre class="src src-haskell">class Generic a where
+   -- Encode the representation of a user datatype
+   type Rep a :: * -&gt; *
+   -- Convert from the datatype to its representation
+   from  :: a -&gt; (Rep a) x
+   -- Convert from the representation to the datatype
+   to    :: (Rep a) x -&gt; a
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- 这是让Haskell知道你定义的类型是如何用代数数据类型表示的
+instance Generic Color where
+  type Rep Color = (L U) :+: (R U)
+  from Red = (L U) Red
+  from White = (R U) Whiet
+  to (L U) = Red
+  to (R U) = White
+instance Generic Person where
+  type Rep (Person a b) = (L a) :*: (R b)
+  from (Person a b) = (L (from a)) ^ (R (from b))
+  to (L a) :*: (R b) = Person (to a) (to b)
+</pre>
+</div>
+<p>
+这一步<span class="caps">GHC</span>可以自动完成: 使用-XDeriveGeneric开关，deriving&nbsp;Generic
+</p>
+</li>
+<li>第二步，为原子类型和基本代数类型实现Generic业务逻辑:
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- Generic 业务逻辑为GEq，有一个方法geq
+class GEq a where
+  geq :: a -&gt; a -&gt; Bool
+  -- 默认的实现是转换为代数类型相等来判断
+  default geq :: (Generic a, GEq (Rep a)) =&gt; a -&gt; a -&gt; Bool
+  geq a b = geq (from a) (from b)
+
+-- 定义GEq的针对代数类型的实现
+instance =&gt; GEq U where
+  geq U U = True
+
+instance (GEq a, GEq b) =&gt; GEq (a:+:b) where
+  geq (a1:+:b1) (a2:+:b2) = geq a1 a2 ^ geq b1 b2
+
+instance (GEq a, GEq b) =&gt; GEq (a:*:b) where
+  geq (L a1) (L a2) = geq a1 a2
+  geq (R b1) (R b2) = geq b1 b2
+  geq _ _ = False
+</pre>
+</div>
+</li>
+<li>第三步，让数据类型自动实现Generic业务逻辑类型类：
+<div class="org-src-container">
+
+<pre class="src src-haskell">data Color = Red | White
+data Person = Person String Int
+-- 自动实现GEq的geq方法
+instance GEq Color where
+instance GEq Person where
+</pre>
+</div>
+<p>
+也可以使用 deriving 关键字：deriving&nbsp;(GEq)
+</p>
+</li>
+<li>使用generic业务逻辑方法:
+<div class="org-src-container">
+
+<pre class="src src-haskell">geq (Person "ChinaXing" 20) (Person "Lambdacat" 12)
+</pre>
+</div>
+</li>
+</ul>
+
+      </div>
+      <script>
+        $(function(){
+         $('pre.src').each(function(i, block){
+            var b = $(block);
+            var m = b.attr('class').match(/src src-(.*)/,1);
+            if (null == m || m.length < 2 ) { return; }
+            b.addClass(m[1]);
+            hljs.highlightBlock(block);
+         });
+        })
+      </script>
+      <!-- Table of Content-->
+      <script src="/js/tableofcontents.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+             topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

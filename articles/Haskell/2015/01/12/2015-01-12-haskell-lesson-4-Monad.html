@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Haskell 第四课 —— Monad - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li class="active"><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=06Hb&amp;d=Mo7Gcol92ZMAKeI3BglxNrATFMaDJKE57YFdy7GSyAg"></script><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
+      <h2 style="text-align:center">Haskell 第四课 —— Monad
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <link rel="stylesheet" href="/css/highlight/github.css">
+      <script src="/js/highlight.pack.js" charset="utf-8"> </script>
+      <div class="tech">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Monad用途</a></li>
+<li><a href="#sec-2">Monad</a></li>
+<li><a href="#sec-3">do</a></li>
+<li><a href="#sec-4">(-&gt;)&nbsp;r</a></li>
+<li><a href="#sec-5">State&nbsp;Monad</a></li>
+<li><a href="#sec-6">Either</a></li>
+<li><a href="#sec-7">liftM</a></li>
+<li><a href="#sec-8">ap</a></li>
+<li><a href="#sec-9">liftM2</a></li>
+<li><a href="#sec-10">join</a></li>
+<li><a href="#sec-11">liftM</a></li>
+<li><a href="#sec-12">foldM</a></li>
+<li><a href="#sec-13">&lt;=&lt;</a></li>
+<li><a href="#sec-14">Make&nbsp;Monad</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Monad用途</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+个人觉得：
+</p>
+
+<ul class="org-ul">
+<li>实现链式的调用传递，这样保持了数据的状态沿着函数链条传递
+</li>
+<li>在链式传递的过程中，可以短路求值，借助monad的封装所附加的语义
+</li>
+<li>Monad是一种Inbox的动作，将基本状态进行封装，可以提供高层的语义
+</li>
+<li>实际是设计的抽象，通过抽象实现了代码的简洁，分层，多态
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Monad</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Monad is an Applicative&nbsp;Functor
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">class Monad m where
+  return = a -&gt; m a
+  (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+  (&gt;&gt;) :: ma -&gt; m b -&gt; m b
+  (&gt;&gt;) = (\_ -&gt; x)
+  fail :: String -&gt; m a
+  fail string = error string
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">do</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+chain <b>nested</b> Monad&nbsp;toggether.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">ret = Just 10 &gt;&gt;= (\x -&gt; Just 20 &gt;&gt;= (\y -&gt; Just 30 &gt;&gt;= (\z -&gt; Just (x + y + z)))))
+ret = do
+   x &lt;- Just 10
+   y &lt;- Just 30
+   z &lt;- Just 20
+   return (x + y + z)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">(-&gt;)&nbsp;r</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+
+<pre class="src src-haskell">  instance Monad ((-&gt;) r) where
+    return x = \_ -&gt; x
+    h &gt;&gt;= f = \w -&gt; f (h w) w
+--
+    f &lt;*&gt; h = \w -&gt; f (h w) w
+    -- so
+    flip &lt;*&gt; == &gt;&gt;=
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">State&nbsp;Monad</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+State Monad实现了状态的记录，更新，是通过一个函数的方式来进行实现的，每次put操作都会返回一个新的函数，里面有新的状态。
+State Monad中有2个部分：状态s和当前值a，其中a表示状态为s的时候的值。
+每次put、get都是对状态进行的操作，即s。注意get和put操作都会更新State&nbsp;Monad，但是不同的是，Monad中代表状态的s部分在get的时候不更新，而在put的时候更新了。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- import Control.Monad.State
+newtype State s a = State { runState :: s -&gt; (a, s) }
+instance Monad (State s) where
+  return x = State $ \s -&gt; (x,s)
+  (State h) &gt;&gt;= f = State $ \s -&gt;
+                            let (a, state) = h s -- get state and value
+                                (State g) = f a -- \s -&gt; (f a, newState )
+                            in g state -- (f a, newState)
+</pre>
+</div>
+<p>
+State Monad 的bind操作是作用在value上面，即 <code>f :: a -&gt; State s a</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-haskell">get :: State s s
+get = State $ \s -&gt; (s,s) -- where s == a, extract will be s
+put :: s -&gt; State s ()
+put newState = State $ \s -&gt; ((), newState)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Either</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+
+<pre class="src src-haskell"> instance Error e =&gt; Monad (Either e) where
+    return x = Right x
+    Left err &gt;&gt;= f = Left err -- shortcut
+    Right x &gt;&gt; f = f x -- just pass value
+    fail msg = Left (strMsg msg)
+--
+Left "Error" -- throw fail
+fail "Error" -- context is Either
+Left (strMsg "Error") -- parttern matched
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">liftM</h2>
+<div class="outline-text-2" id="text-7">
+<div class="org-src-container">
+
+<pre class="src src-haskell">liftM :: (Monad m) =&gt; (a-&gt;b) -&gt; m a -&gt; m b
+--
+liftM f m = m &gt;&gt; (\x -&gt; return (f x))
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-haskell">liftM (*3) (Just 8) -- return (8 * 3) :: Maybe Int
+fmap (*3) (Just 8) -- pure (8 * 3) :: Maybe Int
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">ap</h2>
+<div class="outline-text-2" id="text-8">
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- Contro.Monad::ap
+ap :: (Monad m) =&gt; m (a-&gt;b) -&gt; m a -&gt; m b
+--
+ap = &lt;*&gt;
+Just (+4) `ap` Just 10
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">liftM2</h2>
+<div class="outline-text-2" id="text-9">
+<div class="org-src-container">
+
+<pre class="src src-haskell">liftM2 :: (Monad f) =&gt; (a-&gt;b-&gt;c) -&gt; f a -&gt; f b -&gt; f c
+--
+liftM2 f x y = f &lt;$&gt; x &lt;*&gt; y
+-- f &lt;$&gt; x = (a-&gt;b-&gt;c) &lt;$&gt; f a = (a -&gt; (b-&gt;c) &lt;$&gt; f a = f (b-&gt;c)
+-- f (b-&gt;c) &lt;*&gt; f b = f c
+</pre>
+</div>
+<p>
+liftM3, liftM4,&nbsp;liftM5
+</p>
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">join</h2>
+<div class="outline-text-2" id="text-10">
+<div class="org-src-container">
+
+<pre class="src src-haskell">join :: Monad m =&gt; m (m a) -&gt; m a
+join mm = do -- smart
+     m &lt;- mm
+     m
+--
+join [[1,2,3],[4,5,6]] -- [1,2,3,4,5,6]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11">liftM</h2>
+<div class="outline-text-2" id="text-11">
+<div class="org-src-container">
+
+<pre class="src src-haskell">liftM :: (Monad m) =&gt; (a -&gt; m Bool) -&gt; [a] -&gt; m [a]
+</pre>
+</div>
+<div class="org-src-container">
+
+<pre class="src src-haskell">powerset :: [a] -&gt; [[a]]
+powerset xs = liftM (\x -&gt; [True, False]) xs
+-- x maybe any part of xs
+-- m Bool maybe True, False strip from the [True, False]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12">foldM</h2>
+<div class="outline-text-2" id="text-12">
+<div class="org-src-container">
+
+<pre class="src src-haskell">foldl :: (a -&gt; b -&gt;a) -&gt; a -&gt; [b] -&gt; a
+foldM :: (Monad m) =&gt; (a -&gt; b -&gt; m a) -&gt; a -&gt; [b] -&gt; m a
+--
+foldl (\cc x -&gt; cc + x) 0 [2,3,4,5]
+foldM (\cc x -&gt; return cc + x) 0 [2,3,4,5]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13">&lt;=&lt;</h2>
+<div class="outline-text-2" id="text-13">
+<div class="org-src-container">
+
+<pre class="src src-haskell">-- Monad function composition ,
+-- like . normal function composition
+let f = (+1) . (*100) -- normal function composition
+let g = (\x -&gt; return (x+1)) &lt;=&lt; (\x -&gt; return (x * 100)) -- Monad chain
+--
+Just 4 &gt;&gt;= g
+-- (4 + 1) * 100
+let f = foldr (.) id [(+1), (*100), (+1)]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14">Make&nbsp;Monad</h2>
+</div>
+
+      </div>
+      <script>
+        $(function(){
+         $('pre.src').each(function(i, block){
+            var b = $(block);
+            var m = b.attr('class').match(/src src-(.*)/,1);
+            if (null == m || m.length < 2 ) { return; }
+            b.addClass(m[1]);
+            hljs.highlightBlock(block);
+         });
+        })
+      </script>
+      <!-- Table of Content-->
+      <script src="/js/tableofcontents.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+             topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

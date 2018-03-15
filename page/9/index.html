@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=06Hb&amp;d=Mo7Gcol92ZMAKeI3BglxNrATFMaDJKE57YFdy7GSyAg"></script><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <article class="article intro">
+        <header>
+          <p class="date"><span>05. September 2015</span></p>
+          <h2><a href="/articles/life/2015/09/06/2015-09-05-design-before-write.html">设计先行</a></h2>
+        </header>
+        <section class="content">
+
+<p>
+因为时间很赶，就容易草草了事，总在想来不及了，或者没有时间来做充分的思考与计划，然而这恰恰是非常致命的错误，特别是一件事情越复杂，犯的错误就可能越大。
+</p>
+
+<p>
+当一件事情需要做到完美，做到可以持续维持下去，而不仅仅是一次性的作品，那么，给与充分的时间设计，无论在如何时间紧张的情形下，都不能少。
+</p>
+
+<p>
+不然，后期可能因为起初的草草决定而不得不推到重来，或者不断填补前期草率所留下的坑，以至于最后整体来看，浪费的时间和精力更多，做出的结果反而非常不理想。
+</p>
+
+<p>
+因而，合理的评估一件事情需要的时间，而不是拍脑袋去感觉只要挤挤时间就一定可以在什么时候什么点做完。
+</p>
+
+
+<p>
+教训之一是：不要因为赶进度而采用dirty的解决方案，不要因为怕慢下来，而改变了原来的设计出发点和决定，临时采用没有经过充分思考分析的方式方法去解决问题。
+</p>
+
+<p>
+在进展过程中，经常有小的问题出现，有需要对原来设计决定进行调整的必要出现，那么要认真思考，与设计决定进行仔细的比对，寻找最佳方案，而不是模糊的模棱两可的解决方案。
+</p>
+
+<p>
+确保每</p>
+          <p class="more"><a href="/articles/life/2015/09/06/2015-09-05-design-before-write.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>27. August 2015</span></p>
+          <h2><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">Bloom filter</a></h2>
+        </header>
+        <section class="content">
+<p>
+<a href="https://zh.wikipedia.org/zh-cn/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8">Bloom filter</a>,&nbsp;被用在大数据中（Redis、Hbase、mongoDB）他是一个非常巧妙的数据结构。
+</p>
+
+<p>
+Bloom filter&nbsp;可以用很小的空间复杂度和常量的计算复杂度来做出判断，回答如下问题：
+</p>
+<blockquote>
+<p>
+一个元素是否在集合中
+</p>
+</blockquote>
+
+<p>
+由于Bloom filter&nbsp;使用有限的空间来记录信息，所以存在信息丢失（信息熵的下降）,所以它不是完全精确的判定器：
+</p>
+
+<ul class="org-ul">
+<li>如果Bloom filter&nbsp;告诉你元素不在集合中，那么一定不在
+</li>
+<li>如果Bloom filter&nbsp;告诉你元素在集合中，可能不在
+</li>
+</ul>
+
+<p>
+这一特性，可以被用在元素是否在数据集中得判断，如，在访问数据库前，加入一层Bloom&nbsp;filter，可以拦</p>
+          <p class="more"><a href="/articles/Data/2015/08/27/2015-08-27-bloom-filter.html">more</a></p>
+        </section>
+      </article>
+      <article class="article intro">
+        <header>
+          <p class="date"><span>27. August 2015</span></p>
+          <h2><a href="/articles/Network/2015/08/27/2015-08-26-tcp-nodelay.html">TCP nodelay</a></h2>
+        </header>
+        <section class="content">
+<div id="table-of-contents">
+<h2>Table of&nbsp;Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">合并发送</a></li>
+<li><a href="#sec-2">Delay&nbsp;Ack</a></li>
+<li><a href="#sec-3">冲突</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">合并发送</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Nagle&#8217;s&nbsp;算法的目的是合并小包发送，减少传输和确认的次数以及拆包组包的工作，提高网络利用率：
+</p>
+<ul class="org-ul">
+<li>应用层send的数据包不会立即发送给下层，而是到一个水位后才一起发出——合并
+</li>
+<li>如果在累积期间收到一个ack，则将累积区的数据</li></ul></div></div>
+          <p class="more"><a href="/articles/Network/2015/08/27/2015-08-26-tcp-nodelay.html">more</a></p>
+        </section>
+      </article>
+      <div id="paginator-nav"><a href="/page/8/" class="nav-prev">« Newer</a><a href="/archive.html" class="nav-archive">« Archives</a><a href="/page/10/" class="nav-next">Next page »</a>
+      </div>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>

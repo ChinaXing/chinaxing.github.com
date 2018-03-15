@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>高性能与高效的程序模型 - The Chinaxing's blog
+    </title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+  </head>
+  <body><a href="http://www.reactivemanifesto.org/" id="reactivemanifesto"><img style="border: 0; position: fixed; right: 0; top:0; z-index: 900" src="//d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-blue-right.png"></a>
+    <header id="header">
+      <div id="menu">
+        <div id="menu-header"><a id="site-name" href="/">ChinaXing</a><a id="github-icon" style="background-image: url(/lambda.png);" title="View Github profile" href="http://github.com/ChinaXing/"></a></div>
+        <ul id="menu-list">
+          <li><a href="/Database/index.html">Database<sup>2</sup></a></li>
+          <li class="active"><a href="/Compute/index.html">Compute<sup>8</sup></a></li>
+          <li><a href="/distribute/index.html">distribute<sup>3</sup></a></li>
+          <li><a href="/Data/index.html">Data<sup>6</sup></a></li>
+          <li><a href="/Erlang/index.html">Erlang<sup>7</sup></a></li>
+          <li><a href="/Glory/index.html">Glory<sup>2</sup></a></li>
+          <li><a href="/Haskell/index.html">Haskell<sup>12</sup></a></li>
+          <li><a href="/Network/index.html">Network<sup>7</sup></a></li>
+          <li><a href="/Perl/index.html">Perl<sup>22</sup></a></li>
+          <li><a href="/Java/index.html">Java<sup>16</sup></a></li>
+          <li><a href="/Life/index.html">Life<sup>20</sup></a></li>
+          <li><a href="/Linux/index.html">Linux<sup>31</sup></a></li>
+        </ul>
+        <!-- vistor map-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=06Hb&amp;d=Mo7Gcol92ZMAKeI3BglxNrATFMaDJKE57YFdy7GSyAg"></script><i id="motto">快乐地成功！</i>
+      </div>
+    </header>
+    <section id="content">
+      <script src="/js/jquery-1.11.1.min.js" charset="utf-8"></script>
+      <h2 style="text-align:center">高性能与高效的程序模型
+      </h2>
+      <div id="toc">Table of Content
+        <ol></ol>
+      </div>
+      <div class="article">
+
+<p>
+程序设计对于高性能有一贯的追求，各种并发模型无非都在追求提高性能，让物理资源高效利用。
+</p>
+
+<p>
+提高性能，关注的是系统资源的充分、有效的利用，而不是业务逻辑算法的优劣——这应该是提高效率的另一个途径。
+</p>
+
+<p>
+对于一台特定的计算机，物理资源是有限固定的，比如多少个core，多大的memory，多快的cpu频率。
+</p>
+
+<p>
+多少个core决定了同时并行处理的能力，如果任务数超过了core数，毫无疑问，一些任务需要等待，一般的<span class="caps">OS</span>都会将这些等待的任务放入运行队列、或者说是服务队列。
+</p>
+
+<p>
+因此，当系统处理能力超过了任务到达速率的时候，就产生了排队现象。但是，这仅仅是一个局部的过程，如果一直有速率差，那么队列会一直增长。合理的情况是长期看来到达速率和处理速率是相当的，这样的时候，队列才不会增长，而是维持一定的范围。
+</p>
+
+<p>
+这一情况适用于任何任务与处理搭配的系统——服务模型。
+</p>
+
+<p>
+比如在多线程设计中，创建的多个线程，对于操作系统来说，如果线程数超过了cpu的core数，那么这些线程就进行排队等待处理。
+</p>
+
+<p>
+因此创建太多的线程对于提高系统能力（更快的干完）是没有什么实际作用的。
+</p>
+
+<p>
+而且创建很多的线程，给<span class="caps">OS</span>的调度带来了负担，因为OS要去调度这些线程，就带来了 <code>context-switch</code> , 这个操作会中断用户态的代码，进入系统态，保存 <code>context</code> 然后将另一个线程的 <code>context</code> swap 到cpu上，对于cpu&nbsp;硬件cache、虚拟内存映射和<span class="caps">TLB</span>（地址转换缓冲）都要刷新和失效，会带来非常大的开销。
+</p>
+
+<p>
+因此，对于提高性能来说，减少线程切换是最好的，为了保证缓冲系统的命中减少主存得访问，更应该将线程与物理的core进行绑定来防止os进行迁移（rebalance）。
+</p>
+
+<p>
+为了提高并发，一种可以想到的方案是创建多个线程来执行他们，这种方案被上面的讨论否定了，那么另一种方案是将一个请求的整个过程进行切分，每个过程由一个单独的线程进行处理，
+</p>
+
+<p>
+各个过程通过队列进行传递，就像流水线一样，这样的好处是每个线程处理的工作集是固定的，因而可以充分利用cpu的指令缓冲。此外因为线程数量是固定的，线程的切换也非常的小。
+</p>
+
+<p>
+通过这种方式和多线程的方式进行对比，可以发现，这里的处理仅仅是本质上将排队——队列从<span class="caps">OS</span>层移动到了用户层（应用程序层），由应用程序自己来管理队列。每个线程就是一个应用程序的“cp“u，被处理的子集就在其队列上面排队等候处理。
+</p>
+
+<p>
+因为应用程序更清楚应用的逻辑，所以可以更好的切分子任务，所以比<span class="caps">OS</span>层来统一切分更加有效。
+</p>
+
+<p>
+应用程序按照<span class="caps">IO</span>/计算来分，一种IO密集型应用计算较少，IO操作较多，如静态Web站点、代理程序、merge程序。这些程序占据了日常应用的多数。&nbsp;另一种程序是计算密集型的，即要进行大量的运算（cpu运算单元、FPU会很忙），输入输出的内容较少，如科学计算，图像处理，渲染，矩阵运算，大数据（hadoop）挖掘。其核心在于对原始数据进行加工，按照数学模型进行迭代，得到精简有直接使用价值的结果。
+</p>
+
+<p>
+比如，输入一天的用户访问日志，得到前10名的购买力量高的商品类目。
+</p>
+
+<p>
+对于<span class="caps">CPU</span>密集型的任务，核心在于提高并行度，使得没有依赖的计算可以并行执行。
+</p>
+
+<p>
+对于<span class="caps">IO</span>密集型的任务，除了切分过程，提高并行度，还应该关注IO的部分，使得IO的执行和运算的执行并行化，IO执行的期间，Cpu应该减少对结果的等待而去执行本程序别的工作（如执行其他请求的运算部分）。
+</p>
+
+<p>
+<span class="caps">IO</span>&nbsp;密集型的程序，设计为事件驱动的模式，将IO事件作为系统状态机进行驱动挑转的条件，每个事件处理环节由固定的事件处理器来处理，处理完成后发出新的事件，然后继续处理下一个事件。
+</p>
+
+<p>
+事件驱动的设计使系统的处理器——线程是固定的，所以会比较高效。
+</p>
+
+<p>
+<span class="caps">IO</span>&nbsp;操作由底层OS完成，用户线程只需要负责发起请求和查询/接收结果。事件驱动的IO模型都使用一个线程可以管理多个IO操作，因为它们的工作比较简单，仅仅起到一个协调和传递状态的作用。
+</p>
+
+<p>
+可以将整个程序的操作分为2部分，一部分是<span class="caps">IO</span>，另一部分是计算：
+</p>
+
+<div class="figure">
+<p><img src="/img/cs-arch-high-performance-program.png" alt="cs-arch-high-performance-program.png" />
+</p>
+</div>
+
+
+<dl class="org-dl">
+<dt> 使用事件驱动 </dt><dd>事件启动免去同步阻塞
+</dd>
+<dt> 使用Actor模型 </dt><dd>使用好的并发模式，使用消息传递代替共享内存
+</dd>
+<dt> 使用<span class="caps">CSP</span>模型 </dt><dd>使用好的并发模式，隔离并发到channel，使用channel共享内存
+</dd>
+<dt> <span class="caps">IO</span>操作合并 </dt><dd>少碰<span class="caps">IO</span>
+</dd>
+<dt> 充分利用<span class="caps">CPU</span> </dt><dd>让<span class="caps">CPU</span>忙于处理应用逻辑
+</dd>
+</dl>
+
+      </div>
+      <!-- Table of Content-->
+      <script src="/js/tableofcontents.js" charset="utf-8"></script>
+      <script charset="utf-8">
+        $(function(){
+          $("#toc>ol").tableOfContents(
+           null,
+           {
+             startLevel: 3,
+             depth:3,
+             topLinks: "\u21E7",
+             topLinkClass: "toc-top-link",
+             topBodyId: "toc-top",
+          });
+        });
+        
+      </script>
+      <!-- Google Plus--><br>
+      <!-- Place this tag where you want the +1 button to render.-->
+      <div data-size="medium" class="g-plusone"></div>
+      <!--google plus-->
+      <!-- Place this tag after the last +1 button tag.-->
+      <script>
+        window.___gcfg = {lang: 'zh-CN'};
+        
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+        
+        
+      </script>
+      <!-- DISQUS-->
+      <div id="disqus_thread" style="padding-top:1em"></div>
+      <script>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'chinaxing'; // required: replace example with your forum shortname
+        
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus</a></noscript><a id="dsq-brlink" href="http://disqus.com">comments powered by<span class="logo-disqus">Disqus</span></a>
+    </section>
+    <footer>
+    </footer>
+  </body>
+  <!-- google Analytics-->
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37422195-1']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script>
+    if(window.location.href.indexOf("?expand=true") != -1){
+       $('#content').width('100%');
+       $('#header').hide();
+    } 
+  </script>
+</html>
